@@ -1,0 +1,517 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja" xml:lang="ja">
+<head>
+<!--[if IE]>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<![endif]-->
+
+  <title>FuelPHPをphar化してポータブルに！ | 日々の日記</title>
+
+  <meta name="robots" content="ALL" />
+  <meta name="keywords" content="FuelPHP,PHP,Advent Calendar,FuelPHP Advent Calendar" />
+  <meta name="author" content="sharkpp" />
+
+  <link rel="start" href="http://www.sharkpp.net/" title="Shark++ Software's Web Page" />
+
+  <link rel="stylesheet" href="http://www.sharkpp.net//basestyle.css" media="all" type="text/css" />
+
+  <script src="http://www.sharkpp.net/document.write.dom.2.js" type="text/javascript"></script>
+<script type="text/javascript" src="http://www.sharkpp.net/frog/plugins/lytebox/lytebox.js"></script><link rel="stylesheet" href="http://www.sharkpp.net/frog/plugins/lytebox/lytebox.css" type="text/css" media="screen" /></head>
+<body>
+
+<div id="header">
+	<h1><a href="http://www.sharkpp.net/">Shark++ Software's Web Page</a></h1>
+</div><!-- #header end -->
+
+<div id="container">
+
+<div id="side_container">
+
+<div id="menu">
+		<ul>
+		<li><a href="http://www.sharkpp.net/">トップページ</a></li>
+		<li><a href="http://www.sharkpp.net/about.html" title="このサイトについて" >このサイトについて</a></li>
+		<li><a href="http://www.sharkpp.net/history.html" title="更新履歴" >更新履歴</a></li>
+		<li><a href="http://www.sharkpp.net/hobby.html" title="趣味" >趣味</a></li>
+		<li><a href="http://www.sharkpp.net/soft.html" title="ソフトウエア" >ソフトウエア</a></li>
+		<li><a href="http://www.sharkpp.net/blog.html" title="日々の日記" >日々の日記</a>
+<ul><li><a href="http://www.sharkpp.net/blog/2013/12/01/fuelphp-advent-calendar-2013-1st-day.html" title="FuelPHPをphar化してポータブルに！"  class="current">FuelPHPをphar化してポータブルに！</a></li></ul>
+</li>
+		<li><a href="http://www.sharkpp.net/link.html" title="リンク" >リンク</a></li>
+ 
+	</ul>
+</div><!-- #menu end -->
+
+<div id="sidebar">
+
+<h3>過去の日記</h3>
+<ul>
+  <li><a href="http://www.sharkpp.net/blog/2013/12.html">2013年12月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2013/11.html">2013年11月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2013/10.html">2013年10月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2013/09.html">2013年09月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2013/08.html">2013年08月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2013/07.html">2013年07月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2013/06.html">2013年06月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2013/05.html">2013年05月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2013/04.html">2013年04月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2013/03.html">2013年03月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2013/02.html">2013年02月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2013/01.html">2013年01月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2012/12.html">2012年12月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2012/11.html">2012年11月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2012/10.html">2012年10月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2012/09.html">2012年09月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2012/08.html">2012年08月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2012/07.html">2012年07月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2012/05.html">2012年05月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2012/03.html">2012年03月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2012/01.html">2012年01月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2011/12.html">2011年12月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2011/11.html">2011年11月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2011/10.html">2011年10月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2011/09.html">2011年09月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2011/08.html">2011年08月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2011/07.html">2011年07月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2011/06.html">2011年06月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2011/05.html">2011年05月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2011/04.html">2011年04月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2011/03.html">2011年03月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2011/02.html">2011年02月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2011/01.html">2011年01月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2010/12.html">2010年12月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2010/11.html">2010年11月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2010/10.html">2010年10月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2010/09.html">2010年09月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2010/08.html">2010年08月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2010/07.html">2010年07月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2010/06.html">2010年06月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2010/05.html">2010年05月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2010/04.html">2010年04月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2010/03.html">2010年03月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2010/02.html">2010年02月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2010/01.html">2010年01月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2009/12.html">2009年12月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2009/11.html">2009年11月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2009/10.html">2009年10月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2009/09.html">2009年09月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2009/08.html">2009年08月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2009/07.html">2009年07月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2009/06.html">2009年06月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2009/05.html">2009年05月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2009/04.html">2009年04月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2009/03.html">2009年03月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2009/02.html">2009年02月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2009/01.html">2009年01月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2008/10.html">2008年10月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2008/09.html">2008年09月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2008/08.html">2008年08月</a></li>
+</ul></div><!-- #sidebar end -->
+
+</div><!-- #side_container end -->
+
+<div id="contents">
+	<h1>FuelPHPをphar化してポータブルに！</h1>
+
+<p><a href="http://atnd.org/events/45096">FuelPHP Advent Calendar 2013</a> 1日目の参加記事です。</p>
+
+<p>初めましての方もご存知の方も、よろしくお願いします。</p>
+
+<p><a href="https://twitter.com/sharkpp">@sharkpp</a>です。</p>
+
+<p>さて、昨年の12月1日はアドベント(待降節)ではありませんでしたが、安心してください、今年は12月1日からアドベントは始まります。</p>
+
+<p>とりあえず、初日なので軽い内容でいきたいと思います。</p>
+
+<p>内容は、FuelPHP を phar(PHP Archive) で１ファイルにしてウェブサーバーで動かしてみよう、です。</p>
+
+<p>子ネタをやりつつ phar の紹介も兼ねています。</p>
+
+<p>環境としては、</p>
+
+<ul>
+<li>PHP 5.3 以上</li>
+<li>FuelPHP 1.7</li>
+<li>Apache on CentOS or Windows</li>
+</ul>
+
+<p>を想定しています。</p>
+ 
+<h2>phar(PHP Archive)ってご存知ですか？</h2>
+
+<p>まず、大前提。</p>
+
+<p><a href="http://jp2.php.net/manual/ja/intro.phar.php">PHP: 導入 - Manual</a>によると、</p>
+
+<blockquote>
+  <p>phar 拡張モジュールは、PHP アプリケーション全体をひとつの "phar" (PHP Archive) ファイルにまとめてしまい、配布やインストールを容易にするためのものです。</p>
+</blockquote>
+
+<p>となっています。</p>
+
+<p>実際に使われている例としては、</p>
+
+<ul>
+<li><a href="http://getcomposer.org/">composer.phar</a> パッケージ管理ツール</li>
+<li><a href="https://github.com/fabpot/goutte">goutte.phar</a> スクレイピングライブラリ</li>
+<li><a href="https://github.com/guzzle/guzzle">guzzle.phar</a> HTTPクライアントライブラリ</li>
+<li><a href="http://pear2.php.net/PEAR2_Pyrus">pyrus.phar</a> PEAR2</li>
+</ul>
+
+<p>などがあります。</p>
+
+<p>例として上げた中でも composer は FuelPHP を使っている方であれば</p>
+
+<pre><code>$ php composer.phar update
+</code></pre>
+
+<p>と、このような形で触ったことがあると思います。</p>
+
+<h2>FuelPHP をインストール</h2>
+
+<p>Pharクラスの中でも、今回は <a href="http://jp2.php.net/manual/ja/phar.webphar.php">Phar::webPhar</a> を使います。</p>
+
+<p>まずは、FuelPHPを適当なフォルダに配置します。</p>
+
+<p>詳しい手順は<a href="http://fuelphp.jp/docs/1.7/">FuelPHP ドキュメント</a>に書かれているので参考にしてください。</p>
+
+<p>ここでは、<code>~/fuelphp-1.7</code> に配置されるものとします。</p>
+
+<pre><code>$ curl get.fuelphp.com/oil | sh
+$ cd ~
+$ oil create fuelphp-1.7
+</code></pre>
+
+<p>もしくは、</p>
+
+<pre><code>$ wget http://fuelphp.com/files/download/25 -O fuelphp.zip
+$ unzip fuelphp.zip
+</code></pre>
+
+<p>とすることで、git がインストールされていない場合は fuelphp.com からダウンロードして展開ができます。</p>
+
+<p>次に</p>
+
+<pre><code>$ cd fuelphp-1.7
+$ php composer.phar self-update
+$ php composer.phar update
+</code></pre>
+
+<p>として、composer自身のアップデートとパッケージを更新します。</p>
+
+<p>これで、Apacheなどのウェブサーバー上に公開するとWelcome画面が表示されるはずです。</p>
+
+<h2>FuelPHPをPharで1ファイルにまとめる</h2>
+
+<p>まず、そのままでは1ファイルにまとめても動かないのでいくつかソースを変更する必要があります。</p>
+
+<p>残念なことに core の中も変更する必要がありました。</p>
+
+<p>インストール直後のページを表示できるようにするために変更するファイルは</p>
+
+<ul>
+<li><code>public/index.php</code></li>
+<li><code>fuel/app/config/config.php</code></li>
+<li><code>fuel/app/config/asset.php</code> ※ fuel/core/config/asset.php からコピー</li>
+<li><code>fuel/core/bootstrap.php</code></li>
+<li><code>fuel/core/classes/file/area.php</code></li>
+</ul>
+
+<p>の 5 個のファイルです。</p>
+
+<p>実際のアプリケーションの場合は先に挙げたファイル以外にも変更が必要になると思います。</p>
+
+<p>変更のポイントは、</p>
+
+<ul>
+<li>phar 内からの realpath が常に空文字で返ってくるのでダミー関数に置き換え</li>
+<li>Windows であっても パスの区切りは <code>'/'</code> とする</li>
+<li>パスに含まれる親ディレクトリへの移動などを削除し正規化</li>
+<li>ログやキャッシュの保存先が .phar 外を示すようにする</li>
+</ul>
+
+<p>と、主に、ファイルパスに関する物が主となります。</p>
+
+<p>まず、<code>public/index.php</code> の変更部分です。</p>
+
+<p>パスを正規化する <code>canonicalizePath</code> 関数と <code>realpath</code> 関数のダミーとして <code>realpat_</code> 関数を定義しています。</p>
+
+<pre><code> error_reporting(-1);
+ ini_set('display_errors', 1);
+
+ +function canonicalizePath($path) {
+ +    $path = 0===strpos($path,'phar://')?'phar://'.preg_replace('!//!', '/', substr($path,7))
+ +                                       :preg_replace('!//!', '/', $path);
+ +    do {
+ +        $tmp  = $path;
+ +        $path = preg_replace('!/[^/]+/\.\./!', '/', $tmp);
+ +    } while ($tmp != $path);
+ +    return rtrim($path, '/');
+ +}
+ +
+ +function realpat_($path) {
+ +    return canonicalizePath(str_replace(array('/', '\\'), '/', $path));
+ +}
+</code></pre>
+
+<p>あとは、<code>realpath</code> 関数の代わりに <code>realpat_</code> 関数を使うようにし、パスの区切りも <code>'/'</code> に変更しています。</p>
+
+<pre><code>-define('DOCROOT', __DIR__.DIRECTORY_SEPARATOR);
++define('DOCROOT', realpat_(__DIR__.'/'));
+</code></pre>
+
+<p>　</p>
+
+<pre><code>-define('APPPATH', realpath(__DIR__.'/../fuel/app/').DIRECTORY_SEPARATOR);
++define('APPPATH', realpat_(__DIR__.'/../fuel/app/').'/');
+</code></pre>
+
+<p>　</p>
+
+<pre><code>-define('PKGPATH', realpath(__DIR__.'/../fuel/packages/').DIRECTORY_SEPARATOR);
++define('PKGPATH', realpat_(__DIR__.'/../fuel/packages/').'/');
+</code></pre>
+
+<p>　</p>
+
+<pre><code>-define('COREPATH', realpath(__DIR__.'/../fuel/core/').DIRECTORY_SEPARATOR);
++define('COREPATH', realpat_(__DIR__.'/../fuel/core/').'/');
+</code></pre>
+
+<p><code>fuel/app/config/config.php</code> の変更部分です。
+.phar 内には書き込めないので .phar と同じ場所の <code>writable</code> ディレクトリを示すように変更しています。</p>
+
+<p><strong>保存先は公開ディレクトリ外を示すべきなので、さらに一つ上などに示すようにするのが本来は良いでしょう。</strong></p>
+
+<pre><code>-    // 'cache_dir'       =&gt; APPPATH.'cache/',
++    'cache_dir'       =&gt; canonicalizePath(str_replace('phar://', '', APPPATH).'../../../writable/cache/'),
+</code></pre>
+
+<p>　</p>
+
+<pre><code>-    // 'log_path'         =&gt; APPPATH.'logs/',
++    'log_path'         =&gt; canonicalizePath(str_replace('phar://', '', APPPATH).'../../../writable/logs/'),
+</code></pre>
+
+<p><code>fuel/app/config/asset.php</code> の変更部分です。
+<code>fuel/core/config/asset.php</code> をコピーして使うのでそのファイルとの比較になります。
+一部、三項演算を使っていますが phar でまとめない場合にもそのまま動くようにとの苦肉の策です。</p>
+
+<pre><code>-    'paths' =&gt; array('assets/'),
++    'paths' =&gt; array(DOCROOT . 'assets/'),
+</code></pre>
+
+<p>　</p>
+
+<pre><code>-    'url' =&gt; Config::get('base_url'),
++    'url' =&gt; Config::get('base_url').(0===strpos(__DIR__,'phar://')?'index.phar/':''),
+</code></pre>
+
+<p>　</p>
+
+<pre><code>-    'add_mtime' =&gt; true,
++    'add_mtime' =&gt; false,
+</code></pre>
+
+<p><code>fuel/core/bootstrap.php</code> の変更部分です。
+パスの区切りの変更と関数の置き換えです。</p>
+
+<pre><code>-define('DS', DIRECTORY_SEPARATOR);
++define('DS', '/');
+
+-defined('VENDORPATH') or define('VENDORPATH', realpath(COREPATH.'..'.DS.'vendor').DS);
++defined('VENDORPATH') or define('VENDORPATH', realpat_(COREPATH.'..'.DS.'vendor').DS);
+</code></pre>
+
+<p>最後、<code>fuel/core/classes/file/area.php</code> の変更部分です。</p>
+
+<pre><code>         {
+-            $this-&gt;basedir = realpath($this-&gt;basedir) ?: $this-&gt;basedir;
++            $this-&gt;basedir = realpat_($this-&gt;basedir) ?: $this-&gt;basedir;
+         }
+</code></pre>
+
+<p>　</p>
+
+<pre><code>         {
+-            $pathinfo['dirname'] = realpath($pathinfo['dirname']);
++            $pathinfo['dirname'] = realpat_($pathinfo['dirname']);
+         }
+         else
+         {
+             // attempt to get the realpath(), otherwise just use path with any double dots taken out when basedir is set (for security)
+-            $pathinfo['dirname'] = ( ! empty($this-&gt;basedir) ? realpath($this-&gt;basedir.DS.$pathinfo['dirname']) : realpath($pathinfo['dirname']) )
++            $pathinfo['dirname'] = ( ! empty($this-&gt;basedir) ? realpat_($this-&gt;basedir.DS.$pathinfo['dirname']) : realpat_($pathinfo['dirname']) )
+                     ?: ( ! empty($this-&gt;basedir) ? $this-&gt;basedir.DS.str_replace('..', '', $pathinfo['dirname']) : $pathinfo['dirname']);
+</code></pre>
+
+<p>一つ一つ編集するのが大変であれば Gist の<a href="https://gist.github.com/sharkpp/7716098">ここ</a>に差分をアップしたので</p>
+
+<pre><code>$ cd fuelphp-1.7
+$ wget -q https://gist.github.com/sharkpp/7716098/raw -O - | patch -u -p0
+</code></pre>
+
+<p>とすることで変更を適用することができます。</p>
+
+<p>次は、phar の生成スクリプトです。</p>
+
+<pre><code>&lt;?php
+/*
+ * Copyright (c) 2013 sharkpp
+ * This software is released under the MIT License.
+ * http://opensource.org/licenses/mit-license.php
+ */
+// 確実に削除 
+@unlink('index.phar');
+// phar書庫作成のためクラスを生成 
+$phar = new Phar(__DIR__ . '/index.phar', 0, 'index.phar');
+// fuelphp17 ディレクトリ丸ごと固める 
+$phar-&gt;buildFromDirectory(__DIR__ . '/fuelphp-1.7/');
+// gzipで圧縮
+//$phar-&gt;compressFiles(Phar::GZ); // ※ css などがうまく取り出せない
+// 起動スタブを設定 
+$phar-&gt;setStub(&lt;&lt;&lt;'EOD'
+&lt;?php
+    function phar_rewrites($path) {
+        if (0 === strpos($path,'/assets/'))
+            return '/public' . $path;     // assets だけはパスを変更 
+        return '/public/index.php'.$path; // あとはすべてindexに渡す 
+    }
+    Phar::interceptFileFuncs();
+    Phar::webPhar('index.phar', 'public/index.php', '', array(), 'phar_rewrites');
+    __HALT_COMPILER(); ?&gt;
+EOD
+);
+</code></pre>
+
+<p>FuelPHP をインストールした fuelphp-1.7 ディレクトリの上にファイルを保存してください。</p>
+
+<p>こちらも Gist の<a href="https://gist.github.com/sharkpp/7716423">ここ</a>にアップしてあるので、</p>
+
+<pre><code>$ cd ~
+$ wget -q https://gist.github.com/sharkpp/7716423/raw/mkphar.php
+</code></pre>
+
+<p>として、ローカルに保存できます。</p>
+
+<p>準備ができたら</p>
+
+<pre><code>$ php mkphar.php
+</code></pre>
+
+<p>と入力して、index.phar を作成すると、70MBぐらいのファイルが出来上がります。</p>
+
+<p>ドキュメントや .git などが含まれているので巨大になってしまいました。</p>
+
+<p><strong>ちなみに、Pharクラスでアーカイブを作成するには設定を変える必要があるかもしれません。</strong></p>
+
+<p>具体的には、<code>php.ini</code> の <code>Phar</code> セクション内で <code>phar.readonly = Off</code> と設定されている必要があります。</p>
+
+<h2>ブラウザで確認</h2>
+
+<p>ここまでできたら index.phar をウェブサーバーの公開フォルダに置きましょう。</p>
+
+<p>と、その前に、 AddType で .phar を php で実行できるように <code>.htaccess</code> を設置しましょう。</p>
+
+<pre><code>Options +FollowSymLinks
+DirectoryIndex index.phar
+AddType application/x-httpd-php .phar
+
+&lt;IfModule mod_rewrite.c&gt;
+    RewriteEngine on
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    &lt;IfModule mod_fcgid.c&gt;
+        RewriteRule ^(.*)$ index.phar?/$1 [QSA,L]
+    &lt;/IfModule&gt;
+    &lt;IfModule !mod_fcgid.c&gt;
+        &lt;IfModule mod_php5.c&gt;
+            RewriteRule ^(.*)$ index.phar/$1 [L]
+        &lt;/IfModule&gt;
+        &lt;IfModule !mod_php5.c&gt;
+            RewriteRule ^(.*)$ index.phar?/$1 [QSA,L]
+        &lt;/IfModule&gt;
+    &lt;/IfModule&gt;
+&lt;/IfModule&gt;
+</code></pre>
+
+<p>こちらも例によって Gist の<a href="https://gist.github.com/sharkpp/7718075">ここ</a>にアップしてあるので、</p>
+
+<pre><code>$ wget -q https://gist.github.com/sharkpp/7718075/raw/.htaccess
+</code></pre>
+
+<p>で取得できます。</p>
+
+<p>例えば、ローカルホストでウェブサーバーを動かしていてドキュメントルートに先の .htaccess と共に置いたのであれば、</p>
+
+<pre><code>http://127.0.0.1/
+</code></pre>
+
+<p>にブラウザでアクセスすると Welcome 画面が表示されます。</p>
+
+<pre><code>http://127.0.0.1/hello
+</code></pre>
+
+<p>にアクセスすると hello と表示されます。</p>
+
+<pre><code>http://127.0.0.1/xxxx
+</code></pre>
+
+<p>エラーページも表示できます。</p>
+
+<h2>まとめ</h2>
+
+<p>お遊びのつもりで手を出してみたら、かなり時間をかけないとうまくいかなかったりで当てが外れてちょっとションボリ。</p>
+
+<p>実際問題として core の修正が必要となるので実用性となると皆無だと思います。</p>
+
+<p>ただ、１ファイルでウェブサーバーにアプリが公開できるのは、うまく作れば面白いことが出来るのではないかとの期待が持てそうな機能でした。</p>
+
+<!--
+明日は @*** さんの「○△□」です。お楽しみに！
+-->
+ 
+<p class="info" style="margin-top: 1em">2013年12月01日 公開 </p>
+<h2 id="trackbacks">トラックバック</h2>
+  <p>トラックバックはありません。</p>
+<p>
+  トラックバックURL: <input type="text" readonly="readonly" value="http://www.sharkpp.net/blog/2013/12/01/fuelphp-advent-calendar-2013-1st-day.html.trackback" size="100" /><br />
+  トラックバックを行うときはトラックバックURLに『犬』を英字小文字で追加してください。たとえばサメならば、"http://～.trackbackshark"とします。
+</p>
+<h2 id="comments">コメント</h2>
+<p>コメントはありません。</p>
+<form action="http://www.sharkpp.net/blog/2013/12/01/fuelphp-advent-calendar-2013-1st-day.html" method="post" id="comment_form"> 
+<p>
+	<input class="comment-form-name" type="text" name="comment[author_name]" id="comment_form_name" value="" size="22" /> 
+	<label for="comment_form_name">名前(必須)</label>
+</p>
+<p>
+	<input class="comment-form-email" type="text" name="comment[author_email]" id="comment_form_email" value="" size="22" /> 
+	<label for="comment_form_email">メールアドレス(公開はされません、ダミーも可能ですがメールアドレスの形を成していること)(必須)</label>
+</p>
+<p>
+	<input class="comment-form-link" type="text" name="comment[author_link]" id="comment_form_link" value="" size="22" /> 
+	<label for="comment_form_link">ウェブサイト</label>
+</p>
+<p>
+	画像に表示されている式の計算結果を入力してください<br /><img src="http://www.sharkpp.net/frog/plugins/comment/image.php" alt="この画像に表示されている式の計算結果を入力してください" /> <br /><br /><input class="input" type="text" name="comment[secure]" /><input type="hidden" value="211.1.206.69" name="comment[author_ip]" /> </p>
+<p>
+	<textarea class="comment-form-body" id="comment_form_body" name="comment[body]" cols="100%" rows="10"></textarea>
+</p>
+<p>
+	<input class="comment-form-submit" type="submit" name="commit-comment" id="comment_form_submit" value="送信" />
+</p>
+</form>
+</div><!-- #contents end -->
+
+</div><!-- #container end -->
+
+<div id="footer">
+  <p>Copyright&copy; 2004-2013 <a href="http://www.sharkpp.net/">sharkpp</a><br />
+  Powered by <a href="http://www.madebyfrog.com/" title="Frog CMS">Frog CMS</a>.</p>
+</div><!-- #footer end -->
+
+
+</body>
+</html>
