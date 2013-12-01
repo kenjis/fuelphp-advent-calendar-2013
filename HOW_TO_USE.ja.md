@@ -7,6 +7,18 @@
 - md2review https://github.com/takahashim/md2review
 - ReVIEW https://github.com/kmuto/review
 
+### インストール例
+
+	$ sudo apt-get install haskell-platform
+	$ git clone git://github.com/jgm/pandoc.git
+	$ cd pandoc
+	$ cabal update
+	$ cabal install
+
+	$ sudo gem install md2review
+
+	$ git clone git://github.com/kmuto/review.git
+
 ## ブログ記事のMarkdown化
 
 ### ブログページの取得
