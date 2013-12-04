@@ -86,13 +86,13 @@ Autoloader::add_classes(array(
         Fuel::$profiling = false;
 //}
 
-
+//noindent
 これを入れておかないとプロファイラが先に出力されて、HTMLがおかしくなる。端的に言うと文字が化ける。
 
 //emlist{
         // デフォルト404出力の定義
-        //$response = Response::forge(View::forge('404'), 404); //デフォルト
-        $response = Request::forge("top/404")->execute()->response(); //デフォルト
+        //$response = Response::forge(View::forge('404'), 404); // デフォルト
+        $response = Request::forge("top/404")->execute()->response(); // デフォルト
 //}
 
 
@@ -105,7 +105,7 @@ Autoloader::add_classes(array(
         try {
             $response = $req->execute()->response();
         } catch (Exception $e) {
-            //何もしない
+            // 何もしない
         }
 //}
 
