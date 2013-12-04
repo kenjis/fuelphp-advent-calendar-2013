@@ -102,9 +102,9 @@ Autoloader::add_classes(array(
 //emlist{
         $req = Request::forge();
         $req->action = "404";
-        try{
+        try {
             $response = $req->execute()->response();
-        }catch(Exception $e){
+        } catch (Exception $e) {
             //何もしない
         }
 //}
@@ -118,7 +118,7 @@ Autoloader::add_classes(array(
 Controllerごとにエラーハンドリングしたいなーって思いは結構前々からあったのですが、そこまでしっかりした開発をFuelPHPでやる機会もしばらく無く、ようやくこの機会に着手する事が出来ました。
 
 
-正直@<tt>{views/404.php}が着地点なんだから、そこから@<tt>{Request::active()}なり@<tt>{Request::main()}なりでControllerのインスタンス引っ張ってきて@<tt>{action_404}のコールをトライしたら終わりじゃね?くらいの軽い気持ちだったのですが、よくよく処理を追いかけなおして見ると、バッチリ@<tt>{reset_request}なるメソドが張り巡らされており、@<tt>{404.php}はおろか、HttpNotFoundExceptionからもControllerのインスタンスは取得できませんでした。まさかコントローラを再生性するはめにはなるとは…
+正直@<tt>{views/404.php}が着地点なんだから、そこから@<tt>{Request::active()}なり@<tt>{Request::main()}なりでControllerのインスタンス引っ張ってきて@<tt>{action_404}のコールをトライしたら終わりじゃね？くらいの軽い気持ちだったのですが、よくよく処理を追いかけなおして見ると、バッチリ@<tt>{reset_request}なるメソドが張り巡らされており、@<tt>{404.php}はおろか、HttpNotFoundExceptionからもControllerのインスタンスは取得できませんでした。まさかコントローラを再生性するはめにはなるとは…
 
 
 FuelPHP的なコントローラは基本的に生成コスト低め、のはずなので問題無いとは思いますが、ファットなコントローラで生成コスト高め（特にbeforeがごちゃごちゃしてる…）の時には、処理負担的にあまりオススメできませんが、参考になれば幸いです。
