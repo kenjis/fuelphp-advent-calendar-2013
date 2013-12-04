@@ -175,6 +175,8 @@
             $contents .= $line . "\n";
         }
         
+        // remove last "\n"
+        $contents = substr($contents, 0, -1);
         //var_dump($contents);
         file_put_contents($this->markdown_file, $contents);
     }
