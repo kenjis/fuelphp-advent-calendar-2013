@@ -66,7 +66,7 @@ phar拡張モジュールは、PHP アプリケーション全体をひとつの
 $ php composer.phar update
 //}
 
-
+//noindent
 と、このような形で触ったことがあると思います。
 
 == FuelPHP をインストール
@@ -76,11 +76,7 @@ Pharクラスの中でも、今回は@<href>{http://jp2.php.net/manual/ja/phar.w
 
 
 まずは、FuelPHPを適当なフォルダに配置します。
-
-
 詳しい手順は@<href>{http://fuelphp.jp/docs/1.7/,FuelPHP ドキュメント}に書かれているので参考にしてください。
-
-
 ここでは、@<tt>{~/fuelphp-1.7}に配置されるものとします。
 
 //emlist{
@@ -89,7 +85,7 @@ $ cd ~
 $ oil create fuelphp-1.7
 //}
 
-
+//noindent
 もしくは、
 
 //emlist{
@@ -97,7 +93,7 @@ $ wget http://fuelphp.com/files/download/25 -O fuelphp.zip
 $ unzip fuelphp.zip
 //}
 
-
+//noindent
 とすることで、gitがインストールされていない場合はfuelphp.comからダウンロードして展開ができます。
 
 
@@ -109,7 +105,7 @@ $ php composer.phar self-update
 $ php composer.phar update
 //}
 
-
+//noindent
 として、composer自身のアップデートとパッケージを更新します。
 
 
@@ -132,8 +128,7 @@ $ php composer.phar update
  * @<tt>{fuel/core/bootstrap.php}
  * @<tt>{fuel/core/classes/file/area.php}
 
-
-
+//noindent
 の5個のファイルです。
 
 
@@ -147,8 +142,7 @@ $ php composer.phar update
  * パスに含まれる親ディレクトリへの移動などを削除し正規化
  * ログやキャッシュの保存先が.phar外を示すようにする
 
-
-
+//noindent
 と、主に、ファイルパスに関する物が主となります。
 
 
@@ -275,7 +269,7 @@ $ cd fuelphp-1.7
 $ wget -q https://gist.github.com/sharkpp/7716098/raw -O - | patch -u -p0
 //}
 
-
+//noindent
 とすることで変更を適用することができます。
 
 
@@ -322,7 +316,7 @@ $ cd ~
 $ wget -q https://gist.github.com/sharkpp/7716423/raw/mkphar.php
 //}
 
-
+//noindent
 として、ローカルに保存できます。
 
 
@@ -332,7 +326,7 @@ $ wget -q https://gist.github.com/sharkpp/7716423/raw/mkphar.php
 $ php mkphar.php
 //}
 
-
+//noindent
 と入力して、index.pharを作成すると、70MBぐらいのファイルが出来上がります。
 
 
@@ -382,7 +376,7 @@ AddType application/x-httpd-php .phar
 $ wget -q https://gist.github.com/sharkpp/7718075/raw/.htaccess
 //}
 
-
+//noindent
 で取得できます。
 
 
@@ -392,21 +386,21 @@ $ wget -q https://gist.github.com/sharkpp/7718075/raw/.htaccess
 http://127.0.0.1/
 //}
 
-
+//noindent
 にブラウザでアクセスすると Welcome 画面が表示されます。
 
 //emlist{
 http://127.0.0.1/hello
 //}
 
-
+//noindent
 にアクセスすると hello と表示されます。
 
 //emlist{
 http://127.0.0.1/xxxx
 //}
 
-
+//noindent
 エラーページも表示できます。
 
 == まとめ
