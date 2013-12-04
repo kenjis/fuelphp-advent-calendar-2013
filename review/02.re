@@ -2,7 +2,7 @@
 = FuelPHPの開発環境を20分で構築する（Vagrant編）
 
 
-@<href>{http://atnd.org/events/45096,FuelPHP Advent Calendar 2013}の2日目です。
+@<href>{http://atnd.org/events/45096,FuelPHP Advent Calendar 2013}の2日目です。@<br>{}
 
 
 従来は、FuelPHPの開発環境を構築する場合、XAMPPやMAMPを使う方法が一般的でした。この方法は簡単に手許のPCに開発環境を構築でき便利なのですが、開発環境と本番環境のPHPのバージョンが異なったり、開発環境はWindowsやMacだが本番環境はLinuxであったりと、ほとんどの場合、本番環境と開発環境が異なるという問題がありました。
@@ -41,7 +41,7 @@ VirtualBoxの仮想イメージを操作するツールであるVagrantを、以
 
 FuelPHPのプロジェクト用のフォルダを作成し、その中にVagrant用のファイルを配置します。
 
-//emlist{
+//cmd{
 $ mkdir fuelphp
 $ cd fuelphp/
 $ git clone git@github.com:kenjis/vagrant-fuelphp-centos6.git
@@ -52,7 +52,7 @@ $ git submodule update --init --recursive
 
 仮想マシンを構築します。
 
-//emlist{
+//cmd{
 $ vagrant up
 //}
 
@@ -70,7 +70,7 @@ FuelPHPがインストールされていない場合は、@<tt>{oil create}コ�
 
 == ディレクトリ構成
 
-
+//noindent
 ホスト（手許のPC）側
 
 //emlist{
@@ -81,7 +81,7 @@ fuelphp/（FuelPHPプロジェクトのトップ）
 └── vagrant-fuelphp-centos6
 //}
 
-
+//noindent
 ゲスト（仮想マシン）側
 
 //emlist{
@@ -100,7 +100,7 @@ fuelphp/（FuelPHPプロジェクトのトップ）
 
 vagrant-fuelphp-centos6フォルダから、@<tt>{vagrant ssh}コマンドで仮想マシンにSSHで接続できます（Windowsを除く）。
 
-//emlist{
+//cmd{
 $ cd fuelphp/vagrant-fuelphp-centos6/
 $ vagrant ssh
 Last login: Mon Dec  2 01:11:37 2013 from 10.0.2.2
@@ -113,7 +113,7 @@ Welcome to your Vagrant-built virtual machine.
 
 oilコマンドとphpunitもインストール済みなのですぐに実行できます。
 
-//emlist{
+//cmd{
 [vagrant@localhost ~]$ cd fuelphp/
 [vagrant@localhost fuelphp]$ oil test --group=Core
 Tests Running...This may take a few moments.
@@ -165,7 +165,7 @@ MySQLデータベースは、@<tt>{fuel_dev}と@<tt>{fuel_test}が作成され�
 
 仮想マシンの停止は、vagrant-fuelphp-centos6フォルダに移動して、
 
-//emlist{
+//cmd{
 $ vagrant halt
 //}
 
@@ -175,14 +175,14 @@ $ vagrant halt
 
 仮想マシンの起動は、
 
-//emlist{
+//cmd{
 $ vagrant up
 //}
 
 
 仮想マシンを破棄するには、
 
-//emlist{
+//cmd{
 $ vagrant destroy
 //}
 
