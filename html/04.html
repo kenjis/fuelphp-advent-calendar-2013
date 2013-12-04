@@ -1,0 +1,718 @@
+ <!DOCTYPE html>
+<html
+  lang="ja"
+  data-avail-langs="ja en"
+
+  data-page="entry"
+  data-admin-domain="http://blog.hatena.ne.jp"
+  data-static-domain="http://hatenablog.com"
+  data-blog="mkkn.hatenablog.jp"
+  data-blogs-uri-base="http://mkkn.hatenablog.jp"
+  data-globalheader-color="b"
+  data-globalheader-type="pc"
+  data-author="mikakane"
+  data-version="cc61efc892a1844e7075572ec20ba217"
+  data-blog-comments-top-is-new=""
+
+  
+
+  data-brand="hatenablog"
+
+
+  data-has-touch-view="1"
+  
+
+  itemscope
+   itemtype="http://schema.org/Article"
+
+  >
+  <head prefix="og: http://ogp.me/ns# fb: http://ogp.me/fb# article: http://ogp.me/fb/article#">
+    
+
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=7; IE=9; IE=10" />
+    <title>Fuelphpのエラーハンドリングがなんか今ひとつ物足りなかったのでなんとかしてみた話 - どうにもならない日々@mkkn</title>
+
+    
+
+    
+      <link rel="canonical" href="http://mkkn.hatenablog.jp/entry/2013/12/04/120701"/>
+    
+
+    <meta itemprop="name" content="Fuelphpのエラーハンドリングがなんか今ひとつ物足りなかったのでなんとかしてみた話 - どうにもならない日々@mkkn"/>
+    
+      <meta itemprop="image" content="http://hatenablog.com/images/theme/og-image-1500.gif"/>
+    
+
+    <meta property="og:title" content="Fuelphpのエラーハンドリングがなんか今ひとつ物足りなかったのでなんとかしてみた話 - どうにもならない日々@mkkn"/>
+    <meta property="og:type" content="article"/>
+    <meta property="og:url" content="http://mkkn.hatenablog.jp/entry/2013/12/04/120701"/>
+    
+      <meta property="og:image" content="http://hatenablog.com/images/theme/og-image-1500.gif"/>
+    
+      <meta property="og:description" content="fuelphpアドベントカレンダー2013です。もう2013年ですね。早いですね。そうこうしているうちに2014年になります。なんとも恐ろしい。 思えば今年もfuelphpでした。もうこの子しか愛せなさすぎて辛い。ポリアモリーを自称する割にはこういう所は変に一途だったりするのです(あとはまぁ眼鏡とか時計とかカバンとか)。 そういえば去年は何書いたかなぁ…と思ってfuelphpアドベントカレンダー2012を見に行ったら、自分の担当のリンクだけ「お探しのページは見つかりません」。というわけで本日は404のお話です。 fuelphpのエラーハンドリングは何かと複雑です。便利機能が却って便利じゃなかっ…" />
+    <meta property="og:site_name" content="http://mkkn.hatenablog.jp/"/>
+      <meta property="article:published_time" content="1386126421" />
+    <meta name="twitter:card" content="summary" />      <meta name="twitter:app:name:iphone" content="はてなブログアプリ" />
+      <meta name="twitter:app:id:iphone" content="583299321" />
+      <meta name="twitter:app:url:iphone" content="hatenablog:///open?uri=http%3A%2F%2Fmkkn.hatenablog.jp%2Fentry%2F2013%2F12%2F04%2F120701" />      <meta name="twitter:site" content="@mkkn_info" />      <meta name="description" content="fuelphpアドベントカレンダー2013です。もう2013年ですね。早いですね。そうこうしているうちに2014年になります。なんとも恐ろしい。 思えば今年もfuelphpでした。もうこの子しか愛せなさすぎて辛い。ポリアモリーを自称する割にはこういう所は変に一途だったりするのです(あとはまぁ眼鏡とか時計とかカバンとか)…">
+    
+<script type="text/javascript">
+// <!--
+
+if (~navigator.userAgent.indexOf('Mac OS X')) {
+  document.write('<style type="text/css">html, body { font-family: \x27Helvetica\x27, \x27Arial\x27, \x27ヒラギノ角ゴ Pro W3\x27, \x27Hiragino Kaku Gothic Pro\x27, sans-serif; } </style>');
+} else {
+  document.write('<style type="text/css">html, body { font-family: \x27Helvetica\x27, \x27Arial\x27, \x27メイリオ\x27, \x27Meiryo\x27, \x27MS PGothic\x27, sans-serif; } </style>');
+}
+
+// -->
+</script>
+
+<!--[if lt IE 9]>
+<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+
+<!--[if IE]>
+<script type="text/javascript" src="/js/excanvas.min.js"></script>
+<![endif]-->
+
+    <link rel="shortcut icon" href="http://hatenablog.com/images/favicon.ico">
+    <link rel="alternate" type="application/atom+xml" title="Atom" href="http://mkkn.hatenablog.jp/feed"/>
+    <link rel="alternate" type="application/rss+xml" title="RSS2.0" href="http://mkkn.hatenablog.jp/rss"/>
+    <link rel="author" href="http://www.hatena.ne.jp/mikakane/">
+      <link rel="stylesheet" type="text/css" href="http://hatenablog.com/.shared.css:cc61efc892a1844e7075572ec20ba217:/css/theme/base.css,/css/prettify.css,/css/globalheader.css"/>
+    
+      <link rel="stylesheet" type="text/css" href="http://hatenablog.com/-/blog_style/12704830469096310711/09fc48c3e4909cc6081a3bd37462e46ca653791e"/>
+    
+    <script>    </script>
+
+    
+    <style>
+      div#google_afc_user,
+      div#google_afc_user_container,
+      div.google_afc_image,
+      div.google_afc_blocklink {
+          display: block !important;
+      }
+    </style>
+  </head>
+
+  <body class="page-entry  enable-top-editarea enable-bottom-editarea">
+    <div id="header-container">
+     <div id="sp-suggest" style="display: none;"><a id="sp-suggest-link" href="#">スマートフォン用の表示で見る</a></div>
+    </div>
+
+    <div class="select_star_button_container" style="display: none;">
+      <img src="http://hatenablog.com/images/theme/hatena-star-quote-box.png" title="引用スターをつける" class="select_star_button" />
+      <img src="http://hatenablog.com/images/theme/hatena-star-quote-star.png" title="引用スターをつける" class="select_star_button select_star_star">
+    </div>
+
+    <div class="message-box" id="select-star-message-box" style="display: none;">
+      スターをつけました
+    </div>
+
+    <div id="globalheader-container">
+  <iframe id="globalheader" height="37" frameborder="0" allowTransparency="true"></iframe>
+</div>
+
+    <div id="container">
+      <div id="container-inner">
+        <header id="blog-title" data-brand="hatenablog">
+  <div id="blog-title-inner" >
+    <h1 id="title"><a href="http://mkkn.hatenablog.jp/">どうにもならない日々@mkkn</a></h1>
+    
+  </div>
+</header>
+
+        
+          <div id="top-editarea">
+            <p style="margin-top:-50px;color:#aaa">わざわざ残す必要もないことを整理とか気にせずに吐き出していく。そんな空間。</p>
+
+          </div>
+        
+        
+
+
+
+
+<div id="content" class="hfeed"
+  
+  >
+  <div id="content-inner">
+    <div id="wrapper">
+      <div id="main">
+        <div id="main-inner">
+          
+            
+            <!-- google_ad_section_start -->
+            <!-- rakuten_ad_target_begin -->
+            
+              
+                <article class="hentry entry js-entry-article date-first autopagerize_page_element chars-3600 words-200 markdown entry-odd" id="entry-12921228815713642270" data-keyword-campaign="" data-uuid="12921228815713642270">
+  <div class="entry-inner">
+    <header class="entry-header">
+      <div class="date first">
+        <a href="http://mkkn.hatenablog.jp/entries/2013/12/04" rel="nofollow">
+          <time pubdate datetime="2013-12-04T03:07:01Z" title="2013-12-04T03:07:01Z">
+            <span class="date-year">2013</span><span class="hyphen">-</span><span class="date-month">12</span><span class="hyphen">-</span><span class="date-day">04</span>
+          </time>
+        </a>
+      </div>
+      <h1 class="entry-title">
+        <a href="http://mkkn.hatenablog.jp/entry/2013/12/04/120701" class="entry-title-link bookmark">Fuelphpのエラーハンドリングがなんか今ひとつ物足りなかったのでなんとかしてみた話</a>
+      </h1>
+      
+      <div class="categories no-categories">
+        
+      </div>
+    </header>
+    <div class="entry-content">
+      
+        <p><a href="http://atnd.org/events/45096">fuelphpアドベントカレンダー2013</a>です。もう2013年ですね。早いですね。そうこうしているうちに2014年になります。なんとも恐ろしい。</p>
+
+<p>思えば今年も<a class="keyword" href="http://d.hatena.ne.jp/keyword/fuelphp">fuelphp</a>でした。もうこの子しか愛せなさすぎて辛い。ポリアモリーを自称する割にはこういう所は変に一途だったりするのです(あとはまぁ眼鏡とか時計とかカバンとか)。</p>
+
+<p>そういえば去年は何書いたかなぁ…と思って<a class="keyword" href="http://d.hatena.ne.jp/keyword/fuelphp">fuelphp</a><a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%A2%A5%C9%A5%D9%A5%F3%A5%C8%A5%AB%A5%EC%A5%F3%A5%C0%A1%BC">アドベントカレンダー</a>2012を見に行ったら、自分の担当のリンクだけ「お探しのページは見つかりません」。というわけで本日は404のお話です。</p>
+
+<p><a class="keyword" href="http://d.hatena.ne.jp/keyword/fuelphp">fuelphp</a>のエラーハンドリングは何かと複雑です。便利機能が却って便利じゃなかったりとか、公式ドキュエントが<code>index.php</code>書き換えたらイイヨ!!とか、もうなんかしったかめっちゃかな状況ですが、ざっと以下のような流れになっているみたいです。</p>
+
+<ul>
+<li>リクエストの処理中にコントローラレベルでcatchされない例外が発生!!</li>
+<li>HttpNotFoundException系列のみindex.<a class="keyword" href="http://d.hatena.ne.jp/keyword/php">php</a>にてキャッチ</li>
+<li>[index.<a class="keyword" href="http://d.hatena.ne.jp/keyword/php">php</a>] config/routeに<code>_404_</code>設定アレば、そちらで処理</li>
+<li>[index.<a class="keyword" href="http://d.hatena.ne.jp/keyword/php">php</a>] 無かったらそのまま例外横流し</li>
+<li>今度はエラーハンドラ(<code>Error::exception_handler</code>)がキャッチ</li>
+<li>[エラーハンドラ] 例外オブジェクトがhandleメソド持ってたらそちらで処理</li>
+<li>[エラーハンドラ] handleが無くて本番環境なら,errors/productionをレンダする。</li>
+<li>[エラーハンドラ] handleが無くて本番でも無ければ、errors/<a class="keyword" href="http://d.hatena.ne.jp/keyword/php">php</a>_fatal_errorをレンダする。</li>
+</ul>
+
+
+<p><code>errors/production</code>とか<code>errors/php_fatal_error</code>はcoreに入ってる方のView。同名ファイル作ればAPP側で上書きできる。productionってのはあの「Oops!」ってやつで、<a class="keyword" href="http://d.hatena.ne.jp/keyword/php">php</a>_fatal_errorってのはあの開発中に便利なバックトレースとかつけてくれる例外画面。</p>
+
+<p>んで、ドキュメントを見るとなにやら<code>HttpNotFoundException</code>って例外を投げるとエラー画面を描画してくれる、とかある。これはCoreに入ってるHttpNotFoundExceptionって例外クラスに例の<code>handle</code>メソドが実装されているからそうなるわけで、描画されるViewは<code>views/404.php</code>になる。</p>
+
+<h3>やりたいこと</h3>
+
+<p>CIのエラーハンドリングでもそうなんだけど、実際アプリケーションの開発では1システム1エラー画面というわけには行かない。</p>
+
+<p>PC版のリクエストならPC版の404を出したいし、SP版のリクエストならSP版の404を出したい。もっと言うなら<a class="keyword" href="http://d.hatena.ne.jp/keyword/API">API</a>のリクエストではJSON形式の404メッセージを送りたい(はず)。</p>
+
+<p>CI使ってた時にはエラーのView内で条件分岐して、リクエストの種別(PC/SP)毎にそれぞれ表示するView書き換えたりしてたので、それを応用しながら上手いこと出来ないかなぁとか考えてたら以下のような形になりました。</p>
+
+<pre><code>class HttpNotFoundException extends \Fuel\Core\HttpNotFoundException
+{
+    public function response()
+    {
+        Fuel::$profiling = false;
+        //デフォルト404出力の定義
+        //$response = Response::forge(View::forge('404'),404);//デフォルト
+        $response = Request::forge("top/404")-&gt;execute()-&gt;response();//デフォルト
+
+        $req = Request::forge();
+        $req-&gt;action = "404";
+        try{
+            $response = $req-&gt;execute()-&gt;response();
+        }catch(Exception $e){
+            //何もしない
+        }
+        $response-&gt;set_status(404);
+        return $response;
+    }
+}
+</code></pre>
+
+<p>各リクエストのURL形式からコントローラの検出まで可能であればそのコントローラに<code>action_404</code>が存在しないかをチェックし、あればそれを出力する、なければデフォルトの404出力を返すというものです。</p>
+
+<p>index.<a class="keyword" href="http://d.hatena.ne.jp/keyword/php">php</a>はいじらずにすみますが、coreのHttpNotFoundExceptionを上書きするのでbootstrapに以下のような記述が必要になります。</p>
+
+<pre><code>Autoloader::add_classes(array(
+    // Add classes you want to override here
+    // Example: 'View' =&gt; APPPATH.'classes/view.php',
+    'HttpNotFoundException' =&gt; APPPATH.'classes/httpnotfoundexception.php'// 上記クラスを記述した場所
+));
+</code></pre>
+
+<p>クラス名が<code>_</code>の全くない長い名前なので律儀に<a class="keyword" href="http://d.hatena.ne.jp/keyword/fuelphp">fuelphp</a>の命名規則に従う必要はないです。上記bootstrapの記述でしっかりパス指定さえ行えばどこに置いてもオートロードします。</p>
+
+<h3>解説</h3>
+
+<pre><code>        Fuel::$profiling = false;
+</code></pre>
+
+<p>これを入れておかないとプロファイラが先に出力されて、HTMLがおかしくなる。端的に言うと文字が化ける。</p>
+
+<pre><code>        //デフォルト404出力の定義
+        //$response = Response::forge(View::forge('404'),404);//デフォルト
+        $response = Request::forge("top/404")-&gt;execute()-&gt;response();//デフォルト
+</code></pre>
+
+<p>コメントアウトしてある上の行はViewファイルを直接指定するタイプのデフォルト404指定。コアの<code>HttpNotFoundException</code>の挙動に近い形。その下の行は<code>Uri</code>で直接指定するタイプ。<code>config/router.php</code>の<code>_404_</code>の書き方に近い形。<br/>
+それぞれお好きな方をご利用ください。</p>
+
+<pre><code>        $req = Request::forge();
+        $req-&gt;action = "404";
+        try{
+            $response = $req-&gt;execute()-&gt;response();
+        }catch(Exception $e){
+            //何もしない
+        }
+</code></pre>
+
+<p>例外の処理内部でリクエストを再生成して、actionだけ書き換えてからリトライする形。
+try catch しとかないと多重ループする気がする。もともと<code>action_404</code>に対してのダメ元リトライなので
+catchしてもとくにすることはない。</p>
+
+<h3>あとがき</h3>
+
+<p>　Controllerごとにエラーハンドリングしたいなーって思いは結構前々からあったのですが、
+そこまでしっかりした開発を<a class="keyword" href="http://d.hatena.ne.jp/keyword/fuelphp">fuelphp</a>でやる機会もしばらく無く、ようやくこの機会に着手する事が出来ました。</p>
+
+<p>正直<code>views/404.php</code>が着地点なんだから、そこから<code>Request::active()</code>なり<code>Request::main()</code>なりで
+controllerの<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%A4%A5%F3%A5%B9%A5%BF%A5%F3%A5%B9">インスタンス</a>引っ張ってきて<code>action_404</code>のコールをトライしたら終わりじゃね?くらいの軽い気持ちだったのですが、
+よくよく処理を追いかけなおして見ると、バッチリ<code>reset_request</code>なるメソドが張り巡らされており、<code>404.php</code>はおろか、
+HttpNotFoundExceptionからもControllerの<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%A4%A5%F3%A5%B9%A5%BF%A5%F3%A5%B9">インスタンス</a>は取得できませんでした。
+まさかコントローラを再生性するはめにはなるとは…</p>
+
+<p>　<a class="keyword" href="http://d.hatena.ne.jp/keyword/fuelphp">fuelphp</a>的なコントローラは基本的に生成コスト低め、のはずなので問題無いとは思いますが
+ファットなコントローラで生成コスト高め(特にbeforeがごちゃごちゃしてる…)の時には、処理負担的にあまりオススメできませんが、
+参考になれば幸いです。</p>
+
+      
+    </div>
+    <footer class="entry-footer">
+      <p class="entry-footer-section">
+        <span class="author vcard"><span class="fn">mikakane</span></span>
+        <span class="entry-footer-time"><a href="http://mkkn.hatenablog.jp/entry/2013/12/04/120701"><time data-relative datetime="2013-12-04T03:07:01Z" title="2013-12-04T03:07:01Z" pubdate class="updated">2013-12-04 12:07</time></a></span>
+      </p>
+      <div class="hatena-star-container">
+      </div>
+      
+        <!-- Google AFC -->
+        <div id="google_afc_user" class="section blog_user_a">
+          
+            <a href="http://blog.hatena.ne.jp/guide/pro" class="open-pro-modal" data-guide-pro-modal-ad-url="http://hatenablog.com/guide/pro/modal/ad"><img src="http://hatenablog.com/images/admin/delete.gif" class="ad-close"></a>
+          
+          <div id="google_afc_user_container" class="google_afc_blocklink2_5 google_afc_boder"></div>
+        </div>
+      
+      
+
+      <div class="customized-footer">
+        
+          <div class="social-buttons">
+  
+  
+    <a href="http://b.hatena.ne.jp/entry/http://mkkn.hatenablog.jp/entry/2013/12/04/120701" class="hatena-bookmark-button" data-hatena-bookmark-layout="standard-balloon" data-hatena-bookmark-lang="ja" title="この記事をはてなブックマークに追加"><img src="http://b.st-hatena.com/images/entry-button/button-only.gif" alt="この記事をはてなブックマークに追加" width="20" height="20" style="border: none;" /></a>
+  
+  
+    <iframe src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fmkkn.hatenablog.jp%2Fentry%2F2013%2F12%2F04%2F120701&amp;layout=button_count&amp;show_faces=false&amp;width=100&amp;action=like&amp;height=21" class="facebook-like-button" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:100px; height:21px;" allowTransparency="true"></iframe>
+  
+  
+    <iframe allowtransparency="true" frameborder="0" scrolling="no" src="https://platform.twitter.com/widgets/tweet_button.html?url=http%3A%2F%2Fmkkn.hatenablog.jp%2Fentry%2F2013%2F12%2F04%2F120701&text=Fuelphp%E3%81%AE%E3%82%A8%E3%83%A9%E3%83%BC%E3%83%8F%E3%83%B3%E3%83%89%E3%83%AA%E3%83%B3%E3%82%B0%E3%81%8C%E3%81%AA%E3%82%93%E3%81%8B%E4%BB%8A%E3%81%B2%E3%81%A8%E3%81%A4%E7%89%A9%E8%B6%B3%E3%82%8A%E3%81%AA%E3%81%8B%E3%81%A3%E3%81%9F%E3%81%AE%E3%81%A7%E3%81%AA%E3%82%93%E3%81%A8%E3%81%8B%E3%81%97%E3%81%A6%E3%81%BF%E3%81%9F%E8%A9%B1%20-%20%E3%81%A9%E3%81%86%E3%81%AB%E3%82%82%E3%81%AA%E3%82%89%E3%81%AA%E3%81%84%E6%97%A5%E3%80%85%40mkkn&lang=ja" class="twitter-share-button" style="width:130px; height:20px;"></iframe>
+  
+  
+    <g:plusone size="medium" href="http://mkkn.hatenablog.jp/entry/2013/12/04/120701"></g:plusone>
+  
+  
+  
+</div>
+
+
+          
+
+
+          <div class="entry-footer-html"></div>
+        
+      </div>
+
+      <div class="comment-box">
+        
+        <ul class="comment">
+          
+        </ul>
+        
+          <a class="leave-comment-title">コメントを書く</a>
+        
+      </div>
+    </footer>
+  </div>
+</article>
+
+                
+
+                
+                  <div class="permalink pager">
+                    
+                    
+                      <span class="pager-prev">
+                        <a href="http://mkkn.hatenablog.jp/entry/2013/11/17/053706" rel="prev">前の記事</a>
+                      </span>
+                    
+                  </div>
+                
+
+              
+            
+            <!-- rakuten_ad_target_end -->
+            <!-- google_ad_section_end -->
+
+            
+          
+        </div>
+      </div>
+
+      
+      <aside id="box1">
+        <div id="box1-inner">
+        </div>
+      </aside>
+
+    </div><!-- #wrapper -->
+
+    <aside id="box2">
+  <div id="box2-inner">
+    
+    
+      
+
+<div class="hatena-module hatena-module-profile">
+  <div class="hatena-module-title">
+    ABOUT ME
+  </div>
+  <div class="hatena-module-body">
+    
+    <a href="http://mkkn.hatenablog.jp/about">
+      <img src="http://cdn1.www.st-hatena.com/users/mi/mikakane/profile.gif?1368946612"
+      alt="id:mikakane" class="profile-icon" />
+    </a>
+    
+
+    
+
+    
+    <div class="profile-description">
+      <p>大阪でぼちぼちとSEとかやってる20代。もうすぐ30代。</p><p>最近はふらふらとWeb制作レッスンとかもやってます。コーヒー1杯いただければ半日くらいは付き合います。</p>
+
+    </div>
+    
+
+    
+    <div class="hatena-follow-button-box btn-subscribe">
+      <a href="#" class="hatena-follow-button">
+        <span class="subscribing">
+          <span class="foreground">購読中です</span>
+          <span class="background">読者をやめる</span>
+        </span>
+        <span class="unsubscribing">
+          <span class="foreground">読者になる</span>
+          <span class="background">読者になる</span>
+        </span>
+      </a>
+      <div class="subscription-count-box">
+        <span class="subscription-balloon">
+        </span>
+        <span class="subscription-count">
+        </span>
+      </div>
+    </div>
+    
+
+    
+
+    
+
+    
+    <div class="hatena-follow-button-box btn-twitter">
+      <a href="https://twitter.com/mkkn_info" class="twitter-follow-button" data-show-count="false" data-lang="ja">
+        @mkkn_infoをフォロー
+      </a>
+    </div>
+    
+  </div>
+</div>
+
+    
+      <div class="hatena-module hatena-module-links">
+  <div class="hatena-module-title">
+    mkkn.info
+  </div>
+  <div class="hatena-module-body">
+    <ul class="hatena-urllist">
+      
+        <li>
+          <a href="http://mkkn.info/cheat/fuelphp/base">fuelphp cheatsheet</a>
+        </li>
+      
+        <li>
+          <a href="http://mkkn.info/cheat/fuelphp/db">fuelphp cheatsheet2</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+    
+      
+
+<div class="hatena-module hatena-module-category">
+  <div class="hatena-module-title">
+    Category
+  </div>
+  <div class="hatena-module-body">
+    <ul class="hatena-urllist">
+      
+        <li>
+          <a href="http://mkkn.hatenablog.jp/archive/category/PHP">
+            PHP (14)
+          </a>
+        </li>
+      
+        <li>
+          <a href="http://mkkn.hatenablog.jp/archive/category/%E9%9B%91%E8%A8%98">
+            雑記 (9)
+          </a>
+        </li>
+      
+        <li>
+          <a href="http://mkkn.hatenablog.jp/archive/category/%E5%8B%89%E5%BC%B7%E4%BC%9A">
+            勉強会 (7)
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+    
+      
+
+<div class="hatena-module hatena-module-archive">
+  <div class="hatena-module-title">
+    <a href="http://mkkn.hatenablog.jp/archive">月別アーカイブ</a>
+  </div>
+  <div class="hatena-module-body">
+  </div>
+</div>
+
+    
+      
+
+<div class="hatena-module hatena-module-recent-entries">
+  <div class="hatena-module-title">
+    <a href="http://mkkn.hatenablog.jp/archive">
+      What&#39;s New
+    </a>
+  </div>
+  <div class="hatena-module-body">
+    <ul class="hatena-urllist">
+      
+        <li>
+          <a href="http://mkkn.hatenablog.jp/entry/2013/12/04/120701">              <span class="recent-entries-entry-title">Fuelphpのエラーハンドリングがなんか今ひとつ物足りなかったのでなんとかしてみた話</span>          </a>
+        </li>
+      
+        <li>
+          <a href="http://mkkn.hatenablog.jp/entry/2013/11/17/053706">              <span class="recent-entries-entry-title">MVCのViewというものについて考えてみる</span>          </a>
+        </li>
+      
+        <li>
+          <a href="http://mkkn.hatenablog.jp/entry/2013/11/01/202330">              <span class="recent-entries-entry-title">社内にてsvn=git移行担当に任命されました。</span>          </a>
+        </li>
+      
+        <li>
+          <a href="http://mkkn.hatenablog.jp/entry/2013/09/05/195353">              <span class="recent-entries-entry-title">Qiitaがおもしろ過ぎていろいろやる気が出ない。</span>          </a>
+        </li>
+      
+        <li>
+          <a href="http://mkkn.hatenablog.jp/entry/2013/08/17/200916">              <span class="recent-entries-entry-title">近況:fuelphpの開発サポートpackageをぼちぼちと…</span>          </a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+    
+      <div class="hatena-module hatena-module-search-box">
+  <div class="hatena-module-title">
+    検索
+  </div>
+  <div class="hatena-module-body">
+    <form class="search-form" role="search" action="http://mkkn.hatenablog.jp/search" method="get">
+      <input type="text" name="q" class="search-module-input" value="" placeholder="ブログ内検索">
+      <input type="submit" value="検索" class="search-module-button" />
+    </form>
+  </div>
+</div>
+
+    
+    
+  </div>
+</aside>
+
+  </div>
+</div>
+
+
+
+
+  
+ <script type="text/javascript">
+   <!--
+   hatena_dfp_tag = '/4374287/blog_user';
+   hatena_dfp_size = [[300, 250], [336, 280]];
+   hatena_dfp_target_id = 'google_afc_user_container';
+   -->
+ </script>
+ <script type="text/javascript" src="http://ad.hatena.ne.jp/js/hatena_dfp-compiled.js"></script>
+
+
+
+
+        
+          <div id="bottom-editarea">
+            <hr>
+<a href="http://mkkn.info">mkkn.info</a>
+          </div>
+        
+      </div>
+    </div>
+
+    
+      <footer id="footer" data-brand="hatenablog">
+  <div id="footer-inner">
+    <address>
+      
+      <a href="http://mkkn.hatenablog.jp/about"><img src="http://cdn1.www.st-hatena.com/users/mi/mikakane/profile.gif?1368946612" width="16" height="16" alt=""/> mikakane</a>
+    </address>
+    <p class="services"><a href="http://hatenablog.com/">Hatena Blog</a> / <a href="http://d.hatena.ne.jp/">Hatena::Diary</a></p>
+  </div>
+</footer>
+
+    
+
+    
+      <script src="http://s.hatena.ne.jp/js/HatenaStar.js"></script>
+    
+
+    <script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
+<script type="text/javascript" src="https://apis.google.com/js/plusone.js">
+  {"parsetags": "explicit"}
+</script>
+<script type="text/javascript" src="http://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
+
+
+<script type="text/javascript" src="http://hatenablog.com/js?cc61efc892a1844e7075572ec20ba217"></script>
+
+<script type="text/javascript" src="http://hatenablog.com/js/texts-ja.js?cc61efc892a1844e7075572ec20ba217"></script>
+
+
+  <script type="text/javascript">Hatena.Diary.loadGlobalHeader()</script>
+
+
+
+
+
+    
+        <script id="google-analytics-script" type="text/javascript">
+var _gaq = _gaq || [];
+
+(function($){
+
+  // 現在のドメイン
+  
+    var current_domain = "hatenablog.jp".split(":")[0];
+  
+
+  
+    _gaq.push(['_setAccount', 'UA-41052276-1']);
+    _gaq.push(['_trackPageview']);
+  
+
+  
+
+  
+    _gaq.push(['a._setAccount', 'UA-29716941-5']);
+    _gaq.push(['a._setDomainName', current_domain]);
+    _gaq.push(['a._setCustomVar', 1, 'PageId', document.documentElement.getAttribute('data-page'), 3 /* page-level */]);
+      var keywordCampaigns = [];
+      $('.js-entry-article').each(function (index, element) {
+        var keywords = $(element).data('keywordCampaign').split(' ');
+        keywords = _.filter(keywords, function (keyword) { return keyword.length > 0 });
+        keywordCampaigns = keywordCampaigns.concat(keywords);
+      });
+      if (keywordCampaigns.length > 0) {
+        _gaq.push(['a._setCustomVar', 3, 'KeywordCampaign', keywordCampaigns[0], 3 /* page-level */]);
+      }
+      _gaq.push(['a._trackPageview']);
+  
+    _gaq.push(['b._setAccount', 'UA-29716941-2']);
+    _gaq.push(['b._setDomainName', current_domain]);
+    _gaq.push(['b._setCustomVar', 1, 'PageId', document.documentElement.getAttribute('data-page'), 3 /* page-level */]);
+      var keywordCampaigns = [];
+      $('.js-entry-article').each(function (index, element) {
+        var keywords = $(element).data('keywordCampaign').split(' ');
+        keywords = _.filter(keywords, function (keyword) { return keyword.length > 0 });
+        keywordCampaigns = keywordCampaigns.concat(keywords);
+      });
+      if (keywordCampaigns.length > 0) {
+        _gaq.push(['b._setCustomVar', 3, 'KeywordCampaign', keywordCampaigns[0], 3 /* page-level */]);
+      }
+      _gaq.push(['b._trackPageview']);
+  
+
+  $(function () {
+      $(document).delegate('[data-track-event="click"]', 'click', function () {
+          
+          _gaq.push([ 'a._trackEvent', 'Blogs', 'Click', this.getAttribute('data-track-key') ]);
+          
+          _gaq.push([ 'b._trackEvent', 'Blogs', 'Click', this.getAttribute('data-track-key') ]);
+          
+      });
+  });
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+  var available_domains = ["blog.hatena.ne.jp"];
+  
+    available_domains.push("hatenablog.com".split(":")[0]);
+  
+    available_domains.push("hatenablog.jp".split(":")[0]);
+  
+    available_domains.push("hateblo.jp".split(":")[0]);
+  
+    available_domains.push("hatenadiary.com".split(":")[0]);
+  
+    available_domains.push("hatenadiary.jp".split(":")[0]);
+  
+  $('a').on('click', function() {
+    // 同じドメインならスキップ
+    if ( !this.hostname || this.hostname.indexOf(current_domain) != -1 ) return;
+
+    var cross_domain = false;
+    for (var i = 0, len = available_domains.length; i < len; i++) {
+      if (this.hostname.indexOf(available_domains[i]) != -1) cross_domain = true;
+    }
+    if ( cross_domain ) {
+      
+      _gaq.push(['a._link', this.href]);
+      
+      _gaq.push(['b._link', this.href]);
+      
+    }
+  });
+
+})(jQuery);
+</script>
+
+    
+
+    
+
+  </body>
+</html>
+
