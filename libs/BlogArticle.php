@@ -272,7 +272,7 @@
             $line = $this->convertBackslash($line);
             $line = $this->removeDoubleWidthSpace($line);
             $line = $this->convertHankakuKana($line);
-            $line = $this->convertZenkakuParentheses($line);
+            //$line = $this->convertZenkakuParentheses($line);
             $line = $this->convertHankakuKanaDot($line);
             $line = $this->removeBackslash($line);
 
@@ -283,6 +283,8 @@
             $contents .= $line . "\n";
         }
         
+        // remove last "\n"
+        $contents = substr($contents, 0, -1);
         //var_dump($contents);
         file_put_contents($this->markdown_file, $contents);
     }
@@ -379,4 +381,3 @@
         return $line;
     }
 }
-
