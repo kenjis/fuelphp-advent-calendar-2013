@@ -45,7 +45,7 @@
 phar拡張モジュールは、PHP アプリケーション全体をひとつの"phar"（PHP Archive）ファイルにまとめてしまい、配布やインストールを容易にするためのものです。
 //}
 
-
+//noindent
 となっています。
 
 
@@ -56,8 +56,7 @@ phar拡張モジュールは、PHP アプリケーション全体をひとつの
  * @<href>{https://github.com/guzzle/guzzle,guzzle.phar}　HTTPクライアントライブラリ
  * @<href>{http://pear2.php.net/PEAR2_Pyrus,pyrus.phar}　PEAR2
 
-
-
+//noindent
 などがあります。
 
 
@@ -262,10 +261,10 @@ $ php composer.phar update
          }
          else
          {
-             // attempt to get the realpath(), otherwise just use path with any double dots taken out when basedir is set (for security)
--            $pathinfo['dirname'] = ( ! empty($this->basedir) ? realpath($this->basedir.DS.$pathinfo['dirname']) : realpath($pathinfo['dirname']) )
-+            $pathinfo['dirname'] = ( ! empty($this->basedir) ? realpat_($this->basedir.DS.$pathinfo['dirname']) : realpat_($pathinfo['dirname']) )
-                     ?: ( ! empty($this->basedir) ? $this->basedir.DS.str_replace('..', '', $pathinfo['dirname']) : $pathinfo['dirname']);
+             // attempt to get the realpath(), otherwise just use path with any double dots taken out when @<raw>{|latex|\n}basedir is set (for security)
+-            $pathinfo['dirname'] = ( ! empty($this->basedir) ? realpath($this->basedir.DS.$pathinfo['dirname']) @<raw>{|latex|\n}: realpath($pathinfo['dirname']) )
++            $pathinfo['dirname'] = ( ! empty($this->basedir) ? realpat_($this->basedir.DS.$pathinfo['dirname']) @<raw>{|latex|\n}: realpat_($pathinfo['dirname']) )
+                     ?: ( ! empty($this->basedir) ? $this->basedir.DS.str_replace('..', '', $pathinfo['dirname']) @<raw>{|latex|\n}: $pathinfo['dirname']);
 //}
 
 
@@ -291,19 +290,19 @@ $ wget -q https://gist.github.com/sharkpp/7716098/raw -O - | patch -u -p0
  */
 // 確実に削除 
 @unlink('index.phar');
-// phar書庫作成のためクラスを生成 
+// phar書庫作成のためクラスを生成
 $phar = new Phar(__DIR__ . '/index.phar', 0, 'index.phar');
-// fuelphp17 ディレクトリ丸ごと固める 
+// fuelphp1.7ディレクトリ丸ごと固める
 $phar->buildFromDirectory(__DIR__ . '/fuelphp-1.7/');
 // gzipで圧縮
-//$phar->compressFiles(Phar::GZ); // ※ css などがうまく取り出せない
-// 起動スタブを設定 
+//$phar->compressFiles(Phar::GZ); // ※ cssなどがうまく取り出せない
+// 起動スタブを設定
 $phar->setStub(<<<'EOD'
 <?php
     function phar_rewrites($path) {
         if (0 === strpos($path,'/assets/'))
-            return '/public' . $path;     // assets だけはパスを変更 
-        return '/public/index.php'.$path; // あとはすべてindexに渡す 
+            return '/public' . $path;     // assetsだけはパスを変更
+        return '/public/index.php'.$path; // あとはすべてindexに渡す
     }
     Phar::interceptFileFuncs();
     Phar::webPhar('index.phar', 'public/index.php', '', array(), 'phar_rewrites');
