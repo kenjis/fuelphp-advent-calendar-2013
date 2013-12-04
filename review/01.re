@@ -39,7 +39,7 @@
 まず、大前提。
 
 
-@<href>{http://jp2.php.net/manual/ja/intro.phar.php,PHP: 導入 - Manual}によると、
+PHPマニュアル（@<href>{http://php.net/manual/ja/intro.phar.php,http://php.net/manual/ja/intro.phar.php}）によると、
 
 //quote{
 phar拡張モジュールは、PHP アプリケーション全体をひとつの"phar"（PHP Archive）ファイルにまとめてしまい、配布やインストールを容易にするためのものです。
@@ -62,7 +62,7 @@ phar拡張モジュールは、PHP アプリケーション全体をひとつの
 
 例として上げた中でもcomposerはFuelPHPを使っている方であれば
 
-//emlist{
+//cmd{
 $ php composer.phar update
 //}
 
@@ -76,10 +76,10 @@ Pharクラスの中でも、今回は@<href>{http://jp2.php.net/manual/ja/phar.w
 
 
 まずは、FuelPHPを適当なフォルダに配置します。
-詳しい手順は@<href>{http://fuelphp.jp/docs/1.7/,FuelPHP ドキュメント}に書かれているので参考にしてください。
+詳しい手順はFuelPHPドキュメント（@<href>{http://fuelphp.jp/docs/1.7/,http://fuelphp.jp/docs/1.7/}）に書かれているので参考にしてください。
 ここでは、@<tt>{~/fuelphp-1.7}に配置されるものとします。
 
-//emlist{
+//cmd{
 $ curl get.fuelphp.com/oil | sh
 $ cd ~
 $ oil create fuelphp-1.7
@@ -88,7 +88,7 @@ $ oil create fuelphp-1.7
 //noindent
 もしくは、
 
-//emlist{
+//cmd{
 $ wget http://fuelphp.com/files/download/25 -O fuelphp.zip
 $ unzip fuelphp.zip
 //}
@@ -99,7 +99,7 @@ $ unzip fuelphp.zip
 
 次に
 
-//emlist{
+//cmd{
 $ cd fuelphp-1.7
 $ php composer.phar self-update
 $ php composer.phar update
@@ -264,7 +264,7 @@ $ php composer.phar update
 
 1つ1つ編集するのが大変であればGistの@<href>{https://gist.github.com/sharkpp/7716098,https://gist.github.com/sharkpp/7716098}に差分をアップしたので
 
-//emlist{
+//cmd{
 $ cd fuelphp-1.7
 $ wget -q https://gist.github.com/sharkpp/7716098/raw -O - | patch -u -p0
 //}
@@ -311,7 +311,7 @@ FuelPHPをインストールしたfuelphp-1.7ディレクトリの上にファ�
 
 こちらもGistの@<href>{https://gist.github.com/sharkpp/7716423,https://gist.github.com/sharkpp/7716423}にアップしてあるので、
 
-//emlist{
+//cmd{
 $ cd ~
 $ wget -q https://gist.github.com/sharkpp/7716423/raw/mkphar.php
 //}
@@ -322,7 +322,7 @@ $ wget -q https://gist.github.com/sharkpp/7716423/raw/mkphar.php
 
 準備ができたら
 
-//emlist{
+//cmd{
 $ php mkphar.php
 //}
 
@@ -372,7 +372,7 @@ AddType application/x-httpd-php .phar
 
 こちらも例によってGistの@<href>{https://gist.github.com/sharkpp/7718075,https://gist.github.com/sharkpp/7718075}にアップしてあるので、
 
-//emlist{
+//cmd{
 $ wget -q https://gist.github.com/sharkpp/7718075/raw/.htaccess
 //}
 
