@@ -60,7 +60,7 @@ PHPが使えるPaaSはいくつかありますが、Pagoda BoxはPHPに特化し
     Creating migration: /Users/omoon/Documents/www/speak_on_fuelphp/fuel/app/migrations/001_create_posts.php
 //}
 
-
+//noindent
 で、つくられるModelクラス。
 
 //emlist{
@@ -78,8 +78,8 @@ class Model_Post extends \Model_Crud
 }
 //}
 
-
-つくられるマイグレーションクラス
+//noindent
+つくられるマイグレーションクラス。
 
 //emlist{
 // fuel/app/migrations/001_create_posts.php
@@ -112,7 +112,7 @@ class Create_posts
  * @<tt>{fuel/app/config/FUEL_ENV/migrations.php}というファイル（@<tt>{FUEL_ENV}は環境）
 
 
-
+//noindent
 が作成され、マイグレーションの状況を管理するしくみになっています。
 
 == 何が問題なのか
@@ -132,7 +132,7 @@ class Create_posts
  * before_deployフックで、@<tt>{fuel/app/config/pagoda/db.php}ファイルを@<tt>{fuel/app/config/production/}配下へコピーする
 
 
-
+//noindent
 という作戦で解決です。
 
 
@@ -173,7 +173,7 @@ fuel/app/config/pagoda.db.phpはこうなります。
 return array(
     'default' => array(
         'connection'  => array(
-            'dsn'        => 'mysql:host='.$_SERVER['DB1_HOST'].';port='.$_SERVER['DB1_PORT'].';dbname='.$_SERVER['DB1_NAME'],
+            'dsn'        => 'mysql:host='.$_SERVER['DB1_HOST'].';port='.$_SERVER['DB1_PORT'].';dbname='.@<raw>{|latex|\n}$_SERVER['DB1_NAME'],
             'username'   => $_SERVER['DB1_USER'],
             'password'   => $_SERVER['DB1_PASS'],
         ),
