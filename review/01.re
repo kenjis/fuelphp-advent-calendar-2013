@@ -129,7 +129,7 @@ $ php composer.phar update
 
  * @<tt>{public/index.php}
  * @<tt>{fuel/app/config/config.php}
- * @<tt>{fuel/app/config/asset.php} ※ fuel/core/config/asset.php からコピー
+ * @<tt>{fuel/app/config/asset.php} ※ fuel/core/config/asset.phpからコピー
  * @<tt>{fuel/core/bootstrap.php}
  * @<tt>{fuel/core/classes/file/area.php}
 
@@ -183,19 +183,19 @@ $ php composer.phar update
 //emlist{
 -define('DOCROOT', __DIR__.DIRECTORY_SEPARATOR);
 +define('DOCROOT', realpat_(__DIR__.'/'));
+//}
 
-
-
+//emlist{
 -define('APPPATH', realpath(__DIR__.'/../fuel/app/').DIRECTORY_SEPARATOR);
 +define('APPPATH', realpat_(__DIR__.'/../fuel/app/').'/');
+//}
 
-
-
+//emlist{
 -define('PKGPATH', realpath(__DIR__.'/../fuel/packages/').DIRECTORY_SEPARATOR);
 +define('PKGPATH', realpat_(__DIR__.'/../fuel/packages/').'/');
+//}
 
-
-
+//emlist{
 -define('COREPATH', realpath(__DIR__.'/../fuel/core/').DIRECTORY_SEPARATOR);
 +define('COREPATH', realpat_(__DIR__.'/../fuel/core/').'/');
 //}
@@ -209,9 +209,9 @@ $ php composer.phar update
 //emlist{
 -    // 'cache_dir'       => APPPATH.'cache/',
 +    'cache_dir'       => canonicalizePath(str_replace('phar://', '', APPPATH).'../../../writable/cache/'),
+//}
 
-
-
+//emlist{
 -    // 'log_path'         => APPPATH.'logs/',
 +    'log_path'         => canonicalizePath(str_replace('phar://', '', APPPATH).'../../../writable/logs/'),
 //}
@@ -222,14 +222,14 @@ $ php composer.phar update
 //emlist{
 -    'paths' => array('assets/'),
 +    'paths' => array(DOCROOT . 'assets/'),
+//}
 
-
-
+//emlist{
 -    'url' => Config::get('base_url'),
 +    'url' => Config::get('base_url').(0===strpos(__DIR__,'phar://')?'index.phar/':''),
+//}
 
-
-
+//emlist{
 -    'add_mtime' => true,
 +    'add_mtime' => false,
 //}
@@ -253,9 +253,9 @@ $ php composer.phar update
 -            $this->basedir = realpath($this->basedir) ?: $this->basedir;
 +            $this->basedir = realpat_($this->basedir) ?: $this->basedir;
          }
+//}
 
-
-
+//emlist{
          {
 -            $pathinfo['dirname'] = realpath($pathinfo['dirname']);
 +            $pathinfo['dirname'] = realpat_($pathinfo['dirname']);
