@@ -89,6 +89,8 @@
         // WordPress
         elseif ( ! is_null($dom->find('article', 0))) {
             $html = $dom->find('article', 0)->outertext;
+        } elseif ( ! is_null($dom->find('.wp_post', 0))) {
+            $html = $dom->find('.wp_post', 0)->outertext;
         } elseif ( ! is_null($dom->find('.post', 0))) {
             $html = $dom->find('.post', 0)->outertext;
         }
