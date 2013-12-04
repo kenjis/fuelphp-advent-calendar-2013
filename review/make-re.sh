@@ -3,8 +3,11 @@
 cd `dirname $0`
 cd ..
 
-if [ ! -f markdown/*.md ]; then
-  exit
+if ls markdown/*.md > /dev/null 2>&1
+  then
+    echo "Markdown file exists"
+else
+  exit;
 fi
 
 for file in markdown/*.md; do
