@@ -1,0 +1,125 @@
+<div class="wp_post">
+
+        <h2><a href="http://blog.omoon.org/20131203/905">FuelPHP のデータベースマイグレーションを Pagoda Box で使うときの注意</a></h2>
+
+        <p class="wp_date"><i class="icon-calendar"></i> 2013/12/03</p>
+
+        <div>
+        <p><a href="http://atnd.org/events/45096">FuelPHP Advent Calendar 2013</a> の 3 日目です。昨日は、<a href="https://twitter.com/kenji_s">@kenji_s</a> さんの「<a href="http://blog.a-way-out.net/blog/2013/12/02/quick-mastering-fuelphp/">FuelPHPの開発環境を20分で構築する（Vagrant編）</a>」でした。`</p>
+<p>今日は、FuelPHP の データベースマイグレーションを <a href="http::/pagodabox.com">Pagoda Box</a> で使う時にハマるポイントについて書きたいと思います。テーマがニッチ過ぎて、同じようなことで困っている人が他にもいるのか少し心配ではありますが、気にせず行きたいと思います。</p>
+<h3 id="pagodabox">Pagoda Box とは</h3>
+<p>まず、Pagoda Box ってなんや？というはなしを。</p>
+<p><a href="http://www.flickr.com/photos/omoon/11189458785" title="top by Sotaro OMURA, on Flickr"><img src="http://farm4.staticflickr.com/3780/11189458785_5f7e7c6b16_o.png" alt="top"></a></p>
+<p><a href="http::/pagodabox.com">Pagoda Box</a> は、LAMP 環境を構築できる PHP 専門の PaaS です。</p>
+<p>PHP が使える PaaS はいくつかありますが、Pagoda Box は PHP に特化した PaaS なので、PHP エンジニアにはとてもなじみやすく、僕は結構気に入ってよく使っています。ちなみに、FuelPHP の公式サイトも Pagoda Box 上で動いているようです。</p>
+<p>なお、Pagoda Box については、この間発売されたこの本に書きました。みなさん、よければ読んでみてください。</p>
+<p><a href="http://www.amazon.co.jp/gp/product/4774159719/ref=as_li_ss_tl?ie=UTF8&#038;camp=247&#038;creative=7399&#038;creativeASIN=4774159719&#038;linkCode=as2&#038;tag=omoon-22"><img src="http://farm4.staticflickr.com/3763/9729281144_ef716fd9c9_n.jpg" width="227" height="320" alt="PHPengineer_hyoshi" style="border:0"></a></p>
+<p><a href="http://www.amazon.co.jp/gp/product/4774159719/ref=as_li_ss_tl?ie=UTF8&#038;camp=247&#038;creative=7399&#038;creativeASIN=4774159719&#038;linkCode=as2&#038;tag=omoon-22">PHPエンジニア養成読本 〔現場で役立つイマドキ開発ノウハウ満載! 〕 (Software Design plus)</a><img src="http://ir-jp.amazon-adsystem.com/e/ir?t=omoon-22&#038;l=as2&#038;o=9&#038;a=4774159719" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /></p>
+<dl>
+<dd style="color: #333;">技術評論社</dd>
+<dd style="text-indent: -3em; margin-left: 3em; color: #333;">（著）<span style="white-space: nowrap;">新原 雅司、</span><wbr><span style="white-space: nowrap;">原田 康生、</span><wbr><span style="white-space: nowrap;">小山 哲志、</span><wbr><span style="white-space: nowrap;">田中 久輝、</span><wbr><span style="white-space: nowrap;">保科 一成、</span><wbr><span style="white-space: nowrap;">大村 創太郎、</span><wbr><span style="white-space: nowrap;">増永 玲</dd>
+<dd style="text-indent: -4em; margin-left: 4em; color: #333;">（編集）PHPエンジニア養読本編集部</dd>
+</dl>
+<h3 id="fuelphp">FuelPHP データベースマイグレーションのおさらい</h3>
+<p>続いて、FuelPHP でのデータベースマイグレーションの手順を簡単におさらいしておきましょう。</p>
+<p>公式サイトの説明は、<a href="http://fuelphp.com/docs/general/migrations.html">http://fuelphp.com/docs/general/migrations.html</a> ですね。</p>
+<h4 id="oilgeneratemodel">oil generate model</h4>
+<p><code>$ oil generate model xxx</code> で model クラスと、マイグレーション用のクラスが一気に作られます。僕は好みで、<code>--crud</code> を使うことが多いです（というかcrud しか使いません）。</p>
+<pre>
+% php oil generate model post id:int name:varchar message:text created_at:datetime --crud --mysql-timestamp
+    Creating model: /Users/omoon/Documents/www/speak_on_fuelphp/fuel/app/classes/model/post.php
+    Creating migration: /Users/omoon/Documents/www/speak_on_fuelphp/fuel/app/migrations/001_create_posts.php
+</pre>
+<p>で、つくられるmodelクラス。</p>
+<pre>
+// fuel/app/classes/model/post.php
+class Model_Post extends \Model_Crud
+{
+    protected static $_properties = array(
+        'id',
+        'name',
+        'message',
+        'created_at'
+    );
+    protected static $_mysql_timestamp = true;
+    protected static $_table_name = 'posts';
+}
+</pre>
+<p>つくられるマイグレーションクラス</p>
+<pre>
+// fuel/app/migrations/001_create_posts.php
+namespace Fuel\Migrations;
+class Create_posts
+{
+    public function up()
+    {
+        \DBUtil::create_table('posts', array(
+            'id' => array('constraint' => 11, 'type' => 'int'),
+            'name' => array('constraint' => 255, 'type' => 'varchar'),
+            'message' => array('type' => 'text'),
+            'created_at' => array('type' => 'datetime'),
+
+        ), array('id'));
+    }
+    public function down()
+    {
+        \DBUtil::drop_table('posts');
+    }
+}
+</pre>
+<h4 id="oilrmigrate">oil r migrate</h4>
+<p>で、<code>$ oil r migrate</code>で該当テーブルがデータベースに作成されます。この際、</p>
+<ul>
+<li>データベース上に <code>migration</code> というテーブル</li>
+<li><code>fuel/app/config/FUEL_ENV/migrations.php</code> というファイル（<code>FUEL_ENV</code> は環境）</li>
+</ul>
+<p>が作成され、マイグレーションの状況を管理するしくみになっています。</p>
+<h3 id="">なにが問題なのか</h3>
+<p>このしくみを使って、Pagoda Box へアプリケーションをデプロイしたタイミングでデータベースの初期化まで一気にやってしまいたいのですが、以下の問題がありうまくいかないということがわかりました。</p>
+<ul>
+<li><code>$ oil r migration</code> 実行時に <code>fuel/config/production/migrations.php</code> ファイルが生成されるので、<code>fuel/config/production/</code> を writable にする必要がある</li>
+<li>Pagoda Box では、writable ディレクトリは、ソースコードレポジトリとは別に、ネットワーク上にマウントされる</li>
+<li>そのため、同じディレクトリにあるデータベースへの接続ファイル <code>fuel/config/production/db.php</code> が消える</li>
+<li>データベースへの接続ができなくなる</li>
+</ul>
+<h3 id="">解決方法</h3>
+<ul>
+<li><code>fuel/app/config/pagoda/db.php</code>に別ファイルで Pagoda Box 甩設定ファイルを用意しておく</li>
+<li>before_deploy フックで、<code>fuel/app/config/pagoda/db.php</code> ファイルを<code>fuel/app/config/production/</code> 配下へコピーする</li>
+</ul>
+<p>という作戦で解決です。</p>
+<p>参考までに Boxfile 例。</p>
+<pre>
+global:
+  env:
+    - FUEL_ENV: production
+db1:
+  type: mysql
+  name: speak
+web1:
+  shared_writable_dirs:
+    - /fuel/app/cache
+    - /fuel/app/logs
+    - /fuel/app/tmp
+    - /fuel/app/config/production # <- migrations.php が作られるためwritableに
+ document_root: public
+ php_version: 5.4.14
+ php_date_timezone: "asia>
+<p>fuel/app/config/pagoda.db.php はこうなります。</p>
+<pre>
+return array(
+    'default' => array(
+        'connection'  => array(
+            'dsn'        => 'mysql:host='.$_SERVER['DB1_HOST'].';port='.$_SERVER['DB1_PORT'].';dbname='.$_SERVER['DB1_NAME'],
+            'username'   => $_SERVER['DB1_USER'],
+            'password'   => $_SERVER['DB1_PASS'],
+        ),
+    ),
+);
+</pre>
+<p>これで、<code>$ git push pagoda</code> で一気にアプリケーションのデプロイからデータベースの初期化までできるようになります。</p>
+<p>それでは、また。</p>
+<p>明日は、<a href="https://twitter.com/mkkn_info">mikakane</a> さんです。</p>
+        </div>
+
+        </div>
