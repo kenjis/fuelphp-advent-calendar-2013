@@ -54,7 +54,7 @@ PHPが使えるPaaSはいくつかありますが、Pagoda BoxはPHPに特化し
 
 @<tt>{$ oil generate model xxx}でModelクラスと、マイグレーション用のクラスが一気に作られます。僕は好みで、@<tt>{--crud}を使うことが多いです（というかcrudしか使いません）。
 
-//emlist{
+//cmd{
 % php oil generate model post id:int name:varchar message:text created_at:datetime --crud --mysql-timestamp
     Creating model: /Users/omoon/Documents/www/speak_on_fuelphp/fuel/app/classes/model/post.php
     Creating migration: /Users/omoon/Documents/www/speak_on_fuelphp/fuel/app/migrations/001_create_posts.php
