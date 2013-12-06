@@ -27,6 +27,7 @@ extension本体はこんなコードです。
 <?php
 // @TODO ライセンス明示
 class Hoge_Twig_Extension extends Twig_Extension {
+    …略…
 
     public function getFunctions()
     {
@@ -75,9 +76,9 @@ div要素を不可視にするために、ここでは@<code>{hide}というclas
 //emlist{
   function action_xxx()
   {
-    :
+     …略…
     // $userinfoは情報が入ったObjectまたは連想配列
-   $this->template->user = $userinfo;
+    $this->template->user = $userinfo;
   }
 //}
 
