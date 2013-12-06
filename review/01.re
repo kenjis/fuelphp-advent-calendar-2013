@@ -60,7 +60,7 @@ phar拡張モジュールは、PHP アプリケーション全体をひとつの
 などがあります。
 
 
-例として上げた中でもcomposerはFuelPHPを使っている方であれば
+例として挙げた中でもcomposerはFuelPHPを使っている方であれば
 
 //cmd{
 $ php composer.phar update
@@ -72,7 +72,7 @@ $ php composer.phar update
 == FuelPHP をインストール
 
 
-Pharクラスの中でも、今回は@<href>{http://jp2.php.net/manual/ja/phar.webphar.php,Phar::webPhar}を使います。
+Pharクラスの中でも、今回はPhar::webPhar（@<href>{http://php.net/manual/ja/phar.webphar.php,http://php.net/manual/ja/phar.webphar.php}）を使います。
 
 
 まずは、FuelPHPを適当なフォルダに配置します。
@@ -210,7 +210,7 @@ $ php composer.phar update
 //}
 
 
-@<tt>{fuel/app/config/asset.php}の変更部分です。@<tt>{fuel/core/config/asset.php}をコピーして使うのでそのファイルとの比較になります。一部、三項演算を使っていますが、pharでまとめない場合にもそのまま動くようにとの苦肉の策です。
+@<tt>{fuel/app/config/asset.php}の変更部分です。@<tt>{fuel/core/config/asset.php}をコピーして使うのでそのファイルとの比較になります。一部、三項演算子を使っていますが、pharでまとめない場合にもそのまま動くようにとの苦肉の策です。
 
 //emlist{
 -    'paths' => array('assets/'),

@@ -27,7 +27,7 @@ FuelPHPのエラーハンドリングは何かと複雑です。便利機能が�
 @<tt>{errors/production}とか@<tt>{errors/php_fatal_error}はcoreに入ってる方のView。同名ファイル作ればapp側で上書きできる。productionってのはあの「Oops!」ってやつで、php_fatal_errorってのはあの開発中に便利なバックトレースとかつけてくれる例外画面。
 
 
-んで、ドキュメントを見るとなにやら@<tt>{HttpNotFoundException}って例外を投げるとエラー画面を描画してくれる、とかある。これはCoreに入ってるHttpNotFoundExceptionって例外クラスに例の@<tt>{handle}メソッドが実装されているからそうなるわけで、描画されるViewは@<tt>{views/404.php}になる。
+んで、ドキュメントを見るとなにやら@<tt>{HttpNotFoundException}って例外を投げるとエラー画面を描画してくれる、とかある。これはcoreに入ってるHttpNotFoundExceptionって例外クラスに例の@<tt>{handle}メソッドが実装されているからそうなるわけで、描画されるViewは@<tt>{views/404.php}になる。
 
 == やりたいこと
 
