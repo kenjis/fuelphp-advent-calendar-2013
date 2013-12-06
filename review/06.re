@@ -73,8 +73,6 @@ div要素を不可視にするために、ここでは@<code>{hide}というclas
 
 #@# lang: .syntax-highlight
 //emlist{
-<?php
- :
   function action_xxx()
   {
     :
@@ -83,7 +81,7 @@ div要素を不可視にするために、ここでは@<code>{hide}というclas
   }
 //}
 
-
+//noindent
 テンプレート側ではこう記述します。
 
 //emlist{
@@ -98,7 +96,7 @@ JavaScript側でその値を使用するには、例えばjQueryだったら
   var user = $.parseJSON($('#data-user').text());
 //}
 
-
+//noindent
 と書くと、user変数にPHPで渡した値が入ります。
 
 == パラメータの解説
