@@ -1,0 +1,977 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html xmlns:og="http://ogp.me/ns#">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=euc-jp">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<meta http-equiv="Content-Script-Type" content="text/javascript">
+<title>FuelPHPでTwig Extension #FuelPHPAdvent2013 - Blog::koyhoge</title>
+<link rel="start" href="/" title="Blog::koyhoge">
+<link rel="help" href="/help" title="ヘルプ">
+<link rel="prev" href="/koyhoge/20130827/phpmook" title="[php][book]「PHPエンジニア養成...">
+<link rel="next" href="/koyhoge/20131206/twig_databind" title="[php]JavaScript側にPHP変数を簡...">
+
+<link rel="stylesheet" href="http://d.st-hatena.com/statics/css/base.css?5d7f38e4a6d82f044c81959ae4de5445d7f238cd" type="text/css" media="all">
+<link rel="stylesheet" href="http://d.st-hatena.com/statics/css/headerstyle_te.css?1e7f1ae8a305b254105e3093bcf711b2af81c2a0" type="text/css" media="all">
+<link rel="stylesheet" href="http://d.st-hatena.com/statics/theme/hatena_leaf/hatena_leaf.css?1e7f1ae8a305b254105e3093bcf711b2af81c2a0" type="text/css" media="all">
+
+
+<link rel="alternate" type="application/rss+xml" title="RSS" href="http://d.hatena.ne.jp/koyhoge/rss">
+<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="http://d.hatena.ne.jp/koyhoge/rss2">
+
+<link rel="meta" type="application/rdf+xml" title="FOAF" href="http://d.hatena.ne.jp/koyhoge/foaf" />
+<link rel="search" type="application/opensearchdescription+xml" href="http://d.hatena.ne.jp/koyhoge/opensearch/diary.xml" title="Blog::koyhoge内日記検索" />
+<link rel="search" type="application/opensearchdescription+xml" href="http://d.hatena.ne.jp/koyhoge/opensearch/archive.xml" title="Blog::koyhoge内一覧検索" />
+
+
+
+<link rel="shortcut icon" href="http://d.hatena.ne.jp/images/te_favicon.ico">
+
+
+
+
+<style type="text/css">
+<!-- 
+span.highlight {
+	color: black;
+	background-color: yellow;
+}
+img.photo {
+	float: right;
+	margin: 10px;
+	border: 0;
+}
+
+a.keyword {
+  color: #336600;
+  text-decoration: none;
+  border-bottom: none;
+}
+
+a.keyword:hover {
+  background-color: #66CC00;
+  color: white;
+}
+
+
+
+-->
+</style>
+
+
+<script type="text/javascript">if(/[\x3c\x3e\x22]/.test(location.hash))location.hash=location.hash.replace(/[\x3c\x3e\x22]/g,'');if(/[\x3c\x3e]/.test(document.referrer))location.href=location.href;</script>
+
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="FuelPHPでTwig Extension #FuelPHPAdvent2013 - Blog::koyhoge">
+<meta property="og:url" content="http://d.hatena.ne.jp/koyhoge/20131205/fuel_twig">
+<meta property="og:description" content=" 4日目のさんのhttp://mkkn.hatenablog.jp/entry/2013/12/04/120701に引き続き、FuelPHP Advent Calendar 2..">
+<meta property="og:site_name" content="はてなダイアリー">
+
+
+<!--
+<rdf:RDF
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:foaf="http://xmlns.com/foaf/0.1/">
+<rdf:Description rdf:about="http://d.hatena.ne.jp/koyhoge/20131205/fuel_twig">
+   <foaf:maker rdf:parseType="Resource">
+     <foaf:holdsAccount>
+       <foaf:OnlineAccount foaf:accountName="koyhoge">
+         <foaf:accountServiceHomepage rdf:resource="http://www.hatena.ne.jp/" />
+       </foaf:OnlineAccount>
+     </foaf:holdsAccount>
+   </foaf:maker>
+</rdf:Description>
+</rdf:RDF>
+-->
+
+<link rel="alternate" media="handheld" type="text/html" href="http://d.hatena.ne.jp/koyhoge/mobile?date=20131205&section=fuel_twig" />
+<!--
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:dc="http://purl.org/dc/elements/1.1/"
+         xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+<rdf:Description
+  rdf:about="http://d.hatena.ne.jp/koyhoge/20131205/fuel_twig"
+  trackback:ping="http://d.hatena.ne.jp/koyhoge/20131205/fuel_twig"
+  dc:title="FuelPHPでTwig Extension #FuelPHPAdvent2013"
+  dc:identifier="http://d.hatena.ne.jp/koyhoge/20131205/fuel_twig" />
+</rdf:RDF>
+-->
+
+
+
+<link rel="canonical" href="http://d.hatena.ne.jp/koyhoge/20131205/fuel_twig">
+
+
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site:id" content="3531791">
+
+
+
+<script type="text/javascript" src="http://s.hatena.ne.jp/js/HatenaStar.js"></script>
+<script type="text/javascript">
+Hatena.Star.SiteConfig = {
+  entryNodes: {
+    'div.section': {
+      uri: 'h3 a',
+      title: 'h3',
+      container: 'h3'
+    }
+  }
+};
+Hatena.Author  = new Hatena.User('koyhoge');
+Hatena.DiaryName  = new Hatena.User('koyhoge');
+
+</script>
+
+
+
+<script type="text/javascript" src="http://d.st-hatena.com/statics/js/twitter_entry_icon.js?1e7f1ae8a305b254105e3093bcf711b2af81c2a0"></script>
+
+
+
+<script type="text/javascript" src="http://d.st-hatena.com/statics/js/adcolor.js?1e7f1ae8a305b254105e3093bcf711b2af81c2a0"></script>
+
+
+<script type="text/javascript" src="http://d.st-hatena.com/statics/js/quick_pager.js?1e7f1ae8a305b254105e3093bcf711b2af81c2a0"></script>
+<script type="text/javascript" src="http://d.st-hatena.com/statics/js/diary_utils.js?1e7f1ae8a305b254105e3093bcf711b2af81c2a0"></script>
+<script type="text/javascript" src="http://d.st-hatena.com/statics/js/max_width_fotolife.js?1e7f1ae8a305b254105e3093bcf711b2af81c2a0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" src="http://d.st-hatena.com/statics/js/jquery-1.4.2.min.js?1e7f1ae8a305b254105e3093bcf711b2af81c2a0"></script>
+<script type="text/javascript">
+  jQuery.noConflict()(function($){
+    var j$ = jQuery;
+  });
+</script>
+
+
+
+
+</head>
+<body>
+
+<div id="simple-header">
+
+  <a href="http://www.hatena.ne.jp/"><img src="/images/hatena-simple_te.gif" alt="Hatena::" title="Hatena::" id="logo-hatena" width="65" height="17"></a><a href="/"><img src="/images/diary-simple_te.gif" alt="ブログ(Diary)" title="Diary" id="logo-diary" width="43" height="17"></a>
+  <form method="get" action="/search" class="search-form">
+    <input type="text" class="search-word" name="word" value=""><input name="name" value="koyhoge" type="hidden"><input type="submit" name="diary" value="日記" class="search-button"><input type="submit" name="submit" value="検索" class="search-button">
+  </form>
+  <ul class="menu">
+    <li><a href="/koyhoge/">ブログトップ</a></li>
+    <li><a href="/koyhoge/archive">記事一覧</a></li>
+
+
+
+    <li><a href="https://www.hatena.ne.jp/login?backurl=http%3A%2F%2Fd.hatena.ne.jp%2Fkoyhoge%2F20131205%2Ffuel_twig&add_timestamp=1">ログイン</a></li>
+    <li><a href="https://www.hatena.ne.jp/register?location=http%3A%2F%2Fd.hatena.ne.jp%3Fvia%3D200186&amp;via=200186">無料ブログ開設</a></li>
+
+  </ul>
+</div>
+
+
+
+<h1>Blog::koyhoge</h1>
+<div class="hatena-body">
+<div class="main">
+
+
+
+
+
+
+
+
+<div class="calendar" id="pager-top">
+  <a rel="prev" href="/koyhoge/20130827/phpmook" class="prev">&lt;[php][book]「PHPエンジニア養成...</a>&nbsp;<span class="delimiter">|</span>&nbsp;<a rel="next" href="/koyhoge/20131206/twig_databind" class="next">[php]JavaScript側にPHP変数を簡...&gt;</a><span id="edit-in-place-add"></span>
+</div>
+<div id="days">
+
+<div class="day">
+<h2><a href="http://d.hatena.ne.jp/koyhoge/20131205" rel="nofollow"><span class="date">2013-12-05</span></a></h2>
+
+<div class="body">
+
+<!-- rakuten_ad_target_begin -->
+<!-- google_ad_section_start -->
+
+		<div class="section">
+			<h3 class="title"><a href="/koyhoge/20131205/fuel_twig" name="fuel_twig">FuelPHPでTwig Extension #FuelPHPAdvent2013</a></h3>
+			<p class="sectionheader"></p>
+			<p>4日目の@<a class="twitter-user-screen-name" href="http://twitter.com/mkkn_info">mkkn_info</a>さんの<a href="http://mkkn.hatenablog.jp/entry/2013/12/04/120701" target="_blank">Fuelphpのエラーハンドリングがなんか今ひとつ物足りなかったのでなんとかしてみた話 - どうにもならない日々@mkkn</a>に引き続き、<a href="http://atnd.org/events/45096" target="_blank">FuelPHP Advent Calendar 2013</a>の5日目です。</p>
+			<br>
+
+			<p>ここ数年は<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%A2%A5%C9%A5%D9%A5%F3%A5%C8%A5%AB%A5%EC%A5%F3%A5%C0%A1%BC">アドベントカレンダー</a>の時にしか技術的な内容を書いていない気がするのが恐ろしいところですが、気にせずいきましょう。</p>
+			<h4> <a class="keyword" href="http://d.hatena.ne.jp/keyword/FuelPHP">FuelPHP</a>のParserパッケージ</h4>
+			<p><a class="keyword" href="http://d.hatena.ne.jp/keyword/FuelPHP">FuelPHP</a>は、基本的にはビューに生の<a class="keyword" href="http://d.hatena.ne.jp/keyword/PHP">PHP</a><a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%B9%A5%AF%A5%EA%A5%D7%A5%C8">スクリプト</a>を使うことになっていますが、標準<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%D0%A5%F3%A5%C9%A5%EB">バンドル</a>されているParserパッケージを用いることで、様々な<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%C6%A5%F3%A5%D7%A5%EC%A1%BC%A5%C8">テンプレート</a>エンジンを用いることができます。現在サポートされているエンジンは以下の通り。</p>
+
+			<ul>
+				<li> <a href="http://twig.sensiolabs.org/" target="_blank">Twig</a></li>
+				<li> <a href="http://mustache.github.io/" target="_blank">Mustache</a></li>
+				<li> <a href="http://pecl.php.net/package/markdown" target="_blank">MarkDown</a></li>
+				<li> <a href="http://dwoo.org/" target="_blank">Dwoo</a></li>
+				<li> <a href="http://jade-lang.com/" target="_blank">Jade</a></li>
+				<li> <a href="http://haml.info/" target="_blank">Haml</a></li>
+				<li> <a href="https://github.com/arnaud-lb/MtHaml" target="_blank">MtHaml</a></li>
+				<li> <a href="http://www.smarty.net/" target="_blank">Smarty</a></li>
+				<li> <a href="http://phptal.org/" target="_blank">PHPTAL</a></li>
+			</ul>
+			<p>このうち自分ではTwigを愛用しています。何か機能を追加するにも簡単にできるところが良いですね。</p>
+			<h4> Parserパッケージが標準で用意してくれる<a class="keyword" href="http://d.hatena.ne.jp/keyword/FuelPHP">FuelPHP</a>向けExtension</h4>
+			<p>ParserパッケージでTwigを使用すると、<a class="keyword" href="http://d.hatena.ne.jp/keyword/Uri">Uri</a>, Config, Form, Input, <a class="keyword" href="http://d.hatena.ne.jp/keyword/Html">Html</a>, Asset などの便利そうな<a class="keyword" href="http://d.hatena.ne.jp/keyword/Fuel">Fuel</a> coreの<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%E1%A5%BD%A5%C3%A5%C9">メソッド</a>を、あらかじめTwig Extensionとしてロードしてくれます。これを行っているのは</p>
+			<blockquote>
+			<p><a class="keyword" href="http://d.hatena.ne.jp/keyword/fuel">fuel</a>/packages/parser/classes/twig/<a class="keyword" href="http://d.hatena.ne.jp/keyword/fuel">fuel</a>/extension.<a class="keyword" href="http://d.hatena.ne.jp/keyword/php">php</a></p>
+			</blockquote>
+			<p>にある\Parser\Twig_Fuel_Extensionクラスで、これ自体も<a class="keyword" href="http://d.hatena.ne.jp/keyword/%C9%B8%BD%E0%C5%AA">標準的</a>なTwig Extensionです。</p>
+			<p>これのおかげで、例えば</p>
+<pre class="syntax-highlight">
+Asset::js(&#39;hogehoge.js&#39;);
+</pre>
+
+			<p>を呼びたい場所では</p>
+<pre class="syntax-highlight">
+{{ asset_js(&#39;hogehoge.js&#39;) }}
+</pre>
+
+			<p>と書くことができるわけです。</p>
+			<h4> <a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%A2%A5%D7%A5%EA">アプリ</a>独自のTwig Extensionを使う</h4>
+			<p>とはいえ、ただ単にTwigを使って<a class="keyword" href="http://d.hatena.ne.jp/keyword/HTML">HTML</a><a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%C6%A5%F3%A5%D7%A5%EC%A1%BC%A5%C8">テンプレート</a>を書くだけではなく、<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%A2%A5%D7%A5%EA%A5%B1%A1%BC%A5%B7%A5%E7%A5%F3">アプリケーション</a>独自のTwig Extensionをがしがし登録して使いこなしてこそTwigの便利さが際立つというもの。早速やってみましょう。</p>
+			<br>
+
+			<p>独自のTwig Extensionを登録するには、まずTwig_Extensionクラスを<a class="keyword" href="http://d.hatena.ne.jp/keyword/%B7%D1%BE%B5">継承</a>したクラスを作ります。クラス名は他とぶつからなければ何でも良いですが、ここでは<a class="keyword" href="http://d.hatena.ne.jp/keyword/Hoge">Hoge</a><a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%A2%A5%D7%A5%EA">アプリ</a>向けにHoge_Twig_Extensionという名前にすることにしましょう。<a class="keyword" href="http://d.hatena.ne.jp/keyword/FuelPHP">FuelPHP</a>のファイル名<a class="keyword" href="http://d.hatena.ne.jp/keyword/%B5%AC%C2%A7">規則</a>に則り以下の場所に作ります。</p>
+			<blockquote>
+			<p><a class="keyword" href="http://d.hatena.ne.jp/keyword/fuel">fuel</a>/app/classes/<a class="keyword" href="http://d.hatena.ne.jp/keyword/hoge">hoge</a>/twig/extension.<a class="keyword" href="http://d.hatena.ne.jp/keyword/php">php</a></p>
+			</blockquote>
+			<p>中身はこんな感じ。</p>
+<pre class="syntax-highlight">
+<span class="synSpecial">&lt;?php</span>
+
+<span class="synType">class</span> Hoge_Twig_Extension <span class="synType">extends</span> Twig_Extension
+<span class="synSpecial">{</span>
+    <span class="synComment">/**</span>
+<span class="synComment">     * Gets the name of the extension.</span>
+<span class="synComment">     *</span>
+<span class="synComment">     * @return  string</span>
+<span class="synComment">     */</span>
+    <span class="synType">public</span> <span class="synPreProc">function</span> getName<span class="synSpecial">()</span>
+    <span class="synSpecial">{</span>
+        <span class="synStatement">return</span> '<span class="synConstant">hoge</span>';
+    <span class="synSpecial">}</span>
+
+    <span class="synComment">/**</span>
+<span class="synComment">     * Sets up all of the functions this extension makes available.</span>
+<span class="synComment">     *</span>
+<span class="synComment">     * @return  array</span>
+<span class="synComment">     */</span>
+    <span class="synType">public</span> <span class="synPreProc">function</span> getFunctions<span class="synSpecial">()</span>
+    <span class="synSpecial">{</span>
+        <span class="synStatement">return</span> <span class="synType">array</span><span class="synSpecial">(</span>
+            '<span class="synConstant">swap_empty</span>' <span class="synStatement">=&gt;</span> <span class="synPreProc">new</span> Twig_Function_Method<span class="synSpecial">(</span><span class="synStatement">$</span><span class="synIdentifier">this</span>, '<span class="synConstant">swapEmpty</span>'<span class="synSpecial">)</span>,
+        <span class="synSpecial">)</span>;
+    <span class="synSpecial">}</span>
+
+    <span class="synComment">/**</span>
+<span class="synComment">     * Sets up all of the filters this extension makes available.</span>
+<span class="synComment">     *</span>
+<span class="synComment">     * @return  array</span>
+<span class="synComment">     */</span>
+    <span class="synType">public</span> <span class="synPreProc">function</span> getFilters<span class="synSpecial">()</span>
+    <span class="synSpecial">{</span>
+        <span class="synStatement">return</span> <span class="synType">array</span><span class="synSpecial">(</span>
+            '<span class="synConstant">json</span>' <span class="synStatement">=&gt;</span> <span class="synPreProc">new</span> Twig_Filter_Function<span class="synSpecial">(</span>'<span class="synConstant">json_encode</span>'<span class="synSpecial">)</span>, 
+        <span class="synSpecial">)</span>;
+    <span class="synSpecial">}</span>
+
+    <span class="synType">public</span> <span class="synPreProc">function</span> swapEmpty<span class="synSpecial">(</span><span class="synStatement">$</span><span class="synIdentifier">value</span><span class="synSpecial">)</span>
+    <span class="synSpecial">{</span>
+        <span class="synStatement">return</span> <span class="synStatement">empty</span><span class="synSpecial">(</span><span class="synStatement">$</span><span class="synIdentifier">value</span><span class="synSpecial">)</span><span class="synStatement">?</span> '<span class="synConstant">-</span>' <span class="synStatement">:</span> <span class="synStatement">$</span><span class="synIdentifier">value</span>;
+    <span class="synSpecial">}</span> 
+<span class="synSpecial">}</span> 
+</pre>
+
+			<br>
+
+			<p>ここではTwigの<a class="keyword" href="http://d.hatena.ne.jp/keyword/%B4%D8%BF%F4">関数</a>とフィルターを一つずつ登録しています。</p>
+<dl>
+				<dt>swap_empty<a class="keyword" href="http://d.hatena.ne.jp/keyword/%B4%D8%BF%F4">関数</a></dt>
+				<dd>もし<a class="keyword" href="http://d.hatena.ne.jp/keyword/%B0%FA%BF%F4">引数</a>がempty()で真だったら「-」を出力、そうでなければそのまま。</dd>
+	<dt><a class="keyword" href="http://d.hatena.ne.jp/keyword/json">json</a>フィルター</dt>
+				<dd><a class="keyword" href="http://d.hatena.ne.jp/keyword/%B0%FA%BF%F4">引数</a>を<a class="keyword" href="http://d.hatena.ne.jp/keyword/PHP">PHP</a>のjson_encodeに渡した結果を出力。</dd>
+
+			</dl>
+			<p><a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%C6%A5%F3%A5%D7%A5%EC%A1%BC%A5%C8">テンプレート</a>上では以下のように使います。</p>
+<pre class="syntax-highlight">
+{# 変数の設定、本来はPHP側から渡される #}
+{% set foo = 0 %}
+{% set bar = {'fuga': 'hoge', 'move': 'puge'} %}
+
+{{ swap_empty(foo) }}
+{{ bar|json }}
+</pre>
+
+			<p>ただファイルを置いただけではParserパッケージはそのExtensionの存在を知らないので、Parserのconfigを通して教えてやります。<a class="keyword" href="http://d.hatena.ne.jp/keyword/FuelPHP">FuelPHP</a>のConfigは大変に賢くて、追加・変更したい部分だけapp以下に書けば良いので、</p>
+			<blockquote>
+			<p><a class="keyword" href="http://d.hatena.ne.jp/keyword/fuel">fuel</a>/app/config/parser.<a class="keyword" href="http://d.hatena.ne.jp/keyword/php">php</a></p>
+			</blockquote>
+			<p>に以下の内容を記述します。</p>
+<pre class="syntax-highlight">
+<span class="synSpecial">&lt;?php</span>
+<span class="synStatement">return</span> <span class="synType">array</span><span class="synSpecial">(</span>
+    '<span class="synConstant">View_Twig</span>' <span class="synStatement">=&gt;</span> <span class="synType">array</span><span class="synSpecial">(</span>
+        '<span class="synConstant">extensions</span>' <span class="synStatement">=&gt;</span> <span class="synType">array</span><span class="synSpecial">(</span>
+            ‘Hoge_Twig_Extension'<span class="synConstant">,</span>
+<span class="synConstant">            ),</span>
+<span class="synConstant">        ),</span>
+<span class="synConstant">); </span>
+</pre>
+
+			<br>
+
+			<p>Twigは非常に柔軟性の高い<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%C6%A5%F3%A5%D7%A5%EC%A1%BC%A5%C8">テンプレート</a>エンジンで、上記で紹介した<a class="keyword" href="http://d.hatena.ne.jp/keyword/%B4%D8%BF%F4">関数</a>・フィルターの他にも</p>
+
+			<ul>
+				<li> <a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%B0%A5%ED%A1%BC%A5%D0%A5%EB%CA%D1%BF%F4">グローバル変数</a></li>
+				<li> タグ</li>
+				<li> オペレータ</li>
+				<li> テスト</li>
+			</ul>
+			<p>などを独自に拡張できます。詳しく知りたい方は、<a href="http://twig.sensiolabs.org/doc/advanced.html" target="_blank">Extending Twig</a> を読むとよいでしょう。</p>
+			<br>
+
+			<p>明日の<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%A2%A5%C9%A5%D9%A5%F3%A5%C8%A5%AB%A5%EC%A5%F3%A5%C0%A1%BC">アドベントカレンダー</a>も引き続き私ですw</p>
+			<p class="share-button sectionfooter"><a href="http://b.hatena.ne.jp/entry/http://d.hatena.ne.jp/koyhoge/20131205/fuel_twig" class="hatena-bookmark-button" data-hatena-bookmark-title="FuelPHPでTwig Extension #FuelPHPAdvent2013" data-hatena-bookmark-layout="standard" title="このエントリーをはてなブックマークに追加"><img src="http://b.st-hatena.com/images/entry-button/button-only.gif" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a><script type="text/javascript" src="http://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script><a href="http://twitter.com/share" class="twitter-share-button" data-lang="ja" data-count="none" data-url="http://d.hatena.ne.jp/koyhoge/20131205/fuel_twig" data-text="FuelPHPでTwig Extension #FuelPHPAdvent2013 - Blog::koyhoge (id:koyhoge / @koyhoge)">ツイートする</a><script type="text/javascript" src="http://platform.twitter.com/widgets.js" charset="utf-8"></script><iframe src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fd.hatena.ne.jp%2Fkoyhoge%2F20131205%2Ffuel_twig&amp;layout=button_count&amp;show_faces=false&amp;width=100&amp;action=like&amp;colorscheme=light&amp;height=21" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:100px; height:21px;" allowTransparency="true"></iframe></p>
+
+			<p class="sectionfooter"><a href="/koyhoge/20131205/fuel_twig">Permalink</a> | <a href="/koyhoge/20131205/fuel_twig#c">コメント(0)</a> | <a href="/koyhoge/20131205/fuel_twig#tb">トラックバック(0)</a> <a href="http://b.hatena.ne.jp/entry/http://d.hatena.ne.jp/koyhoge/20131205/fuel_twig" class="bookmark-count"><img src="http://b.hatena.ne.jp/entry/image/http://d.hatena.ne.jp/koyhoge/20131205/fuel_twig" title="はてなブックマーク - FuelPHPでTwig Extension #FuelPHPAdvent2013" alt=""></a></p>
+
+		</div>
+<div id="google_afc_user" class="section">
+  <script type="text/javascript"><!--
+     hatena_dfp_tag       = '/4374287/diary_user';
+     hatena_dfp_size      = [[300, 250], [336, 280]];
+     hatena_dfp_target_id = 'google_afc_user';
+  --></script>
+  <script type="text/javascript" src="http://ad.hatena.ne.jp/js/hatena_dfp-compiled.js"></script>
+</div>
+
+<!-- google_ad_section_end -->
+<!-- rakuten_ad_target_end -->
+
+
+<div class="ad">
+<div class="hatena-asin-recommend">
+<div class="hatena-asin-recommend-item-1">
+<div class="hatena-asin-recommend-image"><a href="http://d.hatena.ne.jp/asin/4774149721"><img src="http://ecx.images-amazon.com/images/I/51uySfZnV7L._SL60_.jpg" ALT="4774149721"></a></div>
+<div class="hatena-asin-recommend-info">
+<div class="hatena-asin-recommend-title"><a href="http://d.hatena.ne.jp/asin/4774149721"><img src="/images/hamazou_icons/icon-book.gif" border="0" align="left" alt="Book"> プロになるための PHPプログラミング入門</a></div>
+<div class="hatena-asin-recommend-description">
+  <a href="http://d.hatena.ne.jp/keyword/%B5%BB%BD%D1%C9%BE%CF%C0%BC%D2">技術評論社</a> <a href="http://d.hatena.ne.jp/keyword/%C0%B1%CC%EE%B9%E1%CA%DD%BB%D2">星野香保子</a> <br />
+  購入: 5人 クリック: 95回
+</div>
+</div></div>
+<div class="hatena-asin-recommend-item-2">
+<div class="hatena-asin-recommend-image"><a href="http://d.hatena.ne.jp/asin/479733245X"><img src="http://ecx.images-amazon.com/images/I/515SUX2KhHL._SL60_.jpg" ALT="479733245X"></a></div>
+<div class="hatena-asin-recommend-info">
+<div class="hatena-asin-recommend-title"><a href="http://d.hatena.ne.jp/asin/479733245X"><img src="/images/hamazou_icons/icon-book.gif" border="0" align="left" alt="Book"> PHPによるWebアプリケーションスーパーサンプル ...</a></div>
+<div class="hatena-asin-recommend-description">
+  <a href="http://d.hatena.ne.jp/keyword/%A5%BD%A5%D5%A5%C8%A5%D0%A5%F3%A5%AF%A5%AF%A5%EA%A5%A8%A5%A4%A5%C6%A5%A3%A5%D6">ソフトバンククリエイティブ</a> <a href="http://d.hatena.ne.jp/keyword/%C0%BE%C2%F4%C4%BE%CC%DA">西沢直木</a> <br />
+  購入: 33人 クリック: 660回
+</div>
+</div></div>
+<div class="hatena-asin-recommend-foot"></div></div></div>
+
+
+</div>
+
+<form id="comment-form" method="post" action="/koyhoge/comment#c" class="comment">
+<input type="hidden" name="mode" value="enter">
+<input type="hidden" name="rkm" value="">
+<input type="hidden" name="date" value="2013-12-05">
+<div class="comment">
+  <div class="caption"><a name="c">コメント一覧</a></div>
+  <div class="commentshort">
+    
+    
+
+    <a name="error-message"></a>
+    <p class="message" style="display:none"></p>
+
+    
+      <p class="commentmessage">はてなユーザーのみコメントできます。はてなへ<a href="https://www.hatena.ne.jp/login?backurl=http%3A%2F%2Fd.hatena.ne.jp%2Fkoyhoge%2F20131205%2Ffuel_twig%23c">ログイン</a>もしくは<a href="https://www.hatena.ne.jp/register?location=http%3A%2F%2Fd.hatena.ne.jp%3Fvia%3D200186&amp;via=200186">新規登録</a>をおこなってください。</p>
+    
+
+    
+
+  </div>
+</div>
+
+</form>
+
+
+
+
+
+  
+  <div class="refererlist">
+    <div class="caption">
+      <a name="tb">トラックバック</a> - http://d.hatena.ne.jp/koyhoge/20131205/fuel_twig
+    </div>
+    
+  </div>
+  
+    <div class="refererlist">
+      <div class="caption"><a name="idtb">idトラックバック</a></div>
+      
+      <ul>
+        
+            <li><a href="http://twitter.com/aWebprogrammer/status/408566622371053568" title="FuelPHPでTwig Extension #FuelPHPAdvent2013 - Blog::koyhoge (id:koyhoge / @koyhoge) http://t.co/KYvBCmodbO" rel="nofollow">Twitter / @aWebprogrammer</a></li>
+          
+        </ul>
+      </div>
+    
+  
+
+
+
+
+
+    <div class="refererlist">
+      <div class="caption">リンク元</div>
+      <ul>
+          <li>15 <a href="http://t.co/BAJCxf3Lah" rel="nofollow">http://t.co/BAJCxf3Lah</a></li>
+          <li>5 <a href="http://bit.ly/1biP7v0" rel="nofollow">http://bit.ly/1biP7v0</a></li>
+          <li>2 <a href="http://pipes.yahoo.com/pipes/pipe.info?_id=02db597254ec68550537866a2fca2ce6" rel="nofollow">http://pipes.yahoo.com/pipes/pipe.info?_id=02db597254ec68550537866a2fca2ce6</a></li>
+          <li>2 <a href="http://reader.livedoor.com/reader/" rel="nofollow">http://reader.livedoor.com/reader/</a></li>
+          <li>1 <a href="http://api.twitter.com/1/statuses/show/408526899883687938.json" rel="nofollow">http://api.twitter.com/1/statuses/show/408526899883687938.json</a></li>
+          <li>1 <a href="http://profile.hatena.ne.jp/maruguu/antenna" rel="nofollow">http://profile.hatena.ne.jp/maruguu/antenna</a></li>
+          <li>1 <a href="http://realtime.search.yahoo.co.jp/search?tt=c&amp;ei=UTF-8&amp;fr=sfp_as&amp;aq=-1&amp;oq=&amp;p=fuelphp&amp;meta=vc%3D" rel="nofollow">http://realtime.search.yahoo.co.jp/search?tt=c&amp;ei=UTF-8&amp;fr=sfp_as&amp;aq=-1&amp;oq=&amp;p=fuelphp&amp;meta=vc=</a></li>
+          <li>1 <a href="http://t.co/KYvBCmodbO" rel="nofollow">http://t.co/KYvBCmodbO</a></li>
+          <li>1 <a href="http://www.crowy.net/" rel="nofollow">http://www.crowy.net/</a></li>
+      </ul>
+      
+    </div>
+
+
+
+	<div class="refererlist referer-similar">
+		<div class="caption">おとなり日記</div>
+		<ul>
+
+			<li>2013-12-03 <a href="http://d.hatena.ne.jp/nextliteracy/20131203" rel="nofollow">読み書きプログラミング ブログ</a> 6/59 10%
+			<li>2013-12-05 <a href="http://d.hatena.ne.jp/efcl/20131205" rel="nofollow">Cli@</a> 7/84 8%
+			<li>2013-12-02 <a href="http://d.hatena.ne.jp/nextliteracy/20131202" rel="nofollow">読み書きプログラミング ブログ</a> 6/84 7%
+			<li>2013-12-05 <a href="http://d.hatena.ne.jp/isobe1978/20131205" rel="nofollow">アドファイブ日記</a> 5/81 6%
+		</ul>
+	</div>
+
+
+</div>
+
+
+
+</div>
+<div class="calendar" id="pager-bottom">
+  <a rel="prev" href="/koyhoge/20130827/phpmook" class="prev">&lt;[php][book]「PHPエンジニア養成...</a>&nbsp;<span class="delimiter">|</span>&nbsp;<a rel="next" href="/koyhoge/20131206/twig_databind" class="next">[php]JavaScript側にPHP変数を簡...&gt;</a>
+</div>
+</div>
+<div class="sidebar">
+
+<!-- -->
+<a href="https://plus.google.com/103940350915192908483?rel=author">Google Plus</a>
+
+<div class="hatena-module hatena-module-calendar2">
+<div class="hatena-moduletitle">カレンダー</div>
+<div class="hatena-modulebody">
+<table class="calendar" summary="calendar">
+<tr>
+<td class="calendar-prev-month" colspan="2"><a href="/koyhoge/201311" title="201311" rel="nofollow">&lt;&lt;</a></td>
+<td class="calendar-current-month" colspan="3"><a href="/koyhoge/archive/201312" rel="nofollow">2013/12</a></td>
+<td class="calendar-next-month" colspan="2"><a href="/koyhoge/201401" title="201401" rel="nofollow">&gt;&gt;</a></td>
+</tr>
+<tr>
+<td class="calendar-sunday">日</td>
+<td class="calendar-weekday">月</td>
+<td class="calendar-weekday">火</td>
+<td class="calendar-weekday">水</td>
+<td class="calendar-weekday">木</td>
+<td class="calendar-weekday">金</td>
+<td class="calendar-saturday">土</td>
+</tr>
+	<tr>
+		<td class="calendar-day">1</td>
+		<td class="calendar-day">2</td>
+		<td class="calendar-day">3</td>
+		<td class="calendar-day">4</td>
+		<td class="calendar-day day-selected"><a href="/koyhoge/20131205" title="5">5</a></td>
+		<td class="calendar-day day-today"><a href="/koyhoge/20131206" title="6">6</a></td>
+		<td class="calendar-day">7</td>
+	</tr>
+	<tr>
+		<td class="calendar-day">8</td>
+		<td class="calendar-day">9</td>
+		<td class="calendar-day">10</td>
+		<td class="calendar-day">11</td>
+		<td class="calendar-day">12</td>
+		<td class="calendar-day">13</td>
+		<td class="calendar-day">14</td>
+	</tr>
+	<tr>
+		<td class="calendar-day">15</td>
+		<td class="calendar-day">16</td>
+		<td class="calendar-day">17</td>
+		<td class="calendar-day">18</td>
+		<td class="calendar-day">19</td>
+		<td class="calendar-day">20</td>
+		<td class="calendar-day">21</td>
+	</tr>
+	<tr>
+		<td class="calendar-day">22</td>
+		<td class="calendar-day">23</td>
+		<td class="calendar-day">24</td>
+		<td class="calendar-day">25</td>
+		<td class="calendar-day">26</td>
+		<td class="calendar-day">27</td>
+		<td class="calendar-day">28</td>
+	</tr>
+	<tr>
+		<td class="calendar-day">29</td>
+		<td class="calendar-day">30</td>
+		<td class="calendar-day">31</td>
+		<td class="calendar-day"></td>
+		<td class="calendar-day"></td>
+		<td class="calendar-day"></td>
+		<td class="calendar-day"></td>
+	</tr>
+</table>
+	</div>
+</div>
+
+
+<!-- -->
+        <div class="hatena-module hatena-module-rss">
+                <div class="hatena-moduletitle"><a href="http://koyhoge.hatenablog.com/">はてブロ::koyhoge</a></div>
+                <div class="hatena-modulebody">
+                        <ul class="hatena-rss">
+                                <li><a href="http://koyhoge.hatenablog.com/entry/theta360" title="theta360.com のパノラマビューが外部ドメインでも動く感じだったので、試しにブログに貼ってみる。    
+      
+        
+        
+        
+        
+        
+        
+      
+    
+">theta360.comのパノラマビューをブログに貼ってみるテスト</a></li>
+                                <li><a href="http://koyhoge.hatenablog.com/entry/20130824/startrek" title="「スター・トレック イントゥ・ダークネス」を観てきました。古株のトレッキーも含めて、評判はかなり良いみたいです。
+でも自分的には、今ひとつ手放しでは楽しめませんでした。旧作 TOS への細かいオマージュが散りばめられてあってその部分は面白かったのですが、全体を通してみると、どうにもコレジャナイ感がぬぐえません。それは何故だろうとずっと考えていて、たぶん結論めいた事に気が付きましたので、ここに書いておきます。ここから先はネタバレ注意です。
+
+結局 JJ 版は、物語を肉体言語派的に「殴り合い」で解決しちゃうんですよ。
+ジーン・ロッデンベリーの構築したスタートレックワールドでは、暴力は最後の最後に使う非常手段であって、暴力を使った後には手痛いしっぺ返しが来るのが当然なんです。だからこそ登場人物たちは暴力によらない解決方法を必死に模索し、知能と知恵と機転でどんでん返しを最後に見せてくれます。それこそが自分の好きなスタートレックのカタルシスなんです。
+でもJJ版のスタートレックでは、前作も今作のイントゥ・ダークネスでも、普通に殴り合いで物事を解決して、特に副作用なくそのままハッピーエンドに落ち着くわけですね。ハリウッド映画の文法として派手なアクションシーンが必要なのは分かるとしても、それを無批判に受け入れるちゃうのは、もはや自分の好きなスタートレックではありません。スタートレックは、自分にとってはそのくらい知的好奇心を満たしてくれる作品だったわけです。カーンがどんなに頭が良くて、戦闘的な頭脳に長けていても、単なる殴り合いで物事が決着しちゃうと、その賢さは全く無意味で、その設定はこれっぽっちも生かされてないわけです。ハリウッド映画にありがちな、単なるハリボテの設定になってしまうのですね。
+このことに気がついて、なぜ自分が JJ 版スター・トレックを好きになれないのか、はっきりと自覚しました。世界的にも興行的には良さそうですし、また続編が作られる可能性が高いかも知れませんが、この点がそのままなら、自分が心から楽しめることはたぶん無いのだと思います。
+">JJ版スタートレックシリーズに感じる違和感</a></li>
+                                <li><a href="http://koyhoge.hatenablog.com/entry/e100q" title="サイボウズの&amp;#x98A8;&amp;#x7A74;さんから、今度「&amp;#x30A8;&amp;#x30F3;&amp;#x30B8;&amp;#x30CB;&amp;#x30A2;100&amp;#x4EBA;&amp;#x306B;&amp;#x805E;&amp;#x304D;&amp;#x307E;&amp;#x3057;&amp;#x305F;」という企画を始めるのでよかったら参加して下さいとお誘いがあったので、我が&amp;#x30A2;&amp;#x30B8;&amp;#x30E3;&amp;#x30A4;&amp;#x30EB;&amp;#x30E1;&amp;#x30C7;&amp;#x30A3;&amp;#x30A2;&amp;#x30FB;&amp;#x30CD;&amp;#x30C3;&amp;#x30C8;&amp;#x30EF;&amp;#x30FC;&amp;#x30AF;(AMN)はエンジニアはわずか5人ですが、乗っかってみます。
+
+
+
+    まずはプロフィールから
+     30代: 4
+40代: 1唯一の40代は私です、てへ。グラフを出すまでもないですが、全員男性です。
+
+
+
+    好きなプログラミング言語
+     
+PHP: 5
+JavaScript: 3
+C: 2
+Perl: 2
+C++: 1
+C#: 1
+PostScript: 1AMN は PHP でいろいろ作る会社なので、やはり全員が PHP 好きですね。
+
+
+
+    Q1: チェック柄のシャツを持っていますか？
+    a. 持っていない。: 2
+b. 1着か２着は持ってる。: 3
+c. 3着以上、持っている（でも、持っているシャツの中では、チェック柄は少ないほう）: 0
+d. 3着以上、持っている（かつ、持っているシャツの中で、チェック柄は多いほう）: 0AMN には特にチェック好きの人はいないようです。
+
+
+
+    Q2: 服を買うお店は決まってますか？
+    
+a. 買うお店（ブランド）を決めている（＝ほとんどの場合、そこでしか買わない）。 : 0
+b. 明確に決めてないけど、だいたい同じようなお店（ブランド）で買うことが多い。 : 2
+c. お店（ブランド）は決めていないし、買うお店（ブランド）は実際にバラバラ。 : 3
+
+
+
+    Q3: 憧れの人を真似して買ったシャツがある？（Yes or No）
+    
+Yes: 0
+No: 5憧れの人のシャツってどんなのだろう?
+
+
+
+    Q4: ここぞというときに着る「勝負シャツ」がある？（Yes or No）
+    Yes: 1
+No: 4この Yes ってのは自分なんですが、一応大人数の前で講演とかするとき用の服は持ってます。
+
+
+
+    Q5: もしあれば、自由コメントをどうぞ（設問に関することでも、それ以外でも）
+    
+
+どんな傾向が見られるか楽しみです。
+勝負シャツなる存在を初めて知りました！今は9月のモンハン4に向け、狩人Tシャツが欲しいです！
+シャツにこだわる文化というものとの接点があまりないことを実感しました。
+
+さすがに5人だと傾向もクソもあったもんじゃないですが、これまでなかった面白い切り口のインタビューだと思いました。今後もひき続いて行われるそうですので、また少人数ながら乗っかっていきたいと思います。
+
+">「エンジニア100人に聞きました」AMNの場合 #e100q</a></li>
+                                <li><a href="http://koyhoge.hatenablog.com/entry/20130407-tklp" title="3/26 にYahoo! JAPANさんの主催で開催された『無料で使えるグループ連絡網「&amp;#x3064;&amp;#x304F;&amp;#x308B;&amp;#x30FC;&amp;#x3077;」先行体験イベント！』に参加してきました。
+&amp;#x3064;&amp;#x304F;&amp;#x308B;&amp;#x30FC;&amp;#x3077;とは、ヤフーさんが新たにサービスを開始するコミュニケーションアプリです。LINEやカカオトークなど、簡易コミュニケーションアプリ市場は現在とても激しい競争にさらされているわけですが、そこに新たにサービスを投入するということで、他のサービスとどこが違うのかたっぷり聞いて来ました。最初に結論を書いてしまうならば、自分の持つ様々な「しがらみ」を持ち込めずにコミュニケーションできるツール、だと理解しました。
+
+
+    ネットの自分を見せずにやり取りしたいという需要
+    ネットをタフに使う人ならば、ネットとリアルそれぞれに人格ができ上がっている感覚は分かっていただけると思います。特にネット用の人格を設定しているつもりはなくても、ネット上の友人関係や影響力と現実世界のそれとは、質も意味合いも大きく違うのが通常でしょう。ネットが軸になって「いない」コミュニティ、むしろその人のネット的な背景が邪魔になるコミュニティでは、そういう自分のネット上の顔はむしろ見えないほうが心理的障壁のないコミュニケーションができるのかもしれません。
+ヤフーの方々は
+
+    
+        クラス会、同窓会、町内会、子供の父兄会、etc
+
+    
+という例を挙げていましたが、確かにこういう現実世界の一部分を軸としたコミュニケーションに適したツールは、現在あるサービスからは抜け落ちているように思います。既存の SNS を軸にするにしても、専用のメーリングリストを使うにせよ、その人のそれ以外の部分がどうしても見えてきてしまいます。またメールアドレスをむやみに教えたくないという需要も一般的に多くあると感じています。
+
+
+
+    半匿名サービスとしての「つくるーぷ」
+    
+今回ヤフーさんが発表した「つくるーぷ」は、例えば「A子ちゃんのパパの佐藤さん」という属性のみで認識されるグループで、それ以上の情報を出すこと無くコミュニケーションできるツールです。基本的には iPhone / Android というスマートフォン用のアプリですが、PC や通常の携帯電話からはメールを使ってグループのやり取りに参加できます。その場合もサービスのメールアドレスからメールが届きそこに対してメールを送信するので、自分のメールアドレスが他の人に知られることはありません。
+
+
+
+    グループ管理者の負担をとことん低減
+    説明でヤフーの方が何度もおっしゃっていたのでは「グループ管理者の方の負担をとことん軽減することに注力した」ということでした。管理者の方が参加者一人一人からメールアドレスを教えてもらう必要はなく、グループへの招待状を PDF で生成し、それを印刷して配ります。参加者はそこに掲載されている QR コードをスマートフォンや携帯電話で読み込むことで、簡単にグループに参加することができます。
+
+
+
+    ウェブインターフェースの拡充を望む
+    すでに書いたように「つくるーぷ」は基本はスマホアプリがベースになっているサービスで、携帯電話・PC からはメールで参加することになります。メール経由では、グループ内のトピックやトピック内のコメントの一覧性がどうしても悪くなります。ウェブインターフェースをより充実させることでこの問題は解決できるので、早い段階でのメール UI からウェブ UI の転換を期待したいです。
+
+
+
+    まとめ
+    今回のつくるーぷブロガーイベントで感じたのは、表に出て来にくい問題点に着目してそれを解決するサービスを短期間で開発するという、「爆速」ヤフーならではの取り組みだということでした。現在のところ特に収益化は考えていないということでしたが、ユーザの見えにくい不満を解決することがまわりまわってヤフーの注目度を高めるということなのかもしれません。本来は今回のイベンの翌日 3/27(水) にリリースされるはずだったつくるーぷですが、イベント中に参加者がいろいろ触る中で致命的なバグが発見されてしまい、当初のリリース予定が延期されたそうです。先日無事にその問題を解決して iPhone / Android アプリのリリースがされました。
+
+
+
+    記念品としていただいたもの
+    イベント終了後に参加者向けに以下のおみやげを頂きました。どうもありがとうございました。ヤフートートバッグ
+
+ヤフーロゴ入りコンパクト手鏡
+
+つくるーぷのノートとヤフーボールペン
+
+「爆速」ステッカー
+
+イベントで撮影したその他の写真は以下からどうぞ。20130326-&amp;#x3064;&amp;#x304F;&amp;#x308B;&amp;#x30FC;&amp;#x3077;&amp;#x30D6;&amp;#x30ED;&amp;#x30AC;&amp;#x30FC;&amp;#x30A4;&amp;#x30D9;&amp;#x30F3;&amp;#x30C8; - a set on Flickr
+
+">ヤフーの「つくるーぷ」は現実の一部属性だけでやり取りできるコミュニティサービス</a></li>
+                                <li><a href="http://koyhoge.hatenablog.com/entry/2013/02/08/142353" title="
+
+    あまり知られていない Google 映画検索
+    ここ数年はよく映画を観に行きます。ひとえに平日でも深夜まで上映している&amp;#x30D0;&amp;#x30EB;&amp;#x30C8;9のおかげです。シネコン全盛の現在では人気のない作品はすぐに上映終了してしまって、気がついたら観たい作品が終わってたなんてこともよくあります。話は変わって、ずいぶん以前から「映画 新宿 ゴーストライダー」などと Android で検索すると、最寄りの映画館や上映時間が簡潔にまとめられたポータルっぽい画面が表示されました。ここを見ればその作品がどこの劇場で公開中なのか一覧できて、便利だなぁと思っていました。でも PC 版の Google 検索で同様に「&amp;#x6620;&amp;#x753B; &amp;#x65B0;&amp;#x5BBF; &amp;#x30B4;&amp;#x30FC;&amp;#x30B9;&amp;#x30C8;&amp;#x30E9;&amp;#x30A4;&amp;#x30C0;&amp;#x30FC;」と検索しても、普通に検索結果が返るだけで映画作品ポータルなページに行く方法はどこにもなくて残念でした。今回ひょんなことから、PC でもその映画作品ポータルなページを表示する方法がわかりました。 http://www.google.co.jp/movies?near=&amp;#x65B0;&amp;#x5BBF;&amp;amp;q=&amp;#x30B4;&amp;#x30FC;&amp;#x30B9;&amp;#x30C8;&amp;#x30E9;&amp;#x30A4;&amp;#x30C0;&amp;#x30FC;この URL で、新宿近辺の映画館で上映中の作品の中から「ゴーストライダー」を検索できます。この記事を書いている 2013年2月現在ではちょうど「&amp;#x30B4;&amp;#x30FC;&amp;#x30B9;&amp;#x30C8;&amp;#x30E9;&amp;#x30A4;&amp;#x30C0;&amp;#x30FC;2」が都内各所で上映中ですので、この作品のポータル画面が表示されます。これこれ、これが欲しかったんですよ。これで、前売券を買ってあった作品が近場の映画館で上映終了してしまった際に、ちょっと足を伸ばせばまだ観ることができるのかどうかがすぐに分かります。
+
+
+
+    便利な検索はすかさず Firefox の Search Shortcuts に登録
+    このように、映画を日常的に見る人には大変便利な Google 映画検索(名前はついてないようですので今つけました)ですが、通常の Google 検索メニューにはリンクが入っていないようです。普通にブックマークしても良いんですが、この手のやつは Firefox の「Search Shortcuts」を使うと便利です。
+Search Shortcuts はカスタム検索の一種で、ブックマークにキーワードを設定しておくことで、アドレスバーにその文字を入力することでそのページに飛べる機能です。オプションの文字を1つだけ入力できて、その文字は登録されたブックマークでは %s に展開されます。では早速 Google 映画検索を Search Shortcuts に登録してみます。Firefox で Bookmark ウィンドウを開いて、新規にブックマークを登録します。どこに入れても良いですが「Search Shortcuts」フォルダが最初からあるのでそこに作ればよいでしょう。Location は「http://www.google.co.jp/movies?near=新宿&amp;q=%s」とします。Keyword はショートカットを呼び出すための文字列になりますが、gm としてみます。登録画面はこんな感じ。これを登録すると、アドレスバーで「gm ゴーストライダー」と入力するだけで検索結果を表示してくれます。よしよし。
+
+">Google の映画検索が便利すぎる</a></li>
+                                <li><a href="http://koyhoge.hatenablog.com/entry/2013/02/01/145615" title="先週くらいに、はてブの総ブックマーク数がそろそろ1.5億だなぁと気がついて、なんかお祝いキャンペーンでもやるのかなぁと思っていたのだけど、その気配も全くなく。そうこうしているうちに、一昨日くらいにさくっと 1.5 億超えてました。以下はさっき撮った http://b.hatena.ne.jp/entrylist のキャプチャ。ということで、はてなブックマーク 1.5 億ブクマ達成おめでとうございます！
+">はてなブックマーク 1億5000万ブックマーク達成を勝手に祝うぜ！</a></li>
+                                <li><a href="http://koyhoge.hatenablog.com/entry/boombox" title="Fans:Fans で&amp;#x30ED;&amp;#x30B8;&amp;#x30AF;&amp;#x30FC;&amp;#x30EB;の Bluetooth リモートスピーカー TS500 の&amp;#x30E2;&amp;#x30CB;&amp;#x30BF;&amp;#x30FC;&amp;#x30D7;&amp;#x30EC;&amp;#x30BC;&amp;#x30F3;&amp;#x30C8;&amp;#x30AD;&amp;#x30E3;&amp;#x30F3;&amp;#x30DA;&amp;#x30FC;&amp;#x30F3;を行なっていたので申し込んだところ、めでたく当選してモノが送られてきました。まずはちょっと触ってみての感想など。
+
+
+    製品の特徴
+    一言で書くならば「バッテリ駆動するBluetoothスピーカー」です。この写真だとちょっと大きさが分かりにくいですが、丁度手のひらサイズといった感じです。フル充電で10時間程度稼働するそうです。
+
+
+
+    充電端子は miniUSB
+    まず気づくのが、充電用の端子が miniUSB なことです。2年前ならばこれが普通だったと思いますが、昨今のスマフォ大躍進のおかげで、この手の充電端子は microUSB に統一されつつあります。開発時期の関係もあるのかも知れませんが、常設の充電端子をわざわざ増やしたくないので、ここは microUSB にして欲しかったところです。
+
+
+
+    電源スイッチのスライドが固い
+    電源 On/Off が背面のスライドスイッチになっているのですが、これがちょっと固いです。手探りで On にするのがちょっと難しいくらい。鞄の中などで勝手に On になっても困るのでその点では安心なのですが、ちょっと固すぎな気もします。まぁこれは使っているうちに緩くなっていくのを見越してなのかも知れません。
+
+
+
+    形状が面白い。上部パネルの裏に隙間がある
+    写真で見るとただの箱のように見えますが、実は裏側から見ると上部に隙間があります。前面スピーカー部からだけではなく、この上部の隙間からも音場を発生させて、この大きさからは想像できないほどの音の広がりを実現しているようです。
+
+
+
+    複数機器とのペアリングの問題
+    この製品は Bluetooth で音源側とペアリングして使用することになるのですが、複数の機器との登録はサポートされておらず、一度別の機器とペアリングした後だと再度ペアリングし直しになるようです。ペアリング自体はボタン一発で簡単にできるのでさほど気にはなりませんが、可能ならば複数機器の登録ができると嬉しいなぁと思います。
+
+
+
+    音質は悪くないが、当然ながら音源に依る
+    ちょっと鳴らした感じではスピーカー自体の音は悪くありません。このサイズから鳴っているとは思えないそこそこ迫力のある音が聞けます。ただしというか、再生する曲そのものと音楽プレイヤーソフトによって随分印象は変わりますね。カタログに謳っているメインターゲットが iPhone/iPad なのでその音質に合わせてチューニングされているのかも知れません。Android 端末(Nexus S/Transformer TF-101) のプレイヤーから曲を再生したときは、「お、これは良い」というところに行くまでイコライザーをいじる必要がありました。
+
+
+
+    バッテリの残り目盛りは欲しい
+    残バッテリ量は正面ロゴ LED の色と点滅で分かるようになっていますが、正直ちょっと分かりにくいです。せっかく上面に操作パネルがついているのだから、目盛表示で分かりやく提示して欲しかったと思います。現状だと残バッテリが 50〜60% の時が分からないので、持ちだす前にフル充電にしておくかどうかの判断ができません。
+とまぁ色々書いてきましたが、正直部屋の中でちまちま使ってもこれの凄さは見えてこない気がします。この製品の醍醐味は屋外に持ちだしてこそだと思うので、近いうちにその辺も実践してみたいと思います。追記)
+あ、この Mini Boombox はちょうど明日まで&amp;#x30E2;&amp;#x30CB;&amp;#x30BF;&amp;#x30FC;&amp;#x30AD;&amp;#x30E3;&amp;#x30F3;&amp;#x30DA;&amp;#x30FC;&amp;#x30F3;&amp;#x7B2C;&amp;#x4E8C;&amp;#x5F3E;の申込みが行われているようなので、興味を持った方は応募してみると良いと思います。
+
+
+">ロジクール Mini Boombox の第一印象</a></li>
+                        </ul>
+                </div>
+        </div>
+
+
+<!-- -->
+        <div class="hatena-module hatena-module-rss">
+                <div class="hatena-moduletitle"><a href="http://search.twitter.com/search?q=from%3Akoyhoge">Twitter</a></div>
+                <div class="hatena-modulebody">
+                        <ul class="hatena-rss">
+                                <li><a href="http://twitter.com/koyhoge/statuses/344461549676662784" title="&#x6b21;&#x306e; @YouTube &#x52d5;&#x753b;&#x3092;&#x9ad8;&#x304f;&#x8a55;&#x4fa1;&#x3057;&#x307e;&#x3057;&#x305f;: http://t.co/lu7ihYnSDe TV&#x30a2;&#x30cb;&#x30e1;&#x300c;&#x30b5;&#x30fc;&#x30d0;&#x30f3;&#x30c8;&#xd7;&#x30b5;&#x30fc;&#x30d3;&#x30b9;&#x300d;PV">&#x6b21;&#x306e; @YouTube &#x52d5;&#x753b;&#x3092;&#x9ad8;&#x304f;&#x8a55;&#x4fa1;&#x3057;&#x307e;&#x3057;&#x305f;: http://t.co/lu7ihYnSDe TV&#x30a2;&#x30cb;&#x30e1;&#x300c;&#x30b5;&#x30fc;&#x30d0;&#x30f3;&#x30c8;&#xd7;&#x30b5;&#x30fc;&#x30d3;&#x30b9;&#x300d;PV</a></li>
+                                <li><a href="http://twitter.com/koyhoge/statuses/344448745791950853" title="I’m at &#x677e;&#x5c4b; &#x5927;&#x4e45;&#x4fdd;&#x5e97; (&#x65b0;&#x5bbf;&#x533a;, &#x6771;&#x4eac;&#x90fd;) http://t.co/oHSDAy6lZI">I’m at &#x677e;&#x5c4b; &#x5927;&#x4e45;&#x4fdd;&#x5e97; (&#x65b0;&#x5bbf;&#x533a;, &#x6771;&#x4eac;&#x90fd;) http://t.co/oHSDAy6lZI</a></li>
+                                <li><a href="http://twitter.com/koyhoge/statuses/344349382851825665" title="&#x88cf;&#x756a;&#x7d44;&#x306b;LL&#x307e;&#x3064;&#x308a;&#x304c;&#x3042;&#x308a;&#x307e;&#x3059;&#x304c;&#x3001;&#x5f53;&#x7136;&#x79c1;&#x306f;&#x305d;&#x3061;&#x3089;&#x306b;&#x884c;&#x304d;&#x307e;&#x3059;w / &#x201c;&#x30d6;&#x30ed;&#x30ac;&#x30fc;&#x30b5;&#x30df;&#x30c3;&#x30c8;2013&#xff5c;Agile Media Network&#x201d; http://t.co/rby6wLJ5kG">&#x88cf;&#x756a;&#x7d44;&#x306b;LL&#x307e;&#x3064;&#x308a;&#x304c;&#x3042;&#x308a;&#x307e;&#x3059;&#x304c;&#x3001;&#x5f53;&#x7136;&#x79c1;&#x306f;&#x305d;&#x3061;&#x3089;&#x306b;&#x884c;&#x304d;&#x307e;&#x3059;w / &#x201c;&#x30d6;&#x30ed;&#x30ac;&#x30fc;&#x30b5;&#x30df;&#x30c3;&#x30c8;2013&#xff5c;Agile Media Network&#x201d; http://t.co/rby6wLJ5kG</a></li>
+                                <li><a href="http://twitter.com/koyhoge/statuses/344306483250466816" title="I’m at &#x5510;&#x305d;&#x3070; &#x6e0b;&#x8c37;&#x4e8c;&#x4e01;&#x76ee;&#x5e97; (&#x6e0b;&#x8c37;&#x533a;, &#x6771;&#x4eac;&#x90fd;) http://t.co/rzn4fehQVD">I’m at &#x5510;&#x305d;&#x3070; &#x6e0b;&#x8c37;&#x4e8c;&#x4e01;&#x76ee;&#x5e97; (&#x6e0b;&#x8c37;&#x533a;, &#x6771;&#x4eac;&#x90fd;) http://t.co/rzn4fehQVD</a></li>
+                                <li><a href="http://twitter.com/koyhoge/statuses/344293722801963008" title="&#x3053;&#x306e;&#x5999;&#x3061;&#x304f;&#x308a;&#x3093;&#x306a;&#x5bfe;&#x6226;&#x74b0;&#x5883;&#x306e;&#x8a2d;&#x5b9a;&#x3092;&#x898b;&#x3066;&#x3082;&#x3001;&#x660e;&#x3089;&#x304b;&#x306b;&#x756a;&#x7d44;&#x5074;&#x306b;&#x307e;&#x3068;&#x3082;&#x306a;&#x30d6;&#x30ec;&#x30fc;&#x30f3;&#x304c;&#x3044;&#x306a;&#x304b;&#x3063;&#x305f;&#x3053;&#x3068;&#x304c;&#x554f;&#x984c;&#x3002;&#x3061;&#x3083;&#x3093;&#x3068;&#x3057;&#x305f;&#x8b58;&#x8005;&#x306b;&#x5bfe;&#x6226;&#x8a2d;&#x5b9a;&#x3092;&#x76e3;&#x4fee;&#x3057;&#x3066;&#x3082;&#x3089;&#x3048;&#x3070;&#x3082;&#x3063;&#x3068;&#x9762;&#x767d;&#x3044;&#x3082;&#x306e;&#x306b;&#x306a;&#x3063;&#x305f;&#x306e;&#x306b;&#x6b8b;&#x5ff5;&#x3002; / &#x201c;NetAgent Official Blog :&#x2026;&#x201d; http://t.co/npZiiF0VCW">&#x3053;&#x306e;&#x5999;&#x3061;&#x304f;&#x308a;&#x3093;&#x306a;&#x5bfe;&#x6226;&#x74b0;&#x5883;&#x306e;&#x8a2d;&#x5b9a;&#x3092;&#x898b;&#x3066;&#x3082;&#x3001;&#x660e;&#x3089;&#x304b;&#x306b;&#x756a;&#x7d44;&#x5074;&#x306b;&#x307e;&#x3068;&#x3082;&#x306a;&#x30d6;&#x30ec;&#x30fc;&#x30f3;&#x304c;&#x3044;&#x306a;&#x304b;&#x3063;&#x305f;&#x3053;&#x3068;&#x304c;&#x554f;&#x984c;&#x3002;&#x3061;&#x3083;&#x3093;&#x3068;&#x3057;&#x305f;&#x8b58;&#x8005;&#x306b;&#x5bfe;&#x6226;&#x8a2d;&#x5b9a;&#x3092;&#x76e3;&#x4fee;&#x3057;&#x3066;&#x3082;&#x3089;&#x3048;&#x3070;&#x3082;&#x3063;&#x3068;&#x9762;&#x767d;&#x3044;&#x3082;&#x306e;&#x306b;&#x306a;&#x3063;&#x305f;&#x306e;&#x306b;&#x6b8b;&#x5ff5;&#x3002; / &#x201c;NetAgent Official Blog :&#x2026;&#x201d; http://t.co/npZiiF0VCW</a></li>
+                                <li><a href="http://twitter.com/koyhoge/statuses/344039886220836864" title="&#x76ee;&#x6a19;&#x91d1;&#x984d;&#x9054;&#x6210;&#x3057;&#x305f;&#x3088;&#x3046;&#x3002; / &#x201c;4&#x4eba;&#x306e;&#x304a;&#x3063;&#x3055;&#x3093;&#x304c;&#x4ed5;&#x639b;&#x3051;&#x308b;&#x30b2;&#x30fc;&#x30e0;&#x958b;&#x767a;&#x306e;&#x65b0;&#x3057;&#x3044;&#x30ab;&#x30bf;&#x30c1;&#x3002;&#x300c;&#x30e2;&#x30f3;&#x30b1;&#x30f3;&#x300d;&#x30ed;&#x30f3;&#x30b0;&#x30a4;&#x30f3;&#x30bf;&#x30d3;&#x30e5;&#x30fc;&#x3002;&#x305d;&#x3057;&#x3066;&#x3001;&#x5bb6;&#x5165;&#x4e00;&#x771f;&#x3068;&#x5148;&#x306b;&#x4f1a;&#x3063;&#x3061;&#x3083;&#x3063;&#x305f;&#x306e;&#x884c;&#x65b9;&#x3002; | TechWave&#x201d; http://t.co/7EIeLxFXib">&#x76ee;&#x6a19;&#x91d1;&#x984d;&#x9054;&#x6210;&#x3057;&#x305f;&#x3088;&#x3046;&#x3002; / &#x201c;4&#x4eba;&#x306e;&#x304a;&#x3063;&#x3055;&#x3093;&#x304c;&#x4ed5;&#x639b;&#x3051;&#x308b;&#x30b2;&#x30fc;&#x30e0;&#x958b;&#x767a;&#x306e;&#x65b0;&#x3057;&#x3044;&#x30ab;&#x30bf;&#x30c1;&#x3002;&#x300c;&#x30e2;&#x30f3;&#x30b1;&#x30f3;&#x300d;&#x30ed;&#x30f3;&#x30b0;&#x30a4;&#x30f3;&#x30bf;&#x30d3;&#x30e5;&#x30fc;&#x3002;&#x305d;&#x3057;&#x3066;&#x3001;&#x5bb6;&#x5165;&#x4e00;&#x771f;&#x3068;&#x5148;&#x306b;&#x4f1a;&#x3063;&#x3061;&#x3083;&#x3063;&#x305f;&#x306e;&#x884c;&#x65b9;&#x3002; | TechWave&#x201d; http://t.co/7EIeLxFXib</a></li>
+                        </ul>
+                </div>
+        </div>
+
+
+<div class="hatena-module hatena-module-section">
+<div class="hatena-moduletitle"><a href="/koyhoge/archive">最新タイトル</a></div>
+<div class="hatena-modulebody">
+<ul class="hatena-section">
+<li><a href="http://d.hatena.ne.jp/koyhoge/20131206/twig_databind">[php]JavaScript側にPHP変数を簡単にまるごと渡す方法 #FuelPHPAdvent2013</a></li>
+<li><a href="http://d.hatena.ne.jp/koyhoge/20131205/fuel_twig">FuelPHPでTwig Extension #FuelPHPAdvent2013</a></li>
+<li><a href="http://d.hatena.ne.jp/koyhoge/20130827/phpmook">[php][book]「PHPエンジニア養成読本」が9月13日に出版されます</a></li>
+<li><a href="http://d.hatena.ne.jp/koyhoge/20130326/fuelphp">[php][event]FuelPHP勉強会東京 vol.3に参加してきた</a></li>
+<li><a href="http://d.hatena.ne.jp/koyhoge/20130326/fuelphp_dynamoutil">[php][aws]fuelphp-dynamoutilを公開した</a></li>
+<li><a href="http://d.hatena.ne.jp/koyhoge/20121104/php54zip">PHP-5.4でのZip Extension</a></li>
+<li><a href="http://d.hatena.ne.jp/koyhoge/20120607/date_t">[php]月の最後の日をPHPで簡単に知る方法</a></li>
+<li><a href="http://d.hatena.ne.jp/koyhoge/20120605/animita">[amn]「あにみた!」ができるまで</a></li>
+<li><a href="http://d.hatena.ne.jp/koyhoge/20120427/etype">エンジニアtypeの法林さんの新企画で対談してきました</a></li>
+<li><a href="http://d.hatena.ne.jp/koyhoge/20120404/mailmime">[php]PEAR::Mail_mimeで日本語ファイル名の添付ファイルを送る方法</a></li>
+</ul>
+</div>
+</div>
+
+
+<script language="javascript" type="text/javascript" src="http://b.hatena.ne.jp/js/widget.js" charset="utf-8"></script>
+<script language="javascript" type="text/javascript">
+Hatena.BookmarkWidget.url   = "http://d.hatena.ne.jp/koyhoge/";
+Hatena.BookmarkWidget.title = "注目エントリー";
+Hatena.BookmarkWidget.sort  = "hot";
+Hatena.BookmarkWidget.width = 0;
+Hatena.BookmarkWidget.num   = 5;
+Hatena.BookmarkWidget.theme = "hatenadiary";
+Hatena.BookmarkWidget.load();
+</script>
+
+<script language="javascript" type="text/javascript" src="http://b.hatena.ne.jp/js/widget.js" charset="utf-8"></script>
+<script language="javascript" type="text/javascript">
+Hatena.BookmarkWidget.url   = "http://d.hatena.ne.jp/koyhoge/";
+Hatena.BookmarkWidget.title = "人気エントリー";
+Hatena.BookmarkWidget.sort  = "count";
+Hatena.BookmarkWidget.width = 0;
+Hatena.BookmarkWidget.num   = 8;
+Hatena.BookmarkWidget.theme = "hatenadiary";
+Hatena.BookmarkWidget.load();
+</script>
+	<div class="hatena-module hatena-module-comment">
+<div class="hatena-moduletitle">最近のコメント</div>
+<div class="hatena-modulebody">
+<ul class="hatena-recentcomment">
+<li><a href="/koyhoge/20110822/llplanets#c">2011-08-22</a>&nbsp;koyhoge</li>
+<li><a href="/koyhoge/20110822/llplanets#c">2011-08-22</a>&nbsp;Kenji_s</li>
+<li><a href="/koyhoge/20100916/hogetech#c">2010-09-16</a>&nbsp;koyhoge</li>
+<li><a href="/koyhoge/20100916/hogetech#c">2010-09-16</a>&nbsp;hkanemat</li>
+<li><a href="/koyhoge/20100722/etc#c">2010-07-22</a>&nbsp;koyhoge</li>
+</ul>
+</div>
+</div>
+
+	<div class="hatena-module hatena-module-trackback">
+<div class="hatena-moduletitle">最近のトラックバック</div>
+<div class="hatena-modulebody">
+<ul class="hatena-recentcomment">
+<li><a href="/koyhoge/20131205#tb">2013-12-05</a>&nbsp;<a href="http://twitter.com/aWebprogrammer/status/408566622371053568">Twitter / @aWebprogrammer</a></li>
+<li><a href="/koyhoge/20130827#tb">2013-08-27</a>&nbsp;<a href="http://twitter.com/mikiso/status/404933465885245440">Twitter / @mikiso</a></li>
+<li><a href="/koyhoge/20130827#tb">2013-08-27</a>&nbsp;<a href="http://twitter.com/Ajiro_s/status/398001459704246272">Twitter / @Ajiro_s</a></li>
+<li><a href="/koyhoge/20130827#tb">2013-08-27</a>&nbsp;<a href="http://twitter.com/soudai1025/status/398001420680441856">Twitter / @soudai1025</a></li>
+<li><a href="/koyhoge/20130827/phpmook#tb">2013-08-27</a>&nbsp;<a href="http://d.hatena.ne.jp/Kenji_s/20130919/php_engineers_training_book">A Day in Serenity @ kenjis -  『PHPエンジニア養成読本』は買って...</a></li>
+</ul>
+</div>
+</div>
+
+
+
+<!-- -->
+<style type="text/css">
+.zg_div {margin:0px 5px 5px 0px; width:117px;}
+.zg_div_inner {border: solid 1px #000000; background-color:#ffffff;  color:#666666; text-align:center; font-family:arial, helvetica; font-size:11px;}
+.zg_div a, .zg_div a:hover, .zg_div a:visited {color:#3993ff; background:inherit !important; text-decoration:none !important;}
+</style>
+<script type="text/javascript">
+zg_insert_badge = function() {
+var zg_bg_color = 'ffffff';
+var zgi_url = 'http://www.flickr.com/apps/badge/badge_iframe.gne?zg_bg_color='+zg_bg_color+'&zg_person_id=63775128%40N00';
+document.write('<iframe style="background-color:#'+zg_bg_color+'; border-color:#'+zg_bg_color+'; border:none;" width="113" height="151" frameborder="0" scrolling="no" src="'+zgi_url+'" title="Flickr Badge"><\/iframe>');
+if (document.getElementById) document.write('<div id="zg_whatlink"><a href="http://www.flickr.com/badge.gne"	style="color:#3993ff;" onclick="zg_toggleWhat(); return false;">What is this?<\/a><\/div>');
+}
+zg_toggleWhat = function() {
+document.getElementById('zg_whatdiv').style.display = (document.getElementById('zg_whatdiv').style.display != 'none') ? 'none' : 'block';
+document.getElementById('zg_whatlink').style.display = (document.getElementById('zg_whatdiv').style.display != 'none') ? 'none' : 'block';
+return false;
+}
+</script>
+<div class="zg_div"><div class="zg_div_inner"><a href="http://www.flickr.com">www.<strong style="color:#3993ff">flick<span style="color:#ff1c92">r</span></strong>.com</a><br>
+<script type="text/javascript">zg_insert_badge();</script>
+<div id="zg_whatdiv">This is a Flickr badge showing public photos and videos from <a href="http://www.flickr.com/photos/63775128@N00">koyhoge</a>. Make your own badge <a href="http://www.flickr.com/badge.gne">here</a>.</div>
+<script type="text/javascript">if (document.getElementById) document.getElementById('zg_whatdiv').style.display = 'none';</script>
+</div>
+</div>
+<!-- -->
+
+	        <div class="hatena-module hatena-module-pv">
+                <div class="hatena-moduletitle">ページビュー</div>
+                <div class="hatena-modulebody">
+                        <span class="hatena-counter">507408</span>
+                </div>
+        </div>
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  var days = document.getElementById('days');
+  if (days && days.innerHTML.indexOf("今週のお題") != -1) {
+    _gaq.push(['_setCustomVar', 2, 'campaign', 'odai', 3]);
+  }
+
+  if (days && /\u4eca\u9031\u306e\u304a\u984c/.test(days.innerHTML)) {
+    _gaq.push(['_setCustomVar', 2, 'campaign', 'odai', 3]);
+  }
+
+  if (days && /CodeIQ\u306e\u554f\u984c\u30fb\u30d1\u30ba\u30eb\u3092\u8003\u3048\u3088\u3046\uff01/.test(days.innerHTML)) {
+    _gaq.push(['_setCustomVar', 2, 'campaign', 'codeiq_matsuri2013_2_2', 3]);
+  }
+
+  if (days && /2013\u5e74\u306b\u3084\u308a\u305f\u3044\u3053\u3068/.test(days.innerHTML)) {
+    _gaq.push(['_setCustomVar', 2, 'campaign', 'newyear2013', 3]);
+  }
+
+  if (days && /2012\u5e74\u30dc\u30c4\u738b\u6c7a\u5b9a\u6226\uff01\u30d5\u30eb\u30bf\u88fd\u83d3\ud7\u306f\u3066\u306a\u30d6\u30ed\u30b0\u304a\u984c\u30ad\u30e3\u30f3\u30da\u30fc\u30f3/.test(days.innerHTML)) {
+    _gaq.push(['_setCustomVar', 2, 'campaign', 'furuta', 3]);
+  }
+
+  if (days && /\u6d77\u5916\u30c9\u30e9\u30de\u300e\u30e9\u30a4\u30fb\u30c8\u30a5\u30fb\u30df\u30fc \u5618\u306e\u77ac\u9593\u300f\u89b3\u305f\u3044\uff01|\u300e\u30e9\u30a4\u30fb\u30c8\u30a5\u30fb\u30df\u30fc \u5618\u306e\u77ac\u9593\u300f\u7b2c1\u8a71\u306e\u611f\u60f3\u3092\u6559\u3048\u3066\u304f\u3060\u3055\u3044|\u4eca\u3060\u304b\u3089\u8a00\u3048\u308b\u300c\u5618\u3092\u3064\u3044\u3066\u3057\u307e\u3063\u305f\u30a8\u30d4\u30bd\u30fc\u30c9\u300d\u3092\u6559\u3048\u3066\u304f\u3060\u3055\u3044|\u3060\u307e\u3055\u308c\u305f\u3051\u3069\u3001\u8a31\u305b\u3066\u3057\u307e\u3063\u305f\u5618\u3092\u6559\u3048\u3066\u304f\u3060\u3055\u3044/.test(days.innerHTML)) {
+    _gaq.push(['_setCustomVar', 2, 'campaign', 'lietome', 3]);
+  }
+
+  if (days && /\u30de\u30a4\u30d9\u30b9\u30c8\u30bd\u30f3\u30b02013/.test(days.innerHTML)) {
+    _gaq.push(['_setCustomVar', 2, 'campaign', 'mybestsong2013', 3]);
+  }
+
+  if (days && /Windows\/Office\u6b66\u52c7\u4f1d/.test(days.innerHTML)) {
+    _gaq.push(['_setCustomVar', 2, 'campaign', 'WindowsDevOpen', 3]);
+  }
+
+  if (days && /\u590f\u306e\u5199\u771f2013/.test(days.innerHTML)) {
+    _gaq.push(['_setCustomVar', 2, 'campaign', 'photocon2013summer', 3]);
+  }
+
+  if (days && /\u7d0d\u6dbc\uff01\u307b\u3093\u3068\u306b\u3042\u3063\u305f\u6016\u3044\u30b3\u30fc\u30c9/.test(days.innerHTML)) {
+    _gaq.push(['_setCustomVar', 2, 'campaign', 'codeiq_matsuri2013_2_1', 3]);
+  }
+
+  if (days && /Visa\u30d7\u30ea\u30da\u30a4\u30c9\u300cV\u30d7\u30ea\u30ab\u300d\u8a66\u3057\u305f\u3044\uff01|Visa\u30d7\u30ea\u30da\u30a4\u30c9\u300cV\u30d7\u30ea\u30ab\u300d\u3001\u81ea\u5206\u306a\u3089\u3053\u3046\u4f7f\u3046\uff01|V\u30d7\u30ea\u30ab\u304c1\u4e07\u5186\u5206\u3042\u3063\u305f\u3089\u3001\u30cd\u30c3\u30c8\u3067\u4f55\u3092\u8cb7\u3044\u307e\u3059\u304b\uff1f/.test(days.innerHTML)) {
+    _gaq.push(['_setCustomVar', 2, 'campaign', 'vpreca', 3]);
+  }
+
+  if (days && /\u300c\u79c1\u306f\u3007\u3007\u738b\uff01\u300d\u30d0\u30a4\u30af\u738b\ud7\u306f\u3066\u306a\u30d6\u30ed\u30b0\u304a\u984c\u30ad\u30e3\u30f3\u30da\u30fc\u30f3/.test(days.innerHTML)) {
+    _gaq.push(['_setCustomVar', 2, 'campaign', 'bike-o', 3]);
+  }
+
+  if (days && /\u30a2\u30a4\u30c7\u30e0 \u30a8\u30f3\u30b8\u30cb\u30a2\u30ad\u30e3\u30ea\u30a2Hacks\u5171\u6709\u30d7\u30ed\u30b8\u30a7\u30af\u30c8|\u30a8\u30f3\u30b8\u30cb\u30a2\u3068\u3057\u3066\u306e\u3001\u3068\u3063\u3066\u304a\u304d\u306e\u30ad\u30e3\u30ea\u30a2Hacks\u3092\u6559\u3048\u3066\u304f\u3060\u3055\u3044|\u3042\u306a\u305f\u304c\u30a8\u30f3\u30b8\u30cb\u30a2\u8ee2\u8077\u30b5\u30a4\u30c8\u3092\u4f5c\u308b\u306a\u3089\u3001\u3069\u3093\u306a\u30b5\u30a4\u30c8\u306b\u3057\u307e\u3059\u304b\uff1f|5\u5e74\u5f8c\u306e\u300c\u30a8\u30f3\u30b8\u30cb\u30a2\u306e\u50cd\u304d\u65b9\u300d\u306f\u3001\u3069\u3046\u5909\u308f\u3063\u3066\u3044\u3066\u307b\u3057\u3044\u3067\u3059\u304b\uff1f/.test(days.innerHTML)) {
+    _gaq.push(['_setCustomVar', 2, 'campaign', 'aidemcareer', 3]);
+  }
+
+  if (days && /\u306f\u3066\u306a\u30c0\u30a4\u30a2\u30ea\u30fc10\u5468\u5e74\u304a\u3081\u3067\u3068\u3046\uff01/.test(days.innerHTML)) {
+    _gaq.push(['_setCustomVar', 2, 'campaign', 'hatenadiary10th', 3]);
+  }
+
+  if (days && /\u8aad\u307f\u653e\u984c\u3067\u30b3\u30b9\u30d1\u3088\u3057\uff01\u96fb\u5b50\u66f8\u7c4d\u30a2\u30d7\u30eayomel.jp\u30ad\u30e3\u30f3\u30da\u30fc\u30f3/.test(days.innerHTML)) {
+    _gaq.push(['_setCustomVar', 2, 'campaign', 'yomel', 3]);
+  }
+
+  if (days && /\u30bb\u30c4\u30e4\u30af\u30a8\u30b9\u30c8/.test(days.innerHTML)) {
+    _gaq.push(['_setCustomVar', 2, 'campaign', 'setsuyaquest', 3]);
+  }
+
+  if (days && /\u79cb\u306e\u591c\u9577\u306f\u8aad\u66f8\u3068\u30d6\u30ed\u30b0/.test(days.innerHTML)) {
+    _gaq.push(['_setCustomVar', 2, 'campaign', 'bookreview2013fall', 3]);
+  }
+
+  if (days && /\u7279\u5225\u304a\u984c\u300c\u82b8\u8853\u306e\u79cb\u300d/.test(days.innerHTML)) {
+    _gaq.push(['_setCustomVar', 2, 'campaign', 'caillebotte', 3]);
+  }
+
+  _gaq.push(
+  ['_setAccount', 'UA-441387-31'],
+  ['_setCustomVar', 1, 'afc_type', 'point', 3],
+  ['_setCustomVar', 3, 'theme', 'hatena_leaf', 3],
+  ['_setCustomVar', 4, 'usertype', 'guest', 1],
+  ['_trackPageview'],
+  ['b._setAccount', 'UA-7855606-1'],
+  ['b._setDomainName', '.hatena.ne.jp'],
+  ['b._trackPageview']
+  ,['c._setAccount', 'UA-51314-3'],
+  ['c._trackPageview']
+  );
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+
+<!-- CG:1,CH:1,ICG:1,ICH:1,T: -->
+</body>
+</html>
