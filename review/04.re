@@ -18,8 +18,8 @@ FuelPHPのエラーハンドリングは何かと複雑です。便利機能が�
  * ［index.php］config/routeに@<tt>{_404_}設定アレば、そちらで処理
  * ［index.php］無かったらそのまま例外横流し
  * 今度はエラーハンドラ（@<tt>{Error::exception_handler}）がキャッチ
- * ［エラーハンドラ］例外オブジェクトがhandleメソド持ってたらそちらで処理
- * ［エラーハンドラ］handleが無くて本番環境なら,errors/productionをレンダする。
+ * ［エラーハンドラ］例外オブジェクトがhandleメソッド持ってたらそちらで処理
+ * ［エラーハンドラ］handleが無くて本番環境なら、errors/productionをレンダする。
  * ［エラーハンドラ］handleが無くて本番でも無ければ、errors/php_fatal_errorをレンダする。
 
 
@@ -27,28 +27,29 @@ FuelPHPのエラーハンドリングは何かと複雑です。便利機能が�
 @<tt>{errors/production}とか@<tt>{errors/php_fatal_error}はcoreに入ってる方のView。同名ファイル作ればapp側で上書きできる。productionってのはあの「Oops!」ってやつで、php_fatal_errorってのはあの開発中に便利なバックトレースとかつけてくれる例外画面。
 
 
-んで、ドキュメントを見るとなにやら@<tt>{HttpNotFoundException}って例外を投げるとエラー画面を描画してくれる、とかある。これはCoreに入ってるHttpNotFoundExceptionって例外クラスに例の@<tt>{handle}メソドが実装されているからそうなるわけで、描画されるViewは@<tt>{views/404.php}になる。
+んで、ドキュメントを見るとなにやら@<tt>{HttpNotFoundException}って例外を投げるとエラー画面を描画してくれる、とかある。これはCoreに入ってるHttpNotFoundExceptionって例外クラスに例の@<tt>{handle}メソッドが実装されているからそうなるわけで、描画されるViewは@<tt>{views/404.php}になる。
 
 == やりたいこと
 
 
-CIのエラーハンドリングでもそうなんだけど、実際アプリケーションの開発では1システム1エラー画面というわけには行かない。
+CodeIgniterのエラーハンドリングでもそうなんだけど、実際アプリケーションの開発では1システム1エラー画面というわけには行かない。
 
 
 PC版のリクエストならPC版の404を出したいし、SP版のリクエストならSP版の404を出したい。もっと言うならAPIのリクエストではJSON形式の404メッセージを送りたい（はず）。
 
 
-CI使ってた時にはエラーのView内で条件分岐して、リクエストの種別（PC/SP）毎にそれぞれ表示するView書き換えたりしてたので、それを応用しながら上手いこと出来ないかなぁとか考えてたら以下のような形になりました。
+CodeIgniter使ってた時にはエラーのView内で条件分岐して、リクエストの種別（PC/SP）毎にそれぞれ表示するView書き換えたりしてたので、それを応用しながら上手いこと出来ないかなぁとか考えてたら以下のような形になりました。
 
 //emlist{
+// @TODO ライセンス明示
 class HttpNotFoundException extends \Fuel\Core\HttpNotFoundException
 {
     public function response()
     {
         Fuel::$profiling = false;
         // デフォルト404出力の定義
-        //$response = Response::forge(View::forge('404'), 404); //デフォルト
-        $response = Request::forge("top/404")->execute()->response(); //デフォルト
+        //$response = Response::forge(View::forge('404'), 404); // デフォルト
+        $response = Request::forge("top/404")->execute()->response(); // デフォルト
 
         $req = Request::forge();
         $req->action = "404";
@@ -118,7 +119,7 @@ Autoloader::add_classes(array(
 Controllerごとにエラーハンドリングしたいなーって思いは結構前々からあったのですが、そこまでしっかりした開発をFuelPHPでやる機会もしばらく無く、ようやくこの機会に着手する事が出来ました。
 
 
-正直@<tt>{views/404.php}が着地点なんだから、そこから@<tt>{Request::active()}なり@<tt>{Request::main()}なりでControllerのインスタンス引っ張ってきて@<tt>{action_404}のコールをトライしたら終わりじゃね？くらいの軽い気持ちだったのですが、よくよく処理を追いかけなおして見ると、バッチリ@<tt>{reset_request}なるメソドが張り巡らされており、@<tt>{404.php}はおろか、HttpNotFoundExceptionからもControllerのインスタンスは取得できませんでした。まさかコントローラを再生成するはめにはなるとは…
+正直@<tt>{views/404.php}が着地点なんだから、そこから@<tt>{Request::active()}なり@<tt>{Request::main()}なりでControllerのインスタンス引っ張ってきて@<tt>{action_404}のコールをトライしたら終わりじゃね？くらいの軽い気持ちだったのですが、よくよく処理を追いかけなおして見ると、バッチリ@<tt>{reset_request}なるメソッドが張り巡らされており、@<tt>{404.php}はおろか、HttpNotFoundExceptionからもControllerのインスタンスは取得できませんでした。まさかコントローラを再生成するはめにはなるとは…
 
 
 FuelPHP的なコントローラは基本的に生成コスト低め、のはずなので問題無いとは思いますが、ファットなコントローラで生成コスト高め（特にbeforeがごちゃごちゃしてる…）の時には、処理負担的にあまりオススメできませんが、参考になれば幸いです。
