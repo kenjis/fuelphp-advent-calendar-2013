@@ -107,11 +107,12 @@
         foreach ($lines as $line) {
             if (preg_match('/.*?<h(\d).*?>/u', $line, $matches)) {
                 $top_level = $matches[1];
-                //var_dump($level);
+                //var_dump($top_level);
                 if ($top_level == 1) {
                     // do nothing
                     return $html;
                 }
+                break;
             }
         }
 
@@ -126,7 +127,7 @@
                 $attr    = $matches[3];
                 $after   = $matches[4];
 
-                $h = $h - ($top_level - 2);
+                $h = $h - ($top_level - 1);
                 // remove attr, because pandoc removes <h> with class="title"
                 $newline .= $before . '<h' . $h . '>';
                 $line = $after;
@@ -143,7 +144,7 @@
                 $h       = $matches[2];
                 $after   = $matches[3];
 
-                $h = $h - ($top_level - 2);
+                $h = $h - ($top_level - 1);
                 $newline .= $before . '</h' . $h . '>';
                 $line = $after;
             }
