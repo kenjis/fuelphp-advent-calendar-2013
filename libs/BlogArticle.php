@@ -99,10 +99,70 @@
         return $html;
     }
 
+    public function adjustHeadLevel($html)
+    {
+        $lines = explode("\n", $html);
+        $contents = '';
+
+        foreach ($lines as $line) {
+            if (preg_match('/.*?<h(\d).*?>/u', $line, $matches)) {
+                $top_level = $matches[1];
+                //var_dump($level);
+                if ($top_level == 1) {
+                    // do nothing
+                    return $html;
+                }
+            }
+        }
+
+        $newline = '';
+        foreach ($lines as $line) {
+            // open tag
+            while (preg_match('/(.*?)<h(\d)(.*?)>(.*)/u', $line, $matches))
+            {
+                //var_dump($matches);
+                $before  = $matches[1];
+                $h       = $matches[2];
+                $attr    = $matches[3];
+                $after   = $matches[4];
+
+                $h = $h - ($top_level - 2);
+                // remove attr, because pandoc removes <h> with class="title"
+                $newline .= $before . '<h' . $h . '>';
+                $line = $after;
+            }
+            $newline .= $line;
+            
+            $line = $newline;
+            $newline = '';
+            // close tag
+            while (preg_match('/(.*?)<\/h(\d)>(.*)/u', $line, $matches))
+            {
+                //var_dump($matches);
+                $before  = $matches[1];
+                $h       = $matches[2];
+                $after   = $matches[3];
+
+                $h = $h - ($top_level - 2);
+                $newline .= $before . '</h' . $h . '>';
+                $line = $after;
+            }
+            $newline .= $line;
+            $contents .= $newline . "\n";
+            $newline = '';
+        }
+
+        // remove last "\n"
+        $contents = substr($contents, 0, -1);
+        
+        return $contents;
+    }
+
     public function convertToMarkdown()
     {
         $html = file_get_contents($this->html_file);
         $html = $this->scrapeArticle($html);
+        $html = $this->adjustHeadLevel($html);
         file_put_contents($this->html_file, $html);
 
         system('pandoc --no-wrap -f html -t markdown ' . $this->html_file . ' > ' . $this->markdown_file);
@@ -270,7 +330,7 @@
         $contents = '';
 
         $this->detectBlogType();
-        
+
         foreach ($lines as $line) {
             $line = $this->replaceNoBreakSpace($line);
             $line = $this->convertBackslash($line);
@@ -280,9 +340,7 @@
             $line = $this->convertHankakuKanaDot($line);
             $line = $this->removeBackslash($line);
 
-            if ($this->blogType === 'hatena diary') {
-                $line = $this->removeHatenaKeywordLink($line);
-            }
+            $line = $this->removeHatenaKeywordLink($line);
             
             $contents .= $line . "\n";
         }

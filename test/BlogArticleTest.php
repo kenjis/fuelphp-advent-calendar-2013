@@ -106,6 +106,14 @@ class BlogArticleTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $test);
     }
     
+    public function test_adjustHeadLevel()
+    {
+        $html = file_get_contents(TESTPATH . 'fixture/01.html.scraped');
+        $test = $this->blog->adjustHeadLevel($html);
+        $expected = file_get_contents(TESTPATH . 'fixture/01.html.head_level');
+        $this->assertEquals($expected, $test);
+    }
+
     public function test_convertBackslash()
     {
         $line = '\\';
