@@ -1,9 +1,5 @@
 
-= @<href>{/koyhoge/20131206/twig_databind,JavaScript側にPHP変数を簡単にまるごと渡す方法 #FuelPHPAdvent2013}
-
-
-@<href>{/koyhoge/searchdiary?word=%2A%5Bphp%5D,php}
-
+= JavaScript側にPHP変数を簡単にまるごと渡す方法
 
 ハイ、昨日のオレに引き続き@<href>{http://atnd.org/events/45096,FuelPHP Advent Calendar 2013}の6日目です。
 
@@ -16,7 +12,7 @@
 最近のWebアプリはUIのインタラクションが凝っていて、ブラウザ側のJavaScriptで色んな制御をすることも当たり前になってきました。jQueryや様々なjQueryプラグインを駆使して、ユーザに分かりやすく使いやすいサービスを提供することは、もはやウェブエンジニアとしては持っていて当然のスキルになっています。
 
 
-そのようなUIを作っている際に、JavaScript側に動作パラメータの初期値を渡すのに値を一つ一つテンプレート記法で埋め込むのが面倒だったので、一発で渡せるTwig Extensionを作ったので紹介します。
+そのようなUIを作っている際に、JavaScript側に動作パラメータの初期値を渡すのに値を1つ1つテンプレート記法で埋め込むのが面倒だったので、一発で渡せるTwig Extensionを作ったので紹介します。
 
 == data_bind関数
 
@@ -29,8 +25,9 @@ extension本体はこんなコードです。
 #@# lang: .syntax-highlight
 //emlist{
 <?php
+// @TODO ライセンス明示
 class Hoge_Twig_Extension extends Twig_Extension {
-  :
+
     public function getFunctions()
     {
         return array(
@@ -59,7 +56,7 @@ class Hoge_Twig_Extension extends Twig_Extension {
 //}
 
 
-div要素を不可視にするために、ここでは'hide'というclassを指定していますが、これはCSSで
+div要素を不可視にするために、ここでは@<code>{hide}というclassを指定していますが、これはCSSで
 
 #@# lang: .syntax-highlight
 //emlist{
@@ -68,7 +65,7 @@ div要素を不可視にするために、ここでは'hide'というclassを指
 }
 //}
 
-
+//noindent
 的なものがあることを前提にしています。Bootstrapには含まれてますね。もちろん直接styleを書いてしまってもよいでしょう。
 
 
@@ -107,19 +104,19 @@ JavaScript側でその値を使用するには、例えばjQueryだったら
 == パラメータの解説
 
 
-data_bind 関数は3つのパラメータを持ちます。
+data_bind関数は3つのパラメータを持ちます。
 
 === $name: 名前
 
 
-HTML上で展開される名前です。'data-名前' がその要素のidになります。
+HTML上で展開される名前です。'data-名前'がその要素のidになります。
 
 === $val: 変数
 
 
 展開する変数です。Twigの変数になります。
 
-=== $exclude: 排除するキー (省略可能)
+=== $exclude: 排除するキー（省略可能）
 
 
 変数を全部JS側に渡すのが楽とはいっても、ユーザ側に公開したくない内部プロパティが含まれているかもしれません。そういう場合には、第3引数にそのプロパティ名を渡すことであらかじめ削除した上で展開することができます。
@@ -131,7 +128,7 @@ HTML上で展開される名前です。'data-名前' がその要素のidにな
 {{ data_bind('user', user, 'password') }}
 //}
 
-
+//noindent
 配列にして複数指定することもできます。
 
 //emlist{
@@ -140,3 +137,13 @@ HTML上で展開される名前です。'data-名前' がその要素のidにな
 
 
 ということでお手軽 tips でした。明日のアドベントカレンダーは@@<href>{http://twitter.com/LandscapeSketch,LandscapeSketch}さんです。
+
+//quote{
+@<strong>{@koyhoge}
+
+@TODO
+
+Twitter: @<href>{https://twitter.com/koyhoge,@koyhoge}
+
+Blog: @<href>{http://d.hatena.ne.jp/koyhoge/,http://d.hatena.ne.jp/koyhoge/}
+//}

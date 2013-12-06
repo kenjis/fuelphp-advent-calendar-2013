@@ -1,8 +1,8 @@
 
-= @<href>{/koyhoge/20131205/fuel_twig,FuelPHPでTwig Extension #FuelPHPAdvent2013}
+= FuelPHPでTwig Extension
 
 
-4日目の@@<href>{http://twitter.com/mkkn_info,mkkn_info}さんの@<href>{http://mkkn.hatenablog.jp/entry/2013/12/04/120701,Fuelphpのエラーハンドリングがなんか今ひとつ物足りなかったのでなんとかしてみた話 - どうにもならない日々@mkkn}に引き続き、@<href>{http://atnd.org/events/45096,FuelPHP Advent Calendar 2013}の5日目です。
+4日目の@@<href>{http://twitter.com/mkkn_info,mkkn_info}さんの「Fuelphpのエラーハンドリングがなんか今ひとつ物足りなかったのでなんとかしてみた話 - どうにもならない日々@mkkn」に引き続き、@<href>{http://atnd.org/events/45096,FuelPHP Advent Calendar 2013}の5日目です。
 
 
 ここ数年はアドベントカレンダーの時にしか技術的な内容を書いていない気がするのが恐ろしいところですが、気にせずいきましょう。
@@ -29,13 +29,13 @@ FuelPHPは、基本的にはビューに生のPHPスクリプトを使うこと�
 == Parserパッケージが標準で用意してくれるFuelPHP向けExtension
 
 
-ParserパッケージでTwigを使用すると、Uri, Config, Form, Input, Html, Asset などの便利そうなFuel coreのメソッドを、あらかじめTwig Extensionとしてロードしてくれます。これを行っているのは
+ParserパッケージでTwigを使用すると、Uri、Config、Form、Input、Html、Assetなどの便利そうなFuel coreのメソッドを、あらかじめTwig Extensionとしてロードしてくれます。これを行っているのは
 
 //quote{
 fuel/packages/parser/classes/twig/fuel/extension.php
 //}
 
-
+//noindent
 にある\Parser\Twig_Fuel_Extensionクラスで、これ自体も標準的なTwig Extensionです。
 
 
@@ -46,7 +46,7 @@ fuel/packages/parser/classes/twig/fuel/extension.php
 Asset::js('hogehoge.js');
 //}
 
-
+//noindent
 を呼びたい場所では
 
 #@# lang: .syntax-highlight
@@ -54,7 +54,7 @@ Asset::js('hogehoge.js');
 {{ asset_js('hogehoge.js') }}
 //}
 
-
+//noindent
 と書くことができるわけです。
 
 == アプリ独自のTwig Extensionを使う
@@ -75,7 +75,7 @@ fuel/app/classes/hoge/twig/extension.php
 #@# lang: .syntax-highlight
 //emlist{
 <?php
-
+// @TODO ライセンス明示
 class Hoge_Twig_Extension extends Twig_Extension
 {
     /**
@@ -120,13 +120,13 @@ class Hoge_Twig_Extension extends Twig_Extension
 //}
 
 
-ここではTwigの関数とフィルターを一つずつ登録しています。
+ここではTwigの関数とフィルターを1つずつ登録しています。
 
 
-swap_empty関数
-:   もし引数がempty()で真だったら「-」を出力、そうでなければそのまま。
-jsonフィルター
-:   引数をPHPのjson_encodeに渡した結果を出力。
+: swap_empty関数
+    もし引数がempty()で真だったら「-」を出力、そうでなければそのまま。
+: jsonフィルター
+    引数をPHPのjson_encodeに渡した結果を出力。
 
 
 テンプレート上では以下のように使います。
@@ -148,7 +148,7 @@ jsonフィルター
 fuel/app/config/parser.php
 //}
 
-
+//noindent
 に以下の内容を記述します。
 
 #@# lang: .syntax-highlight
@@ -173,7 +173,17 @@ Twigは非常に柔軟性の高いテンプレートエンジンで、上記で�
 
 
 
-などを独自に拡張できます。詳しく知りたい方は、@<href>{http://twig.sensiolabs.org/doc/advanced.html,Extending Twig} を読むとよいでしょう。
+などを独自に拡張できます。詳しく知りたい方は、@<href>{http://twig.sensiolabs.org/doc/advanced.html,Extending Twig}を読むとよいでしょう。
 
 
 明日のアドベントカレンダーも引き続き私ですw
+
+//quote{
+@<strong>{@koyhoge}
+
+@TODO
+
+Twitter: @<href>{https://twitter.com/koyhoge,@koyhoge}
+
+Blog: @<href>{http://d.hatena.ne.jp/koyhoge/,http://d.hatena.ne.jp/koyhoge/}
+//}
