@@ -78,7 +78,7 @@ div要素を不可視にするために、ここでは@<code>{hide}というclas
   function action_xxx()
   {
     :
-    // $userinfo は情報が入ったObjectまたは連想配列
+    // $userinfoは情報が入ったObjectまたは連想配列
    $this->template->user = $userinfo;
   }
 //}

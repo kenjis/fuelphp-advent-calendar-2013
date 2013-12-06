@@ -157,9 +157,9 @@ fuel/app/config/parser.php
 return array(
     'View_Twig' => array(
         'extensions' => array(
-            ‘Hoge_Twig_Extension',
-            ),
+            'Hoge_Twig_Extension',
         ),
+    ),
 ); 
 //}
 
