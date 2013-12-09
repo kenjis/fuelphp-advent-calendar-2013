@@ -14,7 +14,7 @@ FuelPHPは、基本的にはビューに生のPHPスクリプトを使うこと�
 
  * @<href>{http://twig.sensiolabs.org/,Twig}
  * @<href>{http://mustache.github.io/,Mustache}
- * @<href>{http://pecl.php.net/package/markdown,MarkDown}
+ * @<href>{http://pecl.php.net/package/markdown,Markdown}
  * @<href>{http://dwoo.org/,Dwoo}
  * @<href>{http://jade-lang.com/,Jade}
  * @<href>{http://haml.info/,Haml}

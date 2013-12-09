@@ -34,7 +34,7 @@ class Hoge_Twig_Extension extends Twig_Extension {
         return array(
             'data_bind' =>
                 new Twig_Function_Method($this, 'dataBind'),
-            );
+        );
     }
 
     public function dataBind($name, $val, $exclude = null)
@@ -42,7 +42,7 @@ class Hoge_Twig_Extension extends Twig_Extension {
         if (is_object($val) && is_callable(array($val, 'to_array'))) {
             $val = $val->to_array();
         }
-        if (!empty($exclude)) {
+        if (! empty($exclude)) {
             if (is_string($exclude)) {
                 $exclude = array($exclude);
             }
@@ -74,12 +74,12 @@ div要素を不可視にするために、ここでは@<code>{hide}というclas
 
 #@# lang: .syntax-highlight
 //emlist{
-  function action_xxx()
-  {
-     …略…
-    // $userinfoは情報が入ったObjectまたは連想配列
-    $this->template->user = $userinfo;
-  }
+    function action_xxx()
+    {
+        …略…
+        // $userinfoは情報が入ったObjectまたは連想配列
+        $this->template->user = $userinfo;
+    }
 //}
 
 //noindent
