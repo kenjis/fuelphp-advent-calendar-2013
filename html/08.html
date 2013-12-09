@@ -1,0 +1,827 @@
+
+<!DOCTYPE html>
+<html xmlns:og="http://ogp.me/ns#">
+  <head><script type="text/javascript">var NREUMQ=NREUMQ||[];NREUMQ.push(["mark","firstbyte",new Date().getTime()]);</script>
+    <meta charset="UTF-8">
+    <title>FuelPHPを更に使ってみて使えるなと思った拡張ValidationRuleの書き方とCore拡張の小技 - Qiita [キータ]</title>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,height=device-height,initial-scale=1"/>
+    <meta name="description" content="FuelPHP Advent Calendar 2013の8日目です。
+昨日は、@LandscapeSketchさんの「FuelPHP開発でローカルとWebで構造が変わっても対応できる小技」でした。
+
+        
+        FuelPHPを更に使ってみて使えるなと思った拡張ValidationRuleの書き方とCore拡張の小技
+      タイトル長っw
+CMS系のサイト構築は大体どのフレームワークでも問題ないのですが、基幹業務チックな機能要件があると、様..."/>
+    
+
+    <meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@Qiita">
+  <meta name="twitter:creator" content="sa2yasu">
+
+    
+    <meta property="og:title" content="FuelPHPを更に使ってみて使えるなと思った拡張ValidationRuleの書き方とCore拡張の小技 - Qiita [キータ]" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://qiita.com/ya-sasaki@github/items/e238f86cabce3acfbe53" />
+<meta property="og:image" content="https://secure.gravatar.com/avatar/814f84143dc749dfe904d266ba364819?d=https://a248.e.akamai.net/assets.github.com%2Fimages%2Fgravatars%2Fgravatar-user-420.png" />
+<meta property="og:description" content="[FuelPHP Advent Calendar 2013](http://atnd.org/events/45096)の8日目です。
+昨日は、[@LandscapeSketchさん](https://twitter.com/Land..." />
+<meta property="og:site_name" content="Qiita" />
+<meta property="fb:admins" content="564524038" />
+
+
+    <link rel="shortcut icon" type="image/x-icon"
+      href="/favicon.ico?v=4">
+<link rel="icon" type="image/png"
+      href="/favicon.ico?v=4">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+    <link href="/assets/public-application-b0d2a119401c219b3e6f4378ffbdfdd4.css" media="screen" rel="stylesheet" />
+    <link href="/assets/responsive-layout-8185ff3eca0dfd26b4a3c81f7fb9c311.css" media="screen" rel="stylesheet" />
+    <meta content="authenticity_token" name="csrf-param" />
+<meta content="0CHgdf6g8zbRVmsN4eLI02pQs9qeWjheKvx0xjyOgxo=" name="csrf-token" />
+    
+  </head>
+  <body id="">
+    <script>
+  // Application Namespace
+  var Qiita = {
+    controller_path: 'items',
+    controller: 'items',
+    action: 'show',
+
+    // Fake jQuery
+    _q: [],
+    // The ready function that collect calls and put it in the queue
+    ready: function (func) {
+      if (typeof func==='function') Qiita._q.push(func);
+      // return jQl in order to support jQuery(document).ready()
+      return Qiita
+    },
+    // Run all queues inline $.ready() calls in the right order and purge the
+    // queue
+    unqueue: function () {
+      for (var i = 0, l = Qiita._q.length; i < l; i++) Qiita._q[i](); 
+      Qiita._q = [];
+    }
+  };
+  var $ = Qiita.ready, jQuery = $;
+</script>
+
+    
+
+      <header id="global-header-nav" class="navbar navbar-static-top">
+  <div class="navbar-inner">
+    <div class="container position-relative">
+      <h1>
+          <a class="brand" href="/">Qiita [キータ] - プログラマの技術情報共有サービス</a>
+      </h1>
+      <div class="hidden-phone">
+        <form accept-charset="UTF-8" action="/search" class="navbar-form pull-left" id="search-form" method="get"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="&#x2713;" /></div>
+          <input id="sort" name="sort" type="hidden" />
+          <div class="query-wrapper">
+            <input class="query span2" id="q" name="q" placeholder="投稿/ユーザー検索" type="text" />
+            <div id="stock-item-search-check">
+              <input id="stock-item-search" name="stocked" type="checkbox" value="1" />
+              <label for="stock-item-search">
+                <img alt="ストックした投稿を検索" src="/assets/icon-stocked-ddb8309d59b5a47058f0de59d50edecb.png" />
+                ストックした投稿を検索
+              </label>
+            </div>
+          </div>
+          <input class="btn" id="search-button" name="commit" type="submit" value="検索" />
+</form>            <div class="visible-desktop">
+              <div id="headline-news">
+                <span id="news-content">
+                  Qiita [キータ] - プログラマの技術情報共有サービス
+                </span>
+              </div>
+            </div>
+      </div>
+      <ul id="nav-right" class="nav pull-right">
+          <li class="signup">
+            <a class="js-signup-button btn" href="/signup">ユーザ登録</a>
+          </li>
+          <li class="hoverable login">
+            <a href="#" class="login-link">ログイン<span class="triangle">&#9662;</span></a>
+            <ul class="login-nav unstyled">
+              <li>
+                <a class="js-login-button" data-provider="GitHub" href="https://qiita.com/auth/github">GitHubログイン</a>
+              </li>
+              <li>
+                <a class="js-login-button" data-provider="Twitter" href="https://qiita.com/auth/twitter">Twitterログイン</a>
+              </li>
+            </ul>
+          </li>
+      </ul>
+    </div>
+  </div>
+</header>
+<script>
+  $(function() {
+    $('#global-nav-mypage').hover(
+      function() {
+        $('#sub-navigation').stop().fadeIn(100);
+      }, function() {
+        $('#sub-navigation').delay(500).fadeOut(100);
+      }
+    );
+    $('.switcher').click(function() {
+      $(this).find('ul').toggle();
+    });
+    var $form = $('#search-form'),
+        $query = $form.find('.query');
+    $form.submit(function(ev) {
+      var self = this;
+      ev.preventDefault();
+      var stocked = !!$('#stock-item-search').attr('checked');
+      var keyword = $query.val();
+      Qiita.Mixpanel.search({
+        stocked: stocked,
+        keyword: keyword
+      }, function() {
+          self.submit();
+      });
+    });
+    $form.find('.query').focus(function() {
+      $(this).animate({ width:"250px" }, 300);
+      $('#search-button').fadeIn('300');
+      $('#stock-item-search-check').fadeIn('300');
+      $('#headline-news').fadeOut('300');
+    });
+    $('#main').click(function() {
+      $('#stock-item-search-check').fadeOut(200);
+      $('.nav.switcher > ul').fadeOut(200);
+      $('.login-nav').hide();
+    });
+    $('.login-link').mouseover(function() {
+      $('.login-nav').fadeIn(100);
+    });
+    $('.js-signup-button').click(function(ev) {
+      ev.preventDefault();
+      Qiita.Mixpanel.signupButtonClick({}, function() {
+        window.location = ev.target.href;
+      });
+    });
+    $('.js-login-button').click(function(ev) {
+      ev.preventDefault();
+      var target = $(ev.target);
+      Qiita.analysis.login({
+        loginType: target.data('provider'),
+        place: 'navbar'
+      }).always(function () {
+        location.href = target.attr('href');
+      });
+    });
+  });
+</script>
+
+  <div id="main">
+
+
+<!-- Breadcrumb for search engines -->
+<span itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+  <link itemprop="url" href="/ya-sasaki@github" />
+  <meta itemprop="title" content="ya-sasaki@github" />
+</span>
+<span itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+  <link itemprop="url" href="/ya-sasaki@github/items" />
+  <meta itemprop="title" content="items" />
+</span>
+
+<article id="item-page" itemscope itemtype="http://schema.org/Article">
+  <header class="article-header">
+    <div class="container">
+
+      <div class="row">
+        <a alt="ya-sasaki@github" class="span1 hidden-phone" href="/ya-sasaki@github"><img alt="Assets.github.com%2fimages%2fgravatars%2fgravatar user 420" class="author-icon" src="https://secure.gravatar.com/avatar/814f84143dc749dfe904d266ba364819?d=https://a248.e.akamai.net/assets.github.com%2Fimages%2Fgravatars%2Fgravatar-user-420.png" /></a>
+        <div class="span8">
+          <h1 class="item-title">
+            <span itemprop="name">FuelPHPを更に使ってみて使えるなと思った拡張ValidationRuleの書き方とCore拡張の小技</span>
+          </h1>
+          <ul class="tag-list unstyled">
+              <li>
+                <div class="tooltip-container">
+                  <a href="/tags/fuelphp">
+                    <img alt="FuelPHP" src="https://s3-ap-northeast-1.amazonaws.com/qiita-tag-image/12a63284f5695e774c55532b42e1e1d62a47ab2c/large.jpg?1364839801" />
+                    FuelPHP(62)
+</a>                </div>
+              </li>
+          </ul>
+          <ul class="unstyled item-status">
+            <li>
+              <img alt="Assets.github.com%2fimages%2fgravatars%2fgravatar user 420" class="visible-phone author-icon small" src="https://secure.gravatar.com/avatar/814f84143dc749dfe904d266ba364819?d=https://a248.e.akamai.net/assets.github.com%2Fimages%2Fgravatars%2Fgravatar-user-420.png" />
+              <a href="/ya-sasaki@github">ya-sasaki@github</a>が<time datetime="2013-12-08T03:29:48+09:00" itemprop="datePublished">2013年12月08日</time>に投稿
+                (<time datetime="2013-12-09T10:19:50+09:00" itemprop="dateModified">2013年12月09日</time>に編集)
+            </li>
+              <li>
+                <a href="/ya-sasaki@github/items/e238f86cabce3acfbe53/revisions">編集履歴(2)</a>
+              </li>
+              <li class="hidden-phone">
+                <a href="/items/e238f86cabce3acfbe53/edit">編集リクエストを作成する</a>
+              </li>
+          </ul>
+        </div>
+        <section class="span3">
+          <div>
+            <ul id="item-stats-list" class="unstyled">
+                <li class=muted>
+                  <div class="count stock" id="stock-user-count">0</div>
+                  <div class="text">ストック</div>
+                </li>
+              <li>
+                <a href="#comments">
+                  <div class="count comment" itemprop="interactionCount"
+                      content="0 UserComments">0</div>
+                  <div class="text">コメント</div>
+</a>              </li>
+            </ul>
+          </div>
+              <a class="btn btn-primary stock-button btn-block js-stock-btn" data-position="top" href="javascript:void(0)" title="Stock">
+                この投稿をストックする
+</a>          <div class="row">
+            <div class="span3">
+              <ul class="unstyled user-icon-list">
+              </ul>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </header>
+  <div class="container">
+    <div class="row scroll-chaser-wrapper">
+      <div class="span9">
+        
+        <section class="markdown-content heading-anchor bordered">
+          <section id="item-e238f86cabce3acfbe53" class="position-relative" itemprop="articleBody">
+            <p><a href="http://atnd.org/events/45096" title="http://atnd.org/events/45096" target="_blank">FuelPHP Advent Calendar 2013</a>の8日目です。<br>
+昨日は、<a href="https://twitter.com/LandscapeSketch" title="https://twitter.com/LandscapeSketch" target="_blank"><b><a href="/LandscapeSketch" title="LandscapeSketch" target="_blank">@LandscapeSketch</a></b>さん</a>の「<a href="http://worktoolsmith.com/2013/12/fuelphp-advent-2013/" title="http://worktoolsmith.com/2013/12/fuelphp-advent-2013/" target="_blank">FuelPHP開発でローカルとWebで構造が変わっても対応できる小技</a>」でした。</p>
+<h1>
+        <span id="1-1" class="fragment"></span>
+        <a href="#1-1"><i class="icon-link"></i></a>FuelPHPを更に使ってみて使えるなと思った拡張ValidationRuleの書き方とCore拡張の小技
+      </h1><p>タイトル長っw</p>
+<p>CMS系のサイト構築は大体どのフレームワークでも問題ないのですが、基幹業務チックな機能要件があると、様々なモデルの組み合わせで入力値の検証をしたりだとか、項目間において依存性のあるチェックだとかが頻発します。<br>
+PHPで基幹システム作らない方が・・・というご意見もごもっともで、そのうちもっとナウい言語にシフトしていきたいと思います。<br>
+本題に戻るとFuelPHPはその辺が結構柔軟で、やりようによってはいくらでも対応できるので、一年半ぐらい実プロジェクトで使ってきましたが困ることは特になかったです。<br>
+強いていえば、ORMでrelatedしてrows_limitするとあばばばってなりますが、クエリビルダとORMの勘所も掴んだので特に問題ありません。</p>
+<h2>
+        <span id="2-1" class="fragment"></span>
+        <a href="#2-1"><i class="icon-link"></i></a>１.おさらい
+      </h2><p><a href="http://fuelphp.jp/docs/1.7/classes/validation/validation.html" title="http://fuelphp.jp/docs/1.7/classes/validation/validation.html" target="_blank">公式ドキュメント(日本語訳)</a><br>
+デフォルトの入力検証含め、こちらに書いてある内容でほとんどの入力値の検証は可能です。</p>
+<h2>
+        <span id="2-2" class="fragment"></span>
+        <a href="#2-2"><i class="icon-link"></i></a>２.複数の任意のパラメータを用いて検証したい場合
+      </h2><p>複数のポストされたパラメータを用いた検証を行いたい場合、拡張Validationを書きますが、<br>
+公式サンプルのパラメータの渡し方がなんとも・・・</p>
+<div class="code-frame" data-lang="php"><div class="code-lang"><span class="bold">公式のサンプル</span></div><div class="highlight"><pre><span class="c1">// app/classes/myrules.php</span>
+<span class="k">class</span> <span class="nc">MyRules</span>
+<span class="p">{</span>
+    <span class="c1">// note this is a static method</span>
+    <span class="k">public</span> <span class="k">static</span> <span class="k">function</span> <span class="nf">_validation_unique</span><span class="p">(</span><span class="nv">$val</span><span class="p">,</span> <span class="nv">$options</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">list</span><span class="p">(</span><span class="nv">$table</span><span class="p">,</span> <span class="nv">$field</span><span class="p">)</span> <span class="o">=</span> <span class="nb">explode</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="nv">$options</span><span class="p">);</span> <span class="c1">// デリミタェェ・・・</span>
+
+        <span class="nv">$result</span> <span class="o">=</span> <span class="nx">DB</span><span class="o">::</span><span class="na">select</span><span class="p">(</span><span class="s2">&quot;LOWER (</span><span class="se">\&quot;</span><span class="si">$field</span><span class="se">\&quot;</span><span class="s2">)&quot;</span><span class="p">)</span>
+        <span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="nv">$field</span><span class="p">,</span> <span class="s1">&#39;=&#39;</span><span class="p">,</span> <span class="nx">Str</span><span class="o">::</span><span class="na">lower</span><span class="p">(</span><span class="nv">$val</span><span class="p">))</span>
+        <span class="o">-&gt;</span><span class="na">from</span><span class="p">(</span><span class="nv">$table</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">execute</span><span class="p">();</span>
+
+        <span class="k">return</span> <span class="o">!</span> <span class="p">(</span><span class="nv">$result</span><span class="o">-&gt;</span><span class="na">count</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="c1">// note this is a non-static method</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">_validation_is_upper</span><span class="p">(</span><span class="nv">$val</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="nv">$val</span> <span class="o">===</span> <span class="nx">strtoupper</span><span class="p">(</span><span class="nv">$val</span><span class="p">);</span>
+    <span class="p">}</span>
+
+<span class="p">}</span>
+
+<span class="c1">// and call it like:</span>
+<span class="nv">$val</span> <span class="o">=</span> <span class="nx">Validation</span><span class="o">::</span><span class="na">forge</span><span class="p">();</span>
+
+<span class="c1">// Note the difference between static and non-static validation rules:</span>
+
+<span class="c1">// Add it staticly, will only be able to use static methods</span>
+<span class="nv">$val</span><span class="o">-&gt;</span><span class="na">add_callable</span><span class="p">(</span><span class="s1">&#39;MyRules&#39;</span><span class="p">);</span>
+
+<span class="c1">// Adds it non-static, will be able to use both static and non-static methods</span>
+<span class="nv">$val</span><span class="o">-&gt;</span><span class="na">add_callable</span><span class="p">(</span><span class="k">new</span> <span class="nx">MyRules</span><span class="p">());</span>
+
+<span class="nv">$val</span><span class="o">-&gt;</span><span class="na">add</span><span class="p">(</span><span class="s1">&#39;username&#39;</span><span class="p">,</span> <span class="s1">&#39;Your username&#39;</span><span class="p">,</span> <span class="k">array</span><span class="p">(),</span> <span class="k">array</span><span class="p">(</span><span class="s1">&#39;trim&#39;</span><span class="p">,</span> <span class="s1">&#39;strip_tags&#39;</span><span class="p">,</span> <span class="s1">&#39;required&#39;</span><span class="p">,</span> <span class="s1">&#39;is_upper&#39;</span><span class="p">))</span>
+    <span class="o">-&gt;</span><span class="na">add_rule</span><span class="p">(</span><span class="s1">&#39;unique&#39;</span><span class="p">,</span> <span class="s1">&#39;users.username&#39;</span><span class="p">);</span>
+</pre></div></div><p>以下のようにして書くと、わざわざパラメータをデリミタで区切らなくても引数として渡すことができます。</p>
+<div class="code-frame" data-lang="php"><div class="code-lang"><span class="bold">一部抜粋＆修正</span></div><div class="highlight"><pre><span class="c1">// app/classes/myrules.php</span>
+<span class="k">class</span> <span class="nc">MyRules</span>
+<span class="p">{</span>
+    <span class="c1">// note this is a static method</span>
+    <span class="k">public</span> <span class="k">static</span> <span class="k">function</span> <span class="nf">_validation_unique</span><span class="p">(</span><span class="nv">$val</span><span class="p">,</span> <span class="nv">$table</span><span class="p">,</span> <span class="nv">$field</span><span class="p">)</span> <span class="c1">// 引数で渡ってくるよ</span>
+    <span class="p">{</span>
+        <span class="nv">$result</span> <span class="o">=</span> <span class="nx">DB</span><span class="o">::</span><span class="na">select</span><span class="p">(</span><span class="s2">&quot;LOWER (</span><span class="se">\&quot;</span><span class="si">$field</span><span class="se">\&quot;</span><span class="s2">)&quot;</span><span class="p">)</span>
+        <span class="o">-&gt;</span><span class="na">where</span><span class="p">(</span><span class="nv">$field</span><span class="p">,</span> <span class="s1">&#39;=&#39;</span><span class="p">,</span> <span class="nx">Str</span><span class="o">::</span><span class="na">lower</span><span class="p">(</span><span class="nv">$val</span><span class="p">))</span>
+        <span class="o">-&gt;</span><span class="na">from</span><span class="p">(</span><span class="nv">$table</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">execute</span><span class="p">();</span>
+
+        <span class="k">return</span> <span class="o">!</span> <span class="p">(</span><span class="nv">$result</span><span class="o">-&gt;</span><span class="na">count</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="err">　・・・省略</span>
+<span class="p">}</span>
+
+<span class="err">・・・省略</span>
+<span class="nv">$val</span><span class="o">-&gt;</span><span class="na">add</span><span class="p">(</span><span class="s1">&#39;username&#39;</span><span class="p">,</span> <span class="s1">&#39;Your username&#39;</span><span class="p">,</span> <span class="k">array</span><span class="p">(),</span> <span class="k">array</span><span class="p">(</span><span class="s1">&#39;trim&#39;</span><span class="p">,</span> <span class="s1">&#39;strip_tags&#39;</span><span class="p">,</span> <span class="s1">&#39;required&#39;</span><span class="p">,</span> <span class="s1">&#39;is_upper&#39;</span><span class="p">))</span>
+    <span class="o">-&gt;</span><span class="na">add_rule</span><span class="p">(</span><span class="s1">&#39;unique&#39;</span><span class="p">,</span> <span class="s1">&#39;users&#39;</span><span class="p">,</span> <span class="s1">&#39;username&#39;</span><span class="p">);</span> <span class="c1">// デリミタつけなくても渡せます</span>
+</pre></div></div><h1>
+        <span id="1-2" class="fragment"></span>
+        <a href="#1-2"><i class="icon-link"></i></a>３.独自バリデーションはバリデーションクラス作らなきゃダメですか？
+      </h1><p>答えはノー。再利用性のあるもの(汎用的な独自バリデーション)はクラスにしておいた方が後々使い回しがききますが、例えばログイン検証なんかは再利用しませんよね？<br>
+バリデーションクラスを作らずに独自ルールを定義するにはClosureを使います。</p>
+<div class="code-frame" data-lang="php"><div class="code-lang"><span class="bold">Closureで書くルール</span></div><div class="highlight"><pre><span class="cm">/*</span>
+<span class="cm"> * Copyright (c) 2013 Yasuyuki Sasaki</span>
+<span class="cm"> * This software is released under the MIT License.</span>
+<span class="cm"> * http://opensource.org/licenses/mit-license.php</span>
+<span class="cm"> */</span>
+<span class="k">public</span> <span class="k">static</span> <span class="k">function</span> <span class="nf">login_validate</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="nv">$val</span> <span class="o">=</span> <span class="nx">Validation</span><span class="o">::</span><span class="na">forge</span><span class="p">();</span>
+    <span class="nv">$password</span> <span class="o">=</span> <span class="nx">Input</span><span class="o">::</span><span class="na">post</span><span class="p">(</span><span class="s1">&#39;password&#39;</span><span class="p">);</span>
+
+    <span class="nv">$val</span><span class="o">-&gt;</span><span class="na">add</span><span class="p">(</span><span class="s1">&#39;email&#39;</span><span class="p">,</span> <span class="s1">&#39;Email&#39;</span><span class="p">)</span>
+        <span class="o">-&gt;</span><span class="na">add_rule</span><span class="p">(</span><span class="s1">&#39;required&#39;</span><span class="p">)</span>
+        <span class="o">-&gt;</span><span class="na">add_rule</span><span class="p">(</span> <span class="c1">// login_validate</span>
+            <span class="k">function</span><span class="p">(</span><span class="nv">$email</span><span class="p">)</span> <span class="k">use</span> <span class="p">(</span><span class="nv">$password</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nv">$email</span> <span class="o">||</span> <span class="o">!</span><span class="nv">$password</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="k">return</span> <span class="k">true</span><span class="p">;</span>
+                <span class="p">}</span>
+                <span class="nv">$user</span> <span class="o">=</span> <span class="nx">Model_User</span><span class="o">::</span><span class="na">query</span><span class="p">()</span><span class="o">-&gt;</span>
+                    <span class="na">where</span><span class="p">(</span><span class="s1">&#39;email&#39;</span><span class="p">,</span> <span class="nv">$email</span><span class="p">)</span><span class="o">-&gt;</span>
+                    <span class="na">where</span><span class="p">(</span><span class="s1">&#39;password&#39;</span><span class="p">,</span> <span class="nv">$password</span><span class="p">)</span><span class="o">-&gt;</span>
+                    <span class="na">where</span><span class="p">(</span><span class="s1">&#39;del_flg&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">get_one</span><span class="p">();</span>
+
+                <span class="k">if</span> <span class="p">(</span><span class="nv">$user</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="k">return</span> <span class="k">true</span><span class="p">;</span>
+                <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                    <span class="nx">Validation</span><span class="o">::</span><span class="na">active</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">set_message</span><span class="p">(</span><span class="s1">&#39;closure&#39;</span><span class="p">,</span> <span class="s1">&#39;ログインに失敗しました。&#39;</span><span class="p">);</span>
+                    <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
+                <span class="p">}</span>
+            <span class="p">});</span>
+    <span class="nv">$val</span><span class="o">-&gt;</span><span class="na">add_field</span><span class="p">(</span><span class="s1">&#39;password&#39;</span><span class="p">,</span> <span class="s1">&#39;パスワード&#39;</span><span class="p">,</span> <span class="s1">&#39;required&#39;</span><span class="p">);</span>
+    <span class="k">return</span> <span class="nv">$val</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div></div><h2>
+        <span id="2-3" class="fragment"></span>
+        <a href="#2-3"><i class="icon-link"></i></a>検証ルールにClosureを使う場合の落とし穴
+      </h2><p>Closureで複数のルールを定義するとValidation::active()->set_messageで定義したメッセージがおかしなことになります。以下のサンプルを見てください。<br>
+わざと検証に失敗する２つのルールをClosureで定義します。</p>
+<div class="code-frame" data-lang="php"><div class="code-lang"><span class="bold">ルールをClosureで複数書く</span></div><div class="highlight"><pre><span class="nv">$val</span> <span class="o">=</span> <span class="nx">Validation</span><span class="o">::</span><span class="na">forge</span><span class="p">();</span>
+
+<span class="nv">$val</span><span class="o">-&gt;</span><span class="na">add</span><span class="p">(</span><span class="s1">&#39;test1&#39;</span><span class="p">,</span> <span class="s1">&#39;test1&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">add_rule</span><span class="p">(</span>
+    <span class="k">function</span><span class="p">(</span><span class="nv">$val</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">Validation</span><span class="o">::</span><span class="na">active</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">set_message</span><span class="p">(</span><span class="s1">&#39;closure&#39;</span><span class="p">,</span> <span class="s1">&#39;closure message 1&#39;</span><span class="p">);</span>
+        <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">);</span>
+<span class="nv">$val</span><span class="o">-&gt;</span><span class="na">add</span><span class="p">(</span><span class="s1">&#39;test2&#39;</span><span class="p">,</span> <span class="s1">&#39;test2&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">add_rule</span><span class="p">(</span>
+    <span class="k">function</span><span class="p">(</span><span class="nv">$val</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">Validation</span><span class="o">::</span><span class="na">active</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">set_message</span><span class="p">(</span><span class="s1">&#39;closure&#39;</span><span class="p">,</span> <span class="s1">&#39;closure message 2&#39;</span><span class="p">);</span>
+        <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">);</span>
+</pre></div></div><p>この検証を実行すると以下のようなエラーが出力されます。</p>
+<div class="code-frame" data-lang="実行結果"><div class="highlight"><pre>closure message 2
+closure message 2
+</pre></div></div><p>後に定義した方のメッセージが先に定義したclosureのメッセージを上書きしてしまうんですね。<br>
+よーく公式ドキュメントを読むとそれらしいことが書いてあるのですが、こういう場合はClosureのルールに名前をつけてあげるといいらしいです。(匿名関数に名前つけるってどういうこっちゃと思うかもしれませんが・・・)</p>
+<div class="code-frame" data-lang="php"><div class="code-lang"><span class="bold">Closureに名前をつける</span></div><div class="highlight"><pre><span class="nv">$val</span> <span class="o">=</span> <span class="nx">Validation</span><span class="o">::</span><span class="na">forge</span><span class="p">();</span>
+
+<span class="nv">$val</span><span class="o">-&gt;</span><span class="na">add</span><span class="p">(</span><span class="s1">&#39;test1&#39;</span><span class="p">,</span> <span class="s1">&#39;test1&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">add_rule</span><span class="p">([</span><span class="s1">&#39;closure1&#39;</span> <span class="o">=&gt;</span> 
+    <span class="k">function</span><span class="p">(</span><span class="nv">$val</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">Validation</span><span class="o">::</span><span class="na">active</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">set_message</span><span class="p">(</span><span class="s1">&#39;closure1&#39;</span><span class="p">,</span> <span class="s1">&#39;closure message 1&#39;</span><span class="p">);</span>
+        <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
+    <span class="p">}]</span>
+<span class="p">);</span>
+<span class="nv">$val</span><span class="o">-&gt;</span><span class="na">add</span><span class="p">(</span><span class="s1">&#39;test2&#39;</span><span class="p">,</span> <span class="s1">&#39;test2&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">add_rule</span><span class="p">([</span><span class="s1">&#39;closure2&#39;</span> <span class="o">=&gt;</span> 
+    <span class="k">function</span><span class="p">(</span><span class="nv">$val</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">Validation</span><span class="o">::</span><span class="na">active</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">set_message</span><span class="p">(</span><span class="s1">&#39;closure2&#39;</span><span class="p">,</span> <span class="s1">&#39;closure message 2&#39;</span><span class="p">);</span>
+        <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
+    <span class="p">}]</span>
+<span class="p">);</span>
+</pre></div></div><p>見てわかるとおりClosureのルールをキーとClosureの連想配列でadd_ruleに渡してあげます。<br>
+こうするとFuelPHPの中で「このClosureのルールで検証に失敗したらこのメッセージを表示する」というような関連づけが行われるようになります。</p>
+<h1>
+        <span id="1-3" class="fragment"></span>
+        <a href="#1-3"><i class="icon-link"></i></a>４.Core拡張の小技
+      </h1><p>ついでの小ネタ。<br>
+拡張バリデーションを定義する際、デフォルトのルールにないけど汎用的な検証を行うというケースがあると思います。</p>
+<div class="code-frame" data-lang="php"><div class="code-lang"><span class="bold">sample</span></div><div class="highlight"><pre><span class="nv">$val</span> <span class="o">=</span> <span class="nx">Validation</span><span class="o">::</span><span class="na">forge</span><span class="p">();</span>
+<span class="nv">$val</span><span class="o">-&gt;</span><span class="na">add_callable</span><span class="p">(</span><span class="k">new</span> <span class="nx">Validate_Common</span><span class="p">());</span> <span class="c1">// 汎用的な独自ルール</span>
+</pre></div></div><p>数カ所から呼ばれるならこれでもよいかもしれません。<br>
+ですが、これが数十とかになったりすると汎用ルールのadd_callable書くの面倒くさくなりません？<br>
+DRY(Don&#39;t repeat yourself)しましょ</p>
+<div class="code-frame" data-lang="php"><div class="code-lang"><span class="bold">fuel/app/classes/core/validation.php</span></div><div class="highlight"><pre><span class="cm">/*</span>
+<span class="cm"> * Copyright (c) 2013 Yasuyuki Sasaki</span>
+<span class="cm"> * This software is released under the MIT License.</span>
+<span class="cm"> * http://opensource.org/licenses/mit-license.php</span>
+<span class="cm"> */</span>
+<span class="k">class</span> <span class="nc">Validation</span> <span class="k">extends</span> <span class="nx">\Fuel\Core\Validation</span>
+<span class="p">{</span>
+    <span class="k">protected</span> <span class="k">function</span> <span class="nf">__construct</span><span class="p">(</span><span class="nv">$fieldset</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">parent</span><span class="o">::</span><span class="na">__construct</span><span class="p">(</span><span class="nv">$fieldset</span><span class="p">);</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">add_callable</span><span class="p">(</span><span class="k">new</span> <span class="nx">Validate_Common</span><span class="p">());</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div></div><div class="code-frame" data-lang="php"><div class="code-lang"><span class="bold">fuel/app/bootstrap.phpのオートローダ部分</span></div><div class="highlight"><pre><span class="nx">Autoloader</span><span class="o">::</span><span class="na">add_classes</span><span class="p">(</span><span class="k">array</span><span class="p">(</span>
+    <span class="s1">&#39;Validation&#39;</span>          <span class="o">=&gt;</span> <span class="nx">__DIR__</span><span class="o">.</span><span class="s1">&#39;/classes/core/validation.php&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;View&#39;</span>                <span class="o">=&gt;</span> <span class="nx">__DIR__</span><span class="o">.</span><span class="s1">&#39;/classes/core/view.php&#39;</span><span class="p">,</span>
+<span class="p">));</span>
+</pre></div></div><p>これでadd_callableしなくてもバリデーション定義に汎用ルールが使えるようになります。<br>
+同じ要領で汎用的なViewの表示処理やデータ整形などもViewクラスを拡張するとDRYできるようになります。</p>
+<div class="code-frame" data-lang="php"><div class="code-lang"><span class="bold">fuel/app/core/view.php</span></div><div class="highlight"><pre><span class="k">class</span> <span class="nc">View</span> <span class="k">extends</span> <span class="nx">\Fuel\Core\View</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">hogeFormat</span><span class="p">(</span><span class="nv">$val</span><span class="p">)</span>
+    <span class="p">{</span>
+    <span class="err">・・・なんか整形する処理</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div></div><p>そんなこんなで「もうバリデーションなんて怖くないぞ」という感じにまとまりました。</p>
+<h1>
+        <span id="1-4" class="fragment"></span>
+        <a href="#1-4"><i class="icon-link"></i></a>最後に
+      </h1><p>コミュニティも盛り上がり、各地で実績が増え、弊社でもFuelPHPが定着化してきました。<br>
+私自身PHP歴は２年弱、FuelPHPは１年半とPHPを初めて間もなくFuelPHPと出会いました。<br>
+元々他言語においてもフレームワークを追っかけるのが好きだったので、PHPでもZend、Symfony、CakePHP、CI、kohana、どれにしようかな神様の言う通りせっ(ry 状態だったのですが、FuelPHP選んでよかったです(笑)</p>
+<p>明日は、<a href="https://twitter.com/kenji_s" title="https://twitter.com/kenji_s" target="_blank">@kenji_s</a>さんの「<a href="http://blog.a-way-out.net/blog/2013/12/09/fuelphp-aspectmock/" title="http://blog.a-way-out.net/blog/2013/12/09/fuelphp-aspectmock/" target="_blank">AspectMockでFuelPHPのアプリを100％テスト可能にする</a>」です。</p>
+
+          </section>
+        </section>
+        
+        <section>
+            <div id="item-footer-action-box">
+                <a class="btn btn-primary stock-button js-stock-btn" data-position="bottom" href="javascript:void(0)">この投稿をストックする</a>
+                &nbsp;<a class="hidden-phone" href="/items/e238f86cabce3acfbe53/edit">編集リクエストを作成する</a>
+            </div>
+              <div class="text-advertisement">
+  <span class="label label-info">PR</span>
+  <a class="js-advertisement-text" href="http://training.qiita.com/?utm_source=qiita&amp;utm_medium=text" target="_blank">
+    MacでかんたんにGitの基本を学ぶ <i class="icon-external-link"></i>
+</a></div>
+<script>
+$(function() {
+  $('.js-advertisement-text').click(function() {
+    Qiita.analysis.clickAdvertisement({
+      type: 'text',
+      place: 'bottom',
+      adId: 'training'
+    })
+  });
+});
+</script>
+
+        </section>
+        <section>
+          <div class="comments-wrapper">
+    <div class="login-to-comment">
+  <p>新規登録/ログインして、会話に参加しましょう。</p>
+  <div>
+    <a class="btn btn-github" href="https://qiita.com/auth/github"><i class="icon-github"></i>&nbsp;GitHubで新規登録/ログイン</a>
+    <a class="btn btn-twitter" href="https://qiita.com/auth/twitter"><i class="icon-twitter"></i>&nbsp;Twitterで新規登録/ログイン</a>
+  </div>
+</div>
+
+</div>
+
+<script type="application/json" id="js-mention">
+    [{&quot;id&quot;:10959,&quot;url_name&quot;:&quot;ya-sasaki@github&quot;,&quot;profile_image_url&quot;:&quot;https://secure.gravatar.com/avatar/814f84143dc749dfe904d266ba364819?d=https://a248.e.akamai.net/assets.github.com%2Fimages%2Fgravatars%2Fgravatar-user-420.png&quot;}]
+</script>
+
+        </section>
+      </div>
+      <div class="span3">
+        <hr class="visible-phone" />
+        <div class="row">
+          <div class="span3">
+            <div class="social-buttons">
+  <div class="twitter">
+    <a href="https://twitter.com/share" class="twitter-share-button" data-text="FuelPHPを更に使ってみて使えるなと思った拡張ValidationRuleの書き方とCore拡張の小技 by @sa2yasu on @Qiita">ツイート</a>
+  </div>
+  <div class="hatebu">
+    <a href="http://b.hatena.ne.jp/entry/http://qiita.com/ya-sasaki@github/items/e238f86cabce3acfbe53" class="hatena-bookmark-button" data-hatena-bookmark-title="FuelPHPを更に使ってみて使えるなと思った拡張ValidationRuleの書き方とCore拡張の小技 - Qiita [キータ]" data-hatena-bookmark-layout="standard" title="はてなブックマークに追加する"><img src="http://b.st-hatena.com/images/entry-button/button-only.gif" alt="はてなブックマークに追加する" width="20" height="20" style="border: none;" /></a><script type="text/javascript" src="http://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
+  </div>
+  <div class="facebook">
+    <div class="fb-like" data-href="http://qiita.com/ya-sasaki@github/items/e238f86cabce3acfbe53" data-send="false" data-layout="button_count" data-width="100" data-show-faces="false"></div>
+  </div>
+</div>
+<script>
+  $(function() {
+      twttr.ready(function (twttr) {
+          twttr.events.bind('tweet', function(event) {
+              if (event) {
+                  Qiita.Mixpanel.tweetAnItem({ uuid: "e238f86cabce3acfbe53" });
+                  ga('send', 'social', 'twitter', 'tweet', 'http://qiita.com');
+                  $.ajax({
+                      type: 'POST',
+                      url: '/notifications',
+                      data: {
+                          notification: {
+                              verb: 'tweet',
+                              uuid: 'e238f86cabce3acfbe53'
+                          }
+                      }
+                  });
+              }
+          });
+          twttr.events.bind('click', function (e) {
+            if (e) {
+              ga('send', 'social', 'twitter', 'click', 'http://qiita.com');
+            }
+          });
+      });
+      window.fbAsyncInit = function() {
+          FB.Event.subscribe('edge.create', function(response) {
+              Qiita.Mixpanel.likeAnItem({ uuid: "e238f86cabce3acfbe53" });
+              ga('send', 'social', 'facebook', 'like', 'http://qiita.com');
+              $.ajax({
+                  type: 'POST',
+                  url: '/notifications',
+                  data: {
+                      notification: {
+                          verb: 'like',
+                          uuid: 'e238f86cabce3acfbe53'
+                      }
+                  }
+              });
+          });
+      }
+  });
+</script>
+
+          </div>
+        </div>
+        <hr />
+        <section id="author-info" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <div class="author-surface">
+    <a href="/ya-sasaki@github"><img alt="ya-sasaki@github" class="user-icon" itemprop="image" src="https://secure.gravatar.com/avatar/814f84143dc749dfe904d266ba364819?d=https://a248.e.akamai.net/assets.github.com%2Fimages%2Fgravatars%2Fgravatar-user-420.png" /></a>
+    <div class="right">
+      <strong class="user-name" itemprop="name">
+        <a href="/ya-sasaki@github" itemprop="url">ya-sasaki@github</a>
+      </strong>
+        <span class="btn btn-mini js-user-follow-btn"
+            data-url_name="ya-sasaki@github"
+            data-position="author-info">
+          フォローする
+        </span>
+      <br/>
+      <span class="contribution">
+        <span class="count">13</span>
+        <span class="unit">Contribution</span>
+      </span>
+    </div>
+  </div>
+  <section>
+    <h6>最新の投稿</h6>
+    <ul class="unstyled posts">
+        <li itemscope itemtype="http://schema.org/Article">
+          <a href="/ya-sasaki@github/items/e238f86cabce3acfbe53" itemprop="url">FuelPHPを更に使ってみて使えるなと思った拡張ValidationRuleの書き方とCore拡張の小技</a>
+        </li>
+        <li itemscope itemtype="http://schema.org/Article">
+          <a href="/ya-sasaki@github/items/e038226d7f4fcef17f74" itemprop="url">これから付き合うSublimeText3</a>
+        </li>
+        <li itemscope itemtype="http://schema.org/Article">
+          <a href="/ya-sasaki@github/items/ba44a3307929142d62cf" itemprop="url">FuelPHPでブラウザデバッグできるPackageを公開しました</a>
+        </li>
+        <li itemscope itemtype="http://schema.org/Article">
+          <a href="/ya-sasaki@github/items/f432be39c127c4eb431a" itemprop="url">FuelPHPのviewにテンプレートパーサは使わなくてもよいかもしれない</a>
+        </li>
+        <li itemscope itemtype="http://schema.org/Article">
+          <a href="/ya-sasaki@github/items/ae7a1e6814e53da6df3f" itemprop="url">FuelPHPのValidationにクロージャを使う</a>
+        </li>
+    </ul>
+  </section>
+</section>
+
+        <hr/>
+<style>
+.test-text-responsible { width: 200px; height: 200px; }
+@media(min-width: 1200px) {
+  .test-text-responsible { width: 250px; height: 250px; }
+}
+@media(max-width: 979px) and (min-width: 768px) {
+  .test-text-responsible { width: 120px; height: 240px; }
+}
+@media(max-width: 767px) {
+  .test-text-responsible { width: 320px; height: 50px; }
+}
+</style>
+<script async src="http://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- test_text_responsible -->
+<ins class="adsbygoogle test-text-responsible"
+     style="display:inline-block"
+     data-ad-client="ca-pub-8127218772604357"
+     data-ad-slot="3880091879"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+        <hr />
+        <div id="advertisement-s">
+    <a href="https://career.qiita.com?utm_content=AD0054&amp;utm_source=qiita&amp;utm_medium=banner" target="_blank" class="advertisement-link">
+      <img alt="Ad0054 increments career" src="/assets/banner/increments/AD0054_increments_career-04caec3ce479f5789fee8026cce663d0.png" />
+    </a>
+</div>
+<script>
+$(function() {
+    $('.advertisement-link').click(function() {
+        Qiita.analysis.clickAdvertisement({
+            type: 'banner',
+            place: 'right bottom',
+            adId: 'AD0054'
+        });
+    });
+});
+</script>
+
+        <div class="scroll-chaser">
+        </div>
+      </div>
+    </div>
+  </div>
+</article>
+
+<script id="js-item" type="application/json">
+  {&quot;id&quot;:35039,&quot;uuid&quot;:&quot;e238f86cabce3acfbe53&quot;,&quot;user&quot;:{&quot;id&quot;:10959,&quot;url_name&quot;:&quot;ya-sasaki@github&quot;,&quot;profile_image_url&quot;:&quot;https://secure.gravatar.com/avatar/814f84143dc749dfe904d266ba364819?d=https://a248.e.akamai.net/assets.github.com%2Fimages%2Fgravatars%2Fgravatar-user-420.png&quot;},&quot;title&quot;:&quot;FuelPHPを更に使ってみて使えるなと思った拡張ValidationRuleの書き方とCore拡張の小技&quot;,&quot;created_at&quot;:&quot;2013-12-08 03:29:48 +0900&quot;,&quot;updated_at&quot;:&quot;2013-12-09 10:19:50 +0900&quot;,&quot;created_at_in_words&quot;:&quot;1日&quot;,&quot;updated_at_in_words&quot;:&quot;約5時間&quot;,&quot;tags&quot;:[{&quot;name&quot;:&quot;FuelPHP&quot;,&quot;url_name&quot;:&quot;fuelphp&quot;,&quot;icon_url&quot;:&quot;https://s3-ap-northeast-1.amazonaws.com/qiita-tag-image/0c786c5346d6599097cda94b46cd7a73d9ac86cf/medium.jpg?1364839801&quot;}],&quot;stock_count&quot;:0,&quot;stock_users&quot;:[],&quot;comments&quot;:[],&quot;comment_count&quot;:0,&quot;lgtm_count&quot;:0,&quot;url&quot;:&quot;http://qiita.com/ya-sasaki@github/items/e238f86cabce3acfbe53&quot;,&quot;gist_url&quot;:null,&quot;tweet&quot;:false,&quot;private&quot;:false,&quot;created_at_as_seconds&quot;:1386440988}
+</script>
+
+<script class="js-user" type="application/json">
+  {&quot;id&quot;:10959,&quot;url_name&quot;:&quot;ya-sasaki@github&quot;,&quot;profile_image_url&quot;:&quot;https://secure.gravatar.com/avatar/814f84143dc749dfe904d266ba364819?d=https://a248.e.akamai.net/assets.github.com%2Fimages%2Fgravatars%2Fgravatar-user-420.png&quot;}
+</script>
+
+<script class="js-page-access" type="application/json">
+  {
+    "adId": ["AD0054", "training"],
+    "uuid": "e238f86cabce3acfbe53",
+    "calendarName": ""
+  }
+</script>
+</div>
+
+    <footer id="footer-content">
+  <section class="container">
+    <div class="row">
+      <div class="span8">
+        <section>
+          <ul class="inline">
+            <li><a href="http://qiita.com/about">Qiitaとは</a></li>
+            <li><a href="http://qiita.com/tags">タグ一覧</a></li>
+            <li><a href="http://qiita.com/advent-calendar">Advent Calendar一覧</a></li>
+            <li><a href="http://qiita.com/organizations">Organization一覧</a></li>
+            <li><a href="http://qiita.com/users">ユーザー一覧</a></li>
+            <li><a href="http://qiita.com/docs">Developer API</a></li>
+            <li><a href="/license.txt" rel="jslicense">JavaScript License</a></li>
+          </ul>
+          <ul class="inline">
+            <li><a href="http://blog.qiita.com" target="_blank">公式ブログ</a></li>
+            <li><a href="http://qiita.com/terms">利用規約</a></li>
+            <li><a href="http://qiita.com/privacy">プライバシーポリシー</a></li>
+            <li><a href="http://qiita.com/asct">特定商取引法に基づく表記</a></li>
+            <li><a href="http://support.qiita.com" target="_blank">サポート</a></li>
+            <li><a href="https://increments.zendesk.com/anonymous_requests/new" target="_blank">お問い合わせ</a></li>
+            <li><a href="http://increments.co.jp" target="_blank">運営会社</a></li>
+          </ul>
+        </section>
+        <section>
+        <p class="increments-service">Incrementsのサービス</p>
+          <ul class="unstyled">
+            <li>
+              <a href="http://kobito.qiita.com" target="_blank">Kobito - プログラミングのメモやスニペットの記録に最適なMacアプリケーション</a>
+            </li>
+            <li>
+              <a href="http://teams.qiita.com" target="_blank">Qiita:Team - シンプル、スマートかつクローズドな情報共有サービス</a>
+            </li>
+            <li>
+              <a href="https://career.qiita.com" target="_blank">Qiita:Career - プログラマのためのキャリア構築支援サービス</a>
+            </li>
+          </ul>
+        </section>
+        <section>
+          <p>Copyright ©2013 Increments Inc.</p>
+        </section>
+        <aside class="visible-desktop">
+          <a href="https://mixpanel.com/f/partner" target="_blank">
+            <img src="https://mixpanel.com/site_media/images/partner/badge_light.png"
+                 alt="Real Time Web Analytics" />
+          </a>
+        </aside>
+      </div>
+      <section class="span4 feedback-form">
+  <form accept-charset="UTF-8" action="/feedbacks" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="&#x2713;" /><input name="authenticity_token" type="hidden" value="0CHgdf6g8zbRVmsN4eLI02pQs9qeWjheKvx0xjyOgxo=" /></div>
+    <textarea class="span4" id="feedback_message" name="feedback[message]" placeholder="Qiitaについてご意見をお聞かせください" rows="5">
+</textarea>
+    <div style="position:fixed;top:-9999px;">
+      <input type="text" name="feedback[name]"/><!-- Honey Pot -->
+    </div>
+    <input class="btn btn-block" name="commit" type="submit" value="運営者に意見を送る" />
+    <div class="text-center">
+      <p>頂いたご意見への回答は行っておりません。</p>
+      <p><a href="https://increments.zendesk.com/anonymous_requests/new">返信の必要なお問い合わせはこちら</a></p>
+    </div>
+</form></section>
+
+    </div>
+  </section>
+</footer>
+
+
+    <!--[if lt IE 9]>
+      <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <script src="/assets/application-7a00e1487cda25f036c4754eb2ec748f.js"></script>
+    <script>
+  (function (I18n) {
+    var match, orig;
+    I18n.defaultLocale = "ja";
+    I18n.fallbacks = true;
+    if (match = location.search.match(/(?:\?|&)locale=([^&]+)/)) {
+      I18n.locale = match[1];
+      orig = $.ajax;
+      $.ajax = function (params) {
+        params.data || (params.data = {});
+        params.data.locale = match[1];
+        return orig.call($, params);
+      };
+    } else {
+      I18n.locale = "ja";
+    }
+  })(I18n);
+</script>
+
+    <script>
+  (function () {
+    var script = document.getElementsByTagName('script')[0];
+    var load = function (src, id) {
+      var el = document.createElement('script');
+      el.async = true;
+      el.src = src;
+      el.id = id;
+      script.parentNode.insertBefore(el, script);
+    };
+
+      // Optimizely
+      load('//cdn.optimizely.com/js/52738645.js', 'optimizely-jssdk');
+
+      // Google Analytics
+      window._gaq = window._gaq || [];
+      var isCareer = location.hostname.split('.')[0] == 'career';
+      if (isCareer) {
+        window._gaq.push(['_setAccount', 'UA-24675221-11']);
+        window._gaq.push(['_setDomainName', 'qiita.com']);
+      } else {
+        window._gaq.push(['_setAccount', 'UA-24675221-1']);
+      }
+      window._gaq.push(['_setCustomVar', 1, 'logged_in', 'false', 2]);
+      window._gaq.push(['_trackPageview']);
+      var src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      load(src, 'google-analytics-jssdk');
+
+      // Google Analytics - Universal Analytics
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-24675221-12', {
+          
+        });
+          ga('create', 'UA-42128143-1', { name: 'user' });
+          ga('user.send', 'pageview');
+        ga('set', 'dimension1', 'false');
+        ga('set', 'dimension3', 'false');
+      ga('set', 'forceSSL', true);
+      Qiita.isAnalyticsAvailable = false;
+      ga('send', 'pageview', {
+        hitCallback: function () {
+          Qiita.isAnalyticsAvailable = true;
+        }
+      });
+  })();
+
+  // Mixpanel
+  (function(c,a){window.mixpanel=a;var b,d,h,e;b=c.createElement("script");b.type="text/javascript";b.async=!0;b.src=("https:"===c.location.protocol?"https:":"http:")+'//cdn.mxpnl.com/libs/mixpanel-2.1.min.js';d=c.getElementsByTagName("script")[0];d.parentNode.insertBefore(b,d);a._i=[];a.init=function(b,c,f){function d(a,b){var c=b.split(".");2==c.length&&(a=a[c[0]],b=c[1]);a[b]=function(){a.push([b].concat(Array.prototype.slice.call(arguments,0)))}}var g=a;"undefined"!==typeof f?
+  g=a[f]=[]:f="mixpanel";g.people=g.people||[];h="disable track track_pageview track_links track_forms register register_once unregister identify name_tag set_config people.identify people.set people.increment".split(" ");for(e=0;e<h.length;e++)d(g,h[e]);a._i.push([b,c,f])};a.__SV=1.1})(document,window.mixpanel||[]);
+    mixpanel.init("be87616606b0e26a87689099aab2c4e5", {upgrade: true});
+</script>
+
+  <script type="text/javascript">if (!NREUMQ.f) { NREUMQ.f=function() {
+NREUMQ.push(["load",new Date().getTime()]);
+var e=document.createElement("script");
+e.type="text/javascript";
+e.src=(("http:"===document.location.protocol)?"http:":"https:") + "//" +
+  "js-agent.newrelic.com/nr-100.js";
+document.body.appendChild(e);
+if(NREUMQ.a)NREUMQ.a();
+};
+NREUMQ.a=window.onload;window.onload=NREUMQ.f;
+};
+NREUMQ.push(["nrfj","beacon-1.newrelic.com","32f5cacaf0","2630449","ewpXQ0JfCltQSk1bEV0IShhDWAlA",0,249,new Date().getTime(),"","","","",""]);</script></body>
+</html>
+
