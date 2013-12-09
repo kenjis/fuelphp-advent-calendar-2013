@@ -1,34 +1,25 @@
-
 = AspectMockでFuelPHPのアプリを100％テスト可能にする
-
 
 @<href>{http://atnd.org/events/45096,FuelPHP Advent Calendar 2013}の9日目です。
 
-
 今日は、いま話題のAspectMockをFuelPHPで使い、FuelPHPのアプリを100％テストできないかというお話です。
-
 
 ちなみに、本当に100%テストできるかどうかはまだ定かではありません。あと、カバー率を100%にすること自体は目的ではないので、あまり気にする必要はないと思います。
 
 //quote{
 "Testability" should not be used as argument deciding what design pattern is right to use and what is not.
-//}
-
 
 訳：どのデザインパターンが適切か否かという議論に、「テスト可能性」が使われるべきではない。
-
+//}
 
 これが、AspectMockからの主張です。@<br>{}
-
 
 なお、この記事の前提環境は、以下のとおりです。
 
  * FuelPHP 1.7.1
  * AspectMock masterブランチ cc2be6945a705e65a2a4a12df7e35de82d0129f7 (2013-09-09)
 
-
 == 準備
-
 
 AspectMockと必要なライブラリをComposerで追加します。
 
@@ -55,7 +46,6 @@ index e1b21ea..006ac5b 100644
          "smarty/smarty": "Allow Smarty templating with the Parser package",
 //}
 
-
 インストールします。
 
 //emlist{
@@ -63,7 +53,6 @@ $ php composer.phar update
 //}
 
 === FuelPHP 1.7.1の変更
-
 
 テスト実行の場合、AspectMockを使うようにFuelPHPを変更します。
 
@@ -81,7 +70,9 @@ index a6213d5..b491688 100644
 -
  // Bootstrap the framework DO NOT edit this
  require COREPATH.'bootstrap.php';
+//}
 
+//emlist{
 diff --git a/oil b/oil
 index 62033d6..4a21f80 100644
 --- a/oil
@@ -96,7 +87,9 @@ index 62033d6..4a21f80 100644
 +
  // Boot the app
  require APPPATH.'bootstrap.php';
+//}
 
+//emlist{
 diff --git a/public/index.php b/public/index.php
 index e01d3a4..9cb90d3 100644
 --- a/public/index.php
@@ -112,7 +105,6 @@ index e01d3a4..9cb90d3 100644
  // Boot the app
  require APPPATH.'bootstrap.php';
 //}
-
 
 AspectMockがロードされるようにし、AscpectMockの設定をします（$kernel->init()の部分）。ここが正しくないとAspectMockが正常に動作しません。
 
@@ -175,7 +167,6 @@ AspectMockが動作するように、fuel/core/phpunit.xmlをfuel/app/phpunit.xm
 
 === FuelPHP 1.8/develop（1.7.2以降）の変更
 
-
 1.8/developブランチでは、上記の変更が取り込まれていますので、fuel/coreのbootstrap_phpunit.phpを変更し、
 
 //emlist{
@@ -209,7 +200,6 @@ index 50b9c88..20678e7 100644
  // Boot the app
 //}
 
-
 fuel/app/phpunit.xmlを作成するだけでokです。
 
 //emlist{
@@ -227,12 +217,9 @@ fuel/app/phpunit.xmlを作成するだけでokです。
 
 == テストの書き方
 
-
 コントローラからResponse::redirect()でリダイレクトする場合のテストを作成してみましょう。
 
-
 Response::redirect()は安全のため内部でexit()しているため、そのままではテストがそこで終了してしまい、テストできません。これをテストダブルで置き換えて、テスト可能にします。
-
 
 まず、以下のようなコントローラを作成します。
 
@@ -285,10 +272,9 @@ class Test_Controller_Test extends TestCase
 }
 //}
 
-
 テストを実行します。
 
-//emlist{
+//cmd{
 $ oil test --group=App
 Tests Running...This may take a few moments.
 PHPUnit 3.7.28 by Sebastian Bergmann.
@@ -302,15 +288,15 @@ Time: 8.08 seconds, Memory: 48.50Mb
 OK (1 test, 0 assertions)
 //}
 
-
 通りました。「0 assertinos」というのがちょっと変ですが、PHPUnitの検証メソッドを使っていないため、いたしかたありません。
-
 
 試しに、verifyInvoked()での第3引数の指定を404から405に変更してみます。
 
 //emlist{
 $req->verifyInvoked('redirect', ['welcome/404', 'location', 405]);
+//}
 
+//cmd{
 $ oil test --group=App
 Tests Running...This may take a few moments.
 PHPUnit 3.7.28 by Sebastian Bergmann.
@@ -344,12 +330,9 @@ FAILURES!
 Tests: 1, Assertions: 0, Failures: 1.
 //}
 
-
 正しく失敗しました。
 
-
 このように、AspectMockを使うと静的メソッドをテストダブルに置き換えたり、メソッドを動的に再定義して、簡単にテストすることができます。AspectMockの主張どおり、テスト可能にするためだけにDIを使う必要はなくなります。
-
 
 ただし、AspectMockは「Stability: alpha」となっており、まだ発展途上のツールのようですので期待したとおりに動作しない可能性はあります。
 
@@ -359,16 +342,12 @@ Tests: 1, Assertions: 0, Failures: 1.
  * @<href>{http://codeception.com/07-31-2013/nothing-is-untestable-aspect-mock.html,Nothing is Untestable: AspectMock in Action}
  * @<href>{http://codeception.com/09-13-2013/understanding-aspectmock.html,Understanding AspectMock}
 
-
 == おまけ
-
 
 このFuelPHP Advent Calendarは今年で3年目ですが、一昨年、去年の分は、電子書籍化されてIT系の有名出版社より出版されています。
 
  * @<href>{https://gihyo.jp/dp/sp/advent2011/G11C13,『FuelPHP Advent Calendar 2011』【電子書籍】} 技術評論社
  * @<href>{http://tatsu-zine.com/books/fuelphpadvent2012,『FuelPHP Advent Calendar 2012』【電子書籍】} 達人出版会
-
-
 
 いずれも無料でダウンロードできますので、まだ、読んでいないFuelPHPユーザの方は、読んでみるといろいろな発見があると思いますよ。
 
