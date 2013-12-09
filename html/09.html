@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>AspectMockでFuelPHPのアプリを100％テスト可能にする &mdash; A Day in Serenity (Reloaded) &mdash; PHP, FuelPHP, Linux or something</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="alternate" type="application/atom+xml" href="/atom.xml" />
+        <link href="/components/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+        <link href="/components/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css" />
+        <link href="/css/style.css" rel="stylesheet" type="text/css" />
+        <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+        <!--[if lt IE 9]>
+            <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+        <link rel="stylesheet" href="/components/highlightjs/styles/github.css" />
+        <style>
+        /** quick fix because bootstrap <pre> has a background-color. */
+        pre code { background-color: inherit; }
+        </style>
+    </head>
+    <body>
+        <header>
+            <div class="navbar navbar-inverse navbar-fixed-top">
+                <div class="navbar-inner">
+                    <div class="container-fluid">
+                        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </a>
+                        <a class="brand" href="/">A Day in Serenity (Reloaded)</a>
+                        <div class="nav-collapse collapse">
+                            <ul class="nav">
+                                <li><a href="/blog">Posts Archive</a></li>
+                                <li><a href="/blog/categories">Categories</a></li>
+                                <li><a href="/blog/tags">Tags</a></li>
+                                <li><a href="/about">About</a></li>
+                            </ul>
+                        </div><!--/.nav-collapse -->
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="mainContent container">
+            <div class="row-fluid">
+                <div class="span8">
+                        <article>
+        <header>
+            <h2>AspectMockでFuelPHPのアプリを100％テスト可能にする <small>post</small></h2>
+        </header>
+        <div>
+            <p><a href="http://atnd.org/events/45096">FuelPHP Advent Calendar 2013</a>の9日目です。昨日は、@sa2yasuさんの「<a href="http://qiita.com/ya-sasaki@github/items/e238f86cabce3acfbe53">FuelPHPを更に使ってみて使えるなと思った拡張ValidationRuleの書き方とCore拡張の小技</a>」でした。</p>
+
+<p>今日は、いま話題のAspectMockをFuelPHPで使い、FuelPHPのアプリを100％テストできないかというお話です。</p>
+
+<p>ちなみに、本当に100%テストできるかどうかはまだ定かではありません。あと、カバー率を100%にすること自体は目的ではないので、あまり気にする必要はないと思います。</p>
+
+<blockquote>
+  <p>"Testability" should not be used as argument deciding what design pattern is right to use and what is not.</p>
+</blockquote>
+
+<p>訳：どのデザインパターンが適切か否かという議論に、「テスト可能性」が使われるべきではない。</p>
+
+<p>これが、AspectMockからの主張です。</p>
+
+<p>なお、この記事の前提環境は、以下のとおりです。</p>
+
+<ul>
+<li>FuelPHP 1.7.1</li>
+<li>AspectMock masterブランチ cc2be6945a705e65a2a4a12df7e35de82d0129f7 (2013-09-09)</li>
+</ul>
+
+<h3>準備</h3>
+
+<p>AspectMockと必要なライブラリをComposerで追加します。</p>
+
+<pre><code class="diff">diff --git a/composer.json b/composer.json
+index e1b21ea..006ac5b 100644
+--- a/composer.json
++++ b/composer.json
+@@ -16,10 +16,14 @@
+         "forum": "http://fuelphp.com/forums"
+     },
+     "require": {
+-        "php": "&gt;=5.3.3",
++        "php": "&gt;=5.4",
+         "monolog/monolog": "1.5.*",
+        "fuelphp/upload": "2.0.1"
+     },
++    "require-dev": {
++        "codeception/aspect-mock": "*",
++        "symfony/finder":"*"
++    },
+     "suggest": {
+         "mustache/mustache": "Allow Mustache templating with the Parser package",
+         "smarty/smarty": "Allow Smarty templating with the Parser package",
+</code></pre>
+
+<p>インストールします。</p>
+
+<pre><code class="bash">$ php composer.phar update
+</code></pre>
+
+<h4>FuelPHP 1.7.1の変更</h4>
+
+<p>テスト実行の場合、AspectMockを使うようにFuelPHPを変更します。</p>
+
+<pre><code class="diff">diff --git a/fuel/app/bootstrap.php b/fuel/app/bootstrap.php
+index a6213d5..b491688 100644
+--- a/fuel/app/bootstrap.php
++++ b/fuel/app/bootstrap.php
+@@ -1,9 +1,5 @@
+ &lt;?php
+
+-// Load in the Autoloader
+-require COREPATH.'classes'.DIRECTORY_SEPARATOR.'autoloader.php';
+-class_alias('Fuel\\Core\\Autoloader', 'Autoloader');
+-
+ // Bootstrap the framework DO NOT edit this
+ require COREPATH.'bootstrap.php';
+
+</code></pre>
+
+<pre><code class="diff">diff --git a/oil b/oil
+index 62033d6..4a21f80 100644
+--- a/oil
++++ b/oil
+@@ -48,6 +48,10 @@ define('COREPATH', realpath(__DIR__.'/fuel/core/').DIRECTORY_SEPARATOR);
+ defined('FUEL_START_TIME') or define('FUEL_START_TIME', microtime(true));
+ defined('FUEL_START_MEM') or define('FUEL_START_MEM', memory_get_usage());
+
++// Load in the Autoloader
++require COREPATH.'classes'.DIRECTORY_SEPARATOR.'autoloader.php';
++class_alias('Fuel\\Core\\Autoloader', 'Autoloader');
++
+ // Boot the app
+ require APPPATH.'bootstrap.php';
+
+</code></pre>
+
+<pre><code class="diff">diff --git a/public/index.php b/public/index.php
+index e01d3a4..9cb90d3 100644
+--- a/public/index.php
++++ b/public/index.php
+@@ -40,6 +40,10 @@ define('COREPATH', realpath(__DIR__.'/../fuel/core/').DIRECTORY_SEPARATOR);
+ defined('FUEL_START_TIME') or define('FUEL_START_TIME', microtime(true));
+ defined('FUEL_START_MEM') or define('FUEL_START_MEM', memory_get_usage());
+
++// Load in the Autoloader
++require COREPATH.'classes'.DIRECTORY_SEPARATOR.'autoloader.php';
++class_alias('Fuel\\Core\\Autoloader', 'Autoloader');
++
+ // Boot the app
+ require APPPATH.'bootstrap.php';
+
+</code></pre>
+
+<p>AspectMockがロードされるようにし、AscpectMockの設定をします（$kernel->init()の部分）。ここが正しくないとAspectMockが正常に動作しません。</p>
+
+<pre><code class="diff">diff --git a/bootstrap_phpunit.php b/bootstrap_phpunit.php
+index 3b5b851..2605850 100644
+--- a/bootstrap_phpunit.php
++++ b/bootstrap_phpunit.php
+@@ -32,6 +32,34 @@ unset($app_path, $core_path, $package_path, $_SERVER['app_path'], $_SERVER['core
+ defined('FUEL_START_TIME') or define('FUEL_START_TIME', microtime(true));
+ defined('FUEL_START_MEM') or define('FUEL_START_MEM', memory_get_usage());
+
++/**
++ * Load the Composer autoloader if present
++ */
++defined('VENDORPATH') or define('VENDORPATH', realpath(COREPATH.'..'.DS.'vendor').DS);
++if ( ! is_file(VENDORPATH.'autoload.php'))
++{
++   die('Composer is not installed. Please run "php composer.phar update" in the root to install Composer');
++}
++require VENDORPATH.'autoload.php';
++
++// Add AspectMock
++$kernel = \AspectMock\Kernel::getInstance();
++$kernel-&gt;init([
++   'debug' =&gt; true,
++   'appDir'    =&gt; __DIR__ . '/../',
++   'includePaths' =&gt; [
++       __DIR__.'/../app', __DIR__.'/../core', __DIR__.'/../packages',
++   ],
++   'excludePaths' =&gt; [
++   __DIR__.'/../app/tests', __DIR__.'/../core/tests',
++   ],
++]);
++
++// Load in the Autoloader
++//require COREPATH.'classes'.DIRECTORY_SEPARATOR.'autoloader.php';
++$kernel-&gt;loadFile(COREPATH.'classes'.DIRECTORY_SEPARATOR.'autoloader.php'); // path to your autoloader
++class_alias('Fuel\\Core\\Autoloader', 'Autoloader');
++
+ // Boot the app
+ require_once APPPATH.'bootstrap.php';
+
+</code></pre>
+
+<p>AspectMockが動作するように、fuel/core/phpunit.xmlをfuel/app/phpunit.xmlにコピーし、backupGlobalsをfalseに変更します。</p>
+
+<pre><code class="diff">--- fuel/core/phpunit.xml   2013-12-02 19:56:52.847375706 +0900
++++ fuel/app/phpunit.xml    2013-12-02 19:56:38.910935143 +0900
+@@ -1,6 +1,6 @@
+ &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+
+-&lt;phpunit colors="true" stopOnFailure="false" bootstrap="../core/bootstrap_phpunit.php"&gt;
++&lt;phpunit colors="true" stopOnFailure="false" bootstrap="../core/bootstrap_phpunit.php" backupGlobals="false"&gt;
+    &lt;php&gt;
+        &lt;server name="doc_root" value="../../"/&gt;
+        &lt;server name="app_path" value="fuel/app"/&gt;
+</code></pre>
+
+<h4>FuelPHP 1.8/develop（1.7.2以降）の変更</h4>
+
+<p>1.8/developブランチでは、上記の変更が取り込まれていますので、fuel/coreのbootstrap_phpunit.phpを変更し、</p>
+
+<pre><code class="diff">diff --git a/bootstrap_phpunit.php b/bootstrap_phpunit.php
+index 50b9c88..20678e7 100644
+--- a/bootstrap_phpunit.php
++++ b/bootstrap_phpunit.php
+@@ -40,8 +40,22 @@ if ( ! is_file(VENDORPATH.'autoload.php'))
+ }
+ require VENDORPATH.'autoload.php';
+
++// Add AspectMock
++$kernel = \AspectMock\Kernel::getInstance();
++$kernel-&gt;init([
++       'debug' =&gt; true,
++       'appDir' =&gt; __DIR__ . '/../',
++       'includePaths' =&gt; [
++               __DIR__.'/../app', __DIR__.'/../core', __DIR__.'/../packages',
++       ],
++       'excludePaths' =&gt; [
++               __DIR__.'/../app/tests', __DIR__.'/../core/tests',
++       ],
++]);
++
+ // Load in the Fuel autoloader
+-require COREPATH.'classes'.DIRECTORY_SEPARATOR.'autoloader.php';
++//require COREPATH.'classes'.DIRECTORY_SEPARATOR.'autoloader.php';
++$kernel-&gt;loadFile(COREPATH.'classes'.DIRECTORY_SEPARATOR.'autoloader.php'); // path to your autoloader
+ class_alias('Fuel\\Core\\Autoloader', 'Autoloader');
+
+ // Boot the app
+</code></pre>
+
+<p>fuel/app/phpunit.xmlを作成するだけでokです。</p>
+
+<pre><code class="diff">--- fuel/core/phpunit.xml   2013-12-02 19:56:52.847375706 +0900
++++ fuel/app/phpunit.xml    2013-12-02 19:56:38.910935143 +0900
+@@ -1,6 +1,6 @@
+ &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+
+-&lt;phpunit colors="true" stopOnFailure="false" bootstrap="../core/bootstrap_phpunit.php"&gt;
++&lt;phpunit colors="true" stopOnFailure="false" bootstrap="../core/bootstrap_phpunit.php" backupGlobals="false"&gt;
+    &lt;php&gt;
+        &lt;server name="doc_root" value="../../"/&gt;
+        &lt;server name="app_path" value="fuel/app"/&gt;
+</code></pre>
+
+<h3>テストの書き方</h3>
+
+<p>コントローラからResponse::redirect()でリダイレクトする場合のテストを作成してみましょう。</p>
+
+<p>Response::redirect()は安全のため内部でexit()しているため、そのままではテストがそこで終了してしまい、テストできません。これをテストダブルで置き換えて、テスト可能にします。</p>
+
+<p>まず、以下のようなコントローラを作成します。</p>
+
+<pre><code class="php">&lt;?php
+
+class Controller_Test extends Controller
+{
+    public function action_redirect()
+    {
+        return Response::redirect('welcome/404', 'location', 404);
+    }
+}
+</code></pre>
+
+<p>続いてテストを作成しましょう。</p>
+
+<pre><code class="php">&lt;?php
+
+// AspectMockのTestクラスをtestとしてインポート
+use AspectMock\Test as test;
+
+/**
+ * Tests for Controller_Test
+ *
+ * @group App
+ * @group Controller
+ */
+class Test_Controller_Test extends TestCase
+{
+    protected function tearDown()
+    {
+        test::clean(); // 登録したテストダブルをすべて削除
+    }
+
+    public function test_redirect()
+    {
+        // Response::redirect()を単にtrueを返すテストダブルに置き換え
+        $req = test::double('Fuel\Core\Response', ['redirect' =&gt; true]);
+
+        // 'test/redirect'へのリクエストを生成
+        $response = Request::forge('test/redirect')
+                        -&gt;set_method('GET')-&gt;execute()-&gt;response();
+
+        // Response::redirect()が以下の引数で実行されたことを確認
+        $req-&gt;verifyInvoked('redirect', ['welcome/404', 'location', 404]);
+    }
+}
+</code></pre>
+
+<p>テストを実行します。</p>
+
+<pre><code class="bash">$ oil test --group=App
+Tests Running...This may take a few moments.
+PHPUnit 3.7.28 by Sebastian Bergmann.
+
+Configuration read from /mnt/fuelphp/fuel/app/phpunit.xml
+
+.
+
+Time: 8.08 seconds, Memory: 48.50Mb
+
+OK (1 test, 0 assertions)
+</code></pre>
+
+<p>通りました。「0 assertinos」というのがちょっと変ですが、PHPUnitの検証メソッドを使っていないため、いたしかたありません。</p>
+
+<p>試しに、verifyInvoked()での第3引数の指定を404から405に変更してみます。</p>
+
+<pre><code class="php">$req-&gt;verifyInvoked('redirect', ['welcome/404', 'location', 405]);
+</code></pre>
+
+<pre><code class="bash">$ oil test --group=App
+Tests Running...This may take a few moments.
+PHPUnit 3.7.28 by Sebastian Bergmann.
+
+Configuration read from /mnt/fuelphp/fuel/app/phpunit.xml
+
+.
+
+Time: 8.08 seconds, Memory: 48.50Mb
+
+OK (1 test, 0 assertions)
+[vagrant@localhost fuelphp]$ oil test --group=App
+Tests Running...This may take a few moments.
+PHPUnit 3.7.28 by Sebastian Bergmann.
+
+Configuration read from /mnt/fuelphp/fuel/app/phpunit.xml
+
+F
+
+Time: 7.72 seconds, Memory: 48.50Mb
+
+There was 1 failure:
+
+1) Test_Controller_Test::test_redirect
+Expected Fuel\Core\Response::redirect('welcome/404','location',405) to be invoked but it never occur.
+
+/mnt/fuelphp/fuel/vendor/codeception/aspect-mock/src/AspectMock/Proxy/Verifier.php:73
+/mnt/fuelphp/fuel/app/tests/controller/test.php:28
+
+FAILURES!
+Tests: 1, Assertions: 0, Failures: 1.
+</code></pre>
+
+<p>正しく失敗しました。</p>
+
+<p>このように、AspectMockを使うと静的メソッドをテストダブルに置き換えたり、メソッドを動的に再定義して、簡単にテストすることができます。AspectMockの主張どおり、テスト可能にするためだけにDIを使う必要はなくなります。</p>
+
+<p>ただし、AspectMockは「Stability: alpha」となっており、まだ発展途上のツールのようですので期待したとおりに動作しない可能性はあります。</p>
+
+<h3>参考</h3>
+
+<ul>
+<li><a href="https://github.com/Codeception/AspectMock">https://github.com/Codeception/AspectMock</a></li>
+<li><a href="http://codeception.com/07-31-2013/nothing-is-untestable-aspect-mock.html">Nothing is Untestable: AspectMock in Action</a></li>
+<li><a href="http://codeception.com/09-13-2013/understanding-aspectmock.html">Understanding AspectMock</a></li>
+</ul>
+
+<h3>おまけ</h3>
+
+<p>このFuelPHP Advent Calendarは今年で3年目ですが、一昨年、去年の分は、電子書籍化されてIT系の有名出版社より出版されています。</p>
+
+<ul>
+<li><a href="https://gihyo.jp/dp/sp/advent2011/G11C13">『FuelPHP Advent Calendar 2011』【電子書籍】</a> 技術評論社</li>
+<li><a href="http://tatsu-zine.com/books/fuelphpadvent2012">『FuelPHP Advent Calendar 2012』【電子書籍】</a> 達人出版会</li>
+</ul>
+
+<p>いずれも無料でダウンロードできますので、まだ、読んでいないFuelPHPユーザの方は、読んでみるといろいろな発見があると思いますよ。</p>
+
+        </div>
+        <p>
+        Date: 2013/12/09
+        </p>
+                    <p class="categories">
+            Categories:
+                        <a href="/blog/categories/fuelphp">fuelphp</a>                        </p>
+                            <p class="tags">
+            Tags:
+                        <a href="/blog/tags/fuelphp">fuelphp</a>,                         <a href="/blog/tags/phpunit">phpunit</a>                        </p>
+        
+                    <nav class="article">
+                <ul>
+                                                                <li>Previous: <a class="previous" href="/blog/2013/12/03/fuelphp-1-7-1" title="FuelPHP 1.7.1がリリースされました"><span class="title">FuelPHP 1.7.1がリリースされました</span></a></li>
+                                    </ul>
+            </nav>
+            </article>
+                </div>
+                <div class="span4 sidebar">
+                    <div class="well">
+                        <h4>A Day in Serenity (Reloaded) <small>PHP, FuelPHP, Linux or something</small></h4>
+                    </div>
+                    
+                                        
+                    <div class="well sidebar-nav">
+                        <h4>Links</h4>
+                        <ul class="nav">
+                            <li><a href="http://wiki.fuelphp1st.com/wiki/">FuelPHPまとめWiki</a></li>
+                            <li><a href="/blog/2013/10/24/git-for-hg-users/">Mercurialユーザのためのgitメモ</a></li>
+                            <li><a href="http://twitter.com/kenji_s">@kenji_s</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer class="container">
+            &copy; A Day in Serenity (Reloaded)
+        </footer>
+
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="/components/jquery/jquery.min.js"><\/script>')</script>
+        <script src="/components/bootstrap/js/bootstrap.min.js"></script>
+                
+                <script type="text/javascript">
+            var _gaq = _gaq || [];
+            _gaq.push(['_setAccount', 'UA-44700885-1']);
+            _gaq.push(['_trackPageview']);
+
+            (function() {
+                var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+                ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+                var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+            })();
+        </script>
+                <script src="/components/highlightjs/highlight.pack.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script>
+    </body>
+</html>
