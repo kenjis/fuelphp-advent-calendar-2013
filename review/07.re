@@ -45,17 +45,17 @@ public/index.phpを開くとFuelPHPで使用するディレクトリパスの設
 通常では
 
 //emlist{
-define('APPPATH', realpath(DIR . '/../fuel/app/' ).DIRECTORY\_SEPARATOR);
+define('APPPATH', realpath(DIR . '/../fuel/app/' ).DIRECTORY_SEPARATOR);
 //}
 
 
-のように /../fuel/app/ の部分が固定されています。
+のように/../fuel/app/の部分が固定されています。
 
 
 まずこの部分を変数に置き換えます。 /../ を $fueldir に定義しています。
 
 //emlist{
-define('APPPATH', realpath(DIR . $fueldir . '/app/') . DIRECTORYSEPARATOR);
+define('APPPATH', realpath(DIR . $fueldir . '/app/').DIRECTORY_SEPARATOR);
 //}
 
 == .htaccessに仕掛け
@@ -63,13 +63,13 @@ define('APPPATH', realpath(DIR . $fueldir . '/app/') . DIRECTORYSEPARATOR);
 
 次にそれぞれの環境の.htaccessにfuelの環境設定を書き加えます。
 
+//emlist[ローカル]{
+SetEnv FUEL_ENV development
+//}
 
-ローカル@<br>{}
- @<strong>{SetEnv FUEL_ENV development}
-
-
-Web@<br>{}
- @<strong>{SetEnv FUEL_ENV production}
+//emlist[Web]{
+SetEnv FUEL_ENV production
+//}
 
 == 再度index.php
 
