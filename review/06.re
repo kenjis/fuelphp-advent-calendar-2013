@@ -148,7 +148,7 @@ HTML上で展開される名前です。'data-名前'がその要素のidにな�
 確かにPHPのマニュアルには、各種文字にエスケープ対応するオプションが存在します。
 
 //quote{
-@<href>{http://php.net/json_encode,PHP: json_encode - Manual}
+PHP: json_encode - Manual（@<href>{http://php.net/json_encode,http://php.net/json_encode}）
 //}
 
 
@@ -173,7 +173,7 @@ HTML上で展開される名前です。'data-名前'がその要素のidにな�
 === 自動エスケープは\Fuel\Core\Viewの機能だった
 
 
-その後@<href>{https://groups.google.com/forum/#!forum/fuelphp_jp,fuelphp.jpグループ}で@@<href>{http://twitter.com/kenji_s,kenji_s}さんに指摘されて、Parserパッケージの標準設定で 'auto_encode’ が true になっているおかげでテンプレートに渡される変数が自動でエスケープされていた事がわかりました。
+その後@<href>{https://groups.google.com/forum/#!forum/fuelphp_jp,fuelphp.jpグループ}で@@<href>{http://twitter.com/kenji_s,kenji_s}さんに指摘されて、Parserパッケージの標準設定で'auto_encode'がtrueになっているおかげでテンプレートに渡される変数が自動でエスケープされていた事がわかりました。
 
 //quote{
 fuel/packages/parser/config/parser.php
@@ -192,15 +192,15 @@ fuel/packages/parser/config/parser.php
 //}
 
 
-この auto_encode 設定は、\Fuel\Core\View のコンストラクタに $auto_filter として渡され、結果的に\Fuel\Core\Security::clean() が呼び出されます。つまりTwig Extensionに渡される際にはすでにエスケープ済になっていたわけですね。
+このauto_encode設定は、\Fuel\Core\View のコンストラクタに$auto_filterとして渡され、結果的に\Fuel\Core\Security::clean()が呼び出されます。つまりTwig Extensionに渡される際にはすでにエスケープ済みになっていたわけですね。
 
 
-PHP 変数を JSON にして JavaScript に渡す仕組みは、別に FuelPHP でなくても使用できますので、その場合は XSS に注意して json_encode にオプションを随時追加して下さい。
+PHP変数をJSONにしてJavaScriptに渡す仕組みは、別にFuelPHPでなくても使用できますので、その場合はXSSに注意してjson_encodeにオプションを随時追加して下さい。
 
 === JSON の埋め込み方の問題
 
 
-他にもfuelphp.jpグループでは@@<href>{http://twitter.com/takayuki_h,takayuki_h}さんより、HTML 要素にテキストとして JSON を書き出すよりは、要素の data-option 属性として埋め込んだ方が良いのではないかとの指摘を受けました。
+他にもfuelphp.jpグループでは@@<href>{http://twitter.com/takayuki_h,takayuki_h}さんより、HTML要素にテキストとしてJSONを書き出すよりは、要素のdata-option属性として埋め込んだ方が良いのではないかとの指摘を受けました。
 
 #@# lang: .syntax-highlight
 //emlist{
@@ -236,8 +236,7 @@ PHP 変数を JSON にして JavaScript に渡す仕組みは、別に FuelPHP �
 はてブより。
 
 //quote{
-@<href>{http://d.hatena.ne.jp/teppeis/,//image[profile_s][id:teppeis]{
-//\}id:teppeis} $nameもjson_encode()もエスケープが足りないです。危険。
+id:teppeis $nameもjson_encode()もエスケープが足りないです。危険。
 
 
 @<href>{http://b.hatena.ne.jp/teppeis/20131207#bookmark-172246146,http://b.hatena.ne.jp/teppeis/20131207#bookmark-172246146}
@@ -247,8 +246,7 @@ PHP 変数を JSON にして JavaScript に渡す仕組みは、別に FuelPHP �
 json_encodeについては上記に書いたとおり。$nameはテンプレートに直接記述されるので、そこに外部からの変数が渡される事態は、コード全体を見直したほうが良いレベルだと思うのですがどうでしょう?
 
 //quote{
-@<href>{http://d.hatena.ne.jp/thujikun/,//image[profile_s][id:thujikun]{
-//\}id:thujikun} JSON形式のコードをJSの変数に直接代入する方が楽な気が。。。ひとつグローバル変数使うことにはなるけども。
+id:thujikun JSON形式のコードをJSの変数に直接代入する方が楽な気が。。。ひとつグローバル変数使うことにはなるけども。
 
 
 @<href>{http://b.hatena.ne.jp/thujikun/20131208#bookmark-172246146,http://b.hatena.ne.jp/thujikun/20131208#bookmark-172246146}
@@ -258,8 +256,7 @@ json_encodeについては上記に書いたとおり。$nameはテンプレー�
 JavaScriptにテンプレートエンジンを通して変数展開を埋め込む方が、自分的にはあり得ないです。HTMLに埋め込み JS を直接記述することは現在は全くやっていません。
 
 //quote{
-@<href>{http://d.hatena.ne.jp/fakechan/,//image[profile_s][id:fakechan]{
-//\}id:fakechan} PHPのレガシーっぷりに驚きを隠せない。というか、こういう場合はREST APIを作って「js側から」Ajaxでアクセスすればいいのでは。Ajaxのロードが終わるまでは「ロード中...」とかかぶせて。
+id:fakechan PHPのレガシーっぷりに驚きを隠せない。というか、こういう場合はREST APIを作って「js側から」Ajaxでアクセスすればいいのでは。Ajaxのロードが終わるまでは「ロード中...」とかかぶせて。
 
 
 @<href>{http://b.hatena.ne.jp/fakechan/20131208#bookmark-172246146,http://b.hatena.ne.jp/fakechan/20131208#bookmark-172246146}
