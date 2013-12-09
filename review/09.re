@@ -18,7 +18,7 @@
 訳：どのデザインパターンが適切か否かという議論に、「テスト可能性」が使われるべきではない。
 
 
-これが、AspectMockからの主張です。
+これが、AspectMockからの主張です。@<br>{}
 
 
 なお、この記事の前提環境は、以下のとおりです。
@@ -371,3 +371,13 @@ Tests: 1, Assertions: 0, Failures: 1.
 
 
 いずれも無料でダウンロードできますので、まだ、読んでいないFuelPHPユーザの方は、読んでみるといろいろな発見があると思いますよ。
+
+//quote{
+@<strong>{kenjis}
+
+FuelPHPまとめWiki管理人。「PHP5 技術者認定上級試験」認定者。
+
+Twitter: @<href>{https://twitter.com/kenji_s,@kenji_s}
+
+Blog: @<href>{http://blog.a-way-out.net/,http://blog.a-way-out.net/}
+//}

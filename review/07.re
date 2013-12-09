@@ -25,7 +25,7 @@ Web上では安全のためにfuelphp/publicの中身のみを公開ディレク
 //}
 
 
-しかしNetBeansでは@<strong>{プロジェクトディレクトリ以下に入っているファイルしか管理できません}。サイト名のメインディレクトリがあり、その下にfuel、public両方が入っている必要があります（図１の点線部分）。
+しかしNetBeansでは@<strong>{プロジェクトディレクトリ以下に入っているファイルしか管理できません}。サイト名のメインディレクトリがあり、その下にfuel、public両方が入っている必要があります（@<img>{fuelphp-adv-2-500x336}の点線部分）。
 
 
 Webと同じ構造にするとNetBeansで管理できなくなってしまうのです。
@@ -77,12 +77,12 @@ Web@<br>{}
 再度public/index.phpに以下の構文を加えました。
 
 //emlist{
-if ( $\_SERVER['FUEL\_ENV'] == 'production' ) {
-  $fuel\_dir = '/../../fuel';
-  ini\_set('display\_errors', 0);
-} elseif( $\_SERVER['FUEL\_ENV'] == 'development' )  {
-  $fuel\_dir = '/../fuel';
-  ini\_set('display\_errors', 1);
+if ($_SERVER['FUEL_ENV'] == 'production') {
+    $fuel_dir = '/../../fuel';
+    ini_set('display_errors', 0);
+} elseif ($_SERVER['FUEL_ENV'] == 'development') {
+    $fuel_dir = '/../fuel';
+    ini_set('display_errors', 1);
 }
 //}
 
@@ -110,3 +110,13 @@ iniset('displayerrors', 0);
 
 
 （文中のソースコードはすべてBSDライセンスといたします。）
+
+//quote{
+@<strong>{@LandscapeSketch}
+
+@TODO
+
+Twitter: @<href>{https://twitter.com/LandscapeSketch,@LandscapeSketch}
+
+Blog: @<href>{http://worktoolsmith.com/,http://worktoolsmith.com/}
+//}
