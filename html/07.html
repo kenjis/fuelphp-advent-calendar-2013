@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="ja" prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb#"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang="ja" prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb#"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang="ja" prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb#"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="ja" prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb#"> <!--<![endif]-->
+	<head>
+		<meta charset="utf-8">
+		<title>[W] FuelPHP開発でローカルとWebで構造が変わっても対応できる小技 | Work Tool Smith [ワークツールスミス]</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="google-site-verification" content="5o2yF6sHtYq7Css9cFqv0kkP9UKjrreB3MruLRpYw80" />
+<meta name="msvalidate.01" content="A85436F6AFDF624FDE5AAEBC5FE57EC1" />
+		<!-- media-queries.js (fallback) -->
+		<!--[if lt IE 9]>
+		  <script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>			
+		<![endif]-->
+
+		<!-- html5.js -->
+		<!--[if lt IE 9]>
+		  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+		<![endif]-->
+		
+<!-- SEO Ultimate (http://www.seodesignsolutions.com/wordpress-seo/) -->
+	<meta name="keywords" content="FuelPHP,PHP,Webプログラム,Advent Calender,&nbsp;,setenv,fuel_env,仮想化,レビュー,仕事道具,ツール" />
+	<meta property="og:type" content="article" />
+	<meta property="og:title" content="FuelPHP開発でローカルとWebで構造が変わっても対応できる小技" />
+	<meta property="og:url" content="http://worktoolsmith.com/2013/12/fuelphp-advent-2013/" />
+	<meta property="og:image" content="http://worktoolsmith.com/wp-content/uploads/2012/12/Fuelphp-header.jpg" />
+	<meta property="article:published_time" content="2013-12-07" />
+	<meta property="article:modified_time" content="2013-12-07" />
+	<meta property="article:author" content="http://worktoolsmith.com/author/worktoolsmith-admin/" />
+	<meta property="article:tag" content="FuelPHP" />
+	<meta property="article:tag" content="PHP" />
+	<meta property="article:tag" content="Webプログラム" />
+	<meta property="article:tag" content="Advent Calender" />
+	<meta property="article:tag" content="FuelPHP" />
+	<meta property="article:tag" content="PHP" />
+	<meta property="og:site_name" content="Work Tool Smith [ワークツールスミス]" />
+	<meta property="fb:app_id" content="539120566145635" />
+	<meta name="twitter:card" content="summary" />
+	<meta name="twitter:site" content="@WorkToolSmith" />
+<!-- /SEO Ultimate -->
+
+<link rel="stylesheet" href="/wp-content/plugins/crayon-syntax-highlighter/css/min/crayon.min.css">
+<link rel="stylesheet" href="/wp-content/plugins/crayon-syntax-highlighter/themes/feeldesign/feeldesign.css">
+<link rel="stylesheet" href="/wp-content/plugins/crayon-syntax-highlighter/fonts/monaco.css">
+<link rel="stylesheet" href="/wp-content/plugins/contact-form-7/includes/css/styles.css">
+<link rel="stylesheet" href="/wp-content/themes/roots/assets/css/main.min.css">
+<link rel="stylesheet" href="/wp-content/themes/wp-th-wts7/assets/css/font-awesome.min.css">
+<link rel="stylesheet" href="/wp-content/themes/wp-th-wts7/style-wts.css">
+<link rel="stylesheet" href="/wp-content/themes/wp-th-wts7/style-kaereba.css">
+<link rel="stylesheet" href="/wp-content/themes/wp-th-wts7/assets/css/buttons.css">
+<link rel="stylesheet" href="/wp-content/plugins/add-to-any/addtoany.min.css">
+<link rel="stylesheet" href="/wp-content/plugins/lightbox-plus/css/shadowed/colorbox.css" media="screen">
+<script type='text/javascript' src='//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var CrayonSyntaxSettings = {"version":"2.4.2","is_admin":"0","ajaxurl":"http:\/\/worktoolsmith.com\/wp-admin\/admin-ajax.php","prefix":"crayon-","setting":"crayon-setting","selected":"crayon-setting-selected","changed":"crayon-setting-changed","special":"crayon-setting-special","orig_value":"data-orig-value","debug":""};
+var CrayonSyntaxStrings = {"copy":"\u8cbc\u308a\u4ed8\u3051\u306b\u30b3\u30d4\u30fc\u3001%s\u306b%s\u3092\u62bc\u3057\u3066\u3001","minimize":"Click To Expand Code"};
+/* ]]> */
+</script>
+<script>window.jQuery || document.write('<script src="http://worktoolsmith.com/wp-content/themes/roots/assets/js/vendor/jquery-1.10.2.min.js"><\/script>')</script>
+<script type='text/javascript' src='/wp-content/plugins/crayon-syntax-highlighter/js/min/crayon.min.js'></script>
+<script type='text/javascript' src='/wp-content/themes/roots/assets/js/vendor/modernizr-2.6.2.min.js'></script>
+<script type='text/javascript' src='/wp-content/themes/wp-th-wts7/assets/js/holder.js'></script>
+
+<script type="text/javascript"><!--
+var a2a_config=a2a_config||{},wpa2a={done:false,html_done:false,script_ready:false,script_load:function(){var a=document.createElement('script'),s=document.getElementsByTagName('script')[0];a.type='text/javascript';a.async=true;a.src='http://static.addtoany.com/menu/page.js';s.parentNode.insertBefore(a,s);wpa2a.script_load=function(){};},script_onready:function(){if(a2a.type=='page'){wpa2a.script_ready=true;if(wpa2a.html_done)wpa2a.init();}},init:function(){for(var i=0,el,target,targets=wpa2a.targets,length=targets.length;i<length;i++){el=document.getElementById('wpa2a_'+(i+1));target=targets[i];a2a_config.linkname=target.title;a2a_config.linkurl=target.url;if(el){a2a.init('page',{target:el});el.id='';}wpa2a.done=true;}wpa2a.targets=[];}};a2a_config.tracking_callback=['ready',wpa2a.script_onready];a2a_localize = {
+	Share: "共有",
+	Save: "ブックマーク",
+	Subscribe: "購読",
+	Email: "Email",
+	Bookmark: "ブックマーク",
+	ShowAll: "すべて表示する",
+	ShowLess: "小さく表示する",
+	FindServices: "サービスを探す",
+	FindAnyServiceToAddTo: "追加するサービスを今すぐ探す",
+	PoweredBy: "Powered by",
+	ShareViaEmail: "Share via email",
+	SubscribeViaEmail: "Subscribe via email",
+	BookmarkInYourBrowser: "ブラウザにブックマーク",
+	BookmarkInstructions: "Press Ctrl+D or \u2318+D to bookmark this page",
+	AddToYourFavorites: "お気に入りに追加",
+	SendFromWebOrProgram: "Send from any email address or email program",
+	EmailProgram: "Email program"
+};
+
+a2a_config.show_title=1;
+//--></script>
+<!-- This site is powered by Tweet, Like, Plusone and Share Plugin - http://techxt.com/tweet-like-google-1-and-share-plugin-wordpress/ -->
+	<meta property="og:type" content="article" />
+	<meta property="og:title" content="FuelPHP開発でローカルとWebで構造が変わっても対応できる小技" />
+	<meta property="og:url" content="/2013/12/fuelphp-advent-2013/"/>
+	<meta property="og:site_name" content="Work Tool Smith [ワークツールスミス]" />
+	<meta property="og:description" content="FuelPHP開発でローカルとWebで構造が変わっても対応できる小技"/>
+	<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+			<meta property="og:image" content="http://worktoolsmith.com/wp-content/uploads/2012/12/Fuelphp-header.jpg" />
+	<style type="text/css">div.socialicons{float:left;display:block;margin-right: 10px;line-height: 1;}div.socialiconsv{line-height: 1;}div.socialicons p{margin-bottom: 0px !important;margin-top: 0px !important;padding-bottom: 0px !important;padding-top: 0px !important;}div.social4iv{background: none repeat scroll 0 0 #FFFFFF;border: 1px solid #aaa;border-radius: 3px 3px 3px 3px;box-shadow: 3px 3px 3px #DDDDDD;padding: 3px;position: fixed;text-align: center;top: 55px;width: 68px;display:none;}div.socialiconsv{padding-bottom: 5px;}</style>
+	<link rel="canonical" href="http://worktoolsmith.com/2013/12/fuelphp-advent-2013/">
+		<link rel="pingback" href="/xmlrpc.php" />
+		<link rel="alternate" type="application/rss+xml" title="Work Tool Smith [ワークツールスミス] Feed" href="http://worktoolsmith.com/feed/">
+			<style type="text/css">
+	body {
+				background-color: #e4e4e4; 
+	}
+	header#branding { background-color:#ffffff; }
+	header#branding a,
+	#logo a,
+	header#branding .description,
+	header#branding .global_search_box,
+	header#branding .extra-info{
+		color: #333333	}
+
+	a{color: #0063ba;}
+	a:hover{color: #5cd254;}
+
+	.navbar-default{
+		background-color:#37495e;
+		color:#ecf0f1;
+		border-color: #e7e7e7;
+	}
+
+	@media (max-width: 767px) {  
+		.navbar-default .navbar-nav .open .dropdown-menu>li>a,
+		.navbar-default .navbar-nav .open .dropdown-menu>li>a:hover{
+			color:#ecf0f1;
+		}
+	}
+
+	 
+	.navbar-default .navbar-nav>li>a		{
+		color:#ecf0f1;
+	}
+	.navbar-default .navbar-nav>.dropdown>a .caret, 
+	.navbar-default .navbar-nav>.dropdown>a .caret{
+		border-top-color:#ecf0f1;
+		border-bottom-color:#ecf0f1;
+	}
+	
+	.navbar-default .navbar-nav>li>a:hover{
+		color:#ecf0f1;
+	}
+	.navbar-default .navbar-nav>.dropdown>a:hover .caret{
+		border-top-color:#ecf0f1;
+		border-bottom-color:#ecf0f1;
+	}
+	.navbar-default .navbar-nav>.open>a,
+	.navbar-default .navbar-nav>.open>a:hover,
+	.navbar-default .navbar-nav>.open>a:focus{
+		color:#ecf0f1;
+		background-color:#46627f;
+
+	}	
+
+	.navbar-default .navbar-nav>.active>a, 
+	.navbar-default .navbar-nav>.active>a:hover, 
+	.navbar-default .navbar-nav>.active>a:focus {
+		 
+		background-color:#46627f;
+				 
+		color:#ecf0f1;
+			}
+
+
+	 
+	.navbar-default .navbar-nav>.active>a .caret, 
+	.navbar-default .navbar-nav>.open>a .caret, 
+	.navbar-default .navbar-nav>.dropdown>a:focus .caret{
+		border-top-color:#ecf0f1;
+		border-bottom-color:#ecf0f1;
+	}
+	 
+
+	div.subnav{
+		color: ; 
+	}
+	div.subnav a{
+		color: #fff; 
+	}
+
+	.breadcrumb{
+		color: #999;
+		background-color: #f5f5f5;
+	}
+
+			.tm_bricknews_1_box:hover{
+		border-color: #ffffff; 
+	}
+	.tm_bricknews_1_images_category,
+	.tm_bricknews_1_box .tm_bricknews_1_images_category{
+		background-color:  #ffffff; 
+	}
+
+	
+	
+	.single .entry-header,
+	.single .post-header,
+	.page-header{ 
+		background-color: #2980b9; 
+		color: #ffffff; 
+	}
+
+	.single .entry-header .tags .tag,
+	.single .post-header .tags .tag,
+	.page-header .tags .tag{
+		background-color: #ffffff; 
+		color: #2980b9; 
+	}
+
+	.footer{
+		background-color: #95a5a6;
+		color: ;
+	}
+	.footer a{
+		color: ;
+	}
+	.footer a:hover{
+		color: ;
+	}
+
+	#backtotop{
+		background-color: #3980b9;
+	}
+	#backtotop:hover{
+		background-color: ;
+	}
+
+	</style>
+
+	
+					<link rel="shortcut icon" href="http://worktoolsmith.com/wp-content/uploads/2013/09/favicon.ico" type="image/vnd.microsoft.icon" />
+			<link rel="icon" href="http://worktoolsmith.com/wp-content/uploads/2013/09/favicon.ico" type="image/vnd.microsoft.icon" />
+			<link rel="apple-touch-icon-precomposed" sizes="144x144"
+				  href="http://worktoolsmith.com/wp-content/uploads/2013/09/apple-touch-icon-ipad3.png" />
+			<link rel="apple-touch-icon-precomposed" sizes="114x114"
+				  href="http://worktoolsmith.com/wp-content/uploads/2013/09/apple-touch-icon-iphone4.png" />
+			<link rel="apple-touch-icon-precomposed" sizes="72x72"
+				  href="http://worktoolsmith.com/wp-content/uploads/2013/09/apple-touch-icon-ipad.png" />
+			<link rel="apple-touch-icon-precomposed"
+				  href="http://worktoolsmith.com/wp-content/uploads/2013/09/apple-touch-icon-iphone.png" />
+			<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-2531091-46']);
+  _gaq.push(['_setDomainName', 'worktoolsmith.com']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'stats.g.doubleclick.net/dc.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>			  	</head><!--base-->
+<body class="single single-post postid-6310 single-format-standard fuelphp-advent-2013">
+
+	<div id="backtotop" style="display: block;"><div class="img_backtotop"></div></div>
+
+	<!--[if lt IE 7]>
+	<div class="alert">ご使用のブラウザは非常に古いものです。<a href="http://browsehappy.com/">ブラウザをアップグレードすれば</a>より良い体験ができます。</div>
+	<![endif]-->
+
+	
+
+<header id="branding">
+
+	<div class="container">
+		<div class="row">
+			<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+				    
+								<div id="logo">
+				<a href="http://worktoolsmith.com">
+											<img src="http://worktoolsmith.com/wp-content/uploads/WTS-2.png" alt="Work Tool Smith [ワークツールスミス]" class="img-responsive" />
+									</a>
+				</div>
+				<div class="description">
+					「仕事をデジタルで加速する！」仕事をさらに多く、正確にこなすためのツールとヒント。パソコン作業の高速化、リアル単純作業の高速化テクニックの紹介。体当たり製品レビューなど。				</div>
+			</div>
+			<div class="col-xs-12 col-sm-6 col-md-8 col-lg-8">
+				<div class="row">
+											<!-- submenu -->
+						<nav class="subnav pull-right">
+							<ul id="menu-%e3%82%b5%e3%83%96%e3%83%8a%e3%83%93%e3%82%b2%e3%83%bc%e3%82%b7%e3%83%a7%e3%83%b3" class="nav nav-pills"><li class="menu-about-worktoolsmith"><a href="/welcome_to_worktoolsmith/">About WorkToolSmith</a></li>
+<li class="menu-%e3%83%aa%e3%83%b3%e3%82%af%e9%9b%86"><a href="/links/">リンク集</a></li>
+<li class="menu-%e3%83%91%e3%82%bd%e3%82%b3%e3%83%b3%e9%81%8d%e6%ad%b4"><a href="/pc_history/">パソコン遍歴</a></li>
+<li class="menu-%e3%81%8a%e5%95%8f%e3%81%84%e5%90%88%e3%82%8f%e3%81%9b"><a href="/inquiry/">お問い合わせ</a></li>
+</ul>						</nav>
+						<span class="clearfix"></span>
+					</div>
+								<div class="extra-info row">
+					<style>
+						.wts-responsive { width: 320px; height: 50px; }
+						@media (max-width: 479px) { .wts-responsive { width: 234px; height: 60px; }}
+						@media (min-width: 480px) and (max-width: 767px) {.wts-responsive { width: 320px; height: 50px; }}
+						@media (min-width: 768px) and (max-width: 991px) {.wts-responsive { width: 468px; height: 60px; }}
+						@media (min-width: 992px) {.wts-responsive { width: 728px; height: 90px; } }
+					</style>
+					<script async src="http://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+					<!-- WTS Responsive ヘッダ -->
+					<ins class="adsbygoogle wts-responsive"
+						 style="display:inline-block"
+						 data-ad-client="ca-pub-4561278562347971"
+						 data-ad-slot="8860919663"></ins>
+					<script>
+						(adsbygoogle = window.adsbygoogle || []).push({});
+					</script>
+									</div>
+															<div class="global_search_box row">
+							<form action="http://worktoolsmith.com/search_result/" id="cse-search-box">
+  <div>
+    <input type="hidden" name="cx" value="partner-pub-4561278562347971:4125937919" />
+    <input type="hidden" name="cof" value="FORID:10" />
+    <input type="hidden" name="ie" value="UTF-8" />
+    <input type="text" name="q" size="55" />
+    <input type="submit" name="sa" value="検索" />
+  </div>
+</form>
+
+<script type="text/javascript" src="http://www.google.co.jp/coop/cse/brand?form=cse-search-box&amp;lang=ja"></script>
+						</div>
+												</div>
+			<!-- end #logo -->
+		</div>
+	</div>
+</header>
+
+
+<div class="navbar navbar-default navbar-static-top navbar-primary" role="navigation">
+	<div class="container">
+		<div class="navbar-header">
+
+			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+				<span class="sr-only">ナビゲーションの切り替え</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+		</div>
+
+		<nav class="collapse navbar-collapse" role="navigation">
+			<ul id="menu-main" class="nav navbar-nav"><li class="menu-%e3%83%9b%e3%83%bc%e3%83%a0"><a title="ホーム" href="http://worktoolsmith.com/"><span class="icon icon-home"></span>&nbsp;ホーム</a></li>
+<li class="menu-%e4%bb%ae%e6%83%b3%e5%8c%96 dropdown"><a title="仮想化" href="#" data-toggle="dropdown" class="dropdown-toggle"><span class="icon icon-sitemap"></span>&nbsp;仮想化 <span class="caret"></span></a>
+<ul role="menu" class=" dropdown-menu">
+	<li class="menu-vmware-fusion-6%e3%83%99%e3%83%b3%e3%83%81%e3%83%9e%e3%83%bc%e3%82%af"><a title="VMware Fusion 6ベンチマーク" href="http://worktoolsmith.com/2013/10/vmware-fusion-6/">VMware Fusion 6ベンチマーク</a></li>
+	<li class="menu-parallels-9%e3%83%99%e3%83%b3%e3%83%81%e3%83%9e%e3%83%bc%e3%82%af"><a title="Parallels 9ベンチマーク" href="http://worktoolsmith.com/2013/09/parallels9-benchmark/">Parallels 9ベンチマーク</a></li>
+	<li class="menu-mac%e4%bb%ae%e6%83%b3%e5%8c%96%e3%82%bd%e3%83%95%e3%83%88-%e3%83%ac%e3%83%93%e3%83%a5%e3%83%bc-%e3%82%82%e3%81%8f%e3%81%98"><a title="Mac仮想化ソフト レビュー もくじ" href="http://worktoolsmith.com/mac-virtual-pc-review/">Mac仮想化ソフト レビュー もくじ</a></li>
+	<li class="menu-mac%e4%bb%ae%e6%83%b3%e5%8c%96%e3%82%bd%e3%83%95%e3%83%88%e6%af%94%e8%bc%83-2012"><a title="Mac仮想化ソフト比較 2012" href="http://worktoolsmith.com/vmware-fusion5-parallels-8-virtualbox4-1-mac%e4%bb%ae%e6%83%b3%e5%8c%96%e3%82%bd%e3%83%95%e3%83%88%e5%af%be%e6%b1%ba-2012/">Mac仮想化ソフト比較 2012</a></li>
+	<li class="menu-mac%e4%bb%ae%e6%83%b3%e5%8c%96%e3%82%bd%e3%83%95%e3%83%88%e6%af%94%e8%bc%83-2011"><a title="Mac仮想化ソフト比較 2011" href="http://worktoolsmith.com/mac%e7%94%a8%e4%bb%ae%e6%83%b3pc%e3%82%bd%e3%83%95%e3%83%88%e5%af%be%e6%b1%ba%ef%bc%81-vmware-parallels-virtualbox/">Mac仮想化ソフト比較 2011</a></li>
+	<li class="menu-bootcamp-vs-%e4%bb%ae%e6%83%b3%e5%8c%96%e3%82%bd%e3%83%95%e3%83%88"><a title="BootCamp vs 仮想化ソフト" href="http://worktoolsmith.com/vmware-parallels-bootcamp/">BootCamp vs 仮想化ソフト</a></li>
+	<li class="menu-macbook-air-%e3%81%a8windows-7"><a title="MacBook Air とWindows 7" href="http://worktoolsmith.com/%e6%9c%80%e6%96%b0macbook-air%e3%81%a8%e4%bb%ae%e6%83%b3windows-7%e3%81%af%e3%81%a9%e3%82%8c%e3%81%a0%e3%81%91%e9%80%9f%e3%81%84%e3%81%ae%e3%81%8b%ef%bc%9f/">MacBook Air とWindows 7</a></li>
+	<li class="menu-parallels-macbook-air"><a title=" Parallels + Macbook Air" href="http://worktoolsmith.com/%e3%83%8f%e3%83%bc%e3%83%89%ef%bc%86%e3%82%bd%e3%83%95%e3%83%88%e4%bd%bf%e7%94%a8%e3%83%ac%e3%83%93%e3%83%a5%e3%83%bc/parallels_macbook_air/">Parallels + Macbook Air</a></li>
+</ul>
+</li>
+<li class="menu-%e3%83%ac%e3%83%93%e3%83%a5%e3%83%bc dropdown"><a title="レビュー" href="#" data-toggle="dropdown" class="dropdown-toggle"><span class="icon icon-star"></span>&nbsp;レビュー <span class="caret"></span></a>
+<ul role="menu" class=" dropdown-menu">
+	<li class="menu-%e3%82%82%e3%81%8f%e3%81%98"><a title="もくじ" href="http://worktoolsmith.com/%e3%83%8f%e3%83%bc%e3%83%89%ef%bc%86%e3%82%bd%e3%83%95%e3%83%88%e4%bd%bf%e7%94%a8%e3%83%ac%e3%83%93%e3%83%a5%e3%83%bc/">もくじ</a></li>
+	<li class="menu-galleria-qf8970hg-%e3%83%ac%e3%83%93%e3%83%a5%e3%83%bc"><a title="GALLERIA QF8970HG レビュー" href="http://worktoolsmith.com/category/review/galleria-qf8970hg/">GALLERIA QF8970HG レビュー</a></li>
+	<li class="menu-thinkpad-x230-%e3%83%ac%e3%83%93%e3%83%a5%e3%83%bc"><a title="ThinkPad X230 レビュー" href="http://worktoolsmith.com/tag/x230/">ThinkPad X230 レビュー</a></li>
+	<li class="menu-thinkpad-tablet-2-%e3%83%ac%e3%83%93%e3%83%a5%e3%83%bc"><a title="ThinkPad Tablet 2 レビュー" href="http://worktoolsmith.com/tag/thinkpad-tablet2/">ThinkPad Tablet 2 レビュー</a></li>
+	<li class="menu-sandisk-extreme-%e8%b6%85%e9%ab%98%e9%80%9fusb%e3%83%a1%e3%83%a2%e3%83%aa"><a title="SanDisk Extreme 超高速USBメモリ" href="http://worktoolsmith.com/2013/03/sundisk-extream-32gb/">SanDisk Extreme 超高速USBメモリ</a></li>
+	<li class="menu-%e3%82%bf%e3%82%a4%e3%82%ac%e3%83%bc-%e3%82%8f%e3%81%8f%e5%ad%90-pch-a080-c"><a title="タイガー わく子 PCH-A080-C" href="http://worktoolsmith.com/wakuko/">タイガー わく子 PCH-A080-C</a></li>
+	<li class="menu-raid-hdd-lhr-2breu3"><a title="RAID HDD LHR-2BREU3" href="http://worktoolsmith.com/lhr-2breu3/">RAID HDD LHR-2BREU3</a></li>
+	<li class="menu-%e3%82%aa%e3%83%aa%e3%83%b3%e3%83%91%e3%82%b9-xz-2%e3%80%80%e3%83%ac%e3%83%93%e3%83%a5%e3%83%bc"><a title="オリンパス XZ-2　レビュー" href="http://worktoolsmith.com/category/review/xz-2/">オリンパス XZ-2　レビュー</a></li>
+	<li class="menu-%e8%b2%b7%e3%81%a3%e3%81%a6%e3%82%88%e3%81%8b%e3%81%a3%e3%81%9f%e5%95%86%e5%93%81%e4%b8%80%e8%a6%a7-2012"><a title="買ってよかった商品一覧 2012" href="http://worktoolsmith.com/2012/12/3405/">買ってよかった商品一覧 2012</a></li>
+	<li class="menu-%e6%a4%9c%e8%a8%bc%e4%b8%ad%e3%81%ae%e5%95%86%e5%93%81"><a title="検証中の商品" href="http://worktoolsmith.com/%e3%83%8f%e3%83%bc%e3%83%89%ef%bc%86%e3%82%bd%e3%83%95%e3%83%88%e4%bd%bf%e7%94%a8%e3%83%ac%e3%83%93%e3%83%a5%e3%83%bc/checking_product/">検証中の商品</a></li>
+	<li class="menu-wzr-600dhp"><a title="WZR-600DHP" href="http://worktoolsmith.com/%e3%83%8f%e3%83%bc%e3%83%89%ef%bc%86%e3%82%bd%e3%83%95%e3%83%88%e4%bd%bf%e7%94%a8%e3%83%ac%e3%83%93%e3%83%a5%e3%83%bc/wzr-600dhp/">WZR-600DHP</a></li>
+	<li class="menu-mac%e3%81%a7edy%e3%83%81%e3%83%a3%e3%83%bc%e3%82%b8"><a title="MacでEdyチャージ" href="http://worktoolsmith.com/%e3%83%8f%e3%83%bc%e3%83%89%ef%bc%86%e3%82%bd%e3%83%95%e3%83%88%e4%bd%bf%e7%94%a8%e3%83%ac%e3%83%93%e3%83%a5%e3%83%bc/mac%e3%81%a7edy%e3%83%81%e3%83%a3%e3%83%bc%e3%82%b8%e3%81%99%e3%82%8b%e6%9c%80%e7%9f%ad%e3%81%ae%e9%81%93/">MacでEdyチャージ</a></li>
+	<li class="menu-mac%e3%81%ab%e3%82%82windows%e3%81%ab%e3%82%82%e6%9c%80%e9%81%a9%e3%81%aanas"><a title="MacにもWindowsにも最適なNAS" href="http://worktoolsmith.com/%e3%83%8f%e3%83%bc%e3%83%89%ef%bc%86%e3%82%bd%e3%83%95%e3%83%88%e4%bd%bf%e7%94%a8%e3%83%ac%e3%83%93%e3%83%a5%e3%83%bc/mac%e3%81%ab%e3%82%82windows%e3%81%ab%e3%82%82%e6%9c%80%e9%81%a9%e3%81%aanas%e3%83%8d%e3%83%83%e3%83%88%e3%83%af%e3%83%bc%e3%82%af%e3%83%8f%e3%83%bc%e3%83%89%e3%83%87%e3%82%a3%e3%82%b9%e3%82%af/">MacにもWindowsにも最適なNAS</a></li>
+	<li class="menu-intel-ssd-520-vs-330"><a title="Intel SSD 520 vs 330" href="http://worktoolsmith.com/intel-ssd-520-vs-330/">Intel SSD 520 vs 330</a></li>
+	<li class="menu-intel-ssd-330%e3%81%a81%e5%88%86box-usb3-0-green-line"><a title="Intel SSD 330と1分BOX USB3.0 GREEN LINE" href="http://worktoolsmith.com/%e3%83%8f%e3%83%bc%e3%83%89%ef%bc%86%e3%82%bd%e3%83%95%e3%83%88%e4%bd%bf%e7%94%a8%e3%83%ac%e3%83%93%e3%83%a5%e3%83%bc/intel_ssd_usb30_green_line/">Intel SSD 330と1分BOX USB3.0 GREEN LINE</a></li>
+	<li class="menu-iphone-textforce-%e3%83%aa%e3%83%a5%e3%82%a6%e3%83%89%e3%81%ae%e3%82%ad%e3%83%bc%e3%83%9c%e3%83%bc%e3%83%89%e3%81%a7%e6%9c%80%e5%bc%b7%e5%9f%b7%e7%ad%86%e7%92%b0%e5%a2%83%e3%82%92%e6%95%b4"><a title="iPhone + TextForce + リュウドのキーボードで最強執筆環境を整える" href="http://worktoolsmith.com/%e3%83%8f%e3%83%bc%e3%83%89%ef%bc%86%e3%82%bd%e3%83%95%e3%83%88%e4%bd%bf%e7%94%a8%e3%83%ac%e3%83%93%e3%83%a5%e3%83%bc/iphone-textforce-%e3%83%aa%e3%83%a5%e3%82%a6%e3%83%89%e3%81%ae%e3%82%ad%e3%83%bc%e3%83%9c%e3%83%bc%e3%83%89%e3%81%a7%e6%9c%80%e5%bc%b7%e5%9f%b7%e7%ad%86%e7%92%b0%e5%a2%83%e3%82%92%e6%95%b4/">iPhone + TextForce + リュウドのキーボードで最強執筆環境を整える</a></li>
+</ul>
+</li>
+<li class="menu-%e4%bb%95%e4%ba%8b%e9%81%93%e5%85%b7 dropdown"><a title="仕事道具" href="#" data-toggle="dropdown" class="dropdown-toggle"><span class="icon icon-wrench"></span>&nbsp;仕事道具 <span class="caret"></span></a>
+<ul role="menu" class=" dropdown-menu">
+	<li class="menu-%e4%bb%95%e4%ba%8b%e9%81%93%e5%85%b7%ef%bc%9a%e3%83%8f%e3%83%bc%e3%83%89"><a title="仕事道具：ハード" href="http://worktoolsmith.com/category/review/worktool-real/">仕事道具：ハード</a></li>
+	<li class="menu-%e4%bb%95%e4%ba%8b%e9%81%93%e5%85%b7%ef%bc%9a%e3%82%bd%e3%83%95%e3%83%88"><a title="仕事道具：ソフト" href="http://worktoolsmith.com/category/review/worktool-software/">仕事道具：ソフト</a></li>
+	<li class="menu-%e4%bb%95%e4%ba%8b%e9%81%93%e5%85%b7%ef%bc%9a%e3%82%a2%e3%83%97%e3%83%aa"><a title="仕事道具：アプリ" href="http://worktoolsmith.com/category/review/apps/">仕事道具：アプリ</a></li>
+</ul>
+</li>
+<li class="menu-%e6%9b%b8%e7%b1%8d%e3%83%ac%e3%83%93%e3%83%a5%e3%83%bc dropdown"><a title="書籍レビュー" href="#" data-toggle="dropdown" class="dropdown-toggle"><span class="icon icon-book"></span>&nbsp;書籍レビュー <span class="caret"></span></a>
+<ul role="menu" class=" dropdown-menu">
+	<li class="menu-%e6%9b%b8%e7%b1%8d%e3%83%ac%e3%83%93%e3%83%a5%e3%83%bc%e4%b8%80%e8%a6%a7"><a title="書籍レビュー一覧" href="http://worktoolsmith.com/category/book-review/">書籍レビュー一覧</a></li>
+	<li class="menu-%e3%83%93%e3%82%b8%e3%83%8d%e3%82%b9%e3%81%ae%e8%89%af%e6%9b%b8"><a title="ビジネスの良書" href="http://worktoolsmith.com/%e8%89%af%e6%9b%b8%e7%b4%b9%e4%bb%8b/%e3%83%93%e3%82%b8%e3%83%8d%e3%82%b9%e3%81%ae%e8%89%af%e6%9b%b8/">ビジネスの良書</a></li>
+	<li class="menu-delphi%e3%83%97%e3%83%ad%e3%82%b0%e3%83%a9%e3%83%a0%e3%81%ae%e8%89%af%e6%9b%b8"><a title="Delphiプログラムの良書" href="http://worktoolsmith.com/%e8%89%af%e6%9b%b8%e7%b4%b9%e4%bb%8b/delphi%e3%83%97%e3%83%ad%e3%82%b0%e3%83%a9%e3%83%a0%e3%81%ae%e8%89%af%e6%9b%b8/">Delphiプログラムの良書</a></li>
+</ul>
+</li>
+<li class="menu-docuworks dropdown"><a title="DocuWorks®" href="#" data-toggle="dropdown" class="dropdown-toggle">DocuWorks® <span class="caret"></span></a>
+<ul role="menu" class=" dropdown-menu">
+	<li class="menu-docuworks-%e3%82%82%e3%81%8f%e3%81%98"><a title="DocuWorks® もくじ" href="http://worktoolsmith.com/docuworks/">DocuWorks® もくじ</a></li>
+	<li class="menu-docuworks%e7%94%a8%e3%83%97%e3%83%a9%e3%82%b0%e3%82%a4%e3%83%b3"><a title="DocuWorks®用プラグイン" href="http://worktoolsmith.com/docuworks_plugin/">DocuWorks®用プラグイン</a></li>
+	<li class="menu-%e3%81%aa%e3%81%9cdocuworks%e3%81%8b"><a title="なぜDocuWorks®か" href="http://worktoolsmith.com/whats_docuworks/why_docuworks/">なぜDocuWorks®か</a></li>
+	<li class="menu-%e6%9b%b8%e9%a1%9e%e3%81%ae%e9%9b%bb%e5%ad%90%e5%8c%96%e3%81%a8%e3%81%af"><a title="書類の電子化とは" href="http://worktoolsmith.com/whats_docuworks/paperless1/">書類の電子化とは</a></li>
+</ul>
+</li>
+<li class="menu-%e3%82%af%e3%83%bc%e3%83%9d%e3%83%b3 dropdown"><a title="クーポン" href="#" data-toggle="dropdown" class="dropdown-toggle"><span class="icon icon-yen"></span>&nbsp;クーポン <span class="caret"></span></a>
+<ul role="menu" class=" dropdown-menu">
+	<li class="menu-dell-%e3%82%af%e3%83%bc%e3%83%9d%e3%83%b3"><a title="Dell クーポン" href="http://worktoolsmith.com/coupon/dell/">Dell クーポン</a></li>
+	<li class="menu-hp-%e3%83%91%e3%82%bd%e3%82%b3%e3%83%b3-%e3%82%af%e3%83%bc%e3%83%9d%e3%83%b3"><a title="hp パソコン クーポン" href="http://worktoolsmith.com/coupon/hp-coupon/">hp パソコン クーポン</a></li>
+	<li class="menu-epson-direct-%e3%82%af%e3%83%bc%e3%83%9d%e3%83%b3"><a title="Epson Direct クーポン" href="http://worktoolsmith.com/coupon/epson-direct/">Epson Direct クーポン</a></li>
+	<li class="menu-g-tune%ef%bc%88%e3%82%b8%e3%83%bc%e3%83%81%e3%83%a5%e3%83%bc%e3%83%b3%ef%bc%89%e3%82%af%e3%83%bc%e3%83%9d%e3%83%b3"><a title="G-Tune（ジーチューン）クーポン" href="http://worktoolsmith.com/coupon/g-tune-coupon/">G-Tune（ジーチューン）クーポン</a></li>
+	<li class="menu-%e3%83%9e%e3%82%a6%e3%82%b9%e3%82%b3%e3%83%b3%e3%83%94%e3%83%a5%e3%83%bc%e3%82%bf%e3%83%bc-%e3%82%af%e3%83%bc%e3%83%9d%e3%83%b3"><a title="マウスコンピューター クーポン" href="http://worktoolsmith.com/coupon/mouse-computer-coupon/">マウスコンピューター クーポン</a></li>
+	<li class="menu-epson-direct%ef%bc%88%e3%82%a8%e3%83%97%e3%82%bd%e3%83%b3%e3%83%80%e3%82%a4%e3%83%ac%e3%82%af%e3%83%88%ef%bc%89"><a title="Epson Direct（エプソンダイレクト）" href="http://worktoolsmith.com/coupon/epson-direct/">Epson Direct（エプソンダイレクト）</a></li>
+</ul>
+</li>
+<li class="menu-%e3%83%96%e3%83%ad%e3%82%b0 dropdown"><a title="ブログ" href="#" data-toggle="dropdown" class="dropdown-toggle"><span class="icon icon-pencil"></span>&nbsp;ブログ <span class="caret"></span></a>
+<ul role="menu" class=" dropdown-menu">
+	<li class="menu-%e4%bd%bf%e3%81%88%e3%82%8bweb%e3%82%b5%e3%83%bc%e3%83%93%e3%82%b9"><a title="使えるWebサービス" href="http://worktoolsmith.com/category/%e4%bd%bf%e3%81%88%e3%82%8bweb%e3%82%b5%e3%83%bc%e3%83%93%e3%82%b9/">使えるWebサービス</a></li>
+	<li class="menu-%e4%bd%bf%e3%81%88%e3%82%8b%e3%83%84%e3%83%bc%e3%83%ab%e7%b4%b9%e4%bb%8b"><a title="使えるツール紹介" href="http://worktoolsmith.com/category/%e4%bd%bf%e3%81%88%e3%82%8b%e3%83%84%e3%83%bc%e3%83%ab%e7%b4%b9%e4%bb%8b/">使えるツール紹介</a></li>
+	<li class="menu-mac"><a title="Mac" href="http://worktoolsmith.com/category/mac/">Mac</a></li>
+	<li class="menu-windows"><a title="Windows" href="http://worktoolsmith.com/category/windows/">Windows</a></li>
+	<li class="menu-%e6%9c%80%e6%96%b0cpu%e3%81%a3%e3%81%a6%e3%81%a9%e3%81%86%e3%81%aa%e3%81%ae%ef%bc%9f"><a title="最新CPUってどうなの？" href="http://worktoolsmith.com/category/newest-cpu/">最新CPUってどうなの？</a></li>
+	<li class="menu-%e6%9c%80%e6%96%b0pc"><a title="最新PC" href="http://worktoolsmith.com/category/new-pc/">最新PC</a></li>
+	<li class="menu-%e6%9c%80%e6%96%b0%e3%82%bd%e3%83%95%e3%83%88"><a title="最新ソフト" href="http://worktoolsmith.com/category/new-software/">最新ソフト</a></li>
+	<li class="menu-%e7%89%b9%e4%be%a1%e6%83%85%e5%a0%b1"><a title="特価情報" href="http://worktoolsmith.com/category/%e7%89%b9%e4%be%a1%e6%83%85%e5%a0%b1/">特価情報</a></li>
+	<li class="menu-web%e3%83%87%e3%82%b6%e3%82%a4%e3%83%b3"><a title="Webデザイン" href="http://worktoolsmith.com/category/web-design/">Webデザイン</a></li>
+	<li class="menu-evernote"><a title="Evernote" href="http://worktoolsmith.com/category/evernote/">Evernote</a></li>
+	<li class="menu-%e3%82%a2%e3%83%97%e3%83%aa%e3%81%a8%e3%82%b2%e3%83%bc%e3%83%a0"><a title="アプリとゲーム" href="http://worktoolsmith.com/category/review/apps/">アプリとゲーム</a></li>
+	<li class="menu-%e3%83%96%e3%83%ad%e3%82%b0"><a title="ブログ" href="http://worktoolsmith.com/category/%e3%83%96%e3%83%ad%e3%82%b0/">ブログ</a></li>
+</ul>
+</li>
+<li class="menu-%e3%83%97%e3%83%ad%e3%82%b0%e3%83%a9%e3%83%a0 dropdown"><a title="プログラム" href="#" data-toggle="dropdown" class="dropdown-toggle"><span class="icon icon-cogs"></span>&nbsp;プログラム <span class="caret"></span></a>
+<ul role="menu" class=" dropdown-menu">
+	<li class="current-post-ancestor active current-post-parent menu-php"><a title="PHP" href="http://worktoolsmith.com/category/webprogram/php/">PHP</a></li>
+	<li class="menu-delphi"><a title="Delphi" href="http://worktoolsmith.com/category/program/delphi/">Delphi</a></li>
+	<li class="menu-eclipse"><a title="Eclipse" href="http://worktoolsmith.com/category/program/eclipse/">Eclipse</a></li>
+	<li class="menu-netbeans"><a title="NetBeans" href="http://worktoolsmith.com/category/program/netbeans-2/">NetBeans</a></li>
+	<li class="current-post-ancestor active current-post-parent menu-web%e3%83%97%e3%83%ad%e3%82%b0%e3%83%a9%e3%83%a0"><a title="Webプログラム" href="http://worktoolsmith.com/category/webprogram/">Webプログラム</a></li>
+	<li class="current-post-ancestor active current-post-parent menu-fuelphp"><a title="FuelPHP" href="http://worktoolsmith.com/category/webprogram/fuelphp/">FuelPHP</a></li>
+	<li class="menu-javascript"><a title="JavaScript" href="http://worktoolsmith.com/category/webprogram/javascript/">JavaScript</a></li>
+	<li class="current-post-ancestor active current-post-parent menu-php"><a title="PHP" href="http://worktoolsmith.com/category/webprogram/php/">PHP</a></li>
+	<li class="menu-wordpress"><a title="WordPress" href="http://worktoolsmith.com/category/webprogram/wordpress/">WordPress</a></li>
+</ul>
+</li>
+</ul>		</nav>
+	</div>
+</div>
+
+
+	
+	<div class="wrap container" role="document">
+			 			 			<div class="content row">
+				<div class="main col-xs-12 col-sm-8" role="main">
+					<div class="main-content" >
+						<!--content-single-->
+<!-- breadcrumbs -->
+<ol class="breadcrumb"><i class="icon-plane"></i>&nbsp;<li itemscope itemtype="http://data-vocabulary.org/Breadcrumb"><a href="http://worktoolsmith.com" itemprop="url"><span itemprop="title">ホーム</span></a></li><li itemscope itemtype="http://data-vocabulary.org/Breadcrumb" class="active"><span itemprop="title"><a href="http://worktoolsmith.com/category/webprogram/" title="Webプログラム の投稿をすべて表示">Webプログラム</a></span></li><li itemscope itemtype="http://data-vocabulary.org/Breadcrumb" class="active"><span itemprop="title"><a href="http://worktoolsmith.com/category/webprogram/fuelphp/" title="FuelPHP の投稿をすべて表示">FuelPHP</a></span></li><li itemscope itemtype="http://data-vocabulary.org/Breadcrumb" class="active"><span itemprop="title">FuelPHP開発でローカルとWebで構造が変わっても対応できる小技</span></li></ol>
+	<article class="post-6310 post type-post status-publish format-standard hentry category-fuelphp category-php category-webprogram tag-advent-calender tag-fuelphp tag-php">
+		<img width="780" height="340" src="http://worktoolsmith.com/wp-content/plugins/lazy-load/images/1x1.trans.gif" data-lazy-src="http://worktoolsmith.com/wp-content/uploads/2012/12/Fuelphp-header-780x340.jpg" class="img-responsive wp-post-image" alt="Fuelphpカテゴリ ヘッダ"><noscript><img width="780" height="340" src="http://worktoolsmith.com/wp-content/uploads/2012/12/Fuelphp-header-780x340.jpg" class="img-responsive wp-post-image" alt="Fuelphpカテゴリ ヘッダ"></noscript>		<header class="entry-header">
+			<h1 class="entry-title">FuelPHP開発でローカルとWebで構造が変わっても対応できる小技</h1>
+			<div class="meta">
+<i class="icon-calendar"></i> <time class="published" datetime="2013-12-07T08:25:18+00:00">2013年12月7日</time>
+<div class="tags"><span class="icon icon-tags"></span> <a href="/tag/advent-calender/" class="tag label ">Advent Calender</a><a href="/tag/fuelphp/" class="tag label ">FuelPHP</a><a href="/tag/php/" class="tag label ">PHP</a></div>
+</div>			<div class="a2a_kit a2a_kit_size_32 a2a_target addtoany_list" id="wpa2a_1"><a class="a2a_button_facebook" href="http://www.addtoany.com/add_to/facebook?linkurl=http%3A%2F%2Fworktoolsmith.com%2F2013%2F12%2Ffuelphp-advent-2013%2F&amp;linkname=FuelPHP%E9%96%8B%E7%99%BA%E3%81%A7%E3%83%AD%E3%83%BC%E3%82%AB%E3%83%AB%E3%81%A8Web%E3%81%A7%E6%A7%8B%E9%80%A0%E3%81%8C%E5%A4%89%E3%82%8F%E3%81%A3%E3%81%A6%E3%82%82%E5%AF%BE%E5%BF%9C%E3%81%A7%E3%81%8D%E3%82%8B%E5%B0%8F%E6%8A%80" title="Facebook" rel="nofollow" target="_blank"></a><a class="a2a_button_twitter" href="http://www.addtoany.com/add_to/twitter?linkurl=http%3A%2F%2Fworktoolsmith.com%2F2013%2F12%2Ffuelphp-advent-2013%2F&amp;linkname=FuelPHP%E9%96%8B%E7%99%BA%E3%81%A7%E3%83%AD%E3%83%BC%E3%82%AB%E3%83%AB%E3%81%A8Web%E3%81%A7%E6%A7%8B%E9%80%A0%E3%81%8C%E5%A4%89%E3%82%8F%E3%81%A3%E3%81%A6%E3%82%82%E5%AF%BE%E5%BF%9C%E3%81%A7%E3%81%8D%E3%82%8B%E5%B0%8F%E6%8A%80" title="Twitter" rel="nofollow" target="_blank"></a><a class="a2a_button_google_plus" href="http://www.addtoany.com/add_to/google_plus?linkurl=http%3A%2F%2Fworktoolsmith.com%2F2013%2F12%2Ffuelphp-advent-2013%2F&amp;linkname=FuelPHP%E9%96%8B%E7%99%BA%E3%81%A7%E3%83%AD%E3%83%BC%E3%82%AB%E3%83%AB%E3%81%A8Web%E3%81%A7%E6%A7%8B%E9%80%A0%E3%81%8C%E5%A4%89%E3%82%8F%E3%81%A3%E3%81%A6%E3%82%82%E5%AF%BE%E5%BF%9C%E3%81%A7%E3%81%8D%E3%82%8B%E5%B0%8F%E6%8A%80" title="Google+" rel="nofollow" target="_blank"></a><a class="a2a_button_pocket" href="http://www.addtoany.com/add_to/pocket?linkurl=http%3A%2F%2Fworktoolsmith.com%2F2013%2F12%2Ffuelphp-advent-2013%2F&amp;linkname=FuelPHP%E9%96%8B%E7%99%BA%E3%81%A7%E3%83%AD%E3%83%BC%E3%82%AB%E3%83%AB%E3%81%A8Web%E3%81%A7%E6%A7%8B%E9%80%A0%E3%81%8C%E5%A4%89%E3%82%8F%E3%81%A3%E3%81%A6%E3%82%82%E5%AF%BE%E5%BF%9C%E3%81%A7%E3%81%8D%E3%82%8B%E5%B0%8F%E6%8A%80" title="Pocket" rel="nofollow" target="_blank"></a><a class="a2a_dd addtoany_share_save" href="http://www.addtoany.com/share_save"><img src="http://worktoolsmith.com/wp-content/plugins/add-to-any/share_save_171_16.png" width="171" height="16" alt="Share"/></a>
+<script type="text/javascript"><!--
+wpa2a.script_load();
+//--></script>
+</div>		</header>
+		<a name="content"></a>
+		<div class="entry-content">
+			<p>こんにちはタケ（<a href="https://twitter.com/LandscapeSketch">@LandscapeSketch</a>）です。</p>
+<p>FuelPHP Advent Calender 2013の記事を書いています。昨日は<a href="https://twitter.com/koyhoge">@koyhoge</a>さんの「<a href="http://d.hatena.ne.jp/koyhoge/20131206">JavaScript側にPHP変数を簡単にまるごと渡す方法</a>」でした。</p>
+<p>今日は「<strong>FuelPHP開発でローカルとWebで構造が変わっても対応できる小技</strong>」として、ローカルとWeb上でディレクトリ構造を変えていても便利に開発できる小技を紹介します。</p>
+<h3>開発環境とWeb上の構造</h3>
+<p>現在、ローカルではWindows、XAMPP、NetBeansの組み合わせで開発しています。<br />
+ローカルでは1つのプロジェクトディレクトリに全てを入れ管理を行います。</p>
+<figure id="attachment_6312" class="thumbnail wp-caption alignnone" style="width: 500px"><img class="size-medium wp-image-6312" style="border: 1px solid black; padding: 10px;" alt="fuelphp-adv-2" src="http://worktoolsmith.com/wp-content/plugins/lazy-load/images/1x1.trans.gif" data-lazy-src="http://worktoolsmith.com/wp-content/uploads/2013/12/fuelphp-adv-2-500x336.png" width="500" height="336" /><noscript><img class="size-medium wp-image-6312" style="border: 1px solid black; padding: 10px;" alt="fuelphp-adv-2" src="http://worktoolsmith.com/wp-content/uploads/2013/12/fuelphp-adv-2-500x336.png" width="500" height="336" /></noscript><figcaption class="caption wp-caption-text">図1 ローカル開発環境</figcaption></figure>
+<p>&nbsp;</p>
+<p>Web上では安全のために fuelphp/public の中身のみを公開ディレクトリに入れ、fuelphp/fuel は非公開エリアに移動しようと思いました。</p>
+<figure id="attachment_6311" class="thumbnail wp-caption alignnone" style="width: 451px"><img class="size-full wp-image-6311" style="border: 1px solid black; padding: 10px;" alt="fuelphp-adv-1" src="http://worktoolsmith.com/wp-content/plugins/lazy-load/images/1x1.trans.gif" data-lazy-src="http://worktoolsmith.com/wp-content/uploads/2013/12/fuelphp-adv-1.png" width="451" height="326" /><noscript><img class="size-full wp-image-6311" style="border: 1px solid black; padding: 10px;" alt="fuelphp-adv-1" src="http://worktoolsmith.com/wp-content/uploads/2013/12/fuelphp-adv-1.png" width="451" height="326" /></noscript><figcaption class="caption wp-caption-text">図2 オンライン公開状態</figcaption></figure>
+<p>しかしNetBeansでは<strong>プロジェクトディレクトリ以下に入っているファイルしか管理できません</strong>。サイト名のメインディレクトリがあり、その下にfuel、public両方が入っている必要があります。（図１の点線部分）</p>
+<p>Webと同じ構造にするとNetBeansで管理できなくなってしまうのです。</p>
+<p>となると<strong>デプロイするたびに設定を書き換えてアップロード</strong>する必要性が出てきます。手間がかかり、もし書き忘れた場合はエラー画面となってしまいます。</p>
+<h3>index.phpを柔軟にする</h3>
+<p>いろいろ試した結果、public/index.php を書き換えることで良い感じになりました。</p>
+<p>&nbsp;</p>
+<p>public/index.phpを開くとFuelPHPで使用するディレクトリパスの設定部分があります。</p>
+<p>通常では</p><!-- Crayon Syntax Highlighter v2.4.2 -->
+
+		<div id="crayon-52a55cc5aff91767866260" class="crayon-syntax crayon-theme-feeldesign crayon-font-monaco crayon-os-pc print-yes" data-settings=" minimize scroll-mouseover" style=" margin-top: 12px; margin-bottom: 12px; float: none; clear: both; font-size: 12px !important; line-height: 15px !important;">
+		
+			<div class="crayon-toolbar" data-settings=" show" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><span class="crayon-title"></span>
+			<div class="crayon-tools" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><div class="crayon-button crayon-nums-button" title="行番号ON/OFF"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-plain-button" title="ハイライト表示ON/OFF"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-wrap-button" title="Toggle Line Wrap"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="Expand Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-copy-button" title="Expand Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-popup-button" title="新しいウィンドウでコードを開く"><div class="crayon-button-icon"></div></div><span class="crayon-language">PHP</span></div></div>
+			<div class="crayon-info" style="min-height: 16.8px !important; line-height: 16.8px !important;"></div>
+			<div class="crayon-plain-wrap"><textarea wrap="off" class="crayon-plain print-no" data-settings="dblclick" readonly style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; font-size: 12px !important; line-height: 15px !important;">
+define('APPPATH', realpath(DIR . '/../fuel/app/' ).DIRECTORY_SEPARATOR);</textarea></div>
+			<div class="crayon-main" style="">
+				<table class="crayon-table">
+					<tr class="crayon-row">
+				<td class="crayon-nums " data-settings="show">
+					<div class="crayon-nums-content" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-num" data-line="crayon-52a55cc5aff91767866260-1">1</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-line" id="crayon-52a55cc5aff91767866260-1"><span class="crayon-e">define</span><span class="crayon-sy">(</span><span class="crayon-s">'APPPATH'</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-e">realpath</span><span class="crayon-sy">(</span><span class="crayon-cn">DIR</span><span class="crayon-h"> </span><span class="crayon-sy">.</span><span class="crayon-h"> </span><span class="crayon-s">'/../fuel/app/'</span><span class="crayon-h"> </span><span class="crayon-sy">)</span><span class="crayon-sy">.</span><span class="crayon-e ">DIRECTORY_SEPARATOR</span><span class="crayon-sy">)</span><span class="crayon-sy">;</span></div></div></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0009 seconds] -->
+<p>のように /../fuel/app/ の部分が固定されています。</p>
+<p>&nbsp;</p>
+<p>まずこの部分を変数に置き換えます。 /../ を $fueldir に定義しています。</p><!-- Crayon Syntax Highlighter v2.4.2 -->
+
+		<div id="crayon-52a55cc5aff9d952681602" class="crayon-syntax crayon-theme-feeldesign crayon-font-monaco crayon-os-pc print-yes" data-settings=" minimize scroll-mouseover" style=" margin-top: 12px; margin-bottom: 12px; float: none; clear: both; font-size: 12px !important; line-height: 15px !important;">
+		
+			<div class="crayon-toolbar" data-settings=" show" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><span class="crayon-title"></span>
+			<div class="crayon-tools" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><div class="crayon-button crayon-nums-button" title="行番号ON/OFF"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-plain-button" title="ハイライト表示ON/OFF"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-wrap-button" title="Toggle Line Wrap"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="Expand Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-copy-button" title="Expand Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-popup-button" title="新しいウィンドウでコードを開く"><div class="crayon-button-icon"></div></div><span class="crayon-language">PHP</span></div></div>
+			<div class="crayon-info" style="min-height: 16.8px !important; line-height: 16.8px !important;"></div>
+			<div class="crayon-plain-wrap"><textarea wrap="off" class="crayon-plain print-no" data-settings="dblclick" readonly style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; font-size: 12px !important; line-height: 15px !important;">
+define('APPPATH', realpath(DIR . $fueldir . '/app/') . DIRECTORYSEPARATOR);</textarea></div>
+			<div class="crayon-main" style="">
+				<table class="crayon-table">
+					<tr class="crayon-row">
+				<td class="crayon-nums " data-settings="show">
+					<div class="crayon-nums-content" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-num" data-line="crayon-52a55cc5aff9d952681602-1">1</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-line" id="crayon-52a55cc5aff9d952681602-1"><span class="crayon-e">define</span><span class="crayon-sy">(</span><span class="crayon-s">'APPPATH'</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-e">realpath</span><span class="crayon-sy">(</span><span class="crayon-cn">DIR</span><span class="crayon-h"> </span><span class="crayon-sy">.</span><span class="crayon-h"> </span><span class="crayon-v">$fueldir</span><span class="crayon-h"> </span><span class="crayon-sy">.</span><span class="crayon-h"> </span><span class="crayon-s">'/app/'</span><span class="crayon-sy">)</span><span class="crayon-h"> </span><span class="crayon-sy">.</span><span class="crayon-h"> </span><span class="crayon-cn">DIRECTORYSEPARATOR</span><span class="crayon-sy">)</span><span class="crayon-sy">;</span></div></div></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0008 seconds] -->
+<p></p>
+<h3>.htaccessに仕掛け</h3>
+<p>次にそれぞれの環境の .htaccess にfuelの環境設定を書き加えます。</p>
+<p>ローカル<br />
+<strong>SetEnv FUEL_ENV development</strong></p>
+<p>Web<br />
+<strong>SetEnv FUEL_ENV production</strong></p>
+<h3>再度index.php</h3>
+<p>再度 public/index.php に以下の構文を加えました。</p><!-- Crayon Syntax Highlighter v2.4.2 -->
+
+		<div id="crayon-52a55cc5affa3246372111" class="crayon-syntax crayon-theme-feeldesign crayon-font-monaco crayon-os-pc print-yes" data-settings=" minimize scroll-mouseover" style=" margin-top: 12px; margin-bottom: 12px; float: none; clear: both; font-size: 12px !important; line-height: 15px !important;">
+		
+			<div class="crayon-toolbar" data-settings=" show" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><span class="crayon-title"></span>
+			<div class="crayon-tools" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><div class="crayon-button crayon-nums-button" title="行番号ON/OFF"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-plain-button" title="ハイライト表示ON/OFF"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-wrap-button" title="Toggle Line Wrap"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="Expand Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-copy-button" title="Expand Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-popup-button" title="新しいウィンドウでコードを開く"><div class="crayon-button-icon"></div></div><span class="crayon-language">PHP</span></div></div>
+			<div class="crayon-info" style="min-height: 16.8px !important; line-height: 16.8px !important;"></div>
+			<div class="crayon-plain-wrap"><textarea wrap="off" class="crayon-plain print-no" data-settings="dblclick" readonly style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; font-size: 12px !important; line-height: 15px !important;">
+if ( $_SERVER['FUEL_ENV'] == 'production' ) {
+  $fuel_dir = '/../../fuel';
+  ini_set('display_errors', 0);
+} elseif( $_SERVER['FUEL_ENV'] == 'development' )  {
+  $fuel_dir = '/../fuel';
+  ini_set('display_errors', 1);
+}</textarea></div>
+			<div class="crayon-main" style="">
+				<table class="crayon-table">
+					<tr class="crayon-row">
+				<td class="crayon-nums " data-settings="show">
+					<div class="crayon-nums-content" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-num" data-line="crayon-52a55cc5affa3246372111-1">1</div><div class="crayon-num crayon-striped-num" data-line="crayon-52a55cc5affa3246372111-2">2</div><div class="crayon-num" data-line="crayon-52a55cc5affa3246372111-3">3</div><div class="crayon-num crayon-striped-num" data-line="crayon-52a55cc5affa3246372111-4">4</div><div class="crayon-num" data-line="crayon-52a55cc5affa3246372111-5">5</div><div class="crayon-num crayon-striped-num" data-line="crayon-52a55cc5affa3246372111-6">6</div><div class="crayon-num" data-line="crayon-52a55cc5affa3246372111-7">7</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-line" id="crayon-52a55cc5affa3246372111-1"><span class="crayon-st">if</span><span class="crayon-h"> </span><span class="crayon-sy">(</span><span class="crayon-h"> </span><span class="crayon-v">$_SERVER</span><span class="crayon-sy">[</span><span class="crayon-s">'FUEL_ENV'</span><span class="crayon-sy">]</span><span class="crayon-h"> </span><span class="crayon-o">==</span><span class="crayon-h"> </span><span class="crayon-s">'production'</span><span class="crayon-h"> </span><span class="crayon-sy">)</span><span class="crayon-h"> </span><span class="crayon-sy">{</span></div><div class="crayon-line crayon-striped-line" id="crayon-52a55cc5affa3246372111-2"><span class="crayon-h">&nbsp;&nbsp;</span><span class="crayon-v">$fuel_dir</span><span class="crayon-h"> </span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-s">'/../../fuel'</span><span class="crayon-sy">;</span></div><div class="crayon-line" id="crayon-52a55cc5affa3246372111-3"><span class="crayon-h">&nbsp;&nbsp;</span><span class="crayon-e">ini_set</span><span class="crayon-sy">(</span><span class="crayon-s">'display_errors'</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-cn">0</span><span class="crayon-sy">)</span><span class="crayon-sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-52a55cc5affa3246372111-4"><span class="crayon-sy">}</span><span class="crayon-h"> </span><span class="crayon-st">elseif</span><span class="crayon-sy">(</span><span class="crayon-h"> </span><span class="crayon-v">$_SERVER</span><span class="crayon-sy">[</span><span class="crayon-s">'FUEL_ENV'</span><span class="crayon-sy">]</span><span class="crayon-h"> </span><span class="crayon-o">==</span><span class="crayon-h"> </span><span class="crayon-s">'development'</span><span class="crayon-h"> </span><span class="crayon-sy">)</span><span class="crayon-h">&nbsp;&nbsp;</span><span class="crayon-sy">{</span></div><div class="crayon-line" id="crayon-52a55cc5affa3246372111-5"><span class="crayon-h">&nbsp;&nbsp;</span><span class="crayon-v">$fuel_dir</span><span class="crayon-h"> </span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-s">'/../fuel'</span><span class="crayon-sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-52a55cc5affa3246372111-6"><span class="crayon-h">&nbsp;&nbsp;</span><span class="crayon-e">ini_set</span><span class="crayon-sy">(</span><span class="crayon-s">'display_errors'</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-cn">1</span><span class="crayon-sy">)</span><span class="crayon-sy">;</span></div><div class="crayon-line" id="crayon-52a55cc5affa3246372111-7"><span class="crayon-sy">}</span></div></div></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0019 seconds] -->
+<p>$fuel_dir に環境ごとの fuel ディレクトリ位置を代入しています。その後は各グローバル変数に代入されていきます。</p>
+<p>&nbsp;</p>
+<p>また同時に</p><!-- Crayon Syntax Highlighter v2.4.2 -->
+
+		<div id="crayon-52a55cc5affa9766777728" class="crayon-syntax crayon-theme-feeldesign crayon-font-monaco crayon-os-pc print-yes" data-settings=" minimize scroll-mouseover" style=" margin-top: 12px; margin-bottom: 12px; float: none; clear: both; font-size: 12px !important; line-height: 15px !important;">
+		
+			<div class="crayon-toolbar" data-settings=" show" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><span class="crayon-title"></span>
+			<div class="crayon-tools" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><div class="crayon-button crayon-nums-button" title="行番号ON/OFF"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-plain-button" title="ハイライト表示ON/OFF"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-wrap-button" title="Toggle Line Wrap"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="Expand Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-copy-button" title="Expand Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-popup-button" title="新しいウィンドウでコードを開く"><div class="crayon-button-icon"></div></div><span class="crayon-language">PHP</span></div></div>
+			<div class="crayon-info" style="min-height: 16.8px !important; line-height: 16.8px !important;"></div>
+			<div class="crayon-plain-wrap"><textarea wrap="off" class="crayon-plain print-no" data-settings="dblclick" readonly style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; font-size: 12px !important; line-height: 15px !important;">
+iniset('displayerrors', 0);</textarea></div>
+			<div class="crayon-main" style="">
+				<table class="crayon-table">
+					<tr class="crayon-row">
+				<td class="crayon-nums " data-settings="show">
+					<div class="crayon-nums-content" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-num" data-line="crayon-52a55cc5affa9766777728-1">1</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-line" id="crayon-52a55cc5affa9766777728-1"><span class="crayon-e">iniset</span><span class="crayon-sy">(</span><span class="crayon-s">'displayerrors'</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-cn">0</span><span class="crayon-sy">)</span><span class="crayon-sy">;</span></div></div></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0004 seconds] -->
+<p>などエラー表示設定を書いておくことで、公開した時に内部エラーが丸見えにならないようにもできました。</p>
+<h3>まとめ</h3>
+<p>ごく簡単なTipsでしたがいかがでしたでしょうか？</p>
+<p>ただこれは私の考えた方法で、もっと簡潔で安全な方法もあるかと思います。もし「こんなふうに書くともっと簡単だよ！」という方法がありましたら、<strong>ぜひコメントしてください！</strong></p>
+<p>&nbsp;</p>
+<p>あすは@sa2yasuさんの「FuelPHPを更に使ってみて使えるなと思ったCustomValidationRuleの書き方とCore拡張の小技」です。お楽しみに～</p>
+<p>&nbsp;</p>
+<p>（文中のソースコードはすべてBSDライセンスといたします。）</p>
+					</div>
+		<footer class="content-footer">
+			<div class="category-tag">
+				<span class="icon-folder-open"></span> カテゴリー&nbsp;<a href="http://worktoolsmith.com/category/webprogram/fuelphp/" title="FuelPHP の投稿をすべて表示" rel="category tag">FuelPHP</a> , <a href="http://worktoolsmith.com/category/webprogram/php/" title="PHP の投稿をすべて表示" rel="category tag">PHP</a> , <a href="http://worktoolsmith.com/category/webprogram/" title="Webプログラム の投稿をすべて表示" rel="category tag">Webプログラム</a>&nbsp;|&nbsp;<span class="icon-tags"> </span>タグ&nbsp<a href="/tag/advent-calender/" rel="tag">Advent Calender</a> , <a href="/tag/fuelphp/" rel="tag">FuelPHP</a> , <a href="/tag/php/" rel="tag">PHP</a> 
+			</div>
+
+										
+			
+			<h3>前の記事、新しい記事もご覧ください</h3>
+
+<nav class="btn-group btn-group-justified prev-next-nav">
+			<a href="http://worktoolsmith.com/2013/10/php-get-class-methods/" rel="prev" id="btn-prev" class="btn btn-default"
+		   data-container="body" data-toggle="popover" data-placement="top"
+		   data-title="PHPでクラス(オブジェクト)のメソッド一覧を取得"
+		   data-content="ライブラリなどを使用する場合、メソッド名一覧を取得したい場合があります。
+$methods = g">
+			<div class="nav-title">
+				<i class="icon-chevron-sign-left"></i> 前の記事			</div>
+							<small>PHPでクラス(オブジェクト)のメソッド一覧を取得</small>
+					</a>
+	
+	
+	<a href="http://worktoolsmith.com" class="btn btn-default" alt="Goto Home">
+		<div class="nav-title"><i class="icon-home icon-2x"></i><br />
+			ホーム</div>
+	</a>
+
+	
+			<div class="btn btn-default disabled">
+			次の記事はありません		</div>
+	</nav>			
+													
+			<!-- X:S ZenBackWidget --><div id="zenback-widget-loader"></div><script type="text/javascript">!function(d,i){if(!d.getElementById(i)){var r=Math.ceil((new Date()*1)*Math.random());var j=d.createElement("script");j.id=i;j.async=true;j.src="//w.zenback.jp/v1/?base_uri=http%3A//worktoolsmith.com&nsid=117365307659538639%3A%3A117365315712619891&rand="+r;d.body.appendChild(j);}}(document,"zenback-widget-js");</script><!-- X:E ZenBackWidget -->		</footer>
+	</article>
+					</div>
+				</div><!-- / main -->
+									<aside class="sidebar col-xs-12 col-sm-4" role="complementary">
+							<section class="widget text-19 widget_text"><div class="widget-inner">			<div class="textwidget"><style>
+.worktoolsmith_rt { width: 200px; height: 200px; }
+@media(min-width: 500px) { .worktoolsmith_rt { width: 250px; height: 250px; } }
+@media(min-width: 800px) { .worktoolsmith_rt { width: 300px; height: 250px; } }
+</style>
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- WorkToolSmith 非同期 右上 -->
+<ins class="adsbygoogle worktoolsmith_rt"
+     style="display:inline-block"
+     data-ad-client="ca-pub-4561278562347971"
+     data-ad-slot="6166036463"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script></div>
+		<div class="clearfix"></div></div></section><section class="widget text-42 widget_text"><div class="widget-inner">			<div class="textwidget"><span style="color:#f00;">↓ランキング参加中です。ぜひワンクリックを！</span><br />
+<a href="http://blog.with2.net/link.php?1407750" title="人気ブログランキングへ"><img src="http://image.with2.net/img/banner/banner_12.gif" width="80" height="15" border="0" /></a><br /><a href="http://blog.with2.net/link.php?1407750" style="font-size:12px;">人気ブログランキングへ</a>現在<strong style="color:#f00">?</strong>位
+<br />
+<a href="http://blogranking.fc2.com/in.php?id=753042" target="_blank"><img src="http://blogranking.fc2.com/ranking_banner/a_01.gif" style="border:0px;"></a>
+<br />
+<a href="http://pckaden.blogmura.com/mac/"><img src="http://pckaden.blogmura.com/mac/img/mac88_31.gif" width="88" height="31" border="0" alt="にほんブログ村 PC家電ブログ Macへ" /></a></div>
+		<div class="clearfix"></div></div></section><section class="widget text-24 widget_text"><div class="widget-inner"><h3 class="widget-title">Mac用仮想PCソフト対決！ VMware Parallels VirtualBox</h3>			<div class="textwidget"><p><a href="http://worktoolsmith.com/2012/11/vmware-fusion-5-%e3%83%91%e3%83%83%e3%82%b1%e3%83%bc%e3%82%b8%e7%89%88%e3%82%82%e8%b2%b7%e3%81%a3%e3%81%a6%e3%81%bf%e3%81%9f%e3%82%88amazon%e3%81%8b%e3%82%89/"><br />
+<img src="http://worktoolsmith.com/wp-content/images/fusion5.png" /><br />
+VMware Fusion 5パッケージ版を購入した感想はこちらの記事へどうぞ。<br />
+</a></p>
+<p><img src="http://worktoolsmith.com/wp-content/images/vmicon/vmicon3.png"><br />
+Mac用仮想PCソフトを３つ比べてみました。<br />
+ご検討中の方はぜひ見てみてください。</p>
+<p><strong>2012年最新版</strong>での比較を追加しました。<br />
+<a href="http://worktoolsmith.com/vmware-fusion5-parallels-8-virtualbox4-1-mac%E4%BB%AE%E6%83%B3%E5%8C%96%E3%82%BD%E3%83%95%E3%83%88%E5%AF%BE%E6%B1%BA-2012/">VMware Fusion5 / Parallels 8 / VirtualBox4.1 </a></p>
+<p><strong>2011年時点での</strong>仮想化ソフト比較<br />
+<A href="http://worktoolsmith.com/mac%E7%94%A8%E4%BB%AE%E6%83%B3pc%E3%82%BD%E3%83%95%E3%83%88%E5%AF%BE%E6%B1%BA%EF%BC%81-vmware-parallels-virtualbox/">レビュー　Mac用仮想PCソフト対決！ VMware Parallels VirtualBox</a></p>
+<p>MacBook Air（Mid 2012）でもベンチマークを取ってみました。<br />
+<a href="http://worktoolsmith.com/最新macbook-airと仮想windows-7はどれだけ速いのか？/"> 最新MacBook Airと仮想Windows 7はどれだけ速いのか？</a></p>
+<p>MacBook Air（Late2010）でもベンチを取ってみました。<br />
+<a href="http://worktoolsmith.com/%E3%83%8F%E3%83%BC%E3%83%89%EF%BC%86%E3%82%BD%E3%83%95%E3%83%88%E4%BD%BF%E7%94%A8%E3%83%AC%E3%83%93%E3%83%A5%E3%83%BC/parallels_macbook_air/">レビュー Parallels + Macbook Air(Late 2010)で3DMarkを試してみた</a></p>
+</div>
+		<div class="clearfix"></div></div></section><section class="widget categories-5 widget_categories"><div class="widget-inner"><h3 class="widget-title">カテゴリー</h3>		<ul>
+	<li class="cat-item cat-item-359"><a href="/category/program/c/" title="c++ に含まれる投稿をすべて表示">c++</a>
+</li>
+	<li class="cat-item cat-item-923"><a href="/category/review/dell-u2713h/" title="DELL U2713H に含まれる投稿をすべて表示">DELL U2713H</a>
+</li>
+	<li class="cat-item cat-item-16"><a href="/category/program/delphi/" title="Delphi に含まれる投稿をすべて表示">Delphi</a>
+</li>
+	<li class="cat-item cat-item-3"><a href="/category/docuworks/" title="DocuWorks に含まれる投稿をすべて表示">DocuWorks</a>
+</li>
+	<li class="cat-item cat-item-59"><a href="/category/docuworks/docuworks-api/" title="DocuWorks API に含まれる投稿をすべて表示">DocuWorks API</a>
+</li>
+	<li class="cat-item cat-item-72"><a href="/category/docuworks/docuworks-plugin/" title="DocuWorksプラグイン に含まれる投稿をすべて表示">DocuWorksプラグイン</a>
+</li>
+	<li class="cat-item cat-item-428"><a href="/category/program/eclipse/" title="Eclipse に含まれる投稿をすべて表示">Eclipse</a>
+</li>
+	<li class="cat-item cat-item-9"><a href="/category/evernote/" title="Evernote に含まれる投稿をすべて表示">Evernote</a>
+</li>
+	<li class="cat-item cat-item-731"><a href="/category/filemaker/" title="FileMaker に含まれる投稿をすべて表示">FileMaker</a>
+</li>
+	<li class="cat-item cat-item-350"><a href="/category/webprogram/fuelphp/" title="FuelPHP に含まれる投稿をすべて表示">FuelPHP</a>
+</li>
+	<li class="cat-item cat-item-893"><a href="/category/review/galleria-qf8970hg/" title="GALLERIA QF8970HG レビュー に含まれる投稿をすべて表示">GALLERIA QF8970HG レビュー</a>
+</li>
+	<li class="cat-item cat-item-170"><a href="/category/webprogram/javascript/" title="JavaScript に含まれる投稿をすべて表示">JavaScript</a>
+</li>
+	<li class="cat-item cat-item-935"><a href="/category/review/libreta%e3%83%aa%e3%83%96%e3%83%ac%e3%82%bf-%e3%83%ac%e3%83%93%e3%83%a5%e3%83%bc/" title="LIBRETA(リブレタ) レビュー に含まれる投稿をすべて表示">LIBRETA(リブレタ) レビュー</a>
+</li>
+	<li class="cat-item cat-item-15"><a href="/category/linux/" title="Linux に含まれる投稿をすべて表示">Linux</a>
+</li>
+	<li class="cat-item cat-item-40"><a href="/category/mac/" title="Mac に含まれる投稿をすべて表示">Mac</a>
+</li>
+	<li class="cat-item cat-item-134"><a href="/category/program/netbeans-2/" title="NetBeans に含まれる投稿をすべて表示">NetBeans</a>
+</li>
+	<li class="cat-item cat-item-52"><a href="/category/webprogram/php/" title="PHP に含まれる投稿をすべて表示">PHP</a>
+</li>
+	<li class="cat-item cat-item-909"><a href="/category/review/sandisk-sdcz80%e3%82%b7%e3%83%aa%e3%83%bc%e3%82%ba-%e3%83%ac%e3%83%93%e3%83%a5%e3%83%bc/" title="Sandisk SDCZ80シリーズ レビュー に含まれる投稿をすべて表示">Sandisk SDCZ80シリーズ レビュー</a>
+</li>
+	<li class="cat-item cat-item-920"><a href="/category/review/thinkpad-helix/" title="ThinkPad Helix に含まれる投稿をすべて表示">ThinkPad Helix</a>
+</li>
+	<li class="cat-item cat-item-875"><a href="/category/review/thinkpad-x230/" title="ThinkPad X230 レビュー に含まれる投稿をすべて表示">ThinkPad X230 レビュー</a>
+</li>
+	<li class="cat-item cat-item-158"><a href="/category/web-design/" title="Webデザイン に含まれる投稿をすべて表示">Webデザイン</a>
+</li>
+	<li class="cat-item cat-item-38"><a href="/category/webprogram/" title="Webプログラム に含まれる投稿をすべて表示">Webプログラム</a>
+</li>
+	<li class="cat-item cat-item-98"><a href="/category/windows/" title="Windows に含まれる投稿をすべて表示">Windows</a>
+</li>
+	<li class="cat-item cat-item-51"><a href="/category/webprogram/wordpress/" title="WordPress に含まれる投稿をすべて表示">WordPress</a>
+</li>
+	<li class="cat-item cat-item-65"><a href="/category/review/others/" title="その他 に含まれる投稿をすべて表示">その他</a>
+</li>
+	<li class="cat-item cat-item-743"><a href="/category/review/xz-2/" title="オリンパス XZ-2 レビュー に含まれる投稿をすべて表示">オリンパス XZ-2 レビュー</a>
+</li>
+	<li class="cat-item cat-item-230"><a href="/category/games/" title="ゲーム に含まれる投稿をすべて表示">ゲーム</a>
+</li>
+	<li class="cat-item cat-item-477"><a href="/category/design/" title="デザイン に含まれる投稿をすべて表示">デザイン</a>
+</li>
+	<li class="cat-item cat-item-96"><a href="/category/%e3%83%96%e3%83%ad%e3%82%b0/" title="ブログ に含まれる投稿をすべて表示">ブログ</a>
+</li>
+	<li class="cat-item cat-item-837"><a href="/category/program/" title="プログラム に含まれる投稿をすべて表示">プログラム</a>
+</li>
+	<li class="cat-item cat-item-69"><a href="/category/docuworks/paper-less/" title="ペーパーレス化 に含まれる投稿をすべて表示">ペーパーレス化</a>
+</li>
+	<li class="cat-item cat-item-491"><a href="/category/%e3%83%a9%e3%82%a4%e3%83%95%e3%83%8f%e3%83%83%e3%82%af/" title="ライフハック に含まれる投稿をすべて表示">ライフハック</a>
+</li>
+	<li class="cat-item cat-item-755"><a href="/category/review/" title="レビュー に含まれる投稿をすべて表示">レビュー</a>
+</li>
+	<li class="cat-item cat-item-685"><a href="/category/%e4%bb%95%e4%ba%8b%e3%81%a8%e4%ba%ba%e7%94%9f/" title="仕事と人生 に含まれる投稿をすべて表示">仕事と人生</a>
+</li>
+	<li class="cat-item cat-item-898"><a href="/category/%e4%bb%95%e4%ba%8b%e3%81%a8%e5%81%a5%e5%ba%b7/" title="仕事と健康 に含まれる投稿をすべて表示">仕事と健康</a>
+</li>
+	<li class="cat-item cat-item-223"><a href="/category/review/apps/" title="仕事道具：アプリ に含まれる投稿をすべて表示">仕事道具：アプリ</a>
+</li>
+	<li class="cat-item cat-item-808"><a href="/category/review/worktool-software/" title="仕事道具：ソフト に含まれる投稿をすべて表示">仕事道具：ソフト</a>
+</li>
+	<li class="cat-item cat-item-807"><a href="/category/review/worktool-real/" title="仕事道具：ハード に含まれる投稿をすべて表示">仕事道具：ハード</a>
+</li>
+	<li class="cat-item cat-item-460"><a href="/category/virtualization/" title="さまざまな仮想化ソフト、仮想化環境のレビュー、体験記などです。">仮想化(Windows/Mac)</a>
+</li>
+	<li class="cat-item cat-item-141"><a href="/category/%e4%bd%bf%e3%81%88%e3%82%8bweb%e3%82%b5%e3%83%bc%e3%83%93%e3%82%b9/" title="使えるWebサービス に含まれる投稿をすべて表示">使えるWebサービス</a>
+</li>
+	<li class="cat-item cat-item-94"><a href="/category/%e4%bd%bf%e3%81%88%e3%82%8b%e3%83%84%e3%83%bc%e3%83%ab%e7%b4%b9%e4%bb%8b/" title="使えるツール紹介 に含まれる投稿をすべて表示">使えるツール紹介</a>
+</li>
+	<li class="cat-item cat-item-806"><a href="/category/new-product/" title="最新のパソコン、機材、ソフト、本などを雑多に紹介するカテゴリです。">新製品情報</a>
+</li>
+	<li class="cat-item cat-item-838"><a href="/category/book-review/" title="書籍レビュー に含まれる投稿をすべて表示">書籍レビュー</a>
+</li>
+	<li class="cat-item cat-item-793"><a href="/category/newest-cpu/" title="最新CPUってどうなの？ に含まれる投稿をすべて表示">最新CPUってどうなの？</a>
+</li>
+	<li class="cat-item cat-item-87"><a href="/category/new-pc/" title="最新PC に含まれる投稿をすべて表示">最新PC</a>
+</li>
+	<li class="cat-item cat-item-340"><a href="/category/new-software/" title="最新ソフト に含まれる投稿をすべて表示">最新ソフト</a>
+</li>
+	<li class="cat-item cat-item-1"><a href="/category/non-category/" title="未分類 に含まれる投稿をすべて表示">未分類</a>
+</li>
+	<li class="cat-item cat-item-528"><a href="/category/%e7%89%b9%e4%be%a1%e6%83%85%e5%a0%b1/" title="特価情報 に含まれる投稿をすべて表示">特価情報</a>
+</li>
+		</ul>
+<div class="clearfix"></div></div></section><section class="widget text-27 widget_text"><div class="widget-inner"><h3 class="widget-title">このサイトについて</h3>			<div class="textwidget"><div align="center"><a href="http://worktoolsmith.com/pc_history/"><img src="http://worktoolsmith.com/wp-content/images/profile2.jpg" height="auto" width="120"/></a></div>
+<p>運営者　<strong>タケ</strong><br />
+1976年生まれ。ふたご座。静岡県在住。</p>
+<p>パソコンを7歳からいじり始めて28年。とにかくパソコンが好きです。<br />
+パソコンを使う上で大切なのは、「基本をおぼえる」ことではなくて「今すぐ使える」こと。<br />
+仕事に役立つ、使いやすくなるハードやソフト、リアルツールなどをこだわりの視点でレビュー・解説します。</p>
+<p><a href="https://twitter.com/LandscapeSketch" class="twitter-follow-button" data-show-count="false" data-lang="ja">@LandscapeSketchをフォロー</a><br />
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script></p>
+<p><a href="https://twitter.com/WorkToolSmith" class="twitter-follow-button" data-show-count="false" data-lang="ja">@WorkToolSmithをフォロー</a><br />
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script></p>
+<p>なぜパソコンに詳しいの？<a href="http://worktoolsmith.com/pc_history/">詳しいプロフィールはこちら</a></p>
+<p><img src="http://worktoolsmith.com/wp-content/images/16/twitter_2.png" />Twitter <a href="https://twitter.com/LandscapeSketch">@LandscapeSketch</a><br />
+<img src="http://worktoolsmith.com/wp-content/images/16/feed.png" />RSS <a href="http://worktoolsmith.com/feed">更新情報登録</a><br />
+<img src="http://worktoolsmith.com/wp-content/images/16/mail_box.png" />お問い合わせ <a href="http://worktoolsmith.com/inquiry/">サイトへのお問い合せやレビューのご依頼はこちら</a></p>
+</div>
+		<div class="clearfix"></div></div></section><section class="widget text-6 widget_text"><div class="widget-inner"><h3 class="widget-title">DocuWorksプラグインインストール方法</h3>			<div class="textwidget"><a href="http://www.worktoolsmith.com/docuwork_plugin/how-to-install-plugin"><img title="プラグインインストール手順ボタン" src="http://worktoolsmith.com/wp-content/uploads/2013/09/btn_plugin_manual.png" alt="プラグインインストール手順" width="200" height="60" /></a></div>
+		<div class="clearfix"></div></div></section><section class="widget text-4 widget_text"><div class="widget-inner"><h3 class="widget-title">DocuWorksの購入</h3>			<div class="textwidget"><p><a href="http://www.amazon.co.jp/gp/search?keywords=DocuWorks7.3&__mk_ja_JP=カタカナ&tag=worktoolsmith-22"><img src="http://worktoolsmith.com/wp-content/images/dw7.jpg" /></a>
+</p>
+<p>
+<a href="http://c.af.moshimo.com/af/c/click?a_id=239278&amp;p_id=54&amp;pc_id=54&amp;pl_id=616&amp;s_v=b5Rz2P0601xu&amp;url=http%3A//search.rakuten.co.jp/search/mall/DocuWorks7.3/-/f.1-p.1-s.1-sf.0-st.A-v.2?x=0" rel="nofollow" target="_blank" title="楽天市場" >楽天市場</a> | <a href="http://www.amazon.co.jp/gp/search?keywords=DocuWorks7.3&amp;__mk_ja_JP=%83J%83%5E%83J%83i&amp;tag=worktoolsmith-22" rel="nofollow" target="_blank" title="アマゾン" >Amazon</a> | <a href="http://ck.jp.ap.valuecommerce.com/servlet/referral?sid=2818777&amp;pid=880644339&amp;vc_url=http%3A%2F%2Fshopping.search.yahoo.co.jp%2Fsearch%3FuIv%3Don%26ei%3DUTF-8%26tab_ex%3Dcommerce%26slider%3D0%26va%3DDocuWorks7.3" target="_blank" title="Yahooショッピング" >Yahooショッピング</a>
+</p></div>
+		<div class="clearfix"></div></div></section><section class="widget text-10 widget_text"><div class="widget-inner"><h3 class="widget-title">DocuWorks Viewer for iPod, iPad, iPhone</h3>			<div class="textwidget"><table class="itms-link" style="border:0;"><tbody><tr style="border:0;"><td style="border:0; vertical-align: middle;"><a href="http://click.linksynergy.com/fs-bin/click?id=uFbRGNgXJf4&subid=0&offerid=94348.1&type=10&tmpid=3910&RD_PARM0=http%3A%2F%2Fitunes.apple.com%2Fjp%2Fapp%2Fdocuworks-viewer-light%2Fid412415307%3Fmt%3D8%2526uo%3D4&RD_PARM1=http%3A%2F%2Fitunes.apple.com%2Fjp%2Fapp%2Fdocuworks-viewer-light%2Fid412415307%3Fmt%3D8%2526uo%3D4" rel="nofollow" target="_blank"><img src="http://a2.mzstatic.com/us/r1000/115/Purple/v4/f4/3f/c3/f43fc3dd-017a-ce43-e5b5-3ca003fe77b7/Icon.png" width="60" height="auto" alt="DocuWorks Viewer Light" title="DocuWorks Viewer Light" style="border-radius: 6%;"></a></td><td style="border:0; vertical-align:middle;"><div class="itms-link-text"><a href="http://click.linksynergy.com/fs-bin/click?id=uFbRGNgXJf4&subid=0&offerid=94348.1&type=10&tmpid=3910&RD_PARM0=http%3A%2F%2Fitunes.apple.com%2Fjp%2Fapp%2Fdocuworks-viewer-light%2Fid412415307%3Fmt%3D8%2526uo%3D4&RD_PARM1=http%3A%2F%2Fitunes.apple.com%2Fjp%2Fapp%2Fdocuworks-viewer-light%2Fid412415307%3Fmt%3D8%2526uo%3D4" rel="nofollow" target="_blank" style="font-size:1.2em;text-decoration:none;font-weight:bold;color:#333;">DocuWorks Viewer Light</a><br><a href="http://itunes.apple.com/jp/artist/fuji-xerox-co.-ltd./id372351204?uo=4" rel="nofollow" target="_blank" style="color:#666;text-decoration:none;">Fuji Xerox Co., Ltd.</a><br><a href="$aflink" style="font-weight:bold;color:#900;margin-right:12px;text-decoration: none;" rel="nofollow" target="_blank">無料</a><small>(2012/08/02現在)</small><br><a href="http://click.linksynergy.com/fs-bin/click?id=uFbRGNgXJf4&subid=0&offerid=94348.1&type=10&tmpid=3910&RD_PARM0=http%3A%2F%2Fitunes.apple.com%2Fjp%2Fapp%2Fdocuworks-viewer-light%2Fid412415307%3Fmt%3D8%2526uo%3D4&RD_PARM1=http%3A%2F%2Fitunes.apple.com%2Fjp%2Fapp%2Fdocuworks-viewer-light%2Fid412415307%3Fmt%3D8%2526uo%3D4" rel="nofollow" target="_blank"><img src="http://gracix.com/images/itms/App_Store_small_badge.gif" alt="iTunesで見る" style="border-style:none;margin: 8px;margin-left:0;"></a></div></td></tr></tbody></table></div>
+		<div class="clearfix"></div></div></section><section class="widget text-20 widget_text"><div class="widget-inner"><h3 class="widget-title">DocuWorks(R) Viewer</h3>			<div class="textwidget">DocuWorks Viewer（ドキュワークスビューワー）はDocuWorksを持っていない方がDocWorksファイルをもらった時に使う、閲覧のみができるソフトです。
+Xeroxさんのページから無料で入手できます。
+<a href="http://www.fujixerox.co.jp/soft/docuworks/viewer.html">こちら</a>
+
+ちなみにDocuWorksのファイルは拡張子が「.xdw」となっています。</div>
+		<div class="clearfix"></div></div></section><section class="widget text-45 widget_text"><div class="widget-inner"><h3 class="widget-title">いいね！待ってます</h3>			<div class="textwidget"><div class="fb-recommendations" data-site="worktoolsmith.com" data-app-id="388465604564801" data-width="100%" data-height="270" data-header="true" data-linktarget="_top" data-font="segoe ui"></div>
+</div>
+		<div class="clearfix"></div></div></section>		<div class="widget widget_b125">
+							<span class="b125 odd box1">
+					<iframe frameborder="0" allowtransparency="true" height="125" width="125" marginheight="0" scrolling="no" src="http://ad.jp.ap.valuecommerce.com/servlet/htmlbanner?sid=2818777&pid=880509211" marginwidth="0"><script language="javascript" src="http://ad.jp.ap.valuecommerce.com/servlet/jsbanner?sid=2818777&pid=880509211"></script><noscript><a href="http://ck.jp.ap.valuecommerce.com/servlet/referral?sid=2818777&pid=880509211" target="_blank" ><img src="http://ad.jp.ap.valuecommerce.com/servlet/gifbanner?sid=2818777&pid=880509211" height="125" width="125" border="0"></a></noscript></iframe>				</span>
+							<span class="b125 even box2">
+					<iframe frameborder="0" allowtransparency="true" height="125" width="125" marginheight="0" scrolling="no" src="http://ad.jp.ap.valuecommerce.com/servlet/htmlbanner?sid=2818777&pid=882175286" marginwidth="0"><script language="javascript" src="http://ad.jp.ap.valuecommerce.com/servlet/jsbanner?sid=2818777&pid=882175286"></script><noscript><a href="http://ck.jp.ap.valuecommerce.com/servlet/referral?sid=2818777&pid=882175286" target="_blank" ><img src="http://ad.jp.ap.valuecommerce.com/servlet/gifbanner?sid=2818777&pid=882175286" height="125" width="125" border="0"></a></noscript></iframe>				</span>
+							<span class="b125 odd box3">
+					<iframe frameborder="0" allowtransparency="true" height="125" width="125" marginheight="0" scrolling="no" src="http://ad.jp.ap.valuecommerce.com/servlet/htmlbanner?sid=2818777&pid=882175288" marginwidth="0"><script language="javascript" src="http://ad.jp.ap.valuecommerce.com/servlet/jsbanner?sid=2818777&pid=882175288"></script><noscript><a href="http://ck.jp.ap.valuecommerce.com/servlet/referral?sid=2818777&pid=882175288" target="_blank" ><img src="http://ad.jp.ap.valuecommerce.com/servlet/gifbanner?sid=2818777&pid=882175288" height="125" width="125" border="0"></a></noscript></iframe>				</span>
+							<span class="b125 even box4">
+					<iframe frameborder="0" allowtransparency="true" height="125" width="125" marginheight="0" scrolling="no" src="http://ad.jp.ap.valuecommerce.com/servlet/htmlbanner?sid=2818777&pid=882175290" marginwidth="0"><script language="javascript" src="http://ad.jp.ap.valuecommerce.com/servlet/jsbanner?sid=2818777&pid=882175290"></script><noscript><a href="http://ck.jp.ap.valuecommerce.com/servlet/referral?sid=2818777&pid=882175290" target="_blank" ><img src="http://ad.jp.ap.valuecommerce.com/servlet/gifbanner?sid=2818777&pid=882175290" height="125" width="125" border="0"></a></noscript></iframe>				</span>
+						<div class="clearfix"></div>
+		</div>
+				<div class="widget widget_b125">
+							<span class="b125 odd box1">
+					<iframe frameborder="0" allowtransparency="true" height="125" width="125" marginheight="0" scrolling="no" src="http://ad.jp.ap.valuecommerce.com/servlet/htmlbanner?sid=2818777&pid=882176172" marginwidth="0"><script language="javascript" src="http://ad.jp.ap.valuecommerce.com/servlet/jsbanner?sid=2818777&pid=882176172"></script><noscript><a href="http://ck.jp.ap.valuecommerce.com/servlet/referral?sid=2818777&pid=882176172" target="_blank" ><img src="http://ad.jp.ap.valuecommerce.com/servlet/gifbanner?sid=2818777&pid=882176172" height="125" width="125" border="0"></a></noscript></iframe>				</span>
+							<span class="b125 even box2">
+					<!-- TG-Affiliate Banner Space --> 
+<A href="http://ad2.trafficgate.net/t/r/61/382/163181_289901/" target="_blank"><IMG src="http://srv2.trafficgate.net/t/b/61/382/163181_289901/" border="0"></A> 
+<!-- /TG-Affiliate Banner Space -->                				</span>
+							<span class="b125 odd box3">
+					<a href="http://px.a8.net/svt/ejp?a8mat=25LEST+T6MJE+CO4+ZT81D" target="_blank">
+<img border="0" width="125" height="125" alt="" src="http://www21.a8.net/svt/bgt?aid=130329389049&wid=018&eno=01&mid=s00000001642006015000&mc=1"></a>
+<img border="0" width="1" height="1" src="http://www12.a8.net/0.gif?a8mat=25LEST+T6MJE+CO4+ZT81D" alt="">				</span>
+							<span class="b125 even box4">
+					<a href="http://px.a8.net/svt/ejp?a8mat=109O86+CGBSEY+CO4+68EPD" target="_blank">
+<img border="0" width="125" height="125" alt="" src="http://www22.a8.net/svt/bgt?aid=060917478753&wid=018&eno=01&mid=s00000001642001047000&mc=1"></a>
+<img border="0" width="1" height="1" src="http://www14.a8.net/0.gif?a8mat=109O86+CGBSEY+CO4+68EPD" alt="">				</span>
+						<div class="clearfix"></div>
+		</div>
+		<section class="widget tag_cloud-6 widget_tag_cloud"><div class="widget-inner"><h3 class="widget-title">タグ</h3><div class="tagcloud"><a href='/tag/adobe/' class='tag-link-279' title='6件のトピック' style='font-size: 8pt;'>adobe</a>
+<a href='/tag/amazon/' class='tag-link-311' title='15件のトピック' style='font-size: 14.447368421053pt;'>Amazon</a>
+<a href='/tag/android/' class='tag-link-219' title='11件のトピック' style='font-size: 12.236842105263pt;'>android</a>
+<a href='/tag/apple/' class='tag-link-284' title='6件のトピック' style='font-size: 8pt;'>Apple</a>
+<a href='/tag/codeigniter/' class='tag-link-57' title='6件のトピック' style='font-size: 8pt;'>CodeIgniter</a>
+<a href='/tag/css/' class='tag-link-159' title='6件のトピック' style='font-size: 8pt;'>CSS</a>
+<a href='/tag/delphi/' class='tag-link-16' title='40件のトピック' style='font-size: 22pt;'>Delphi</a>
+<a href='/tag/docuworks/' class='tag-link-3' title='15件のトピック' style='font-size: 14.447368421053pt;'>DocuWorks</a>
+<a href='/tag/fuelphp/' class='tag-link-350' title='11件のトピック' style='font-size: 12.236842105263pt;'>FuelPHP</a>
+<a href='/tag/google/' class='tag-link-396' title='9件のトピック' style='font-size: 10.763157894737pt;'>Google</a>
+<a href='/tag/hdd/' class='tag-link-297' title='10件のトピック' style='font-size: 11.5pt;'>HDD</a>
+<a href='/tag/hp/' class='tag-link-312' title='11件のトピック' style='font-size: 12.236842105263pt;'>hp</a>
+<a href='/tag/html/' class='tag-link-160' title='8件のトピック' style='font-size: 9.8421052631579pt;'>HTML</a>
+<a href='/tag/ipad/' class='tag-link-520' title='7件のトピック' style='font-size: 8.9210526315789pt;'>iPad</a>
+<a href='/tag/iphone/' class='tag-link-154' title='12件のトピック' style='font-size: 12.789473684211pt;'>iPhone</a>
+<a href='/tag/ipod/' class='tag-link-155' title='6件のトピック' style='font-size: 8pt;'>iPod</a>
+<a href='/tag/kindle/' class='tag-link-348' title='6件のトピック' style='font-size: 8pt;'>Kindle</a>
+<a href='/tag/lenovo/' class='tag-link-326' title='9件のトピック' style='font-size: 10.763157894737pt;'>Lenovo</a>
+<a href='/tag/linux/' class='tag-link-15' title='13件のトピック' style='font-size: 13.526315789474pt;'>Linux</a>
+<a href='/tag/mac/' class='tag-link-40' title='34件のトピック' style='font-size: 20.710526315789pt;'>Mac</a>
+<a href='/tag/macbook-air/' class='tag-link-435' title='12件のトピック' style='font-size: 12.789473684211pt;'>MacBook Air</a>
+<a href='/tag/microsoft/' class='tag-link-125' title='8件のトピック' style='font-size: 9.8421052631579pt;'>Microsoft</a>
+<a href='/tag/netbeans/' class='tag-link-132' title='10件のトピック' style='font-size: 11.5pt;'>netbeans</a>
+<a href='/tag/os-x/' class='tag-link-105' title='7件のトピック' style='font-size: 8.9210526315789pt;'>OS X</a>
+<a href='/tag/parallels/' class='tag-link-168' title='18件のトピック' style='font-size: 15.921052631579pt;'>Parallels</a>
+<a href='/tag/php/' class='tag-link-52' title='18件のトピック' style='font-size: 15.921052631579pt;'>PHP</a>
+<a href='/tag/ssd/' class='tag-link-298' title='8件のトピック' style='font-size: 9.8421052631579pt;'>SSD</a>
+<a href='/tag/thinkpad/' class='tag-link-328' title='10件のトピック' style='font-size: 11.5pt;'>ThinkPad</a>
+<a href='/tag/ubuntu/' class='tag-link-20' title='8件のトピック' style='font-size: 9.8421052631579pt;'>Ubuntu</a>
+<a href='/tag/usb%e3%83%a1%e3%83%a2%e3%83%aa/' class='tag-link-296' title='6件のトピック' style='font-size: 8pt;'>USBメモリ</a>
+<a href='/tag/vmware-fusion/' class='tag-link-167' title='8件のトピック' style='font-size: 9.8421052631579pt;'>Vmware Fusion</a>
+<a href='/tag/windows/' class='tag-link-98' title='32件のトピック' style='font-size: 20.342105263158pt;'>Windows</a>
+<a href='/tag/windows-7/' class='tag-link-410' title='7件のトピック' style='font-size: 8.9210526315789pt;'>Windows 7</a>
+<a href='/tag/windows-8/' class='tag-link-407' title='13件のトピック' style='font-size: 13.526315789474pt;'>Windows 8</a>
+<a href='/tag/windows-vista/' class='tag-link-408' title='6件のトピック' style='font-size: 8pt;'>Windows Vista</a>
+<a href='/tag/wordpress/' class='tag-link-51' title='11件のトピック' style='font-size: 12.236842105263pt;'>WordPress</a>
+<a href='/tag/xe2/' class='tag-link-42' title='6件のトピック' style='font-size: 8pt;'>XE2</a>
+<a href='/tag/%e3%82%b5%e3%83%bc%e3%83%90%e3%83%bc%e4%bb%ae%e6%83%b3%e5%8c%96/' class='tag-link-847' title='8件のトピック' style='font-size: 9.8421052631579pt;'>サーバー仮想化</a>
+<a href='/tag/%e3%82%bf%e3%83%96%e3%83%ac%e3%83%83%e3%83%88/' class='tag-link-551' title='7件のトピック' style='font-size: 8.9210526315789pt;'>タブレット</a>
+<a href='/tag/%e3%83%91%e3%83%a9%e3%83%ac%e3%83%ab%e3%82%b9/' class='tag-link-473' title='6件のトピック' style='font-size: 8pt;'>パラレルス</a>
+<a href='/tag/%e3%83%97%e3%83%a9%e3%82%b0%e3%82%a4%e3%83%b3/' class='tag-link-5' title='10件のトピック' style='font-size: 11.5pt;'>プラグイン</a>
+<a href='/tag/%e3%83%97%e3%83%ad%e3%82%b0%e3%83%a9%e3%83%a0/' class='tag-link-39' title='10件のトピック' style='font-size: 11.5pt;'>プログラム</a>
+<a href='/tag/review/' class='tag-link-755' title='7件のトピック' style='font-size: 8.9210526315789pt;'>レビュー</a>
+<a href='/tag/%e4%bb%ae%e6%83%b3%e5%8c%96/' class='tag-link-474' title='11件のトピック' style='font-size: 12.236842105263pt;'>仮想化</a>
+<a href='/tag/%e4%bb%ae%e6%83%b3%e5%8c%96%e3%82%bd%e3%83%95%e3%83%88/' class='tag-link-761' title='9件のトピック' style='font-size: 10.763157894737pt;'>仮想化ソフト</a></div>
+<div class="clearfix"></div></div></section><section class="widget text-54 widget_text"><div class="widget-inner">			<div class="textwidget"><a href="http://blogtimes.jp" target="_blank"><img src="http://blogtimes.jp/sys/bp2.php?b=8941&r=66c9a02c02ca8d401bfefdc1250912b5" border="0" /></a></div>
+		<div class="clearfix"></div></div></section>					</aside><!-- / sidebar -->
+							</div><!-- / content -->
+					</div><!-- /.wrap -->
+		<footer class="footer" role="contentinfo">
+	<div class="row">
+		<div class="footer-content container">
+			<div class="col-sm-4 col-md-4 col-lg-4"> <div id="text-47" class="widget_text footer-widget footer-widget-0"><h3 class="widget-title">このサイトについて</h3>			<div class="textwidget"><div align="center"><a href="http://worktoolsmith.com/pc_history/"><img src="http://worktoolsmith.com/wp-content/images/profile2.jpg" height="auto" width="120"/></a></div>
+<p>運営者　<strong>タケ</strong><br />
+1976年生まれ。ふたご座。静岡県在住。<br />
+パソコンを7歳からいじり始めて28年。とにかくパソコンが好きです。<br />
+パソコンを使う上で大切なのは、「基本をおぼえる」ことではなくて「今すぐ使える」こと。<br />
+仕事に役立つ、使いやすくなるハードやソフト、リアルツールなどをこだわりの視点でレビュー・解説します。</p>
+<p><a href="https://twitter.com/LandscapeSketch" class="twitter-follow-button" data-show-count="false" data-lang="ja">@LandscapeSketchをフォロー</a><br />
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script></p>
+<p><a href="https://twitter.com/WorkToolSmith" class="twitter-follow-button" data-show-count="false" data-lang="ja">@WorkToolSmithをフォロー</a><br />
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script></p>
+<p>なぜパソコンに詳しいの？<a href="http://worktoolsmith.com/pc_history/">詳しいプロフィールはこちら</a></p>
+<p><img src="http://worktoolsmith.com/wp-content/images/16/twitter_2.png" />Twitter <a href="https://twitter.com/LandscapeSketch">@LandscapeSketch</a><br />
+<img src="http://worktoolsmith.com/wp-content/images/16/feed.png" />RSS <a href="http://worktoolsmith.com/feed">更新情報登録</a><br />
+<img src="http://worktoolsmith.com/wp-content/images/16/mail_box.png" />お問い合わせ <a href="http://worktoolsmith.com/%E7%AE%A1%E7%90%86%E8%80%85%E3%81%B8%E3%81%AE%E3%81%8A%E5%95%8F%E3%81%84%E5%90%88%E3%82%8F%E3%81%9B/">直接のお問い合わせ</a></p>
+</div>
+		<div class="clearfix"></div></div></div>
+			<div class="col-sm-4 col-md-4 col-lg-4"> </div>
+			<div class="col-sm-4 col-md-4 col-lg-4"> <div id="text-3" class="widget_text footer-widget footer-widget-0"><h3 class="widget-title">商標、名称など</h3>			<div class="textwidget"><small>DocuWorks(R)、DocuCentre、Apeosなどの名称、商標は富士ゼロックス株式会社の登録商標です。<br /><br />当ページにて頒布、販売しているDocuWorks(R)用プラグイン、フリーソフト、シェアウェアなどは富士ゼロックス株式会社の正規ライセンス商品ではありません。</small></div>
+		<div class="clearfix"></div></div></div>
+		</div>
+    </div>
+	<div class="site-info">&copy; 2013 Work Tool Smith [ワークツールスミス]		Theme designed by <a href="http://gracix.com">Gracix.com</a> </div>
+</footer>
+
+
+<script type="text/javascript"><!--
+wpa2a.targets=[
+{title:document.title,url:location.href}];
+wpa2a.html_done=true;if(wpa2a.script_ready&&!wpa2a.done)wpa2a.init();wpa2a.script_load();
+//--></script>
+<div id="su-footer-links" style="text-align: center;"></div><!-- Lightbox Plus ColorBox v2.6/1.3.32 - 2013.01.24 - Message: 0-->
+<script type="text/javascript">
+jQuery(document).ready(function($){
+  $("a[rel*=lightbox]").colorbox({speed:350,initialWidth:"300",initialHeight:"100",maxWidth:"80%",maxHeight:"80%",opacity:0.8,loop:false,scrolling:false,escKey:false,arrowKey:false,top:false,right:false,bottom:false,left:false});
+});
+</script>
+<script type='text/javascript' src='/wp-content/plugins/contact-form-7/includes/js/jquery.form.min.js'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var _wpcf7 = {"loaderUrl":"http:\/\/worktoolsmith.com\/wp-content\/plugins\/contact-form-7\/images\/ajax-loader.gif","sending":"\u9001\u4fe1\u4e2d ..."};
+/* ]]> */
+</script>
+<script type='text/javascript' src='/wp-content/plugins/contact-form-7/includes/js/scripts.js'></script>
+<script type='text/javascript' src='/wp-content/plugins/lazy-load/js/jquery.sonar.min.js'></script>
+<script type='text/javascript' src='/wp-content/plugins/lazy-load/js/lazy-load.js'></script>
+<script type='text/javascript' src='/wp-content/themes/roots/assets/js/scripts.min.js'></script>
+<script type='text/javascript' src='/wp-content/themes/wp-th-wts7/assets/js/jquery-color.js'></script>
+<script type='text/javascript' src='/wp-content/themes/wp-th-wts7/assets/js/jquery-shadow-animation.js'></script>
+<script type='text/javascript' src='/wp-includes/js/jquery/ui/jquery.ui.effect.min.js'></script>
+<script type='text/javascript' src='/wp-content/themes/wp-th-wts7/assets/js/min/buttons.min.js'></script>
+<script type='text/javascript' src='/wp-content/themes/wp-th-wts7/assets/js/wts.js'></script>
+<script type='text/javascript' src='/wp-content/plugins/lightbox-plus/js/jquery.colorbox.1.3.32.js'></script>
+<div id="fb-root"></div>
+<script type="text/javascript" src="https://platform.twitter.com/widgets.js"></script><script type="text/javascript" src="//connect.facebook.net/ja_JP/all.js#xfbml=1"></script><script type="text/javascript" src="https://apis.google.com/js/plusone.js"></script><script type="text/javascript" src="https://platform.linkedin.com/in.js"></script></body>
+</html>
