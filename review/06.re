@@ -137,6 +137,138 @@ HTML上で展開される名前です。'data-名前'がその要素のidにな�
 
 ということでお手軽 tips でした。明日のアドベントカレンダーは@@<href>{http://twitter.com/LandscapeSketch,LandscapeSketch}さんです。
 
+
+== 【補足】FuelPHPのViewの自動エスケープについて
+
+上記のエントリについて、PHPのjson_encode()関数は標準ではエスケープ処理は行わないのでXSS脆弱性があるのではないか、という指摘をいただきました。
+
+=== json_encode()のエスケープオプション
+
+
+確かにPHPのマニュアルには、各種文字にエスケープ対応するオプションが存在します。
+
+//quote{
+@<href>{http://php.net/json_encode,PHP: json_encode - Manual}
+//}
+
+
+この場合で言えば
+
+#@# lang: .syntax-highlight
+//emlist{
+    return sprintf($fmt, $name, json_encode($val)); 
+//}
+
+
+を以下のようにエスケープオプションを追加するべきということです。
+
+#@# lang: .syntax-highlight
+//emlist{
+    return sprintf($fmt, $name, json_encode($val, JSON_HEX_TAG |JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP)); 
+//}
+
+
+ただこのコードを書いた時に自動的にエスケープ処理がかかることを確認していたので、どこでそれが行われるかは深く調べずに、json_encodeのオプションを省いたという経緯がありました。
+
+=== 自動エスケープは\Fuel\Core\Viewの機能だった
+
+
+その後@<href>{https://groups.google.com/forum/#!forum/fuelphp_jp,fuelphp.jpグループ}で@@<href>{http://twitter.com/kenji_s,kenji_s}さんに指摘されて、Parserパッケージの標準設定で 'auto_encode’ が true になっているおかげでテンプレートに渡される変数が自動でエスケープされていた事がわかりました。
+
+//quote{
+fuel/packages/parser/config/parser.php
+//}
+
+
+の以下の部分ですね。
+
+#@# lang: .syntax-highlight
+//emlist{
+<?php
+:
+        'View_Twig' => array(
+                'auto_encode' => true,
+:
+//}
+
+
+この auto_encode 設定は、\Fuel\Core\View のコンストラクタに $auto_filter として渡され、結果的に\Fuel\Core\Security::clean() が呼び出されます。つまりTwig Extensionに渡される際にはすでにエスケープ済になっていたわけですね。
+
+
+PHP 変数を JSON にして JavaScript に渡す仕組みは、別に FuelPHP でなくても使用できますので、その場合は XSS に注意して json_encode にオプションを随時追加して下さい。
+
+=== JSON の埋め込み方の問題
+
+
+他にもfuelphp.jpグループでは@@<href>{http://twitter.com/takayuki_h,takayuki_h}さんより、HTML 要素にテキストとして JSON を書き出すよりは、要素の data-option 属性として埋め込んだ方が良いのではないかとの指摘を受けました。
+
+#@# lang: .syntax-highlight
+//emlist{
+  <div class="hidden">{"fuga":"hoge"}</div>
+//}
+
+
+ではなく
+
+#@# lang: .syntax-highlight
+//emlist{
+  <div class="hidden" data-option='{"fuga":"hoge"}'></div>
+//}
+
+
+とせよということですね。ふむー、これはちょっと試してみたいと思います。
+
+=== Twigのクラスが古かった
+
+
+元記事とその前の記事で用いた以下のクラスはすでに古く、2.0でなくなる予定だと@@<href>{http://twitter.com/kenji_s,kenji_s}さんに指摘いただきました。
+
+ * Twig_Filter_Function
+ * Twig_Function_Method
+
+
+
+これは気が付いてなかったので、元記事を修正します。
+
+=== その他の反応への返事
+
+
+はてブより。
+
+//quote{
+@<href>{http://d.hatena.ne.jp/teppeis/,//image[profile_s][id:teppeis]{
+//\}id:teppeis} $nameもjson_encode()もエスケープが足りないです。危険。
+
+
+@<href>{http://b.hatena.ne.jp/teppeis/20131207#bookmark-172246146,http://b.hatena.ne.jp/teppeis/20131207#bookmark-172246146}
+//}
+
+
+json_encodeについては上記に書いたとおり。$nameはテンプレートに直接記述されるので、そこに外部からの変数が渡される事態は、コード全体を見直したほうが良いレベルだと思うのですがどうでしょう?
+
+//quote{
+@<href>{http://d.hatena.ne.jp/thujikun/,//image[profile_s][id:thujikun]{
+//\}id:thujikun} JSON形式のコードをJSの変数に直接代入する方が楽な気が。。。ひとつグローバル変数使うことにはなるけども。
+
+
+@<href>{http://b.hatena.ne.jp/thujikun/20131208#bookmark-172246146,http://b.hatena.ne.jp/thujikun/20131208#bookmark-172246146}
+//}
+
+
+JavaScriptにテンプレートエンジンを通して変数展開を埋め込む方が、自分的にはあり得ないです。HTMLに埋め込み JS を直接記述することは現在は全くやっていません。
+
+//quote{
+@<href>{http://d.hatena.ne.jp/fakechan/,//image[profile_s][id:fakechan]{
+//\}id:fakechan} PHPのレガシーっぷりに驚きを隠せない。というか、こういう場合はREST APIを作って「js側から」Ajaxでアクセスすればいいのでは。Ajaxのロードが終わるまでは「ロード中...」とかかぶせて。
+
+
+@<href>{http://b.hatena.ne.jp/fakechan/20131208#bookmark-172246146,http://b.hatena.ne.jp/fakechan/20131208#bookmark-172246146}
+//}
+
+
+いやこれとPHPのレガシーは関係ないでしょ。PHPディスりたい病にかかっているようですね。何でもRESTでAjaxすれば良いやというのは、JS 側の処理を無駄に複雑にするだけではありませんか?
+
+
 //quote{
 @<strong>{@koyhoge}
 
