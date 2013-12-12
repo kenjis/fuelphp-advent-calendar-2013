@@ -187,15 +187,17 @@
             // image line
             if (preg_match('/(.*)!\[(.*?)\]\((.+?)\)(.*)/u', $line)) {
                 $img = $this->processImageLine($line);
-                //var_dump($img);
 
-                // get image file
                 $img_file = basename($img['path']);
+                // remove query string
+                $img_file = preg_replace('/\?.*/', '', $img_file);
                 $ext = $this->getFileExtension($img_file);
+                
                 // LaTex can't handle filename with dot, so replace by "_"
                 $img_file = basename($img_file, '.' . $ext);
                 $img_file = str_replace('.', '_', $img_file) . '.' . $ext;
 
+                // get image file
                 if (file_exists($img_dir . '/' . $img_file)) {
                     echo 'Error: ', $img_file . ' already exists', PHP_EOL;
                 } else {
@@ -340,6 +342,7 @@
             //$line = $this->convertZenkakuParentheses($line);
             $line = $this->convertHankakuKanaDot($line);
             $line = $this->removeBackslash($line);
+            $line = $this->removeSpaceBeforeImg($line);
 
             $line = $this->removeHatenaKeywordLink($line);
             
@@ -440,6 +443,17 @@
         if (preg_match('/\\\\\$/u', $line, $matches)) {
             echo 'Remove Backslash: ', $line, PHP_EOL;
             $line = str_replace('\\$', '$', $line);
+        }
+        return $line;
+    }
+
+    public function removeSpaceBeforeImg($line)
+    {
+        //  ![アプリケーションの処理の流れ](images/10/fuelphp_event1.png)
+        
+        if (preg_match('/\A\s+!\[.+?\]\(.+?\)\z/u', $line, $matches)) {
+            echo 'Remove Space before Img: ', $line, PHP_EOL;
+            $line = preg_replace('/\A\s+/u', '', $line);
         }
         return $line;
     }
