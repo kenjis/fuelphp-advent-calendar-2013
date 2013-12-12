@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>イベント機能を使ってアプリケーションをカスタマイズする</title>
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<link rel="profile" href="http://gmpg.org/xfn/11" />
+<link rel="pingback" href="http://ounziw.com/xmlrpc.php" />
+
+<meta name="generator" content="WordPress 3.7.1" />
+<meta name="template" content="Plain WP 0.1.7" />
+<link rel="alternate" type="application/rss+xml" title="Standing on the Shoulder of Linus &raquo; フィード" href="http://ounziw.com/feed/" />
+<link rel="alternate" type="application/rss+xml" title="Standing on the Shoulder of Linus &raquo; コメントフィード" href="http://ounziw.com/comments/feed/" />
+<link rel="alternate" type="application/rss+xml" title="Standing on the Shoulder of Linus &raquo; イベント機能を使ってアプリケーションをカスタマイズする のコメントのフィード" href="http://ounziw.com/2013/12/10/event-application/feed/" />
+<link rel='stylesheet' id='jetpack_likes-css'  href='http://ounziw.com/wp-content/plugins/jetpack/modules/likes/style.css?ver=2.5' type='text/css' media='all' />
+<link rel='stylesheet' id='parent-css'  href='http://ounziw.com/wp-content/themes/plain-wp/style.min.css?ver=0.1.7' type='text/css' media='all' />
+<link rel='stylesheet' id='style-css'  href='http://ounziw.com/wp-content/themes/child-plain-wp/style.css?ver=3.7.1' type='text/css' media='all' />
+<link rel='stylesheet' id='whistles-css'  href='http://ounziw.com/wp-content/plugins/whistles/css/whistles.min.css?ver=20130909' type='text/css' media='all' />
+<link rel='stylesheet' id='jetpack-widgets-css'  href='http://ounziw.com/wp-content/plugins/jetpack/modules/widgets/widgets.css?ver=20121003' type='text/css' media='all' />
+<link rel='stylesheet' id='montserrat-css'  href='http://fonts.googleapis.com/css?family=Montserrat%3A400%2C700&#038;ver=3.7.1' type='text/css' media='all' />
+<link rel='stylesheet' id='sharedaddy-css'  href='http://ounziw.com/wp-content/plugins/jetpack/modules/sharedaddy/sharing.css?ver=2.5' type='text/css' media='all' />
+<link rel='stylesheet' id='widget-grid-and-list-css'  href='http://ounziw.com/wp-content/plugins/jetpack/modules/widgets/widget-grid-and-list.css?ver=3.7.1' type='text/css' media='all' />
+<script type='text/javascript' src='http://ounziw.com/wp-includes/js/jquery/jquery.js?ver=1.10.2'></script>
+<script type='text/javascript' src='http://ounziw.com/wp-includes/js/jquery/jquery-migrate.min.js?ver=1.2.1'></script>
+<script type='text/javascript' src='http://ounziw.com/wp-content/plugins/jetpack/_inc/postmessage.js?ver=2.5'></script>
+<script type='text/javascript' src='http://ounziw.com/wp-content/plugins/jetpack/_inc/jquery.inview.js?ver=2.5'></script>
+<script type='text/javascript' src='http://ounziw.com/wp-content/plugins/jetpack/_inc/jquery.jetpack-resize.js?ver=2.5'></script>
+<script type='text/javascript' src='http://ounziw.com/wp-content/themes/plain-wp/js/navigation.js?ver=3.7.1'></script>
+<script type='text/javascript' src='http://ounziw.com/wp-includes/js/comment-reply.min.js?ver=3.7.1'></script>
+<link rel='prev' title='ユーザー毎の閲覧記録をローカルストレージに記録し、訪問状況に応じて「new!」を表示する' href='http://ounziw.com/2013/12/09/localstorage/' />
+<link rel='canonical' href='http://ounziw.com/2013/12/10/event-application/' />
+<link rel='shortlink' href='http://wp.me/pZEIy-Xy' />
+<meta http-equiv="Last-Modified" content="Wed, 11 Dec 2013 23:05:38 GMT" />
+<style type='text/css'>img#wpstats{display:none}</style>
+<!-- Jetpack Open Graph Tags -->
+<meta property="og:type" content="article" />
+<meta property="og:title" content="イベント機能を使ってアプリケーションをカスタマイズする" />
+<meta property="og:url" content="http://ounziw.com/2013/12/10/event-application/" />
+<meta property="og:description" content="イベント機能を使ってアプリケーションをカスタマイズする。イベント機能を活用して処理を追加すれば、自分で追加した部分は元のアプリケーション(Novius OS)のコードから分離でき、アップデートが楽になります。..." />
+<meta property="og:site_name" content="Standing on the Shoulder of Linus" />
+<meta property="og:image" content="http://i1.wp.com/ounziw.com/wp-content/uploads/2013/12/fuelphp_event2.png?fit=400%2C400" />
+<meta name="twitter:site" content="@jetpack" />
+<meta name="twitter:image" content="http://ounziw.com/wp-content/uploads/2013/12/fuelphp_event2.png" />
+<meta name="twitter:card" content="photo" />
+<!--[if lt IE 9]>
+<script src="http://ounziw.com/wp-content/themes/plain-wp/js/html5.js" type="text/javascript"></script>
+<link rel='stylesheet' href='http://ounziw.com/wp-content/themes/plain-wp/desktop.css' type='text/css' media='all' />
+<![endif]-->
+<style type="text/css" id="custom-background-css">
+body.custom-background { background-color: #f5f5f5; }
+</style>
+<style type="text/css" id="syntaxhighlighteranchor"></style>
+
+</head>
+
+<body class="wordpress ltr ja child-theme y2013 m12 d12 h08 thursday logged-out custom-background singular singular-post singular-post-3692 post-format-standard layout-2c-l">
+
+	<div id="container">		
+        <header id="header">
+            <div class="wrap">
+                <h1 id="site-title"><a href="http://ounziw.com/" title="Standing on the Shoulder of Linus">Standing on the Shoulder of Linus</a></h1>					
+                
+                
+                            </div>
+        </header><!-- #header -->
+        
+        <div id="main">
+			<div class="wrap">
+            	<nav class="breadcrumb-trail breadcrumbs" itemprop="breadcrumb"><span class="trail-begin"><a href="http://ounziw.com" title="Standing on the Shoulder of Linus" rel="home" class="trail-begin">Home</a></span> <span class="sep">/</span> <a href="http://ounziw.com/2013/" title="2013">2013</a> <span class="sep">/</span> <a href="http://ounziw.com/2013/12/" title="12月 2013">12月</a> <span class="sep">/</span> <a href="http://ounziw.com/2013/12/10/" title="12月 10, 2013">10</a> <span class="sep">/</span> <span class="trail-end">イベント機能を使ってアプリケーションをカスタマイズする</span></nav>
+	<div id="content" class="hfeed">
+
+		
+		
+	
+		
+		<article id="post-3692" class="hentry post publish post-1 odd author-mizuno has-excerpt format-standard category-fuel post_tag-cms post_tag-140">
+
+	
+		<header class="entry-header">
+			<h1 class="entry-title">イベント機能を使ってアプリケーションをカスタマイズする</h1>
+		</header><!-- .entry-header -->
+
+		<div class="entry-content">
+			<p><a href="http://atnd.org/events/45096">FuelPHP advent Calendar 2013</a>の10日目です。昨日は<a href="http://blog.a-way-out.net/blog/2013/12/09/fuelphp-aspectmock/">AspectMockでFuelPHPのアプリを100％テスト可能にする</a>(<a href="https://twitter.com/kenji_s">@kenji_s</a>)でした。</p>
+<p>今日は、「イベント機能を使ってアプリケーションをカスタマイズする」です。<span id="more-3692"></span></p>
+<h3>イベントとは何か</h3>
+<p>イベントとは、FuelPHPコアを書き換えることなく、独自の処理を差し込むことができる仕組みです。</p>
+<ul>
+<li>FuelPHPの処理の途中に、トリガー(ここを通ったときに、追加処理を実行する場所)がいくつか用意されている</li>
+<li>トリガー名を指定して、独自の処理を追加する</li>
+<li>独自の処理が追加されたトリガーのところで、独自の処理が実行される</li>
+</ul>
+<p>という仕組みです。WordPressを使っている方であれば、「WordPressのアクションフックに似ている」と思うかもしれません。</p>
+<p><a name="trigger">アプリケーションの処理の流れ: 青丸がトリガー</a><br />
+<img src="http://i0.wp.com/ounziw.com/wp-content/uploads/2013/12/fuelphp_event1.png?resize=460%2C180" alt="アプリケーションの処理の流れ" class="alignnone size-large wp-image-3701" data-recalc-dims="1" /></p>
+<p>イベントを実行: 処理途中の各トリガーの所では、登録されているイベントがあれば実行する<br />
+<img src="http://i1.wp.com/ounziw.com/wp-content/uploads/2013/12/fuelphp_event2.png?resize=460%2C200" alt="イベントを実行" class="alignnone size-large wp-image-3703" data-recalc-dims="1" /></p>
+<p>コードは点線部分で分離されている: アプリケーション自体のコードに手を入れずに、機能追加／変更する<br />
+<img src="http://i0.wp.com/ounziw.com/wp-content/uploads/2013/12/fuelphp_event3.png?resize=460%2C200" alt="コードは点線部分で分離されている" class="alignnone size-large wp-image-3702" data-recalc-dims="1" /></p>
+<h3>独自の処理を追加する</h3>
+<p>2通りの方法が用意されています。</p>
+<ol>
+<li><code>app/config/event.php</code>に追加する方法</li>
+<li><code>Event::register</code>を使う方法</li>
+</ol>
+<p>1.は、<code>app/config</code>に<code>event.php</code>に書く方法です。詳細は<a href="http://fuelphp.jp/docs/1.7/classes/event.html">Event クラス(FuelPHP1.7)</a>をごらんください。</p>
+<p>2. は、<code>register</code>メソッドを使う方法です。今回はこちらを使います。<a href="http://fuelphp.jp/docs/1.7/classes/event.html">Event クラス(FuelPHP1.7)</a>では、<code>user_login</code>に<code>Class::method</code>処理を追加する例が掲載されています。</p>
+<pre class="brush: php; title: ; notranslate" title="">Event::register('user_login', 'Class::method');</pre>
+<p><code>bootstrap.php</code>に書けば、トリガーにフックできます。</p>
+<h3>トリガーにフックしてみる</h3>
+<p>では、実際にトリガーにフックしてみましょう。ここでは、<a href="http://novius-os.jp/">Novius OS</a>にフックする例を紹介します。Novius OSは、FuelPHPベースのCMSで、jQuery UI、Wijmoを使った使い易いインターフェースが特徴です。<a href="http://docs-api.novius-os.org/en/chiba.2/php/events.html">Novius OS Chiba2のイベント一覧</a>にある<code>admin.loginFail</code>を使い、ログイン失敗をログに記録します。</p>
+<pre class="brush: php; title: ; notranslate" title="">/**
+ * Copyright (c) 2013 Fumito MIZUNO
+ * License: MIT 
+ * http://opensource.org/licenses/mit-license.php
+ */
+Event::register('admin.loginFail', 'warning_on_loginfail');
+
+function warning_on_loginfail()
+{
+    $message = 'Login Fail.';
+    $message .= '  Email: ' . Input::post('email');
+    $message .= '  Password: ' . Input::post('password');
+    $message .= '  IP: ' . Input::ip();
+    Log::warning($message);
+}</pre>
+<p>Novius OSは、メールアドレスとパスワードでユーザー認証するので、ログイン失敗時にそれらを記録します。これらはFuelPHPの<code>Input</code>クラスを利用します。引数無しで<code>Input::post()</code>を実行すると<code>$_POST</code>を全部取ってきて配列で返すので、丸ごと記録したければ<code>Format::forge(Input::post())->to_serialized()</code>としてもいいでしょう。またアクセス元のIPアドレスも記録し、ログ記録にはFuelPHPの<code>Log</code>クラスを利用します。ログ記録の内部処理は<a href="https://github.com/Seldaek/monolog">Monolog</a>ライブラリ(MITライセンス)が行っています。</p>
+<p>ログインに失敗すると、ログファイルに</p>
+<p><code>WARNING - 2013-12-09 09:15:23 --> Login Fail.  Email: email@example.com  Password: p@ssw0rd  IP: 127.0.0.1</code></p>
+<p>のように記録されます。</p>
+<h3>デフォルトで用意されているイベント</h3>
+<p><a href="http://fuelphp.jp/docs/1.7/classes/event.html">Event クラス(FuelPHP1.7)</a>によると、デフォルトで用意されているイベントは、<code>app_created</code>、<code>request_created</code>、<code>request_started</code>、<code>controller_started</code>、<code>controller_finished</code>、<code>response_created</code>、<code>request_finished</code>、<code>shutdown</code>です。これらのトリガーに処理を追加することができます。</p>
+<h3>アプリケーションにトリガーを用意する</h3>
+<p>コアに用意されているトリガーを使うだけではなく、アプリケーションにもトリガーを用意することができます。<a href="#trigger">アプリケーションの処理の流れ: 青丸がトリガー</a>の、青丸を作る作業です。コード中の適当な箇所に、<code>Event::trigger(トリガー名)</code>と書けばOKです。</p>
+<p>Novius OS のログイン部分のコード(<a href="https://github.com/novius-os/core/blob/master/chiba2/framework/classes/controller/admin/login.ctrl.php">novius-os/framework/classes/controller/admin/login.ctrl.php</a>)を見てみると、ログイン成功時に<code>admin.loginSuccess</code>イベント、ログイン失敗時に<code>admin.loginFail</code>イベント、が用意されています。</p>
+<pre class="brush: php; title: ; notranslate" title="">/**
+ * NOVIUS OS - Web OS for digital communication
+ *
+ * @copyright  2011 Novius
+ * @license    GNU Affero General Public License v3 or (at your option) any later version
+ *             http://www.gnu.org/licenses/agpl-3.0.html
+ * @link http://www.novius-os.org
+ */
+
+namespace Nos;
+
+class Controller_Admin_Login extends Controller
+{
+// 途中省略
+    protected function post_login()
+    {
+        if (\Nos\Auth::login($_POST['email'], $_POST['password'], (bool) \Input::post('remember_me', false))) {
+            if (\Event::has_events('user_login')) {
+                \Log::deprecated('Event &quot;user_login&quot; is deprecated, use &quot;admin.loginSuccess&quot; instead.', 'Chiba.2');
+                \Event::trigger('user_login');
+            }
+            \Event::trigger('admin.loginSuccess');
+            return true;
+        }
+        \Event::trigger('admin.loginFail');
+        return __('These details won’t get you in. Are you sure you’ve typed the correct email address and password? Please try again.');
+    }
+}</pre>
+<h3>どういうときに役に立つのか</h3>
+<p>アプリケーションを全て自分で作っている場合は、わざわざイベントトリガーを用意するメリットはあまりないかもしれません。トリガーを使わずに書いても良いでしょう。トリガーが威力を発揮するのは、パッケージやアプリケーションをオープンソースで公開する場合だと思います。</p>
+<p>Novius OSのログイン失敗時のログを取りたい場合、上述の<code>post_login</code>メソッドを直接書き換えるというやり方でも、ログ機能を追加することはできます。でもこの方法だと、元のアプリケーション(Novius OS)のアップデート時に書き直しすることになります。</p>
+<p>では、イベントを活用した場合はどうでしょう。Novius OSではトリガーが用意されています。カスタマイズしたい人は、トリガーにフックするコードを自作し、<code>bootstrap.php</code>に記述します。この方法だと、アプリケーションのコードに手を入れることなく、処理を追加することができます。自分で追加した部分は元のアプリケーションのコードから分離でき、アップデートが楽になります。</p>
+<p>もちろん、イベントを使ってカスタマイズするには、トリガーが設定されていなければなりません。なので、パッケージやアプリケーションを公開して、他の人にも使ってもらいたい、という場合には、イベントトリガーを設定しておくと良いでしょう。</p>
+<h3>まとめ</h3>
+<p>イベントを使うことで、フレームワークやアプリケーションのコードに手を入れることなく、処理を追加することができます。オープンソースで公開するアプリケーションには、イベントのトリガーを用意しておくと、カスタマイズしやすくなります。</p>
+<p>明日は、「<a href="http://chatii.net/articles/php/2013/12/fuelphp-composer.html">FuelPHP をもっと Composer で使う</a>」(<a href="https://twitter.com/chatii0079">chatii0079</a>)です。お楽しみに。</p>
+<div class="sharedaddy sd-sharing-enabled"><div class="robots-nocontent sd-block sd-social sd-social-official sd-sharing"><h3 class="sd-title">共有:</h3><div class="sd-content"><ul><li><a href="#" class="sharing-anchor sd-button share-more"><span>共有</span></a></li><li class="share-end"></li></ul><div class="sharing-hidden"><div class="inner" style="display: none;"><ul><li class="share-facebook"><div class="like_button"><iframe src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Founziw.com%2F2013%2F12%2F10%2Fevent-application%2F&amp;layout=button_count&amp;show_faces=false&amp;action=like&amp;colorscheme=light&amp;height=21&amp;locale=ja_JP&amp;width=100" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:106px; height:21px;" allowTransparency="true"></iframe></div></li><li class="share-google-plus-1"><div class="googleplus1_button"><div class="g-plus" data-action="share" data-annotation="bubble" data-href="http://ounziw.com/2013/12/10/event-application/"></div></div></li><li class="share-end"></li><li class="share-twitter"><div class="twitter_button"><iframe allowtransparency="true" frameborder="0" scrolling="no" src="http://platform.twitter.com/widgets/tweet_button.html?url=http%3A%2F%2Founziw.com%2F2013%2F12%2F10%2Fevent-application%2F&#038;counturl=http%3A%2F%2Founziw.com%2F2013%2F12%2F10%2Fevent-application%2F&#038;count=horizontal&#038;text=%E3%82%A4%E3%83%99%E3%83%B3%E3%83%88%E6%A9%9F%E8%83%BD%E3%82%92%E4%BD%BF%E3%81%A3%E3%81%A6%E3%82%A2%E3%83%97%E3%83%AA%E3%82%B1%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%82%92%E3%82%AB%E3%82%B9%E3%82%BF%E3%83%9E%E3%82%A4%E3%82%BA%E3%81%99%E3%82%8B%3A" style="width:101px; height:20px;"></iframe></div></li><li class="share-pocket"><div class="pocket_button"><a href="https://getpocket.com/save" class="pocket-btn" data-lang="en" data-save-url="http://ounziw.com/2013/12/10/event-application/" data-pocket-count="horizontal" >Pocket</a></div></li><li class="share-end"></li><li class="share-tumblr"><a target="" href="http://www.tumblr.com/share/link/?url=http%3A%2F%2Founziw.com%2F2013%2F12%2F10%2Fevent-application%2F&name=%E3%82%A4%E3%83%99%E3%83%B3%E3%83%88%E6%A9%9F%E8%83%BD%E3%82%92%E4%BD%BF%E3%81%A3%E3%81%A6%E3%82%A2%E3%83%97%E3%83%AA%E3%82%B1%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%82%92%E3%82%AB%E3%82%B9%E3%82%BF%E3%83%9E%E3%82%A4%E3%82%BA%E3%81%99%E3%82%8B" title="Share on Tumblr" style="display:inline-block; text-indent:-9999px; overflow:hidden; width:62px; height:20px; background:url('http://platform.tumblr.com/v1/share_2.png') top left no-repeat transparent;">Share on Tumblr</a></li><li class="share-linkedin"><div class="linkedin_button"><script type="in/share" data-url="http://ounziw.com/2013/12/10/event-application/" data-counter="right"></script></div></li><li class="share-end"></li><li class="share-end"></li></ul></div></div></div></div></div><div class='sharedaddy sd-block sd-like jetpack-likes-widget-wrapper jetpack-likes-widget-unloaded' id='like-post-wrapper-14694530-3692-52a8efc2b75fe' data-src='//widgets.wp.com/likes/#blog_id=14694530&amp;post_id=3692&amp;origin=ounziw.com&amp;obj_id=14694530-3692-52a8efc2b75fe' data-name='like-post-frame-14694530-3692-52a8efc2b75fe'><h3 class='sd-title'>いいね:</h3><div class='post-likes-widget-placeholder' style='height:55px'><span class='button'><span>いいね</span></span> <span class="loading">読み込み中...</span></div><span class='sd-text-color'></span><a class='sd-link-color'></a></div>			
+<p>関連記事</p>
+											<li>
+							13年12月09日 <a href="http://ounziw.com/2013/12/09/duplicated/">重複コンテンツの議論について、皆が忘れているかもしれない事</a>
+						</li>
+						<li>
+							13年11月26日 <a href="http://ounziw.com/2013/11/26/kindou-info/">きんどるどうでしょうで一斉セール開催</a>
+						</li>
+						<li>
+							13年11月22日 <a href="http://ounziw.com/2013/11/22/novius-os-japanese/">Novius OS 日本語版を作らない</a>
+						</li>
+						<li>
+							13年11月21日 <a href="http://ounziw.com/2013/11/21/smartphone-cms/">今だから知っておきたい『スマホサイト構築』＆『CMSとレスポンシブデザインで変わるWeb制作のワークフロー』に参加しました。</a>
+						</li>
+						<li>
+							13年11月16日 <a href="http://ounziw.com/2013/11/16/wp-sitemanager-portfolium/">WP SiteManager プラグインと Portfolium テーマで類似のコードがある</a>
+						</li>
+<hr />
+<script type="text/javascript"><!--
+google_ad_client = "ca-pub-6571868622191007";
+/* ounziw single */
+google_ad_slot = "1526540389";
+google_ad_width = 468;
+google_ad_height = 60;
+//-->
+</script>
+<script type="text/javascript"
+src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>
+<p>
+<a href="http://www.rescuework.jp/service.html" target="_blank"><img src="http://php-web.net/images/bnr_ad_46860.jpg" alt="Rescue Work"></a>
+</p>
+		</div><!-- .entry-content -->
+
+		<footer class="entry-footer">
+			<div class="entry-meta"><span class="category"><span class="before">Posted in </span><a href="http://ounziw.com/category/fuel/" rel="tag">fuelphp</a></span> <span class="post_tag"><span class="before">| Tagged </span><a href="http://ounziw.com/tag/cms/" rel="tag">cms</a>, <a href="http://ounziw.com/tag/%e3%82%aa%e3%83%bc%e3%83%97%e3%83%b3%e3%82%bd%e3%83%bc%e3%82%b9/" rel="tag">オープンソース</a></span></div>		</footer><!-- .entry-footer -->
+
+	
+</article><!-- .hentry -->
+		
+			
+<section id="comments">
+
+	
+
+						
+		<div id="respond" class="comment-respond">
+			<h3 id="reply-title" class="comment-reply-title">コメントを残す <small><a rel="nofollow" id="cancel-comment-reply-link" href="/2013/12/10/event-application/#respond" style="display:none;">コメントをキャンセル</a></small></h3>
+			<div id="commentform" class="comment-form">
+				<iframe src="http://jetpack.wordpress.com/jetpack-comment/?blogid=14694530&#038;postid=3692&#038;comment_registration=0&#038;require_name_email=1&#038;stc_enabled=1&#038;stb_enabled=1&#038;show_avatars=1&#038;avatar_default=gravatar_default&#038;greeting=%E3%82%B3%E3%83%A1%E3%83%B3%E3%83%88%E3%82%92%E6%AE%8B%E3%81%99&#038;greeting_reply=%25s+%E3%81%AB%E3%82%B3%E3%83%A1%E3%83%B3%E3%83%88%E3%81%99%E3%82%8B&#038;color_scheme=light&#038;lang=ja&#038;jetpack_version=2.5&#038;sig=8f261c0711fd6232e813d76248c61c65cc861d06#parent=http%3A%2F%2Founziw.com%2F2013%2F12%2F10%2Fevent-application%2F" allowtransparency="false" style="width:100%; height: 430px;border:0px;" frameBorder="0" scrolling="no" name="jetpack_remote_comment" id="jetpack_remote_comment"></iframe>
+			</div>
+		</div>
+
+		
+		<input type="hidden" name="comment_parent" id="comment_parent" value="" />
+
+		
+</section><!-- #comments -->
+		
+	
+
+			
+		<div class="loop-nav">
+			<a href="http://ounziw.com/2013/12/09/localstorage/" rel="prev"><span class="previous"><span class="meta-nav">&larr;</span> Previous</span></a>					</div><!-- .loop-nav -->
+
+	
+	</div><!-- #content -->
+
+				
+	<aside id="sidebar-primary" class="sidebar">
+
+		<section id="search-2" class="widget widget_search widget-widget_search"><form role="search" method="get" id="searchform" class="searchform" action="http://ounziw.com/">
+				<div>
+					<label class="screen-reader-text" for="s">検索:</label>
+					<input type="text" value="" name="s" id="s" />
+					<input type="submit" id="searchsubmit" value="検索" />
+				</div>
+			</form></section>		<section id="recent-posts-2" class="widget widget_recent_entries widget-widget_recent_entries">		<h3 class="widget-title">最近の投稿</h3>		<ul>
+					<li>
+				<a href="http://ounziw.com/2013/12/10/event-application/">イベント機能を使ってアプリケーションをカスタマイズする</a>
+						</li>
+					<li>
+				<a href="http://ounziw.com/2013/12/09/localstorage/">ユーザー毎の閲覧記録をローカルストレージに記録し、訪問状況に応じて「new!」を表示する</a>
+						</li>
+					<li>
+				<a href="http://ounziw.com/2013/12/09/duplicated/">重複コンテンツの議論について、皆が忘れているかもしれない事</a>
+						</li>
+					<li>
+				<a href="http://ounziw.com/2013/12/02/child-theme-99/">「WordPress3.6対応 子テーマ入門」電子書籍99円セール開催</a>
+						</li>
+					<li>
+				<a href="http://ounziw.com/2013/12/01/wordpress-security-news/">「 WordPress セキュリティニュース」連載開始</a>
+						</li>
+					<li>
+				<a href="http://ounziw.com/2013/11/26/kindou-info/">きんどるどうでしょうで一斉セール開催</a>
+						</li>
+					<li>
+				<a href="http://ounziw.com/2013/11/22/create-table-if-not-exists/">CREATE TABLE IF NOT EXISTSは作成済みのテーブルを作ろうとするエラーを防げるが、</a>
+						</li>
+				</ul>
+		</section><section id="tag_cloud-2" class="widget widget_tag_cloud widget-widget_tag_cloud"><h3 class="widget-title">タグ</h3><div class="tagcloud"><a href='http://ounziw.com/tag/agpl/' class='tag-link-34' title='3件のトピック' style='font-size: 8pt;'>AGPL</a>
+<a href='http://ounziw.com/tag/android/' class='tag-link-37' title='4件のトピック' style='font-size: 9.1111111111111pt;'>Android</a>
+<a href='http://ounziw.com/tag/buddypress/' class='tag-link-4' title='4件のトピック' style='font-size: 9.1111111111111pt;'>buddypress</a>
+<a href='http://ounziw.com/tag/cms/' class='tag-link-6' title='40件のトピック' style='font-size: 19.222222222222pt;'>cms</a>
+<a href='http://ounziw.com/tag/codeigniter/' class='tag-link-44' title='7件のトピック' style='font-size: 11.333333333333pt;'>codeigniter</a>
+<a href='http://ounziw.com/tag/concrete5/' class='tag-link-46' title='11件のトピック' style='font-size: 13.333333333333pt;'>concrete5</a>
+<a href='http://ounziw.com/tag/csrf/' class='tag-link-48' title='3件のトピック' style='font-size: 8pt;'>CSRF</a>
+<a href='http://ounziw.com/tag/css/' class='tag-link-49' title='3件のトピック' style='font-size: 8pt;'>CSS</a>
+<a href='http://ounziw.com/tag/facebook/' class='tag-link-54' title='5件のトピック' style='font-size: 10pt;'>facebook</a>
+<a href='http://ounziw.com/tag/fuel/' class='tag-link-8' title='25件のトピック' style='font-size: 17pt;'>fuelphp</a>
+<a href='http://ounziw.com/tag/git/' class='tag-link-56' title='4件のトピック' style='font-size: 9.1111111111111pt;'>git</a>
+<a href='http://ounziw.com/tag/google/' class='tag-link-9' title='5件のトピック' style='font-size: 10pt;'>google</a>
+<a href='http://ounziw.com/tag/gpl/' class='tag-link-59' title='3件のトピック' style='font-size: 8pt;'>GPL</a>
+<a href='http://ounziw.com/tag/html5/' class='tag-link-62' title='18件のトピック' style='font-size: 15.555555555556pt;'>html5</a>
+<a href='http://ounziw.com/tag/javascript/' class='tag-link-65' title='9件のトピック' style='font-size: 12.444444444444pt;'>Javascript</a>
+<a href='http://ounziw.com/tag/jquery/' class='tag-link-67' title='7件のトピック' style='font-size: 11.333333333333pt;'>jquery</a>
+<a href='http://ounziw.com/tag/kindle/' class='tag-link-68' title='5件のトピック' style='font-size: 10pt;'>kindle</a>
+<a href='http://ounziw.com/tag/npo/' class='tag-link-79' title='4件のトピック' style='font-size: 9.1111111111111pt;'>NPO</a>
+<a href='http://ounziw.com/tag/osc/' class='tag-link-15' title='3件のトピック' style='font-size: 8pt;'>OSC</a>
+<a href='http://ounziw.com/tag/php/' class='tag-link-83' title='54件のトピック' style='font-size: 20.666666666667pt;'>PHP</a>
+<a href='http://ounziw.com/tag/phptal/' class='tag-link-86' title='7件のトピック' style='font-size: 11.333333333333pt;'>PHPTAL</a>
+<a href='http://ounziw.com/tag/python/' class='tag-link-90' title='7件のトピック' style='font-size: 11.333333333333pt;'>python</a>
+<a href='http://ounziw.com/tag/qr%e3%82%b3%e3%83%bc%e3%83%89/' class='tag-link-91' title='4件のトピック' style='font-size: 9.1111111111111pt;'>QRコード</a>
+<a href='http://ounziw.com/tag/sahana/' class='tag-link-95' title='11件のトピック' style='font-size: 13.333333333333pt;'>SAHANA</a>
+<a href='http://ounziw.com/tag/selenium/' class='tag-link-96' title='3件のトピック' style='font-size: 8pt;'>selenium</a>
+<a href='http://ounziw.com/tag/seo/' class='tag-link-97' title='4件のトピック' style='font-size: 9.1111111111111pt;'>SEO</a>
+<a href='http://ounziw.com/tag/sns/' class='tag-link-98' title='3件のトピック' style='font-size: 8pt;'>sns</a>
+<a href='http://ounziw.com/tag/soycms/' class='tag-link-99' title='3件のトピック' style='font-size: 8pt;'>soycms</a>
+<a href='http://ounziw.com/tag/template/' class='tag-link-103' title='4件のトピック' style='font-size: 9.1111111111111pt;'>template</a>
+<a href='http://ounziw.com/tag/twitter/' class='tag-link-23' title='7件のトピック' style='font-size: 11.333333333333pt;'>twitter</a>
+<a href='http://ounziw.com/tag/web2py/' class='tag-link-26' title='4件のトピック' style='font-size: 9.1111111111111pt;'>web2py</a>
+<a href='http://ounziw.com/tag/wordbench/' class='tag-link-28' title='6件のトピック' style='font-size: 10.777777777778pt;'>wordbench</a>
+<a href='http://ounziw.com/tag/wordbench%e5%90%8d%e5%8f%a4%e5%b1%8b/' class='tag-link-110' title='4件のトピック' style='font-size: 9.1111111111111pt;'>WordBench名古屋</a>
+<a href='http://ounziw.com/tag/wordbench%e7%a5%9e%e6%88%b8/' class='tag-link-111' title='4件のトピック' style='font-size: 9.1111111111111pt;'>wordbench神戸</a>
+<a href='http://ounziw.com/tag/wordcamp/' class='tag-link-29' title='12件のトピック' style='font-size: 13.666666666667pt;'>wordcamp</a>
+<a href='http://ounziw.com/tag/wordpress/' class='tag-link-30' title='34件のトピック' style='font-size: 18.444444444444pt;'>WordPress</a>
+<a href='http://ounziw.com/tag/%e3%81%b2%e3%82%87%e3%81%86%e3%81%94%e3%82%93%e3%83%86%e3%83%83%e3%82%af/' class='tag-link-121' title='7件のトピック' style='font-size: 11.333333333333pt;'>ひょうごんテック</a>
+<a href='http://ounziw.com/tag/%e3%82%a6%e3%82%a3%e3%82%b8%e3%82%a7%e3%83%83%e3%83%88/' class='tag-link-130' title='7件のトピック' style='font-size: 11.333333333333pt;'>ウィジェット</a>
+<a href='http://ounziw.com/tag/%e3%82%a6%e3%82%a7%e3%83%96%e3%82%b5%e3%83%bc%e3%83%93%e3%82%b9/' class='tag-link-131' title='7件のトピック' style='font-size: 11.333333333333pt;'>ウェブサービス</a>
+<a href='http://ounziw.com/tag/%e3%82%a6%e3%82%a7%e3%83%96%e3%83%86%e3%82%b3/' class='tag-link-132' title='4件のトピック' style='font-size: 9.1111111111111pt;'>ウェブテコ</a>
+<a href='http://ounziw.com/tag/%e3%82%aa%e3%83%bc%e3%83%97%e3%83%b3%e3%82%bd%e3%83%bc%e3%82%b9/' class='tag-link-140' title='72件のトピック' style='font-size: 22pt;'>オープンソース</a>
+<a href='http://ounziw.com/tag/%e3%82%ab%e3%82%b9%e3%82%bf%e3%83%a0%e3%83%95%e3%82%a3%e3%83%bc%e3%83%ab%e3%83%89/' class='tag-link-142' title='10件のトピック' style='font-size: 12.888888888889pt;'>カスタムフィールド</a>
+<a href='http://ounziw.com/tag/%e3%82%ab%e3%82%b9%e3%82%bf%e3%83%a0%e5%88%86%e9%a1%9e/' class='tag-link-143' title='5件のトピック' style='font-size: 10pt;'>カスタム分類</a>
+<a href='http://ounziw.com/tag/%e3%82%ad%e3%83%b3%e3%83%89%e3%83%ab/' class='tag-link-146' title='9件のトピック' style='font-size: 12.444444444444pt;'>キンドル</a>
+<a href='http://ounziw.com/tag/%e3%82%b3%e3%83%9e%e5%a4%a7/' class='tag-link-151' title='13件のトピック' style='font-size: 14.111111111111pt;'>コマ大</a>
+<a href='http://ounziw.com/tag/%e3%82%b3%e3%83%9f%e3%83%a5%e3%83%8b%e3%83%86%e3%82%a3/' class='tag-link-153' title='13件のトピック' style='font-size: 14.111111111111pt;'>コミュニティ</a>
+<a href='http://ounziw.com/tag/%e3%82%b3%e3%83%af%e3%83%bc%e3%82%ad%e3%83%b3%e3%82%b0/' class='tag-link-155' title='5件のトピック' style='font-size: 10pt;'>コワーキング</a>
+<a href='http://ounziw.com/tag/%e3%82%b5%e3%83%8f%e3%83%8a/' class='tag-link-158' title='11件のトピック' style='font-size: 13.333333333333pt;'>サハナ</a>
+<a href='http://ounziw.com/tag/%e3%82%b5%e3%83%bc%e3%83%90%e3%83%bc/' class='tag-link-160' title='7件のトピック' style='font-size: 11.333333333333pt;'>サーバー</a>
+<a href='http://ounziw.com/tag/%e3%82%b9%e3%83%9e%e3%83%bc%e3%83%88%e3%83%95%e3%82%a9%e3%83%b3/' class='tag-link-165' title='5件のトピック' style='font-size: 10pt;'>スマートフォン</a>
+<a href='http://ounziw.com/tag/%e3%82%bb%e3%82%ad%e3%83%a5%e3%83%aa%e3%83%86%e3%82%a3/' class='tag-link-166' title='27件のトピック' style='font-size: 17.444444444444pt;'>セキュリティ</a>
+<a href='http://ounziw.com/tag/%e3%83%86%e3%82%b9%e3%83%88/' class='tag-link-173' title='16件のトピック' style='font-size: 15pt;'>テスト</a>
+<a href='http://ounziw.com/tag/%e3%83%86%e3%83%b3%e3%83%97%e3%83%ac%e3%83%bc%e3%83%88/' class='tag-link-175' title='9件のトピック' style='font-size: 12.444444444444pt;'>テンプレート</a>
+<a href='http://ounziw.com/tag/%e3%83%86%e3%83%bc%e3%83%9e/' class='tag-link-178' title='24件のトピック' style='font-size: 16.888888888889pt;'>テーマ</a>
+<a href='http://ounziw.com/tag/%e3%83%87%e3%82%b6%e3%82%a4%e3%83%8a%e3%83%bc/' class='tag-link-179' title='4件のトピック' style='font-size: 9.1111111111111pt;'>デザイナー</a>
+<a href='http://ounziw.com/tag/%e3%83%87%e3%82%b6%e3%82%a4%e3%83%b3/' class='tag-link-180' title='4件のトピック' style='font-size: 9.1111111111111pt;'>デザイン</a>
+<a href='http://ounziw.com/tag/%e3%83%89%e3%82%ad%e3%83%a5%e3%83%a1%e3%83%b3%e3%83%88/' class='tag-link-184' title='6件のトピック' style='font-size: 10.777777777778pt;'>ドキュメント</a>
+<a href='http://ounziw.com/tag/%e3%83%8f%e3%83%b3%e3%82%ba%e3%82%aa%e3%83%b3/' class='tag-link-190' title='5件のトピック' style='font-size: 10pt;'>ハンズオン</a>
+<a href='http://ounziw.com/tag/%e3%83%95%e3%82%a9%e3%83%bc%e3%83%a9%e3%83%a0/' class='tag-link-199' title='4件のトピック' style='font-size: 9.1111111111111pt;'>フォーラム</a>
+<a href='http://ounziw.com/tag/%e3%83%95%e3%83%ac%e3%83%bc%e3%83%a0%e3%83%af%e3%83%bc%e3%82%af/' class='tag-link-203' title='4件のトピック' style='font-size: 9.1111111111111pt;'>フレームワーク</a>
+<a href='http://ounziw.com/tag/%e3%83%96%e3%83%ad%e3%82%b0/' class='tag-link-206' title='22件のトピック' style='font-size: 16.444444444444pt;'>ブログ</a>
+<a href='http://ounziw.com/tag/%e3%83%97%e3%83%a9%e3%82%b0%e3%82%a4%e3%83%b3/' class='tag-link-207' title='61件のトピック' style='font-size: 21.222222222222pt;'>プラグイン</a>
+<a href='http://ounziw.com/tag/%e3%83%97%e3%83%ad%e3%82%b0%e3%83%a9%e3%83%a0/' class='tag-link-210' title='12件のトピック' style='font-size: 13.666666666667pt;'>プログラム</a>
+<a href='http://ounziw.com/tag/%e4%ba%92%e6%81%b5/' class='tag-link-229' title='5件のトピック' style='font-size: 10pt;'>互恵</a>
+<a href='http://ounziw.com/tag/%e5%8b%89%e5%bc%b7%e4%bc%9a/' class='tag-link-237' title='38件のトピック' style='font-size: 19pt;'>勉強会</a>
+<a href='http://ounziw.com/tag/%e5%90%88%e5%90%8c%e5%bc%8f/' class='tag-link-245' title='3件のトピック' style='font-size: 8pt;'>合同式</a>
+<a href='http://ounziw.com/tag/%e5%90%8d%e5%8f%a4%e5%b1%8b/' class='tag-link-246' title='24件のトピック' style='font-size: 16.888888888889pt;'>名古屋</a>
+<a href='http://ounziw.com/tag/%e5%95%86%e7%94%a8cms/' class='tag-link-247' title='4件のトピック' style='font-size: 9.1111111111111pt;'>商用CMS</a>
+<a href='http://ounziw.com/tag/%e5%ba%83%e5%91%8a/' class='tag-link-259' title='3件のトピック' style='font-size: 8pt;'>広告</a>
+<a href='http://ounziw.com/tag/%e6%8a%95%e7%a8%bf%e3%82%bf%e3%82%a4%e3%83%97/' class='tag-link-260' title='3件のトピック' style='font-size: 8pt;'>投稿タイプ</a>
+<a href='http://ounziw.com/tag/%e6%95%b0%e5%ad%a6/' class='tag-link-264' title='8件のトピック' style='font-size: 11.888888888889pt;'>数学</a>
+<a href='http://ounziw.com/tag/%e6%97%a5%e6%9c%ac%e8%aa%9e%e5%8c%96/' class='tag-link-270' title='31件のトピック' style='font-size: 18.111111111111pt;'>日本語化</a>
+<a href='http://ounziw.com/tag/%e7%94%bb%e5%83%8f/' class='tag-link-283' title='5件のトピック' style='font-size: 10pt;'>画像</a>
+<a href='http://ounziw.com/tag/%e7%a2%ba%e7%8e%87/' class='tag-link-286' title='5件のトピック' style='font-size: 10pt;'>確率</a>
+<a href='http://ounziw.com/tag/%e7%a5%9e%e6%88%b8/' class='tag-link-288' title='15件のトピック' style='font-size: 14.666666666667pt;'>神戸</a>
+<a href='http://ounziw.com/tag/%e7%ae%a1%e7%90%86%e7%94%bb%e9%9d%a2/' class='tag-link-289' title='15件のトピック' style='font-size: 14.666666666667pt;'>管理画面</a>
+<a href='http://ounziw.com/tag/%e7%ae%a1%e7%90%86%e7%94%bb%e9%9d%a2%e3%82%ab%e3%82%b9%e3%82%bf%e3%83%9e%e3%82%a4%e3%82%ba/' class='tag-link-290' title='34件のトピック' style='font-size: 18.444444444444pt;'>管理画面カスタマイズ</a>
+<a href='http://ounziw.com/tag/%e7%bf%bb%e8%a8%b3/' class='tag-link-294' title='28件のトピック' style='font-size: 17.555555555556pt;'>翻訳</a>
+<a href='http://ounziw.com/tag/%e9%96%a2%e8%a5%bf/' class='tag-link-306' title='6件のトピック' style='font-size: 10.777777777778pt;'>関西</a>
+<a href='http://ounziw.com/tag/%e9%9b%bb%e5%ad%90%e6%9b%b8%e7%b1%8d/' class='tag-link-309' title='33件のトピック' style='font-size: 18.333333333333pt;'>電子書籍</a></div>
+</section><section id="archives-2" class="widget widget_archive widget-widget_archive"><h3 class="widget-title">アーカイブ</h3>		<select name="archive-dropdown" onchange='document.location.href=this.options[this.selectedIndex].value;'> <option value="">月を選択</option> 	<option value='http://ounziw.com/2013/12/'> 2013年12月 </option>
+	<option value='http://ounziw.com/2013/11/'> 2013年11月 </option>
+	<option value='http://ounziw.com/2013/10/'> 2013年10月 </option>
+	<option value='http://ounziw.com/2013/09/'> 2013年9月 </option>
+	<option value='http://ounziw.com/2013/08/'> 2013年8月 </option>
+	<option value='http://ounziw.com/2013/07/'> 2013年7月 </option>
+	<option value='http://ounziw.com/2013/06/'> 2013年6月 </option>
+	<option value='http://ounziw.com/2013/05/'> 2013年5月 </option>
+	<option value='http://ounziw.com/2013/04/'> 2013年4月 </option>
+	<option value='http://ounziw.com/2013/03/'> 2013年3月 </option>
+	<option value='http://ounziw.com/2013/02/'> 2013年2月 </option>
+	<option value='http://ounziw.com/2013/01/'> 2013年1月 </option>
+	<option value='http://ounziw.com/2012/12/'> 2012年12月 </option>
+	<option value='http://ounziw.com/2012/11/'> 2012年11月 </option>
+	<option value='http://ounziw.com/2012/10/'> 2012年10月 </option>
+	<option value='http://ounziw.com/2012/09/'> 2012年9月 </option>
+	<option value='http://ounziw.com/2012/08/'> 2012年8月 </option>
+	<option value='http://ounziw.com/2012/07/'> 2012年7月 </option>
+	<option value='http://ounziw.com/2012/06/'> 2012年6月 </option>
+	<option value='http://ounziw.com/2012/05/'> 2012年5月 </option>
+	<option value='http://ounziw.com/2012/04/'> 2012年4月 </option>
+	<option value='http://ounziw.com/2012/03/'> 2012年3月 </option>
+	<option value='http://ounziw.com/2012/02/'> 2012年2月 </option>
+	<option value='http://ounziw.com/2012/01/'> 2012年1月 </option>
+	<option value='http://ounziw.com/2011/12/'> 2011年12月 </option>
+	<option value='http://ounziw.com/2011/11/'> 2011年11月 </option>
+	<option value='http://ounziw.com/2011/10/'> 2011年10月 </option>
+	<option value='http://ounziw.com/2011/09/'> 2011年9月 </option>
+	<option value='http://ounziw.com/2011/08/'> 2011年8月 </option>
+	<option value='http://ounziw.com/2011/07/'> 2011年7月 </option>
+	<option value='http://ounziw.com/2011/06/'> 2011年6月 </option>
+	<option value='http://ounziw.com/2011/05/'> 2011年5月 </option>
+	<option value='http://ounziw.com/2011/04/'> 2011年4月 </option>
+	<option value='http://ounziw.com/2011/03/'> 2011年3月 </option>
+	<option value='http://ounziw.com/2011/02/'> 2011年2月 </option>
+	<option value='http://ounziw.com/2011/01/'> 2011年1月 </option>
+	<option value='http://ounziw.com/2010/12/'> 2010年12月 </option>
+	<option value='http://ounziw.com/2010/11/'> 2010年11月 </option>
+	<option value='http://ounziw.com/2010/10/'> 2010年10月 </option>
+	<option value='http://ounziw.com/2010/09/'> 2010年9月 </option>
+	<option value='http://ounziw.com/2010/08/'> 2010年8月 </option>
+	<option value='http://ounziw.com/2010/07/'> 2010年7月 </option>
+	<option value='http://ounziw.com/2010/06/'> 2010年6月 </option>
+	<option value='http://ounziw.com/2010/05/'> 2010年5月 </option>
+	<option value='http://ounziw.com/2010/04/'> 2010年4月 </option>
+	<option value='http://ounziw.com/2010/03/'> 2010年3月 </option>
+	<option value='http://ounziw.com/2010/02/'> 2010年2月 </option>
+	<option value='http://ounziw.com/2010/01/'> 2010年1月 </option>
+	<option value='http://ounziw.com/2009/12/'> 2009年12月 </option>
+	<option value='http://ounziw.com/2009/11/'> 2009年11月 </option>
+	<option value='http://ounziw.com/2009/10/'> 2009年10月 </option>
+	<option value='http://ounziw.com/2009/09/'> 2009年9月 </option>
+	<option value='http://ounziw.com/2009/08/'> 2009年8月 </option>
+	<option value='http://ounziw.com/2009/07/'> 2009年7月 </option>
+	<option value='http://ounziw.com/2009/06/'> 2009年6月 </option>
+	<option value='http://ounziw.com/2009/05/'> 2009年5月 </option>
+	<option value='http://ounziw.com/2009/04/'> 2009年4月 </option>
+	<option value='http://ounziw.com/2009/03/'> 2009年3月 </option>
+	<option value='http://ounziw.com/2009/02/'> 2009年2月 </option>
+	<option value='http://ounziw.com/2009/01/'> 2009年1月 </option>
+	<option value='http://ounziw.com/2008/12/'> 2008年12月 </option>
+ </select>
+</section>
+	</aside><!-- #sidebar-primary .aside -->
+
+			</div><!-- .wrap -->
+		</div><!-- #main -->
+
+		
+	<aside id="sidebar-subsidiary" class="sidebar">
+		<div class="wrap">
+			<section id="top-posts-2" class="widget widget_top-posts widget-widget_top-posts"><h3 class="widget-title">人気の投稿とページ</h3><ul><li><a href="http://ounziw.com/2013/04/15/azw2pdf/" class="bump-view" data-bump-view="tp">キンドル本を印刷する(PDFに変換する)方法</a></li>
+<li><a href="http://ounziw.com/2013/12/09/localstorage/" class="bump-view" data-bump-view="tp">ユーザー毎の閲覧記録をローカルストレージに記録し、訪問状況に応じて「new!」を表示する</a></li>
+<li><a href="http://ounziw.com/2013/12/10/event-application/" class="bump-view" data-bump-view="tp">イベント機能を使ってアプリケーションをカスタマイズする</a></li>
+<li><a href="http://ounziw.com/2011/07/25/twentyeleven-functions-php/" class="bump-view" data-bump-view="tp">twentyeleven の functions.php</a></li>
+<li><a href="http://ounziw.com/2013/05/17/agpl/" class="bump-view" data-bump-view="tp">AGPL ライセンスについて</a></li>
+</ul></section><section id="nav_menu-2" class="widget widget_nav_menu widget-widget_nav_menu"><div class="menu-primary-container"><ul id="menu-primary" class="menu"><li id="menu-item-2344" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2344"><a href="http://ounziw.com/about/">About / 管理者紹介</a></li>
+<li id="menu-item-2343" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2343"><a href="http://ounziw.com/opensource/">オープンソースのメリットデメリット</a></li>
+<li id="menu-item-2345" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2345"><a href="http://ounziw.com/category/myplugin/">myplugin</a></li>
+<li id="menu-item-2342" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2342"><a href="http://ounziw.com/contact/">Contact / 問い合わせ</a></li>
+</ul></div></section><section id="text-3" class="widget widget_text widget-widget_text">			<div class="textwidget"><iframe src="http://rcm-fe.amazon-adsystem.com/e/cm?lt1=_blank&bc1=000000&IS2=1&bg1=FFFFFF&fc1=000000&lc1=0000FF&t=linuxonnotebo-22&o=9&p=8&l=as4&m=amazon&f=ifr&ref=ss_til&asins=4844334670" style="width:120px;height:240px;" scrolling="no" marginwidth="0" marginheight="0" frameborder="0"></iframe>
+</div>
+		</section><section id="text-4" class="widget widget_text widget-widget_text">			<div class="textwidget"><iframe src="http://rcm-fe.amazon-adsystem.com/e/cm?lt1=_blank&bc1=000000&IS2=1&bg1=FFFFFF&fc1=000000&lc1=0000FF&t=linuxonnotebo-22&o=9&p=8&l=as4&m=amazon&f=ifr&ref=ss_til&asins=B00EXAHZGK" style="width:120px;height:240px;" scrolling="no" marginwidth="0" marginheight="0" frameborder="0"></iframe>
+</div>
+		</section>		</div><!-- .wrap -->
+	</aside><!-- #sidebar-subsidiary .aside -->
+
+
+		<footer id="footer">
+
+			<div class="wrap">
+
+				<div class="footer-content">
+					<p class="copyright">Copyright &copy; 2013 <a class="site-link" href="http://ounziw.com" title="Standing on the Shoulder of Linus" rel="home"><span>Standing on the Shoulder of Linus</span></a>.</p><p class="credit">Powered by <a class="wp-link" href="http://wordpress.org" title="State-of-the-art semantic personal publishing platform"><span>WordPress</span></a> and <a class="theme-link" href="http://themehall.com/plain-wp-free-responsive-wordpress-theme/" title="Plain WP WordPress Theme"><span>Plain WP</span></a>.</p>				</div><!-- .footer-content -->
+
+			</div>
+
+		</footer><!-- #footer -->
+
+	</div><!-- #container -->
+
+		<div style="display:none">
+	</div>
+		<script type="text/javascript">
+		jQuery(document).on( 'ready post-load', function(){
+			jQuery( 'a.share-facebook' ).on( 'click', function() {
+				window.open( jQuery(this).attr( 'href' ), 'wpcomfacebook', 'menubar=1,resizable=1,width=600,height=400' );
+				return false;
+			});
+		});
+		</script>
+					<script type="text/javascript">
+			  (function() {
+			    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+			    po.src = 'https://apis.google.com/js/plusone.js';
+			    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+			  })();
+			</script>
+					<script type="text/javascript">
+		jQuery(document).on( 'ready post-load', function(){
+			jQuery( 'a.share-twitter' ).on( 'click', function() {
+				window.open( jQuery(this).attr( 'href' ), 'wpcomtwitter', 'menubar=1,resizable=1,width=600,height=350' );
+				return false;
+			});
+		});
+		</script>
+				<script>
+		// Don't use Pocket's default JS as it we need to force init new Pocket share buttons loaded via JS.
+		function jetpack_sharing_pocket_init() {
+			jQuery.getScript( 'https://widgets.getpocket.com/v1/j/btn.js?v=1' );
+		}
+		jQuery( document ).on( 'ready', jetpack_sharing_pocket_init );
+		jQuery( document.body ).on( 'post-load', jetpack_sharing_pocket_init );
+		</script>
+		<script type="text/javascript" src="http://platform.tumblr.com/v1/share.js"></script><script type="text/javascript">
+			jQuery( document ).ready( function() {
+			    jQuery.getScript( 'http://platform.linkedin.com/in.js?async=true', function success() {
+			        IN.init();
+			    });
+			});
+			jQuery( document.body ).on( 'post-load', function() {
+				if ( typeof IN != 'undefined' )
+					IN.parse();
+			});
+			</script>		<iframe src='http://widgets.wp.com/likes/master.html?ver=20130620a#ver=20130620a&amp;lang=ja&amp;mp6=0' scrolling='no' id='likes-master' name='likes-master' style='display:none;'></iframe>
+		<div id='likes-other-gravatars'><div class="likes-text"><span>%d</span>人のブロガーが「いいね」をつけました。</div><ul class="wpl-avatars sd-like-gravatars"></ul></div>
+		<script type="text/javascript">
+		//<![CDATA[
+			var jetpackLikesWidgetQueue = [];
+			var jetpackLikesMasterReady = false;
+
+			function JetpackLikespostMessage( message, target ) {
+				if ( "string" === typeof message ){
+					try{
+						message = JSON.parse( message );
+					}
+					catch(e) {
+						return;
+					}
+				}
+
+				pm( {
+					target: target,
+					type: 'likesMessage',
+					data: message,
+					origin: '*'
+				} );
+			}
+
+			function JetpackLikesMessageListener( event ) {
+				if ( "undefined" == typeof event.event )
+					return;
+
+				if ( 'masterReady' == event.event ) {
+					jQuery( document ).ready( function() {
+						jetpackLikesMasterReady = true;
+
+						var stylesData = {
+								event: 'injectStyles'
+						};
+
+						if ( jQuery( 'iframe.admin-bar-likes-widget' ).length > 0 ) {
+							JetpackLikespostMessage( { event: 'adminBarEnabled' }, window.frames[ 'likes-master' ] );
+
+							stylesData.adminBarStyles = {
+								background: jQuery( '#wpadminbar .quicklinks li#wp-admin-bar-wpl-like > a' ).css( 'background' )
+							};
+						}
+
+						if ( !window.addEventListener )
+							jQuery( '#wp-admin-bar-admin-bar-likes-widget' ).hide();
+
+						stylesData.textStyles = {
+							color: jQuery( '.sd-text-color').css( 'color' ),
+							fontFamily: jQuery( '.sd-text-color' ).css( 'font-family' ),
+							fontSize: jQuery( '.sd-text-color' ).css( 'font-size' ),
+							direction: jQuery( '.sd-text-color' ).css( 'direction' ),
+							fontWeight: jQuery( '.sd-text-color' ).css( 'font-weight' ),
+							fontStyle: jQuery( '.sd-text-color' ).css( 'font-style' ),
+							textDecoration: jQuery( '.sd-text-color' ).css('text-decoration')
+						};
+
+						stylesData.linkStyles = {
+							color: jQuery( '.sd-link-color' ).css('color'),
+							fontFamily: jQuery( '.sd-link-color' ).css('font-family'),
+							fontSize: jQuery( '.sd-link-color' ).css('font-size'),
+							textDecoration: jQuery( '.sd-link-color' ).css('text-decoration'),
+							fontWeight: jQuery( '.sd-link-color' ).css( 'font-weight' ),
+							fontStyle: jQuery( '.sd-link-color' ).css( 'font-style' )
+						};
+
+						JetpackLikespostMessage( stylesData, window.frames[ 'likes-master' ] );
+
+						var requests = [];
+						jQuery( '.jetpack-likes-widget-wrapper' ).each( function( i ) {
+							var regex = /like-(post|comment)-wrapper-(\d+)-(\d+)-(\w+)/;
+							var match = regex.exec( this.id );
+							if ( ! match || match.length != 5 )
+								return;
+
+							var info = {
+								blog_id: match[2],
+								width:   this.width
+							};
+
+							if ( 'post' == match[1] ) {
+								info.post_id = match[3];
+							} else if ( 'comment' == match[1] ) {
+								info.comment_id = match[3];
+							}
+
+							info.obj_id = match[4];
+
+							requests.push( info );
+						});
+
+						JetpackLikespostMessage( { event: 'initialBatch', requests: requests }, window.frames['likes-master'] );
+
+						jQuery( document ).on( 'inview', 'div.jetpack-likes-widget-unloaded', function() {
+							jetpackLikesWidgetQueue.push( this.id );
+						});
+					});
+				}
+
+				if ( 'showLikeWidget' == event.event ) {
+					setTimeout( JetpackLikesWidgetQueueHandler, 10 );
+					jQuery( '#' + event.id + ' .post-likes-widget-placeholder'  ).fadeOut( 'fast', function() {
+						jQuery( '#' + event.id + ' .post-likes-widget' ).fadeIn( 'fast', function() {
+							JetpackLikespostMessage( { event: 'likeWidgetDisplayed', blog_id: event.blog_id, post_id: event.post_id, obj_id: event.obj_id }, window.frames['likes-master'] );
+						});
+					});
+				}
+
+				if ( 'showOtherGravatars' == event.event ) {
+					var $container = jQuery( '#likes-other-gravatars' );
+					var $list = $container.find( 'ul' );
+
+					$container.hide();
+					$list.html( '' );
+
+					$container.find( '.likes-text span' ).text( event.total );
+
+					jQuery.each( event.likers, function( i, liker ) {
+						$list.append( '<li class="' + liker.css_class + '"><a href="' + liker.profile_URL + '" class="wpl-liker" rel="nofollow" target="_parent"><img src="' + liker.avatar_URL + '" alt="' + liker.name + '" width="30" height="30" style="padding-right: 3px;" /></a></li>');
+					} );
+
+					var offset = jQuery( "[name='" + event.parent + "']" ).offset();
+
+					$container.css( 'left', offset.left + event.position.left - 10 + 'px' );
+					$container.css( 'top', offset.top + event.position.top - 33 + 'px' );
+
+					var rowLength = Math.floor( event.width / 37 );
+					var height = ( Math.ceil( event.likers.length / rowLength ) * 37 ) + 13;
+					if ( height > 204 ) {
+						height = 204;
+					}
+
+					$container.css( 'height', height + 'px' );
+					$container.css( 'width', rowLength * 37 - 7 + 'px' );
+
+					$list.css( 'width', rowLength * 37 + 'px' );
+
+					$container.fadeIn( 'slow' );
+
+					var scrollbarWidth = $list[0].offsetWidth - $list[0].clientWidth;
+					if ( scrollbarWidth > 0 ) {
+						$container.width( $container.width() + scrollbarWidth );
+						$list.width( $list.width() + scrollbarWidth );
+					}
+				}
+			}
+
+			pm.bind( 'likesMessage', function(e) { JetpackLikesMessageListener(e); } );
+
+			jQuery( document ).click( function( e ) {
+				var $container = jQuery( '#likes-other-gravatars' );
+
+				if ( $container.has( e.target ).length === 0 ) {
+					$container.fadeOut( 'slow' );
+				}
+			});
+
+			function JetpackLikesWidgetQueueHandler() {
+				var wrapperID;
+				if ( ! jetpackLikesMasterReady ) {
+					setTimeout( JetpackLikesWidgetQueueHandler, 500 );
+					return;
+				}
+
+				if ( jetpackLikesWidgetQueue.length > 0 ) {
+					// We may have a widget that needs creating now
+					var found = false;
+					while( jetpackLikesWidgetQueue.length > 0 ) {
+						// Grab the first member of the queue that isn't already loading.
+						wrapperID = jetpackLikesWidgetQueue.splice( 0, 1 )[0];
+						if ( jQuery( '#' + wrapperID ).hasClass( 'jetpack-likes-widget-unloaded' ) ) {
+							found = true;
+							break;
+						}
+					}
+					if ( ! found ) {
+						setTimeout( JetpackLikesWidgetQueueHandler, 500 );
+						return;
+					}
+				} else if ( jQuery( 'div.jetpack-likes-widget-unloaded' ).length > 0 ) {
+					// Get the next unloaded widget
+					wrapperID = jQuery( 'div.jetpack-likes-widget-unloaded' ).first()[0].id;
+					if ( ! wrapperID ) {
+						// Everything is currently loaded
+						setTimeout( JetpackLikesWidgetQueueHandler, 500 );
+						return;
+					}
+				}
+
+				var $wrapper = jQuery( '#' + wrapperID );
+				$wrapper.find( 'iframe' ).remove();
+
+				if ( $wrapper.hasClass( 'slim-likes-widget' ) ) {
+					$wrapper.find( '.post-likes-widget-placeholder' ).after( "<iframe class='post-likes-widget jetpack-likes-widget' name='" + $wrapper.data( 'name' ) + "' height='22px' width='68px' frameBorder='0' scrolling='no' src='" + $wrapper.data( 'src' ) + "'></iframe>" );
+				} else {
+					$wrapper.find( '.post-likes-widget-placeholder' ).after( "<iframe class='post-likes-widget jetpack-likes-widget' name='" + $wrapper.data( 'name' ) + "' height='55px' width='100%' frameBorder='0' src='" + $wrapper.data( 'src' ) + "'></iframe>" );
+				}
+
+				$wrapper.removeClass( 'jetpack-likes-widget-unloaded' ).addClass( 'jetpack-likes-widget-loading' );
+
+				$wrapper.find( 'iframe' ).load( function( e ) {
+					var $iframe = jQuery( e.target );
+					$wrapper.removeClass( 'jetpack-likes-widget-loading' ).addClass( 'jetpack-likes-widget-loaded' );
+
+					JetpackLikespostMessage( { event: 'loadLikeWidget', name: $iframe.attr( 'name' ), width: $iframe.width() }, window.frames[ 'likes-master' ] );
+
+					if ( $wrapper.hasClass( 'slim-likes-widget' ) ) {
+						$wrapper.find( 'iframe' ).Jetpack( 'resizeable' );
+					}
+				});
+				setTimeout( JetpackLikesWidgetQueueHandler, 250 );
+			}
+			JetpackLikesWidgetQueueHandler();
+		//]]>
+		</script>
+<script type='text/javascript' src='http://ounziw.com/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/scripts/shCore.js?ver=3.0.83c'></script>
+<script type='text/javascript' src='http://ounziw.com/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/scripts/shBrushPhp.js?ver=3.0.83c'></script>
+<script type='text/javascript'>
+	(function(){
+		var corecss = document.createElement('link');
+		var themecss = document.createElement('link');
+		var corecssurl = "http://ounziw.com/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/styles/shCore.css?ver=3.0.83c";
+		if ( corecss.setAttribute ) {
+				corecss.setAttribute( "rel", "stylesheet" );
+				corecss.setAttribute( "type", "text/css" );
+				corecss.setAttribute( "href", corecssurl );
+		} else {
+				corecss.rel = "stylesheet";
+				corecss.href = corecssurl;
+		}
+		document.getElementsByTagName("head")[0].insertBefore( corecss, document.getElementById("syntaxhighlighteranchor") );
+		var themecssurl = "http://ounziw.com/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/styles/shThemeDefault.css?ver=3.0.83c";
+		if ( themecss.setAttribute ) {
+				themecss.setAttribute( "rel", "stylesheet" );
+				themecss.setAttribute( "type", "text/css" );
+				themecss.setAttribute( "href", themecssurl );
+		} else {
+				themecss.rel = "stylesheet";
+				themecss.href = themecssurl;
+		}
+		//document.getElementById("syntaxhighlighteranchor").appendChild(themecss);
+		document.getElementsByTagName("head")[0].insertBefore( themecss, document.getElementById("syntaxhighlighteranchor") );
+	})();
+	SyntaxHighlighter.config.strings.expandSource = 'ソースを表示';
+	SyntaxHighlighter.config.strings.help = 'SyntaxHighlighterについて';
+	SyntaxHighlighter.config.strings.alert = 'SyntaxHighlighter\n\n';
+	SyntaxHighlighter.config.strings.noBrush = '指定のブラシが見つかりませんでした: ';
+	SyntaxHighlighter.config.strings.brushNotHtmlScript = 'HTMLスクリプトのオプションのためにブラシが構成されませんでした: ';
+	SyntaxHighlighter.defaults['pad-line-numbers'] = false;
+	SyntaxHighlighter.defaults['toolbar'] = false;
+	SyntaxHighlighter.all();
+</script>
+<script type='text/javascript' src='http://ounziw.com/wp-content/plugins/jetpack/modules/photon/photon.js?ver=20130122'></script>
+<script type='text/javascript' src='http://s0.wp.com/wp-content/js/devicepx-jetpack.js?ver=201350'></script>
+<script type='text/javascript' src='http://ounziw.com/wp-content/plugins/nginx-champuru/js/jquery.cookie.min.js?ver=1.3.1'></script>
+<script type='text/javascript' src='http://s.gravatar.com/js/gprofiles.js?ver=2013Decaa'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var WPGroHo = {"my_hash":""};
+/* ]]> */
+</script>
+<script type='text/javascript' src='http://ounziw.com/wp-content/plugins/jetpack/modules/wpgroho.js?ver=3.7.1'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var recaptcha_options = {"lang":"en"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='http://ounziw.com/wp-content/plugins/jetpack/modules/sharedaddy/sharing.js?ver=20121205'></script>
+
+<script type="text/javascript">
+(function($){
+    $("#author").val($.cookie("comment_author_154db23f87c57c2296fef6f58436c41a"));
+    $("#email").val($.cookie("comment_author_email_154db23f87c57c2296fef6f58436c41a"));
+    $("#url").val($.cookie("comment_author_url_154db23f87c57c2296fef6f58436c41a"));
+})(jQuery);
+</script>
+
+		<!--[if IE]>
+		<script type="text/javascript">
+		if ( 0 === window.location.hash.indexOf( '#comment-' ) ) {
+			// window.location.reload() doesn't respect the Hash in IE
+			window.location.hash = window.location.hash;
+		}
+		</script>
+		<![endif]-->
+		<script type="text/javascript">
+			var comm_par_el = document.getElementById( 'comment_parent' ),
+			    comm_par = (comm_par_el && comm_par_el.value) ? comm_par_el.value : '',
+			    frame = document.getElementById( 'jetpack_remote_comment' ),
+			    tellFrameNewParent;
+
+			tellFrameNewParent = function() {
+				if ( comm_par ) {
+					frame.src = "http:\/\/jetpack.wordpress.com\/jetpack-comment\/?blogid=14694530&postid=3692&comment_registration=0&require_name_email=1&stc_enabled=1&stb_enabled=1&show_avatars=1&avatar_default=gravatar_default&greeting=%E3%82%B3%E3%83%A1%E3%83%B3%E3%83%88%E3%82%92%E6%AE%8B%E3%81%99&greeting_reply=%25s+%E3%81%AB%E3%82%B3%E3%83%A1%E3%83%B3%E3%83%88%E3%81%99%E3%82%8B&color_scheme=light&lang=ja&jetpack_version=2.5&sig=8f261c0711fd6232e813d76248c61c65cc861d06#parent=http%3A%2F%2Founziw.com%2F2013%2F12%2F10%2Fevent-application%2F" + '&replytocom=' + parseInt( comm_par, 10 ).toString();
+				} else {
+					frame.src = "http:\/\/jetpack.wordpress.com\/jetpack-comment\/?blogid=14694530&postid=3692&comment_registration=0&require_name_email=1&stc_enabled=1&stb_enabled=1&show_avatars=1&avatar_default=gravatar_default&greeting=%E3%82%B3%E3%83%A1%E3%83%B3%E3%83%88%E3%82%92%E6%AE%8B%E3%81%99&greeting_reply=%25s+%E3%81%AB%E3%82%B3%E3%83%A1%E3%83%B3%E3%83%88%E3%81%99%E3%82%8B&color_scheme=light&lang=ja&jetpack_version=2.5&sig=8f261c0711fd6232e813d76248c61c65cc861d06#parent=http%3A%2F%2Founziw.com%2F2013%2F12%2F10%2Fevent-application%2F";
+				}
+			};
+
+	
+			if ( 'undefined' !== typeof addComment ) {
+				addComment._Jetpack_moveForm = addComment.moveForm;
+
+				addComment.moveForm = function( commId, parentId, respondId, postId ) {
+					var returnValue = addComment._Jetpack_moveForm( commId, parentId, respondId, postId ), cancelClick, cancel;
+
+					if ( false === returnValue ) {
+						cancel = document.getElementById( 'cancel-comment-reply-link' );
+						cancelClick = cancel.onclick;
+						cancel.onclick = function() {
+							var cancelReturn = cancelClick.call( this );
+							if ( false !== cancelReturn ) {
+								return cancelReturn;
+							}
+
+							if ( !comm_par ) {
+								return cancelReturn;
+							}
+
+							comm_par = 0;
+
+							tellFrameNewParent();
+
+							return cancelReturn;
+						};
+					}
+
+					if ( comm_par == parentId ) {
+						return returnValue;
+					}
+
+					comm_par = parentId;
+
+					tellFrameNewParent();
+
+					return returnValue;
+				};
+			}
+
+	
+			if ( window.postMessage ) {
+				if ( document.addEventListener ) {
+					window.addEventListener( 'message', function( event ) {
+						if ( "http:\/\/jetpack.wordpress.com" !== event.origin ) {
+							return;
+						}
+
+						jQuery( frame ).height( event.data );
+					} );
+				} else if ( document.attachEvent ) {
+					window.attachEvent( 'message', function( event ) {
+						if ( "http:\/\/jetpack.wordpress.com" !== event.origin ) {
+							return;
+						}
+
+						jQuery( frame ).height( event.data );
+					} );
+				}
+			}
+		</script>
+
+	
+	<script src="http://stats.wordpress.com/e-201350.js" type="text/javascript"></script>
+	<script type="text/javascript">
+	st_go({v:'ext',j:'1:2.5',blog:'14694530',post:'3692',tz:'9'});
+	var load_cmc = function(){linktracker_init(14694530,3692,2);};
+	if ( typeof addLoadEvent != 'undefined' ) addLoadEvent(load_cmc);
+	else load_cmc();
+	</script>
+</body>
+</html>
