@@ -179,16 +179,16 @@ PHP: json_encode - Manual（@<href>{http://php.net/json_encode,http://php.net/js
 fuel/packages/parser/config/parser.php
 //}
 
-
+//noindent
 の以下の部分ですね。
 
 #@# lang: .syntax-highlight
 //emlist{
 <?php
-:
+…略…
         'View_Twig' => array(
                 'auto_encode' => true,
-:
+…略…
 //}
 
 

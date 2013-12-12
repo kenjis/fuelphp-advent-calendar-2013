@@ -9,7 +9,7 @@
 //quote{
 "Testability" should not be used as argument deciding what design pattern is right to use and what is not.
 
-訳：どのデザインパターンが適切か否かという議論に、「テスト可能性」が使われるべきではない。
+訳：どのデザインパターンが適切か否かという論拠に、「テスト可能性」が使われるべきではない。
 //}
 
 これが、AspectMockからの主張です。@<br>{}
@@ -330,7 +330,7 @@ FAILURES!
 Tests: 1, Assertions: 0, Failures: 1.
 //}
 
-正しく失敗しました。
+正しく失敗しました。@<br>{}
 
 このように、AspectMockを使うと静的メソッドをテストダブルに置き換えたり、メソッドを動的に再定義して、簡単にテストすることができます。AspectMockの主張どおり、テスト可能にするためだけにDIを使う必要はなくなります。
 
