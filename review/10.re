@@ -82,7 +82,7 @@ WARNING - 2013-12-09 09:15:23 --> Login Fail.  Email: email@example.com  Passwor
 
 コアに用意されているトリガーを使うだけではなく、アプリケーションにもトリガーを用意することができます。@<img>{fuelphp_event1}の、青丸を作る作業です。コード中の適当な箇所に、@<tt>{Event::trigger(トリガー名)}と書けばOKです。
 
-Novius OS のログイン部分のコード(@<href>{https://github.com/novius-os/core/blob/master/chiba2/framework/classes/controller/admin/login.ctrl.php,novius-os/framework/classes/controller/admin/login.ctrl.php})を見てみると、ログイン成功時に@<tt>{admin.loginSuccess}イベント、ログイン失敗時に@<tt>{admin.loginFail}イベント、が用意されています。
+Novius OSのログイン部分のコード（@<href>{https://github.com/novius-os/core/blob/master/chiba2/framework/classes/controller/admin/login.ctrl.php,novius-os/framework/classes/controller/admin/login.ctrl.php}）を見てみると、ログイン成功時に@<tt>{admin.loginSuccess}イベント、ログイン失敗時に@<tt>{admin.loginFail}イベント、が用意されています。
 
 #@# lang: .brush: .php; .title: .; .notranslate title=""
 //emlist{
