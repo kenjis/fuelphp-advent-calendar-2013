@@ -127,7 +127,14 @@
                 $attr    = $matches[3];
                 $after   = $matches[4];
 
-                $h = $h - ($top_level - 1);
+                if ($h == $top_level) {
+                    $h = 1;
+                } elseif ($h < $top_level ) {
+                    echo 'Illegal Header:', $line, PHP_EOL;
+                    $h = 2;
+                } else {
+                    $h = $h - ($top_level - 1);
+                }
                 // remove attr, because pandoc removes <h> with class="title"
                 $newline .= $before . '<h' . $h . '>';
                 $line = $after;
@@ -144,7 +151,14 @@
                 $h       = $matches[2];
                 $after   = $matches[3];
 
-                $h = $h - ($top_level - 1);
+                if ($h == $top_level) {
+                    $h = 1;
+                } elseif ($h < $top_level ) {
+                    echo 'Illegal Header:', $line, PHP_EOL;
+                    $h = 2;
+                } else {
+                    $h = $h - ($top_level - 1);
+                }
                 $newline .= $before . '</h' . $h . '>';
                 $line = $after;
             }
