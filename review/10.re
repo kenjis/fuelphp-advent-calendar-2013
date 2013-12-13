@@ -30,9 +30,9 @@
  1. @<tt>{app/config/event.php}に追加する方法
  1. @<tt>{Event::register}を使う方法
 
-1.は、@<tt>{app/config}に@<tt>{event.php}に書く方法です。詳細は@<href>{http://fuelphp.jp/docs/1.7/classes/event.html,Event クラス（FuelPHP 1.7）}をごらんください。
+1.は、@<tt>{app/config}に@<tt>{event.php}に書く方法です。詳細は@<href>{http://fuelphp.jp/docs/1.7/classes/event.html,Eventクラス（FuelPHP 1.7）}をごらんください。
 
-​2. は、@<tt>{register}メソッドを使う方法です。今回はこちらを使います。@<href>{http://fuelphp.jp/docs/1.7/classes/event.html,Event クラス（FuelPHP 1.7）}では、@<tt>{user_login}に@<tt>{Class::method}処理を追加する例が掲載されています。
+2.は、@<tt>{register}メソッドを使う方法です。今回はこちらを使います。@<href>{http://fuelphp.jp/docs/1.7/classes/event.html,Eventクラス（FuelPHP 1.7）}では、@<tt>{user_login}に@<tt>{Class::method}処理を追加する例が掲載されています。
 
 #@# lang: .brush: .php; .title: .; .notranslate title=""
 //emlist{
