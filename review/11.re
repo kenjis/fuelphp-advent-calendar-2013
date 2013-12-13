@@ -1,0 +1,291 @@
+
+= FuelPHP をもっと Composer で使う
+
+
+こんにちは、chatii です。@<href>{http://atnd.org/events/45096,FuelPHP Advent Calendar 2013} 11日目を担当させていただきます。
+
+
+前日は @<href>{https://twitter.com/ounziw,@ownziw} さんの「@<href>{http://ounziw.com/2013/12/10/event-application/,イベント機能を使ってアプリケーションをカスタマイズする}」でした。
+
+
+本日は chatii が Composer で FuelPHP を入れた話を披露したいと思います。
+
+== Composer を採用した FuelPHP への不満
+
+
+さて、みなさん Composer への理解は進みましたか？chatii はほぼ日曜プログラマー的レガシー的野良PHPerなわけでして、フレームワークおいしいれす(^q^) → Composer なにそれうまいの？という状態で FuelPHP 1.6 を迎えました。「@<href>{/articles/review/2013/10/php-engineer-book-review.html,PHPエンジニア養成読本}」のおかげで今やそれなりにモダンなPHPerになれたと思います。
+
+
+さて、Composerのドキュメントを読みますと
+
+//quote{
+Composer is a tool for dependency management in PHP.
+//}
+
+
+Composer はPHPの依存性管理ツールです、と言っております。そこで我らが FuelPHP を見てみますと、そうですね、えらく中途半端な感があります。ちょうどこの頃、こちらのスライドを拝見しまして。
+
+
+@<href>{https://www.slideshare.net/keishihosoba/fuel-phpcomposer,Fuel phpをcomposerに本気で対応させた時の話} from @<href>{http://www.slideshare.net/keishihosoba,Keishi Hosoba}
+
+
+そうですね、今年の Advent Calendar にも参加されている @<href>{https://twitter.com/hosopy,@hosopy}さんのスライドですね。
+
+
+言いたいことは全部言われてしまっていますが、要約すると、「なんで全部 Composerで入ってくれないの？」と。利用者の立場から言うとですね、それ以外の立場ってあんまないですけど、「おいらのこの新しいプロジェクトは、FuelPHPに依存してるんですよ！その辺 Composer先生にはきっちりやっていただきたい！」
+
+
+ということで。細羽さんのスライドを参考にしつつ、git submodule どころか、oil も使わないオレオレなcomposer.jsonを書いてみました。
+
+== 脱git submodule & oil
+
+
+まず、git submodule は全て composer.json に加えることができます。
+
+ * fuel/core
+ * fuel/auth
+ * fuel/email
+ * fuel/oil
+ * fuel/orm
+ * fuel/parser
+
+
+
+うん、でもですね、これだけじゃ動かないんで。fuel/fuel ってのがいますよね…。諸々のディレクトリ群と、config.php などの設定ファイル。これらを、【必要最低限】用意します。あ、そうそう、oil コマンドも必要なので入手しないと。
+
+
+何しているかって、ただ mkdir して curl でダウンロードしてくるだけです。なんともスマートさのかけらも無い。
+
+//emlist{
+{
+    "name": "chatii/fuelphp_setup",
+    "type": "metapackage",
+    "description": "FuelPHP Installer (not Oil)",
+    "keywords": ["framework"],
+    "homepage": "http://chatii.net",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "chatii",
+            "email": "contact@chatii.net"
+        }
+    ],
+    "support": {
+        "source": "https://github.com/chatii/fuelphp_setup",
+        "email": "contact@chatii.net"
+    },
+    "require": {
+        "php": ">=5.3.3",
+        "monolog/monolog": "1.5.*",
+        "fuelphp/upload": "2.0.1",
+        "fuel/core": "1.7",
+        "fuel/auth": "1.7",
+        "fuel/email": "1.7",
+        "fuel/oil": "1.7",
+        "fuel/orm": "1.7",
+        "fuel/parser": "1.7"
+    },
+    "repositories": [
+        {
+            "type": "package",
+            "package": {
+                "name": "fuel/core",
+                "type": "fuel-package",
+                "version": "1.7",
+                "require": {
+                    "composer/installers": "*"
+                },
+                "source": {
+                    "url": "https://github.com/fuel/core.git",
+                    "type": "git",
+                    "reference": "1.7/master"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "fuel/auth",
+                "type": "fuel-package",
+                "version": "1.7",
+                "require": {
+                    "composer/installers": "*"
+                },
+                "source": {
+                    "url": "https://github.com/fuel/auth.git",
+                    "type": "git",
+                    "reference": "1.7/master"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "fuel/email",
+                "type": "fuel-package",
+                "version": "1.7",
+                "require": {
+                    "composer/installers": "*"
+                },
+                "source": {
+                    "url": "https://github.com/fuel/email.git",
+                    "type": "git",
+                    "reference": "1.7/master"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "fuel/oil",
+                "type": "fuel-package",
+                "version": "1.7",
+                "require": {
+                    "composer/installers": "*"
+                },
+                "source": {
+                    "url": "https://github.com/fuel/oil.git",
+                    "type": "git",
+                    "reference": "1.7/master"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "fuel/orm",
+                "type": "fuel-package",
+                "version": "1.7",
+                "require": {
+                    "composer/installers": "*"
+                },
+                "source": {
+                    "url": "https://github.com/fuel/orm.git",
+                    "type": "git",
+                    "reference": "1.7/master"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "fuel/parser",
+                "type": "fuel-package",
+                "version": "1.7",
+                "require": {
+                    "composer/installers": "*"
+                },
+                "source": {
+                    "url": "https://github.com/fuel/parser.git",
+                    "type": "git",
+                    "reference": "1.7/master"
+                }
+            }
+        }
+    ],
+    "extra": {
+        "installer-paths": {
+            "fuel/core/": ["fuel/core"],
+            "fuel/packages/auth": ["fuel/auth"],
+            "fuel/packages/email": ["fuel/email"],
+            "fuel/packages/oil": ["fuel/oil"],
+            "fuel/packages/orm": ["fuel/orm"],
+            "fuel/packages/parser": ["fuel/parser"]
+        }
+    },
+    "suggest": {
+        "mustache/mustache": "Allow Mustache templating with the Parser package",
+        "smarty/smarty": "Allow Smarty templating with the Parser package",
+        "twig/twig": "Allow Twig templating with the Parser package",
+        "mthaml/mthaml": "Allow Haml templating with Twig supports with the Parser package"
+    },
+    "config": {
+        "vendor-dir": "fuel/vendor"
+    },
+    "scripts": {
+        "post-install-cmd": [
+            "mkdir -p public",
+            "mkdir -p fuel/app/cache fuel/app/logs fuel/app/tmp",
+            "mkdir -p fuel/app/classes/controller fuel/app/classes/model fuel/app/classes/view",
+            "mkdir -p fuel/app/migrations fuel/app/modules fuel/app/tasks fuel/app/lang",
+            "mkdir -p fuel/app/tests fuel/app/vendor fuel/app/views",
+            "mkdir -p fuel/app/config/development fuel/app/config/production fuel/app/config/staging fuel/app/config/test",
+            "if [ ! -e public/index.php ]; then curl https://raw.github.com/fuel/fuel/1.7/master/public/index.php -o public/index.php; fi",
+            "if [ ! -e public/.htaccess ]; then curl https://raw.github.com/fuel/fuel/1.7/master/public/.htaccess -o public/.htaccess; fi",
+            "if [ ! -e fuel/app/bootstrap.php ]; then curl https://raw.github.com/fuel/fuel/1.7/master/fuel/app/bootstrap.php -o fuel/app/bootstrap.php; fi",
+            "if [ ! -e fuel/app/config/config.php ]; then curl https://raw.github.com/fuel/fuel/1.7/master/fuel/app/config/config.php -o fuel/app/config/config.php; fi",
+            "if [ ! -e fuel/app/config/db.php ]; then curl https://raw.github.com/fuel/fuel/1.7/master/fuel/app/config/db.php -o fuel/app/config/db.php; fi",
+            "if [ ! -e fuel/app/config/routes.php ]; then curl https://raw.github.com/fuel/fuel/1.7/master/fuel/app/config/routes.php -o fuel/app/config/routes.php; fi",
+            "if [ ! -e fuel/app/config/development/db.php ]; then curl https://raw.github.com/fuel/fuel/1.7/master/fuel/app/config/development/db.php -o fuel/app/config/development/db.php; fi",
+            "if [ ! -e fuel/app/config/production/db.php ]; then curl https://raw.github.com/fuel/fuel/1.7/master/fuel/app/config/production/db.php -o fuel/app/config/production/db.php; fi",
+            "if [ ! -e fuel/app/config/staging/db.php ]; then curl https://raw.github.com/fuel/fuel/1.7/master/fuel/app/config/staging/db.php -o fuel/app/config/staging/db.php; fi",
+            "if [ ! -e fuel/app/config/test/db.php ]; then curl https://raw.github.com/fuel/fuel/1.7/master/fuel/app/config/test/db.php -o fuel/app/config/test/db.php; fi",
+            "curl https://raw.github.com/fuel/fuel/1.7/master/oil -o oil",
+            "php oil r install"
+        ]
+    },
+    "minimum-stability": "dev"
+}
+//}
+
+
+ださいですね。
+
+
+使い方は簡単。簡単にREADMEを書いています。
+
+
+@<href>{https://github.com/chatii/fuelphp_setup,https://github.com/chatii/fuelphp_setup}
+
+ * git clone git@github.com:chatii/fuelphp_setup.git して
+ * cd で移って
+ * rm -rf ./.git/ でchatii/fuelphp_setup の情報消して
+ * git init して
+
+//hr
+
+
+  curl -sS https://getcomposer.org/installer   php で Composer.phar 手に入れて
+
+//hr
+ * php composer.phar install でFuelPHPをインストール。
+
+
+=== 解消したかった手間
+
+ * oil でインストールすると、FuelPHPのリポジトリがめんどくさい
+ * core も含めてバージョン管理したい
+ * Vagrant と連携させてさくっと開発に着手したい
+
+
+
+お、Vagrant? と思われた方、実は Vagrantfileとchef-soloのレシピを用意しました。
+
+
+@<href>{https://github.com/chatii/fuelphp_vagrant,chatii/fuelphp_vagrant}
+
+
+こちらも簡単ですが README を用意していますので参照してください。 Vagrant についての説明は省きますが、簡単に使い方を。
+
+
+この Vagrantfile のあるディレクトリに、 chatii/fuelphp_setup クローンしてあげてください。 クローン時に名付けたディレクトリ名を、Vagrantfile の src_dir に指定してあげます。 また、ステージング環境を指定する場合は fuel_env に指定してください。デフォルトでは development を指定しています。
+
+
+あまり Vagrant、chef についても詳しくありませんが、個人的には FuelPHP の開発開始までの手間がかなり削減されました。
+
+
+無駄な Welcome も無いため、そのまま oil generate を使ってモデルなりコントローラーなり作ってもいいですし、自分で手打ちしてもいいですし。
+
+== 終わりに
+
+
+FuelPHP も 1.x 系が現行の 1.7 で開発は終わり、ということで、今回用意した composer.json もどうせ今だけしか使えない OR 使わないんじゃないかなぁ、と思ってます。が、自分が作った物が誰かの目に触れる、役に立つことになれば、それはとてもとても嬉しいので公開しました。
+
+
+FuelPHP 2.0 では Composer への対応ってどの程度なんでしょうか？情報を追っていないため、今回作ったものはすぐに用無しになるかもしれませんが、そのほうがいいと思ってます。
+
+
+最後に。@hosopy さん、スライド勝手に拝借しました。この場を借りて、お礼申し上げます。ありがとうございました！
+
+
+明日は…どなたでしょうかっ？決まり次第ここを書き換えます
