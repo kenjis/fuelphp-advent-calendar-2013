@@ -20,8 +20,7 @@
 
  では、準備と使い方の説明です。  
 
- 1. ChatWorkのAPIトークンを発行する
-
+== 1. ChatWorkのAPIトークンを発行する
 
 
 現在、ChatWorkのAPIはプレビュー版なので、利用の申請が必要です。
@@ -41,8 +40,7 @@
 
 の、"APIトークンの取得"の通りです。発行されたAPIトークンは後で使いますので、控えておいて下さい。  
 
-
-​2. FuelPHPとChatWorkパッケージのインストール
+== 2. FuelPHPとChatWorkパッケージのインストール
 
 
 FuelPHPのインストールを済ませて、トップページが閲覧可能な状態にします。以下の手順はFuelPHP1.7.1で確認していますが、composer対応以降のバージョンであれば問題無いと思います。
@@ -66,8 +64,7 @@ $ php composer.phar update
 
  FuelPHPとChatWorkパッケージのインストールは以上です。尚、ChatWorkのAPIを使用する関係で、curlとOpenSSLを有効にしておいて下さい。  
 
- 1. ChatWorkパッケージの設定
-
+== 3. ChatWorkパッケージの設定
 
 
 fuel/packages/chatwork/config/chatwork.php を fuel/app/config/ にコピーして、ChatWorkのAPIトークンを設定します。
@@ -110,8 +107,10 @@ Package::load('chatwork');
 
  これで、全ての準備が完了です。  
 
+== 4. ChatWorkパッケージを使ってみる
 
-​4. ChatWorkパッケージを使ってみる 自分の情報を取得してみます。@<br>{}
+
+自分の情報を取得してみます。@<br>{}
  @<href>{http://developer.chatwork.com/ja/endpoint_me.html#GET-me,http://developer.chatwork.com/ja/endpoint_me.html#GET-me}  
 
 #@# lang: .brush:php
@@ -139,8 +138,10 @@ Debug::dump($response);
 
  今回はChatwork::get()メソッドとChatwork::post()メソッドを紹介しましたが、Chatwork::put()メソッドとChatwork::delete()メソッドも用意してあります。  
 
- 1. その他のAPIを使ってみる 現在、APIは大きく分けると@<br>{}
+== 5. その他のAPIを使ってみる
 
+
+現在、APIは大きく分けると  
 
  * /me
  * /rooms
