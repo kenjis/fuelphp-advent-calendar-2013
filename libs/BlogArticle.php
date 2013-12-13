@@ -164,11 +164,45 @@
         $html = file_get_contents($this->html_file);
         $html = $this->scrapeArticle($html);
         $html = $this->adjustHeadLevel($html);
+        $html = $this->getGist($html);
         file_put_contents($this->html_file, $html);
 
         system('pandoc --no-wrap -f html -t markdown ' . $this->html_file . ' > ' . $this->markdown_file);
     }
-    
+
+    public function getGist($html)
+    {
+        // <script src="https://gist.github.com/chatii/b55303df1f98dbd8d725.js"></script>
+
+        $lines = explode("\n", $html);
+        $contents = '';
+
+        foreach ($lines as $line) {
+            if (preg_match('!<script src="https://gist.github.com/.+/(.+?)\.js"></script>!u', $line, $matches)) {
+                $id = $matches[1];
+                
+                $options = array(
+                    'http' => array(
+                      'method' => 'GET',
+                      'header' => 'User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:26.0) Gecko/20100101 Firefox/26.0',
+                    ),
+                  );
+                $context = stream_context_create($options);
+                $json = file_get_contents('https://api.github.com/gists/' . $id, false, $context);
+                $gist = json_decode($json);
+                //var_dump($gist->files); exit;
+                
+                $contents .= $line . "\n"
+                            . '<pre><code>' . $gist->files->{'composer.json'}->content . '</code></pre>';
+                
+            } else {
+                $contents .= $line . "\n";
+            }
+        }
+
+        return $contents;
+    }
+
     public function getImageFiles()
     {
         // backup
