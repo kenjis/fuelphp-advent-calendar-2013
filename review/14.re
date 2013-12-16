@@ -26,9 +26,9 @@ echo $response->body;
 
 ね！簡単でしょ？
 
-== GET/POST時のパラメータ指定
+== GET／POST時のパラメータ指定
 
-GET/POST時のパラメータの指定は通常であれば、
+GET／POST時のパラメータの指定は通常であれば、
 
 //emlist{
 $param['user'] = 'john';
@@ -47,13 +47,13 @@ $curl->set_params($param);
 // This function is released under the MIT License.
 // http://opensource.org/licenses/mit-license.php
 function build_query($data) {
-  array_walk($data, function(&$value, $key){
-      is_array($value) ?: $value = array($value);
-      $value = array_map(function($value){ return urlencode($value); }, $value);
-      $value = implode('&'.$key.'=', $value);
-      $value = $key.'='.$value;
+    array_walk($data, function (&$value, $key) {
+        is_array($value) ?: $value = array($value);
+        $value = array_map(function($value){ return urlencode($value); }, $value);
+        $value = implode('&'.$key.'=', $value);
+        $value = $key.'='.$value;
     });
-  return implode('&', $data);
+    return implode('&', $data);
 }
 //}
 
