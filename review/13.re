@@ -132,7 +132,7 @@ var Table = $('#table_id').dataTable({
     bProcessing: true,
     // dataを全て読み込む前に表示を始める
     bDeferRender: true,
-    // 読み込むJSONのURL（RESTControllerのURL）
+    // 読み込むJSONのURL（REST ControllerのURL）
     sAjaxSource: "/api/dataTables.json",
     // 配列名（デフォルトはaadata）
     sAjaxDataProp: "setJson",
