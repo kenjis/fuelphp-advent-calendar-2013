@@ -16,7 +16,7 @@ Composer is a tool for dependency management in PHP.
 
 ComposerはPHPの依存性管理ツールです、と言っております。そこで我らがFuelPHPを見てみますと、そうですね、えらく中途半端な感があります。ちょうどこの頃、こちらのスライドを拝見しまして。
 
- * @<href>{https://www.slideshare.net/keishihosoba/fuel-phpcomposer,Fuel phpをcomposerに本気で対応させた時の話} from @<href>{http://www.slideshare.net/keishihosoba,Keishi Hosoba}
+ * @<href>{https://www.slideshare.net/keishihosoba/fuel-phpcomposer,FuelPHPをcomposerに本気で対応させた時の話} from @<href>{http://www.slideshare.net/keishihosoba,Keishi Hosoba}
 
 そうですね、今年のAdvent Calendarにも参加されている@<href>{https://twitter.com/hosopy,@hosopy}さんのスライドですね。
 
