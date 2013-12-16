@@ -202,3 +202,13 @@ HTMLは次の通り。
 
 以上のようにFuelPHPとdataTablesの相性は抜群です。
 是非、公私でアプリ作成時に試して見てください！
+
+//quote{
+@<strong>{@soudai1025}
+
+@TODO
+
+Twitter: @<href>{https://twitter.com/soudai1025,@soudai1025}
+
+Blog: @<href>{http://soudai1025.blogspot.jp/,http://soudai1025.blogspot.jp/}
+//}
