@@ -188,10 +188,10 @@ return array(
 それでは、また。
 
 //quote{
-@<strong>{@omoon}
+@<strong>{omoon}
 
 
-@TODO
+40代、縄文系。大阪を拠点に PHP などを使って仕事をしています。Kansai PHP Users Group スタッフ。
 
 
 Twitter: @<href>{https://twitter.com/omoon,@omoon}
