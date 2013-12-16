@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja" xml:lang="ja">
+<head>
+<!--[if IE]>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<![endif]-->
+
+  <title>Request_Curlにまつわるエトセトラ | 日々の日記</title>
+
+  <meta name="robots" content="ALL" />
+  <meta name="keywords" content="FuelPHP,PHP,Request_Curl" />
+  <meta name="author" content="sharkpp" />
+
+  <link rel="start" href="http://www.sharkpp.net/" title="Shark++ Software's Web Page" />
+
+  <link rel="stylesheet" href="http://www.sharkpp.net//basestyle.css" media="all" type="text/css" />
+
+  <script src="http://www.sharkpp.net/document.write.dom.2.js" type="text/javascript"></script>
+<script type="text/javascript" src="http://www.sharkpp.net/frog/plugins/lytebox/lytebox.js"></script><link rel="stylesheet" href="http://www.sharkpp.net/frog/plugins/lytebox/lytebox.css" type="text/css" media="screen" /></head>
+<body>
+
+<div id="header">
+	<h1><a href="http://www.sharkpp.net/">Shark++ Software's Web Page</a></h1>
+</div><!-- #header end -->
+
+<div id="container">
+
+<div id="side_container">
+
+<div id="menu">
+		<ul>
+		<li><a href="http://www.sharkpp.net/">トップページ</a></li>
+		<li><a href="http://www.sharkpp.net/about.html" title="このサイトについて" >このサイトについて</a></li>
+		<li><a href="http://www.sharkpp.net/history.html" title="更新履歴" >更新履歴</a></li>
+		<li><a href="http://www.sharkpp.net/hobby.html" title="趣味" >趣味</a></li>
+		<li><a href="http://www.sharkpp.net/soft.html" title="ソフトウエア" >ソフトウエア</a></li>
+		<li><a href="http://www.sharkpp.net/blog.html" title="日々の日記" >日々の日記</a>
+<ul><li><a href="http://www.sharkpp.net/blog/2013/12/14/fuelphp-advent-calendar-2013-14th-day.html" title="Request_Curlにまつわるエトセトラ"  class="current">Request_Curlにまつわるエトセトラ</a></li></ul>
+</li>
+		<li><a href="http://www.sharkpp.net/link.html" title="リンク" >リンク</a></li>
+ 
+	</ul>
+</div><!-- #menu end -->
+
+<div id="sidebar">
+
+<h3>過去の日記</h3>
+<ul>
+  <li><a href="http://www.sharkpp.net/blog/2013/12.html">2013年12月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2013/11.html">2013年11月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2013/10.html">2013年10月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2013/09.html">2013年09月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2013/08.html">2013年08月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2013/07.html">2013年07月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2013/06.html">2013年06月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2013/05.html">2013年05月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2013/04.html">2013年04月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2013/03.html">2013年03月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2013/02.html">2013年02月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2013/01.html">2013年01月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2012/12.html">2012年12月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2012/11.html">2012年11月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2012/10.html">2012年10月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2012/09.html">2012年09月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2012/08.html">2012年08月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2012/07.html">2012年07月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2012/05.html">2012年05月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2012/03.html">2012年03月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2012/01.html">2012年01月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2011/12.html">2011年12月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2011/11.html">2011年11月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2011/10.html">2011年10月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2011/09.html">2011年09月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2011/08.html">2011年08月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2011/07.html">2011年07月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2011/06.html">2011年06月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2011/05.html">2011年05月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2011/04.html">2011年04月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2011/03.html">2011年03月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2011/02.html">2011年02月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2011/01.html">2011年01月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2010/12.html">2010年12月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2010/11.html">2010年11月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2010/10.html">2010年10月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2010/09.html">2010年09月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2010/08.html">2010年08月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2010/07.html">2010年07月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2010/06.html">2010年06月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2010/05.html">2010年05月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2010/04.html">2010年04月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2010/03.html">2010年03月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2010/02.html">2010年02月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2010/01.html">2010年01月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2009/12.html">2009年12月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2009/11.html">2009年11月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2009/10.html">2009年10月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2009/09.html">2009年09月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2009/08.html">2009年08月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2009/07.html">2009年07月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2009/06.html">2009年06月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2009/05.html">2009年05月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2009/04.html">2009年04月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2009/03.html">2009年03月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2009/02.html">2009年02月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2009/01.html">2009年01月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2008/10.html">2008年10月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2008/09.html">2008年09月</a></li>
+  <li><a href="http://www.sharkpp.net/blog/2008/08.html">2008年08月</a></li>
+</ul></div><!-- #sidebar end -->
+
+</div><!-- #side_container end -->
+
+<div id="contents">
+	<h1>Request_Curlにまつわるエトセトラ</h1>
+
+<p><a href="http://atnd.org/events/45096">FuelPHP Advent Calendar 2013</a> 14日目。</p>
+
+<p><a href="https://twitter.com/sharkpp">@sharkpp</a>です。</p>
+
+<p>昨日は <a href="https://twitter.com/soudai1025">@soudai1025</a> さんの「<a href="http://soudai1025.blogspot.com/2013/12/fuelphp-datatables.html">FuelPHP（TwitterBootstrap3）でJQueryのプラグインのdataTablesを使う</a>」でした</p>
+
+<p>2回目の FuelPHP Advent Calendar 2013 登場となります。</p>
+ 
+<h2>Request_Curl 使っていますか？</h2>
+
+<p>さて、<a href="http://fuelphp.jp/docs/1.7/classes/request/curl.html">Request_Curl</a> 使ってますか？</p>
+
+<p>えっ？ <a href="https://github.com/guzzle/guzzle">Guzzle</a> のが便利だからそっち使ってるですって？</p>
+
+<p>まあ、そう言わずに Request_Curl は標準で含まれているので使ってみませんか？</p>
+
+<p>簡単な使い方：</p>
+
+<pre><code>$url = 'http://www.example.net/';
+$curl = \Request::forge($url, 'curl');
+$curl-&gt;execute();
+$response = $curl-&gt;response();
+echo $response-&gt;body;
+</code></pre>
+
+<p>ね！簡単でしょ？</p>
+
+<h2>GET/POST時のパラメータ指定</h2>
+
+<p>GET/POST時のパラメータの指定は通常であれば、</p>
+
+<pre><code>$param['user'] = 'john';
+$param['data'] = 'test';
+$curl-&gt;set_params($param);
+</code></pre>
+
+<p>で問題ありません。</p>
+
+<p>が、<code>http://www.example.net/?user=john&amp;user=smith</code> のように同じキーが複数存在する場合は先の方法ではうまくいきません。
+そもそも、そんな指定はありえない？いえいえ、実際にこのような指定をするアプリケーションがありました。</p>
+
+<p>そんな場合は、</p>
+
+<pre><code>// Copyright (c) 2013 sharkpp
+// This function is released under the MIT License.
+// http://opensource.org/licenses/mit-license.php
+function build_query($data) {
+  array_walk($data, function(&amp;$value, $key){
+      is_array($value) ?: $value = array($value);
+      $value = array_map(function($value){ return urlencode($value); }, $value);
+      $value = implode('&amp;'.$key.'=', $value);
+      $value = $key.'='.$value;
+    });
+  return implode('&amp;', $data);
+}
+</code></pre>
+
+<p>のようなクエリ文字列の構築関数を使って</p>
+
+<pre><code>$param['user'] = array('john', 'smith');
+$curl-&gt;set_params(build_query($param));
+</code></pre>
+
+<p>とすればOKです。</p>
+
+<p>実はドキュメントに書かれていないですが、<code>Request_Curl::set_params()</code> の引数に文字列を渡すとクエリ文字列としてそのまま使ってくれます。</p>
+
+<h2>Cookie はおいしい？</h2>
+
+<p>Cookie の与え方も簡単です。</p>
+
+<pre><code>// Copyright (c) 2013 sharkpp
+// This function is released under the MIT License.
+// http://opensource.org/licenses/mit-license.php
+protected static function build_cookie($data) {
+    if (is_array($data)) {
+        $cookie = '';
+        foreach ($data as $key =&gt; $value) {
+            $cookie[] = $key.'='.urlencode($value);
+        }
+        if (count($cookie) &gt; 0) {
+            return trim(implode('; ', $cookie));
+        }
+    }
+    return false;
+}
+</code></pre>
+
+<p>こんな関数を用意して</p>
+
+<pre><code>$cookie['hoge'] = 'test';
+$cookie['fuga'] = '1234';
+$curl-&gt;set_option(CURLOPT_COOKIE, build_cookie($cookie));
+</code></pre>
+
+<p>とすればOKです。</p>
+
+<h2>PHP さんですか？いえいえ IE11 です</h2>
+
+<p>User Agent 略して UA の偽装ももちろんできます。</p>
+
+<pre><code>$UA = 'Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; Touch; rv:11.0) like Gecko';
+$header['User-Agent']= $UA;
+foreach ($header as $key =&gt; $value) { $curl-&gt;set_header($key, $value); }
+</code></pre>
+
+<p>ちなみに、ヘッダの複数指定は出来ないようなので <code>foreach</code> で連想配列を処理して登録しています。
+一回ずつ<code>Request_Curl::set_header()</code> を呼び出してもいいですが <code>foreach</code> の方が見やすい気がします。</p>
+
+<h2>SSLが検証できない？大丈夫だ、問題ない</h2>
+
+<p>まったくもって大丈夫じゃないですが、、、そんな時もあります。</p>
+
+<p>https なサーバーに対してアクセスする場合に、どうにもエラーが出てうまくいかない場合があります。</p>
+
+<p>本来は無効にすべきではないのですが、SSLの証明書の検証を無効にすることも出来ます。</p>
+
+<pre><code>$curl-&gt;set_option(CURLOPT_SSL_VERIFYPEER, false);
+</code></pre>
+
+<p>本来は</p>
+
+<pre><code>$curl-&gt;set_option(CURLOPT_CAINFO, 'path/to/cacert.pem');
+</code></pre>
+
+<p>のような感じで検証用のファイルを指定するようですがうまくいきませんでした。</p>
+
+<h2>あれ？</h2>
+
+<p>あれ？ちょっと <code>Request_Curl::set_option()</code> がいっぱい出てくるのだけれど、、、</p>
+
+<p>あ、気が付かれましたか。
+名前の通りと言ったところではあるのですが、 <code>curl_*</code> のラッパーになっているため、 <a href="http://jp2.php.net/curl_setopt">PHP: curl_setopt - Manual</a> 辺りを見ながら <code>Request_Curl::set_option()</code> に引数を与えてあげれば色々な事が出来ます。</p>
+
+<p>クラス内部で色々やっているのですべてのオプションが確実に指定できるとは限らないですがある程度は自由に出来るようです。</p>
+
+<p>と言うことで、 <code>Request_Curl</code> クラスの紹介でした。</p>
+
+<p>明日は <a href="https://twitter.com/Tukimikage">@Tukimikage</a> さんの「<a href="http://think-sv.net/blog/?p=1290">続・Cloudn_PaaSでFuelPHPを動かしてみた</a>」です。お楽しみに！</p>
+ 
+<p class="info" style="margin-top: 1em">2013年12月14日 公開  / 2013年12月15日 更新 </p>
+<h2 id="trackbacks">トラックバック</h2>
+  <p>トラックバックはありません。</p>
+<p>
+  トラックバックURL: <input type="text" readonly="readonly" value="http://www.sharkpp.net/blog/2013/12/14/fuelphp-advent-calendar-2013-14th-day.html.trackback" size="100" /><br />
+  トラックバックを行うときはトラックバックURLに『犬』を英字小文字で追加してください。たとえばサメならば、"http://～.trackbackshark"とします。
+</p>
+<h2 id="comments">コメント</h2>
+<p>コメントはありません。</p>
+<form action="http://www.sharkpp.net/blog/2013/12/14/fuelphp-advent-calendar-2013-14th-day.html" method="post" id="comment_form"> 
+<p>
+	<input class="comment-form-name" type="text" name="comment[author_name]" id="comment_form_name" value="" size="22" /> 
+	<label for="comment_form_name">名前(必須)</label>
+</p>
+<p>
+	<input class="comment-form-email" type="text" name="comment[author_email]" id="comment_form_email" value="" size="22" /> 
+	<label for="comment_form_email">メールアドレス(公開はされません、ダミーも可能ですがメールアドレスの形を成していること)(必須)</label>
+</p>
+<p>
+	<input class="comment-form-link" type="text" name="comment[author_link]" id="comment_form_link" value="" size="22" /> 
+	<label for="comment_form_link">ウェブサイト</label>
+</p>
+<p>
+	画像に表示されている式の計算結果を入力してください<br /><img src="http://www.sharkpp.net/frog/plugins/comment/image.php" alt="この画像に表示されている式の計算結果を入力してください" /> <br /><br /><input class="input" type="text" name="comment[secure]" /><input type="hidden" value="211.1.206.69" name="comment[author_ip]" /> </p>
+<p>
+	<textarea class="comment-form-body" id="comment_form_body" name="comment[body]" cols="100%" rows="10"></textarea>
+</p>
+<p>
+	<input class="comment-form-submit" type="submit" name="commit-comment" id="comment_form_submit" value="送信" />
+</p>
+</form>
+</div><!-- #contents end -->
+
+</div><!-- #container end -->
+
+<div id="footer">
+  <p>Copyright&copy; 2004-2013 <a href="http://www.sharkpp.net/">sharkpp</a><br />
+  Powered by <a href="http://www.madebyfrog.com/" title="Frog CMS">Frog CMS</a>.</p>
+</div><!-- #footer end -->
+
+
+</body>
+</html>
