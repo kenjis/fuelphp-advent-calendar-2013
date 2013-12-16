@@ -145,7 +145,7 @@ Debug::dump($response);
 //quote{
 @<strong>{@madmamor}
 
-@TODO
+Developer & Bassist on TAMACENTER OUTSiDERS.
 
 Twitter: @<href>{https://twitter.com/madmamor,@madmamor}
 
