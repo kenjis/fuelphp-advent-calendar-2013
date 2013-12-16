@@ -133,7 +133,7 @@ Novius OSのログイン失敗時のログを取りたい場合、上述の@<tt>
 //quote{
 @<strong>{@ounziw}
 
-@TODO
+Novius OS のコア貢献者であり、日本語対訳ファイルの作成も行っている。
 
 Twitter: @<href>{https://twitter.com/ounziw,@ounziw}
 
