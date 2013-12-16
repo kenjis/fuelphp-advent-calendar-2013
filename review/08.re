@@ -245,7 +245,8 @@ class View extends \Fuel\Core\View
 //quote{
 @<strong>{@sa2yasu}
 
-@TODO
+趣味がストリートダンスのロールキャベツ系男子ぺちぱー
+青森県青森市、宮城県石巻市を中心に何かしら活動してます
 
 Twitter: @<href>{https://twitter.com/sa2yasu,@sa2yasu}
 
