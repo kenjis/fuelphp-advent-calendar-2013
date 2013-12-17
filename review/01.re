@@ -418,7 +418,7 @@ http://127.0.0.1/xxxx
 @<strong>{@sharkpp}
 
 
-@TODO
+へっぽこプログラマ。手羽先が有名な所に在住なPHPとC++のプログラマです。
 
 
 Twitter: @<href>{https://twitter.com/sharkpp,@sharkpp}
