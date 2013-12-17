@@ -26,7 +26,7 @@ Twitter Bootstrap 3は2と互換性のない変更が多く、過去の資産が
 DataTablesも例に漏れず上記の方法では無理です。
 Twitter Bootstrap 3のUIに合わせるのには公式サイト以外の方法が必要です。
 とは言ってもすでに3用のプラグインが作成されています。
-そこでdataTablesの簡単な使い方とTwitter Bootstrap 3のUIに合わせる方法をご紹介します。@<br>{}
+そこでDataTablesの簡単な使い方とTwitter Bootstrap 3のUIに合わせる方法をご紹介します。@<br>{}
 
 まずは最新のソース・ファイルをFuelPHPに配置します。
 
