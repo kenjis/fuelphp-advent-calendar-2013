@@ -87,12 +87,13 @@ iniset('display_errors', 0);
 
 あすは@sa2yasuさんの「FuelPHPを更に使ってみて使えるなと思ったCustomValidationRuleの書き方とCore拡張の小技」です。お楽しみに～
 
-（文中のソースコードはすべてBSDライセンスといたします。）
+（文中のソースコードは非常に短いですが、念のためすべて@<href>{http://opensource.org/licenses/mit-license.php,MITライセンス}といたします。）
 
 //quote{
 @<strong>{@LandscapeSketch}
 
-@TODO
+FuelPHPをベースにWebサービスやサイトを作って楽しんでいます。
+ブログではときどきFuelPHPのTipsなども公開中。
 
 Twitter: @<href>{https://twitter.com/LandscapeSketch,@LandscapeSketch}
 
