@@ -213,4 +213,14 @@ Starting Application 'testapp1': OK
 
 FuelPHPの開発環境自体も、@<href>{https://twitter.com/chatii0079,@chatii0079}さんの@<href>{https://github.com/chatii/fuelphp_setup,fuelphp_setup}を利用することでかなり簡単に整えることができます。大規模場システムを作る場合は役不足な感じがあるPaaSですが、ちょこっとツールを作りたいとか、ちょこっと検証してみたいとか、利用シーンによってはかなり便利に使えるのではないでしょうか。
 
-FuelPHP☓Cloudnに関しては今後も記事を書いていきたいと思いますので、ご期待ください。
+FuelPHP Cloudnに関しては今後も記事を書いていきたいと思いますので、ご期待ください。
+
+//quote{
+@<strong>{@Tukimikage}
+
+@TODO
+
+Twitter: @<href>{https://twitter.com/Tukimikage,@Tukimikage}
+
+Blog: @<href>{http://think-sv.net/blog/,http://think-sv.net/blog/}
+//}

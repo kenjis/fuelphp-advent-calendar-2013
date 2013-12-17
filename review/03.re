@@ -191,7 +191,7 @@ return array(
 @<strong>{omoon}
 
 
-40代、縄文系。大阪を拠点に PHP などを使って仕事をしています。Kansai PHP Users Group スタッフ。
+40代、縄文系。大阪を拠点にPHPなどを使って仕事をしています。Kansai PHP Users Groupスタッフ。
 
 
 Twitter: @<href>{https://twitter.com/omoon,@omoon}
