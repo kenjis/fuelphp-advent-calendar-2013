@@ -84,7 +84,7 @@ var Table = $('#table_id').dataTable();
 #@# lang: .brush:javascript name="code"
 //emlist{
 var Table = $('#table_id').dataTable({
-    // 日本語対応したい場合はGithubのpluginから該当のファイルをダウンロードしてください
+    // 日本語対応したい場合はGitHubのpluginから該当のファイルをダウンロードしてください
     oLanguage: {
         sUrl: "/assets/js/plugins/i18n/Japanese.lang"
     },
@@ -184,7 +184,8 @@ HTMLは次の通り。
 
 #@# lang: .brush:html name="code"
 //emlist{
-<table id="table_id" class="table table-bordered table-hover table-striped">    <thead>
+<table id="table_id" class="table table-bordered table-hover table-striped">
+    <thead>
         <tr>
             <th>id</th>
             <th>name</th>
