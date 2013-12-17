@@ -401,6 +401,7 @@
             $line = $this->removeSpaceBeforeImg($line);
 
             $line = $this->removeHatenaKeywordLink($line);
+            $line = $this->removeEmptyLink($line);
             
             $contents .= $line . "\n";
         }
@@ -510,6 +511,17 @@
         if (preg_match('/\A\s+!\[.+?\]\(.+?\)\z/u', $line, $matches)) {
             echo 'Remove Space before Img: ', $line, PHP_EOL;
             $line = preg_replace('/\A\s+/u', '', $line);
+        }
+        return $line;
+    }
+
+    public function removeEmptyLink($line)
+    {
+        // [**](#3-1)
+        
+        if (preg_match('/\[\*\*\]\(.+?\)/u', $line, $matches)) {
+            echo 'Remove Empty Link: ', $line, PHP_EOL;
+            $line = preg_replace('/\[\*\*\]\(.+?\)/u', '', $line);
         }
         return $line;
     }
