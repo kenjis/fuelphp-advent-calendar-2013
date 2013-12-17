@@ -85,7 +85,7 @@ class Hoge_Twig_Extension extends Twig_Extension
     public function getFunctions()
     {
         return array(
-            'swap_empty' => new Twig_Function_Method($this, 'swapEmpty'),
+            new Twig_SimpleFunction('swap_empty', array($this, 'swapEmpty')),
         );
     }
 
@@ -97,7 +97,7 @@ class Hoge_Twig_Extension extends Twig_Extension
     public function getFilters()
     {
         return array(
-            'json' => new Twig_Filter_Function('json_encode'), 
+            new Twig_SimpleFilter('json', 'json_encode'),
         );
     }
 
