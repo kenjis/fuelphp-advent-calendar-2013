@@ -145,9 +145,12 @@ $curl->set_option(CURLOPT_CAINFO, 'path/to/cacert.pem');
 //quote{
 @<strong>{@sharkpp}
 
-@TODO
+
+へっぽこプログラマ。手羽先が有名な所に在住なPHPとC++のプログラマです。
+
 
 Twitter: @<href>{https://twitter.com/sharkpp,@sharkpp}
+
 
 Blog: @<href>{http://www.sharkpp.net/,http://www.sharkpp.net/}
 //}
