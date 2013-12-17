@@ -13,7 +13,7 @@ NTTコミュニケーションズが提供する@<href>{http://www.ntt.com/cloud
 前回の記事ではVMC（VMware Cloud CLI）を利用していましたが、今回は2013/09/26に公開された@<strong>{Cloudn PaaS UDN（コマンドラインツール）}を利用します。UDNはrubyが入っていればgemを利用してインストール可能です。
 
 #@# lang: .brush: .powershell; .title: .; .notranslate title=""
-//emlist{
+//cmd{
 $ sudo gem install udn 
 Password:
 Fetching: json_pure-1.6.8.gem (100%)
@@ -31,7 +31,7 @@ Installing ri documentation for udn-0.3.23.3
 インストールが完了したらログインしましょう。ログインに必要なメールアドレスとパスワードはCloudn PaaSの公式操作マニュアルをご覧ください。
 
 #@# lang: .brush: .powershell; .title: .; .notranslate title=""
-//emlist{
+//cmd{
 $ udn login
 Attempting login to [http://api.cloudnpaas.com]
 Email:
@@ -59,7 +59,7 @@ RewriteRule ^(.*)$ /public/index.php [L]
 GitHubからのプロジェクト作成方法は、@<href>{https://github.com/chatii/fuelphp_setup,fuelphp_setup}の手順と同様です。
 
 #@# lang: .brush: .powershell; .title: .; .notranslate title=""
-//emlist{
+//cmd{
 $ git clone https://github.com/Y-NAKA/fuelphp_setup_for_cloudn_paas.git project_name
 $ cd project_name
 $ rm -rf ./.git/
@@ -73,7 +73,7 @@ $ php composer.phar install
 今回は動作確認のためにテスト用クラスを生成します（ディレクトリ構成はダミーです）。
 
 #@# lang: .brush: .powershell; .title: .; .notranslate title=""
-//emlist{
+//cmd{
 $ oil g controller main index
     Creating view: /project_name/fuel/app/views/template.php
     Creating view: /project_name/fuel/app/views/main/index.php
@@ -104,7 +104,7 @@ oilで生成されたテンプレートファイルにはbootstrap.cssをイン�
 ポイントは@<strong>{Detected a Standalone Application, is this correct?}という質問に@<strong>{No}で答えて、次の言語／FW選択で@<strong>{9: PHP}を選ぶことです。Deployed URLやインスタンスに割り当てる性能要件などは自由に変更して頂いて構いません。
 
 #@# lang: .brush: .powershell; .title: .; .notranslate title=""
-//emlist{
+//cmd{
 $ cd project_name
 $ udn push testapp1
 Would you like to deploy from the current directory? [Yn]: 
@@ -156,7 +156,7 @@ Starting Application 'testapp1': OK
 #@# 尚、当ブログのコードハイライトの関係で以下のサンプルは、実際の見た目とは異なる場合があります。
 
 #@# lang: .brush: .powershell; .title: .; .notranslate title=""
-//emlist[アクセス制限設定（IPアドレスはCIDR記法で記載し、カンマで区切ることで複数指定可能）]{
+//cmd[アクセス制限設定（IPアドレスはCIDR記法で記載し、カンマで区切ることで複数指定可能）]{
 $ udn env-add testapp1 ALLOW_CIDR_WHITELIST="＊．＊．＊．＊／＊"
 Adding Environment Variable [ALLOW_CIDR_WHITELIST=＊．＊．＊．＊／＊]: OK
 Stopping Application 'testapp1': OK
@@ -165,13 +165,13 @@ Starting Application 'testapp1': OK
 //}
 
 #@# lang: .brush: .powershell; .title: .; .notranslate title=""
-//emlist[アクセス制限状況確認]{
+//cmd[アクセス制限状況確認]{
 $ udn env testapp1
 ALLOW_CIDR_WHITELIST ＊．＊．＊．＊／＊
 //}
 
 #@# lang: .brush: .powershell; .title: .; .notranslate title=""
-//emlist[アクセス制限解除（一度登録した内容を変更する場合は一度解除した上で新規設定）]{
+//cmd[アクセス制限解除（一度登録した内容を変更する場合は一度解除した上で新規設定）]{
 $ udn env-del testapp1 ALLOW_CIDR_WHITELIST
 Deleting Environment Variable [ALLOW_CIDR_WHITELIST]: OK
 Stopping Application 'testapp1': OK
@@ -193,7 +193,7 @@ Starting Application 'testapp1': OK
 アプリの更新は更新したファイルが格納されているディレクトリにて、以下の通りコマンドを実行します。ファイルの更新とアプリの再起動を行ってくれます。
 
 #@# lang: .brush: .powershell; .title: .; .notranslate title=""
-//emlist{
+//cmd{
 $ cd project_name
 $ udn update testapp1
 Uploading Application:
