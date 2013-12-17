@@ -1,26 +1,26 @@
-= FuelPHP（TwitterBootstrap3）でJQueryのプラグインのdataTablesを使う
+= FuelPHP（TwitterBootstrap3）でJQueryのプラグインのDataTablesを使う
 
 @<href>{http://atnd.org/events/45096,FuelPHP Advent Calendar 2013}の13日目です。@<br>{}
 
-それでは今日のお題ですがdataTablesです。
+それでは今日のお題ですがDataTablesです。
 
 Webアプリを作るとき、業務系の管理画面を作るとき、FuelPHPの軽量さと作りやすさは強力です。
 私もここ最近のWebアプリケーションはFuelPHPで作ることが大半ですね。
 その中で特に管理画面を作るときはTwitter Bootstrapは非常に便利です。
 皆様も日頃お世話になっていますよね？
 
-また今日ご紹介するdataTablesも強力なJQueryのプラグインです。
-dataTablesはHTMLのテーブルタグを読み込み、ソートや検索を始め、多くの機能を提供します。
+また今日ご紹介するDataTablesも強力なJQueryのプラグインです。
+DataTablesはHTMLのテーブルタグを読み込み、ソートや検索を始め、多くの機能を提供します。
 この2つを組み合わせることで表出力が簡単で便利になるのでご紹介します。
 
- * @<href>{http://datatables.net/,dataTables}
+ * DataTables公式サイト @<href>{http://datatables.net/,http://datatables.net/}
  * @<href>{http://baalzephon.no-ip.org/tech/index.php?JavaScript%2FjQuery%2FDataTables,日本語まとめWiki}
- * @<href>{http://datatables.net/release-datatables/extras/TableTools/bootstrap.html,Twitter BootstrapでdataTablesを使う}
+ * @<href>{http://datatables.net/release-datatables/extras/TableTools/bootstrap.html,Twitter BootstrapでDataTablesを使う}
 
 ただ、Twitter BootstrapもFuelPHP 1.7で2から3に変わりました。
 Twitter Bootstrap 3は2と互換性のない変更が多く、過去の資産が使いまわせません。@<br>{}
 
-『@<href>{http://www.amazon.co.jp/dp/4777517993,はじめてのBootstrap (I・O BOOKS)}』@<br>{}
+『@<href>{http://www.amazon.co.jp/dp/4777517993,はじめてのBootstrap (I・O BOOKS)}』槙俊明 著、工学社@<br>{}
 ※Twitter Bootstrap 3用の書籍で非常にわかりやすかったのでオススメです@<br>{}
 
 DataTablesも例に漏れず上記の方法では無理です。
@@ -30,7 +30,7 @@ Twitter Bootstrap 3のUIに合わせるのには公式サイト以外の方法�
 
 まずは最新のソース・ファイルをFuelPHPに配置します。
 
- * @<href>{https://github.com/DataTables,GitHub dataTables}
+ * GitHub DataTables @<href>{https://github.com/DataTables/DataTables,https://github.com/DataTables/DataTables}
 
 本体
 
@@ -114,12 +114,12 @@ var Table = $('#table_id').dataTable({
 
 とするといい感じになります。@<br>{}
 
-他にもdataTablesには多様な追加機能がpluginとして用意されています。
+他にもDataTablesには多様な追加機能がpluginとして用意されています。
 公式サイトは情報が古かったりするのでGitHubのサンプルのindex.htmlも参考にしてみてください。@<br>{}
 
 さてFuelPHPの良いところ言えばREST Controllerですよね。@<br>{}
 
-またdataTablesはデータをJSONで受け取ることが出来ます。
+またDataTablesはデータをJSONで受け取ることが出来ます。
 大きいdataでもAjaxでJSONを受けることができるので肥大したTableでも対応することが出来ます。
 今日は13日の金曜日ですしJSONを使った例もご紹介します。
 
@@ -200,7 +200,7 @@ HTMLは次の通り。
 もちろん作りこみ次第で例の最初に全て読み込むのではなく、APIとViewが連携して適時やりとりすることが出来ます。
 このAPI側が非常に簡単につくれるのはFuelPHPのメリットです。@<br>{}
 
-以上のようにFuelPHPとdataTablesの相性は抜群です。
+以上のようにFuelPHPとDataTablesの相性は抜群です。
 是非、公私でアプリ作成時に試して見てください！
 
 //quote{

@@ -6,7 +6,7 @@
 
 == 1. Cloudn PaaSとは
 
-NTTコミュニケーションズが提供する@<href>{http://www.ntt.com/cloudn/,Cloudn}のサービス・メニューの一つとして提供する@<href>{http://www.ntt.com/cloudn/data/paas.html,Platform as a Service}です。最小構成であれば1インスタンスあたり月額上限525円で利用可能です。
+NTTコミュニケーションズが提供する@<href>{http://www.ntt.com/cloudn/,Cloudn}のサービス・メニューの1つとして提供する@<href>{http://www.ntt.com/cloudn/data/paas.html,Platform as a Service}です。最小構成であれば1インスタンスあたり月額上限525円で利用可能です。
 
 == 2. デプロイ環境の準備
 
