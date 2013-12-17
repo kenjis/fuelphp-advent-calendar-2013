@@ -282,7 +282,11 @@
                 if ($img['title'] !== '') {
                     $img['path'] .= ' "' . $img['title'] . '"';
                 }
-                $line = $img['before'] . '![' . $img['alt'] . '](' . $img['path'] . ')' . $img['after'];
+                if ($img['before'] == '') {
+                    $line = '![' . $img['alt'] . '](' . $img['path'] . ')' . $img['after'];
+                } else {
+                    $line = $img['before'] . "\n\n" . '![' . $img['alt'] . '](' . $img['path'] . ')' . $img['after'];
+                }
 
                 //var_dump($line);
             }
