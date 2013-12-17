@@ -1,0 +1,864 @@
+
+<!DOCTYPE html>
+<html xmlns:og="http://ogp.me/ns#">
+  <head><script type="text/javascript">var NREUMQ=NREUMQ||[];NREUMQ.push(["mark","firstbyte",new Date().getTime()]);</script>
+    <meta charset="UTF-8">
+    <title>FuelPHPのmoduleを使いこなす - Qiita [キータ]</title>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,height=device-height,initial-scale=1"/>
+    <meta name="description" content="こんにちは、hosopyです。
+FuelPHP Advent Calendar 2013 16日目を担当させていただきます。
+前日は Tukimikageさんの「続・Cloudn_PaaSでFuelPHPを動かしてみた」でした。
+本日は、「FuelPHPのmoduleを使いこなす」のお話をしたいと思います。
+
+        
+        FuelPHPのmoduleのおさらい
+      FuelPHPのmoduleについては、ここでは割愛させて頂きます。
+「mo..."/>
+    
+
+    <meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@Qiita">
+  <meta name="twitter:creator" content="hosopy">
+
+    
+    <meta property="og:title" content="FuelPHPのmoduleを使いこなす - Qiita [キータ]" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://qiita.com/hosopy/items/0428be74f1c3868c55ba" />
+<meta property="og:image" content="https://si0.twimg.com/profile_images/1474060973/saiyo_normal.jpg" />
+<meta property="og:description" content="こんにちは、[hosopy](https://twitter.com/hosopy)です。
+
+[FuelPHP Advent Calendar 2013](http://atnd.org/events/45096) 16日目を担当させ..." />
+<meta property="og:site_name" content="Qiita" />
+<meta property="fb:admins" content="564524038" />
+
+
+    <link rel="shortcut icon" type="image/x-icon"
+      href="/favicon.ico?v=4">
+<link rel="icon" type="image/png"
+      href="/favicon.ico?v=4">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+    <link href="/assets/public-application-e1a8be388e3656f04e1b524da509f2f1.css" media="screen" rel="stylesheet" />
+    <link href="/assets/responsive-layout-c8f0aca0f92f35a82b28a37027b48d18.css" media="screen" rel="stylesheet" />
+    <meta content="authenticity_token" name="csrf-param" />
+<meta content="7S6j0qbZOAF5OvctsmgNxicfX3av2BXVySAKsi36Cvk=" name="csrf-token" />
+    
+  </head>
+  <body id="">
+    <script>
+  // Application Namespace
+  var Qiita = {
+    controller_path: 'items',
+    controller: 'items',
+    action: 'show',
+
+    // Fake jQuery
+    _q: [],
+    // The ready function that collect calls and put it in the queue
+    ready: function (func) {
+      if (typeof func==='function') Qiita._q.push(func);
+      // return jQl in order to support jQuery(document).ready()
+      return Qiita
+    },
+    // Run all queues inline $.ready() calls in the right order and purge the
+    // queue
+    unqueue: function () {
+      for (var i = 0, l = Qiita._q.length; i < l; i++) Qiita._q[i](); 
+      Qiita._q = [];
+    }
+  };
+  var $ = Qiita.ready, jQuery = $;
+</script>
+
+    
+
+      <header id="global-header-nav" class="navbar navbar-static-top">
+  <div class="navbar-inner">
+    <div class="container position-relative">
+      <h1>
+          <a class="brand" href="/">Qiita [キータ] - プログラマの技術情報共有サービス</a>
+      </h1>
+      <div class="hidden-phone">
+        <form accept-charset="UTF-8" action="/search" class="navbar-form pull-left" id="search-form" method="get"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="&#x2713;" /></div>
+          <input id="sort" name="sort" type="hidden" />
+          <div class="query-wrapper">
+            <input class="query span2" id="q" name="q" placeholder="投稿/ユーザー検索" type="text" />
+            <div id="stock-item-search-check">
+              <input id="stock-item-search" name="stocked" type="checkbox" value="1" />
+              <label for="stock-item-search">
+                <img alt="ストックした投稿を検索" src="/assets/icon-stocked-ddb8309d59b5a47058f0de59d50edecb.png" />
+                ストックした投稿を検索
+              </label>
+            </div>
+          </div>
+          <input class="btn" id="search-button" name="commit" type="submit" value="検索" />
+</form>            <div class="visible-desktop">
+              <div id="headline-news">
+                <span id="news-content">
+                  Qiita [キータ] - プログラマの技術情報共有サービス
+                </span>
+              </div>
+            </div>
+      </div>
+      <ul id="nav-right" class="nav pull-right">
+          <li class="signup">
+            <a class="btn" data-event_name="Signup Button Click" data-label="SignupButtonAtNavbar" href="/signup" track="click">ユーザ登録</a>
+          </li>
+          <li class="hoverable">
+            <a data-label="LoginButtonAtNavbar" href="/login" track="click">ログイン</a>
+          </li>
+      </ul>
+    </div>
+  </div>
+</header>
+<script>
+  $(function() {
+    $('#global-nav-mypage').hover(
+      function() {
+        $('#sub-navigation').stop().fadeIn(100);
+      }, function() {
+        $('#sub-navigation').delay(500).fadeOut(100);
+      }
+    );
+    $('.switcher').click(function() {
+      $(this).find('ul').toggle();
+    });
+    var $form = $('#search-form'),
+        $query = $form.find('.query');
+    $form.submit(function(ev) {
+      var self = this;
+      ev.preventDefault();
+      var stocked = !!$('#stock-item-search').attr('checked');
+      var keyword = $query.val();
+      Qiita.Mixpanel.search({
+        stocked: stocked,
+        keyword: keyword
+      }, function() {
+          self.submit();
+      });
+    });
+    $form.find('.query').focus(function() {
+      $(this).animate({ width:"250px" }, 300);
+      $('#search-button').fadeIn('300');
+      $('#stock-item-search-check').fadeIn('300');
+      $('#headline-news').fadeOut('300');
+    });
+    $('#main').click(function() {
+      $('#stock-item-search-check').fadeOut(200);
+      $('.nav.switcher > ul').fadeOut(200);
+    });
+  });
+</script>
+
+  <div id="main">
+
+
+<!-- Breadcrumb for search engines -->
+<span itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+  <link itemprop="url" href="/hosopy" />
+  <meta itemprop="title" content="hosopy" />
+</span>
+<span itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+  <link itemprop="url" href="/hosopy/items" />
+  <meta itemprop="title" content="items" />
+</span>
+
+<article id="item-page" itemscope itemtype="http://schema.org/Article">
+  <header class="article-header">
+    <div class="container">
+
+      <div class="row">
+        <a alt="hosopy" class="span1 hidden-phone" href="/hosopy"><img alt="Saiyo normal" class="author-icon" src="https://si0.twimg.com/profile_images/1474060973/saiyo_normal.jpg" /></a>
+        <div class="span8">
+          <h1 class="item-title">
+            <span itemprop="name">FuelPHPのmoduleを使いこなす</span>
+          </h1>
+          <ul class="tag-list unstyled">
+              <li>
+                <div class="tooltip-container">
+                  <a href="/tags/php">
+                    <img alt="PHP" src="https://s3-ap-northeast-1.amazonaws.com/qiita-tag-image/84c9563b6dd4d978c299e30d8ec993a793820ec3/large.jpg?1364837706" />
+                    PHP(1387)
+</a>                </div>
+              </li>
+              <li>
+                <div class="tooltip-container">
+                  <a href="/tags/fuelphp">
+                    <img alt="FuelPHP" src="https://s3-ap-northeast-1.amazonaws.com/qiita-tag-image/12a63284f5695e774c55532b42e1e1d62a47ab2c/large.jpg?1364839801" />
+                    FuelPHP(68)
+</a>                </div>
+              </li>
+              <li>
+                <div class="tooltip-container">
+                  <a href="/tags/adventcalendar">
+                    <img alt="AdventCalendar" src="https://s3-ap-northeast-1.amazonaws.com/qiita-tag-image/dbdd44044a1b92f9c07c9803aabc148847109bb0/large.jpg?1364839220" />
+                    AdventCalendar(235)
+</a>                </div>
+              </li>
+          </ul>
+          <ul class="unstyled item-status">
+            <li>
+              <img alt="Saiyo normal" class="visible-phone author-icon small" src="https://si0.twimg.com/profile_images/1474060973/saiyo_normal.jpg" />
+              <a href="/hosopy">hosopy</a>が<time datetime="2013-12-16T20:27:38+09:00" itemprop="datePublished">2013年12月16日</time>に投稿
+                (<time datetime="2013-12-16T20:37:07+09:00" itemprop="dateModified">2013年12月16日</time>に編集)
+            </li>
+              <li>
+                <a href="/hosopy/items/0428be74f1c3868c55ba/revisions">編集履歴(5)</a>
+              </li>
+              <li class="hidden-phone">
+                <a href="/items/0428be74f1c3868c55ba/edit">編集リクエストを作成する</a>
+              </li>
+          </ul>
+        </div>
+        <section class="span3">
+          <div>
+            <ul id="item-stats-list" class="unstyled">
+                <li>
+                  <div class="count stock" id="stock-user-count">1</div>
+                  <div class="text">ストック</div>
+                </li>
+              <li>
+                <a href="#comments">
+                  <div class="count comment" itemprop="interactionCount"
+                      content="0 UserComments">0</div>
+                  <div class="text">コメント</div>
+</a>              </li>
+            </ul>
+          </div>
+              <a class="btn btn-primary stock-button btn-block js-stock-btn" data-position="top" href="javascript:void(0)" title="Stock">
+                この投稿をストックする
+</a>          <div class="row">
+            <div class="span3">
+              <ul class="unstyled user-icon-list">
+                    <li class="">
+                      <a href="/makoto1212" title="makoto1212"><img alt="makoto1212" src="https://1.gravatar.com/avatar/784678440a75bc07f6427820fb7fc90d?d=https%3A%2F%2Fidenticons.github.com%2Fce385f53d364c66221445af30ed576fb.png&amp;r=x" /></a>
+                    </li>
+
+              </ul>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </header>
+  <div class="container">
+    <div class="row scroll-chaser-wrapper">
+      <div class="span9">
+        
+        <section class="markdown-content heading-anchor bordered">
+          <section id="item-0428be74f1c3868c55ba" class="position-relative" itemprop="articleBody">
+            <p>こんにちは、<a href="https://twitter.com/hosopy" title="https://twitter.com/hosopy" target="_blank">hosopy</a>です。</p>
+<p><a href="http://atnd.org/events/45096" title="http://atnd.org/events/45096" target="_blank">FuelPHP Advent Calendar 2013</a> 16日目を担当させていただきます。</p>
+<p>前日は <a href="https://twitter.com/Tukimikage" title="https://twitter.com/Tukimikage" target="_blank">Tukimikage</a>さんの「<a href="http://think-sv.net/blog/?p=1290" title="http://think-sv.net/blog/?p=1290" target="_blank">続・Cloudn_PaaSでFuelPHPを動かしてみた</a>」でした。</p>
+<p>本日は、「FuelPHPのmoduleを使いこなす」のお話をしたいと思います。</p>
+<h2>
+        <span id="2-1" class="fragment"></span>
+        <a href="#2-1"><i class="icon-link"></i></a>FuelPHPのmoduleのおさらい
+      </h2><p>FuelPHPのmoduleについては、ここでは割愛させて頂きます。<br>
+「moduleとは何だっけ？」な方は、下記のサイトでざっくりとおさらいしておきましょう。</p>
+
+<ul>
+<li><a href="http://fuelphp.com/docs/general/modules.html" title="http://fuelphp.com/docs/general/modules.html" target="_blank">http://fuelphp.com/docs/general/modules.html</a>
+</li><li><a href="http://d.hatena.ne.jp/dix3/20111212/1323660316" title="http://d.hatena.ne.jp/dix3/20111212/1323660316" target="_blank">http://d.hatena.ne.jp/dix3/20111212/1323660316</a>
+</li></ul>
+<h2>
+        <span id="2-2" class="fragment"></span>
+        <a href="#2-2"><i class="icon-link"></i></a>テーマ
+      </h2><p>それでは本題。<br>
+「使いこなす」と風呂敷を広げてしまいましたが、内容としては「moduleの階層化」になります。</p>
+<p>まず、以下のようなFuelPHPのモジュール構成を考えます。</p>
+<div class="code-frame" data-lang="sh"><div class="highlight"><pre><span class="o">[</span>root<span class="o">]</span>
+└── fuel
+    └── app
+        └── modules
+            ├── admin
+            ├── api
+            └── user
+</pre></div></div><p>このようなモジュール構成をとり始めると、<br>
+以下のようなURLの構成を実現したくなったりします。</p>
+
+<ul>
+<li><code>/admin/controller/action/params</code>
+
+<ul>
+<li>adminモジュールの機能が動作する
+</li></ul>
+</li><li><code>/api/controller/action/params</code>
+
+<ul>
+<li>apiモジュールの機能が動作する
+</li></ul>
+</li><li><code>/user/controller/action/params</code>
+
+<ul>
+<li>userモジュールの機能が動作する
+</li></ul>
+</li><li><code>/admin/user/controller/action/params</code>
+
+<ul>
+<li>userモジュールの機能が、adminモジュールのコンテキストで動作する
+</li></ul>
+</li><li><code>/api/user/controller/action/params</code>
+
+<ul>
+<li>userモジュールの機能が、apiモジュールのコンテキストで動作する
+</li></ul>
+</li></ul>
+<p>つまり、admin,apiという基本モジュールの中に、<br>
+userモジュールをアドオンしていくというイメージです。</p>
+<p>「いや、自分は<code>/user/admin</code>になってもいいわ」という方はここで終了ですｗ</p>
+<h2>
+        <span id="2-3" class="fragment"></span>
+        <a href="#2-3"><i class="icon-link"></i></a>サンプルコード
+      </h2><p>githubにサンプルコードを置きました。</p>
+<p><a href="https://github.com/hosopy/fuel_module_sample" title="https://github.com/hosopy/fuel_module_sample" target="_blank">https://github.com/hosopy/fuel_module_sample</a></p>
+<p><code>README.md</code>の再掲になりますが、<br>
+開発サーバを動作させてURLを叩くと、以下の様な挙動を示すと思います。</p>
+
+<ul>
+<li><code>/admin</code>
+
+<ul>
+<li>adminモジュールの<code>root/index</code>アクションが呼ばれます
+</li><li>これは、<code>fuel/app/modules/admin/config/routes.php</code>の<code>_root_</code>定義によるものです
+</li></ul>
+</li><li><code>/admin/user</code>
+
+<ul>
+<li>userモジュールの<code>admin/index</code>アクションが呼ばれます。
+</li></ul>
+</li><li><code>/admin/user/analytics</code>
+
+<ul>
+<li>userモジュールの<code>admin/analytics/index</code>アクションが呼ばれます。
+</li></ul>
+</li><li><code>/api</code>
+
+<ul>
+<li>apiモジュールの<code>root/index</code>アクションが呼ばれます
+</li><li>これは、<code>fuel/app/modules/api/config/routes.php</code>の<code>_root_</code>定義によるものです
+</li></ul>
+</li><li><code>/api/user</code>
+
+<ul>
+<li>userモジュールの<code>api/index</code>アクションが呼ばれます。
+</li></ul>
+</li><li><code>/api/user/analytics</code>
+
+<ul>
+<li>userモジュールの<code>api/analytics/index</code>アクションが呼ばれます。
+</li></ul>
+</li><li><code>/user</code>
+
+<ul>
+<li>userモジュールの<code>root/index</code>アクションが呼ばれます
+</li><li>これは、<code>fuel/app/modules/user/config/routes.php</code>の<code>_root_</code>定義によるものです
+</li></ul>
+</li></ul>
+<h3>
+        <span id="3-1" class="fragment"></span>
+        <a href="#3-1"><i class="icon-link"></i></a>ポイント
+      </h3><p><code>fuel/app/modules/admin/classes/controller/admin.php</code>の処理が全てです。</p>
+<p><code>/admin/**/*</code>なURLへのリクエストを、まずはController_Adminで受け取り、<br>
+適切なモジュールへHMVCでリクエストを転送しています。</p>
+<div class="code-frame" data-lang="php"><div class="code-lang"><span class="bold">fuel/app/modules/admin/classes/controller/admin.php</span></div><div class="highlight"><pre><span class="cp">&lt;?php</span>
+<span class="k">namespace</span> <span class="nx">\Admin</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">Controller_Admin</span> <span class="k">extends</span> <span class="nx">\Controller_Hybrid</span>
+<span class="p">{</span>
+    <span class="sd">/**</span>
+<span class="sd">     * /admin/module/controller/action/params へのHTTPリクエストを、</span>
+<span class="sd">     * /module/admin/controller/action/params へのHMVCリクエストとして転送する</span>
+<span class="sd">     * </span>
+<span class="sd">     * @Override</span>
+<span class="sd">     */</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">router</span><span class="p">(</span><span class="nv">$resource</span><span class="p">,</span> <span class="nv">$arguments</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">\Module</span><span class="o">::</span><span class="na">loaded</span><span class="p">(</span><span class="nv">$resource</span><span class="p">))</span>
+        <span class="p">{</span>
+                <span class="k">return</span> <span class="nx">\Request</span><span class="o">::</span><span class="na">forge</span><span class="p">(</span><span class="nv">$resource</span><span class="o">.</span><span class="s1">&#39;/admin/&#39;</span><span class="o">.</span><span class="nb">join</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="nv">$arguments</span><span class="p">))</span><span class="o">-&gt;</span><span class="na">execute</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">response</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">else</span>
+        <span class="p">{</span>
+                <span class="k">return</span> <span class="k">parent</span><span class="o">::</span><span class="na">router</span><span class="p">(</span><span class="nv">$resource</span><span class="p">,</span> <span class="nv">$arguments</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div></div><p>apiモジュールでも、全く同様のことを行っています。</p>
+<h2>
+        <span id="2-4" class="fragment"></span>
+        <a href="#2-4"><i class="icon-link"></i></a>何が嬉しいか？
+      </h2><h3>
+        <span id="3-2" class="fragment"></span>
+        <a href="#3-2"><i class="icon-link"></i></a>コードがスッキリする
+      </h3><p>モジュール間の連携処理をapp内でゴニョゴニョ実装する手もありますが、<br>
+こちらのほうがソースの構成がスッキリすると思います。</p>
+<h2>
+        <span id="2-5" class="fragment"></span>
+        <a href="#2-5"><i class="icon-link"></i></a>adminモジュールとuserモジュールの疎結合
+      </h2><p>userモジュールは、adminモジュールの提供する機能を存分に利用してコーディングを行う事ができますが、<br>
+adminモジュールからは、userモジュールを前提としたコーディングはしない方がよいでしょう。</p>
+<p>この点については、設定ファイルやPHPのinterfaceを活用して、<br>
+モジュール間の実装インターフェースの規約が必要になると思います。</p>
+<p>実際、自分の仕事では、adminモジュールの管理画面テンプレートへ組み込むViewの受け渡し方法として、<br>
+適切なinterfaceを実装したViewModelを利用するなど、実装上の疎結合を保っています。</p>
+<p>ただし、やり過ぎると分かりにくくなるのでホドホドに。。。</p>
+<h2>
+        <span id="2-6" class="fragment"></span>
+        <a href="#2-6"><i class="icon-link"></i></a>最後に
+      </h2><p>ここまでお読み頂き、ありがとうございます。<br>
+少しでも皆様のお役に立つことが出来れば幸いです。</p>
+<p>次回は、<a href="http://twitter.com/suno88" title="http://twitter.com/suno88" target="_blank">suno88</a>さんの「レンタルサーバー XREA/CORESERVER で FuelPHP を使う [実践編]」です。</p>
+
+          </section>
+        </section>
+        
+        <section>
+            <div id="item-footer-action-box">
+                <a class="btn btn-primary stock-button js-stock-btn" data-position="bottom" href="javascript:void(0)">この投稿をストックする</a>
+                &nbsp;<a class="hidden-phone" href="/items/0428be74f1c3868c55ba/edit">編集リクエストを作成する</a>
+            </div>
+              <div class="text-advertisement">
+  <span class="label label-info">PR</span>
+  <a class="js-advertisement-text" href="http://training.qiita.com/?utm_source=qiita&amp;utm_medium=text" target="_blank">
+    MacでかんたんにGitの基本を学ぶ <i class="icon-external-link"></i>
+</a></div>
+<script>
+$(function() {
+  $('.js-advertisement-text').click(function() {
+    Qiita.analysis.clickAdvertisement({
+      type: 'text',
+      place: 'bottom',
+      adId: 'training'
+    })
+  });
+});
+</script>
+
+        </section>
+        <section>
+          <div class="comments-wrapper">
+    <div class="login-to-comment">
+  <h5>ユーザ登録(無料)して、会話に参加しましょう。</h5>
+  <a class="btn" data-label="RegisterToComment" href="/signup" track="click">ユーザ登録</a>
+  <p>すでにアカウントを持っている方は<a href="/login">ログイン</a></p>
+</div>
+
+</div>
+
+<script type="application/json" id="js-mention">
+    [{&quot;id&quot;:1489,&quot;url_name&quot;:&quot;hosopy&quot;,&quot;profile_image_url&quot;:&quot;https://si0.twimg.com/profile_images/1474060973/saiyo_normal.jpg&quot;}]
+</script>
+
+        </section>
+      </div>
+      <div class="span3">
+        <hr class="visible-phone" />
+        <div class="row">
+          <div class="span3">
+            <div class="social-buttons">
+  <div class="twitter">
+    <a href="https://twitter.com/share" class="twitter-share-button" data-text="FuelPHPのmoduleを使いこなす by @hosopy on @Qiita">ツイート</a>
+  </div>
+  <div class="hatebu">
+    <a href="http://b.hatena.ne.jp/entry/http://qiita.com/hosopy/items/0428be74f1c3868c55ba" class="hatena-bookmark-button" data-hatena-bookmark-title="FuelPHPのmoduleを使いこなす - Qiita [キータ]" data-hatena-bookmark-layout="standard" title="はてなブックマークに追加する"><img src="http://b.st-hatena.com/images/entry-button/button-only.gif" alt="はてなブックマークに追加する" width="20" height="20" style="border: none;" /></a><script type="text/javascript" src="http://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
+  </div>
+  <div class="facebook">
+    <div class="fb-like" data-href="http://qiita.com/hosopy/items/0428be74f1c3868c55ba" data-send="false" data-layout="button_count" data-width="100" data-show-faces="false"></div>
+  </div>
+</div>
+<script>
+  $(function() {
+      twttr.ready(function (twttr) {
+          twttr.events.bind('tweet', function(event) {
+              if (event) {
+                  Qiita.Mixpanel.tweetAnItem({ uuid: "0428be74f1c3868c55ba" });
+                  ga('send', 'social', 'twitter', 'tweet', 'http://qiita.com');
+                  $.ajax({
+                      type: 'POST',
+                      url: '/notifications',
+                      data: {
+                          notification: {
+                              verb: 'tweet',
+                              uuid: '0428be74f1c3868c55ba'
+                          }
+                      }
+                  });
+              }
+          });
+          twttr.events.bind('click', function (e) {
+            if (e) {
+              ga('send', 'social', 'twitter', 'click', 'http://qiita.com');
+            }
+          });
+      });
+      window.fbAsyncInit = function() {
+          FB.Event.subscribe('edge.create', function(response) {
+              Qiita.Mixpanel.likeAnItem({ uuid: "0428be74f1c3868c55ba" });
+              ga('send', 'social', 'facebook', 'like', 'http://qiita.com');
+              $.ajax({
+                  type: 'POST',
+                  url: '/notifications',
+                  data: {
+                      notification: {
+                          verb: 'like',
+                          uuid: '0428be74f1c3868c55ba'
+                      }
+                  }
+              });
+          });
+      }
+  });
+</script>
+
+          </div>
+        </div>
+        <hr />
+        <section id="author-info" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <div class="author-surface">
+    <a href="/hosopy"><img alt="hosopy" class="user-icon" itemprop="image" src="https://si0.twimg.com/profile_images/1474060973/saiyo_normal.jpg" /></a>
+    <div class="right">
+      <strong class="user-name" itemprop="name">
+        <a href="/hosopy" itemprop="url">hosopy</a>
+      </strong>
+        <span class="btn btn-mini js-user-follow-btn"
+            data-url_name="hosopy"
+            data-position="author-info">
+          フォローする
+        </span>
+      <br/>
+      <span class="contribution">
+        <span class="count">4</span>
+        <span class="unit">Contribution</span>
+      </span>
+    </div>
+  </div>
+  <section>
+    <h6>最新の投稿</h6>
+    <ul class="unstyled posts">
+        <li itemscope itemtype="http://schema.org/Article">
+          <a href="/hosopy/items/0428be74f1c3868c55ba" itemprop="url">FuelPHPのmoduleを使いこなす</a>
+        </li>
+        <li itemscope itemtype="http://schema.org/Article">
+          <a href="/hosopy/items/d345688a65b06e567cbb" itemprop="url">testほげほげダンス</a>
+        </li>
+    </ul>
+  </section>
+</section>
+
+        <hr/>
+<style>
+.test-text-responsible { width: 200px; height: 200px; }
+@media(min-width: 1200px) {
+  .test-text-responsible { width: 250px; height: 250px; }
+}
+@media(max-width: 979px) and (min-width: 768px) {
+  .test-text-responsible { width: 120px; height: 240px; }
+}
+@media(max-width: 767px) {
+  .test-text-responsible { width: 320px; height: 50px; }
+}
+</style>
+<script async src="http://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- test_text_responsible -->
+<ins class="adsbygoogle test-text-responsible"
+     style="display:inline-block"
+     data-ad-client="ca-pub-8127218772604357"
+     data-ad-slot="3880091879"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+        <hr />
+        <div id="advertisement-s">
+      <a href="https://career.qiita.com?utm_content=AD0054&amp;utm_source=qiita&amp;utm_medium=banner" target="_blank" class="advertisement-link">
+        <img alt="Ad0054 increments career" src="/assets/banner/increments/AD0054_increments_career-04caec3ce479f5789fee8026cce663d0.png" />
+      </a>
+</div>
+<script>
+$(function() {
+    $('.advertisement-link').click(function() {
+        Qiita.analysis.clickAdvertisement({
+            type: 'banner',
+            place: 'right bottom',
+            adId: 'AD0054'
+        });
+    });
+});
+</script>
+
+        <div class="scroll-chaser">
+          
+          <section>
+  <div id="other-titles-box">
+    <h5>新着投稿</h5>
+    <ul class="title-item-box unstyled">
+        <li>
+          <article itemscope itemtype="http://schema.org/Article">
+            <div class="user">
+              <a alt="maangie" href="/maangie"><img alt="   normal" class="user-icon" src="https://si0.twimg.com/profile_images/690949380/___normal.jpg" /></a>
+            </div>
+            <div class="content">
+              <span itemprop="name">
+                <a class="title" href="/maangie/items/5a80ae50c13d14368a72" itemprop="url">How to use `gls&#39; on Emacs dired with MacOSX and coreutils</a>
+              </span>
+              <ul class="unstyled tags">
+                  <li><a class="tag" href="/tags/emacs">Emacs</a></li>
+                  <li><a class="tag" href="/tags/macosx">MacOSX</a></li>
+              </ul>
+            </div>
+          </article>
+        </li>
+        <li>
+          <article itemscope itemtype="http://schema.org/Article">
+            <div class="user">
+              <a alt="wakisuke" href="/wakisuke"><img alt="Twitter normal" class="user-icon" src="https://pbs.twimg.com/profile_images/1234844113/twitter_normal.png" /></a>
+            </div>
+            <div class="content">
+              <span itemprop="name">
+                <a class="title" href="/wakisuke/items/f51729b28c7e1f7325f5" itemprop="url">JSON,ObjectをHtmlDomに変換するJavaScript製の変換器</a>
+              </span>
+              <ul class="unstyled tags">
+                  <li><a class="tag" href="/tags/json">JSON</a></li>
+                  <li><a class="tag" href="/tags/javascript">JavaScript</a></li>
+              </ul>
+            </div>
+          </article>
+        </li>
+        <li>
+          <article itemscope itemtype="http://schema.org/Article">
+            <div class="user">
+              <a alt="HanaeKae" href="/HanaeKae"><img alt="Criminal shin normal" class="user-icon" src="https://pbs.twimg.com/profile_images/1235127387/Criminal_Shin_normal.jpg" /></a>
+            </div>
+            <div class="content">
+              <span itemprop="name">
+                <a class="title" href="/HanaeKae/items/f893fd9b7a5731c2b87e" itemprop="url">プラグインの動かし方</a>
+              </span>
+              <ul class="unstyled tags">
+                  <li><a class="tag" href="/tags/vim">Vim</a></li>
+              </ul>
+            </div>
+          </article>
+        </li>
+        <li>
+          <article itemscope itemtype="http://schema.org/Article">
+            <div class="user">
+              <a alt="g_lay_tomohiko" href="/g_lay_tomohiko"><img alt="X1whrtgp normal" class="user-icon" src="https://pbs.twimg.com/profile_images/412476514660134912/x1wHRtgp_normal.png" /></a>
+            </div>
+            <div class="content">
+              <span itemprop="name">
+                <a class="title" href="/g_lay_tomohiko/items/19159be555c6ba86a13a" itemprop="url">【jQuery】jQueryの形と、呼び出し方</a>
+              </span>
+              <ul class="unstyled tags">
+                  <li><a class="tag" href="/tags/jquery">jQuery</a></li>
+              </ul>
+            </div>
+          </article>
+        </li>
+        <li>
+          <article itemscope itemtype="http://schema.org/Article">
+            <div class="user">
+              <a alt="wakisuke" href="/wakisuke"><img alt="Twitter normal" class="user-icon" src="https://pbs.twimg.com/profile_images/1234844113/twitter_normal.png" /></a>
+            </div>
+            <div class="content">
+              <span itemprop="name">
+                <a class="title" href="/wakisuke/items/9b23a077b9c60c010446" itemprop="url">JSON,ArrayをHtmlDomに変換するPHP製の変換器</a>
+              </span>
+              <ul class="unstyled tags">
+                  <li><a class="tag" href="/tags/php">PHP</a></li>
+                  <li><a class="tag" href="/tags/json">JSON</a></li>
+              </ul>
+            </div>
+          </article>
+        </li>
+    </ul>
+  </div>
+</section>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</article>
+
+<script id="js-item" type="application/json">
+  {&quot;id&quot;:36370,&quot;uuid&quot;:&quot;0428be74f1c3868c55ba&quot;,&quot;user&quot;:{&quot;id&quot;:1489,&quot;url_name&quot;:&quot;hosopy&quot;,&quot;profile_image_url&quot;:&quot;https://si0.twimg.com/profile_images/1474060973/saiyo_normal.jpg&quot;},&quot;title&quot;:&quot;FuelPHPのmoduleを使いこなす&quot;,&quot;created_at&quot;:&quot;2013-12-16 20:27:38 +0900&quot;,&quot;updated_at&quot;:&quot;2013-12-16 20:37:07 +0900&quot;,&quot;created_at_in_words&quot;:&quot;約20時間&quot;,&quot;updated_at_in_words&quot;:&quot;約19時間&quot;,&quot;tags&quot;:[{&quot;name&quot;:&quot;PHP&quot;,&quot;url_name&quot;:&quot;php&quot;,&quot;icon_url&quot;:&quot;https://s3-ap-northeast-1.amazonaws.com/qiita-tag-image/aae632f19de784bc000b317b06ed2320f2582469/medium.jpg?1364837706&quot;},{&quot;name&quot;:&quot;FuelPHP&quot;,&quot;url_name&quot;:&quot;fuelphp&quot;,&quot;icon_url&quot;:&quot;https://s3-ap-northeast-1.amazonaws.com/qiita-tag-image/0c786c5346d6599097cda94b46cd7a73d9ac86cf/medium.jpg?1364839801&quot;},{&quot;name&quot;:&quot;AdventCalendar&quot;,&quot;url_name&quot;:&quot;adventcalendar&quot;,&quot;icon_url&quot;:&quot;https://s3-ap-northeast-1.amazonaws.com/qiita-tag-image/7b499aba822c4e819de19921890149955473f9f3/medium.jpg?1364839220&quot;}],&quot;stock_count&quot;:1,&quot;stock_users&quot;:[&quot;makoto1212&quot;],&quot;comments&quot;:[],&quot;comment_count&quot;:0,&quot;lgtm_count&quot;:0,&quot;url&quot;:&quot;http://qiita.com/hosopy/items/0428be74f1c3868c55ba&quot;,&quot;gist_url&quot;:null,&quot;tweet&quot;:false,&quot;private&quot;:false,&quot;created_at_as_seconds&quot;:1387193258}
+</script>
+
+<script class="js-user" type="application/json">
+  {&quot;id&quot;:1489,&quot;url_name&quot;:&quot;hosopy&quot;,&quot;profile_image_url&quot;:&quot;https://si0.twimg.com/profile_images/1474060973/saiyo_normal.jpg&quot;}
+</script>
+
+<script class="js-page-access" type="application/json">
+  {
+    "adId": ["AD0054", "training"],
+    "uuid": "0428be74f1c3868c55ba",
+    "calendarName": ""
+  }
+</script>
+</div>
+
+    <footer id="footer-content">
+  <section class="container">
+    <div class="row">
+      <div class="span8">
+        <section>
+          <ul class="inline">
+            <li><a href="http://qiita.com/about">Qiitaとは</a></li>
+            <li><a href="http://qiita.com/tags">タグ一覧</a></li>
+            <li><a href="http://qiita.com/advent-calendar">Advent Calendar一覧</a></li>
+            <li><a href="http://qiita.com/organizations">Organization一覧</a></li>
+            <li><a href="http://qiita.com/users">ユーザー一覧</a></li>
+            <li><a href="http://qiita.com/docs">Developer API</a></li>
+            <li><a href="/license.txt" rel="jslicense">JavaScript License</a></li>
+          </ul>
+          <ul class="inline">
+            <li><a href="http://blog.qiita.com" target="_blank">公式ブログ</a></li>
+            <li><a href="http://qiita.com/terms">利用規約</a></li>
+            <li><a href="http://qiita.com/privacy">プライバシーポリシー</a></li>
+            <li><a href="http://qiita.com/asct">特定商取引法に基づく表記</a></li>
+            <li><a href="http://support.qiita.com" target="_blank">サポート</a></li>
+            <li><a href="https://increments.zendesk.com/anonymous_requests/new" target="_blank">お問い合わせ</a></li>
+            <li><a href="http://increments.co.jp" target="_blank">運営会社</a></li>
+          </ul>
+        </section>
+        <section>
+        <p class="increments-service">Incrementsのサービス</p>
+          <ul class="unstyled">
+            <li>
+              <a href="http://kobito.qiita.com" target="_blank">Kobito - プログラミングのメモやスニペットの記録に最適なMacアプリケーション</a>
+            </li>
+            <li>
+              <a href="http://teams.qiita.com" target="_blank">Qiita:Team - シンプル、スマートかつクローズドな情報共有サービス</a>
+            </li>
+            <li>
+              <a href="https://career.qiita.com" target="_blank">Qiita:Career - プログラマのためのキャリア構築支援サービス</a>
+            </li>
+          </ul>
+        </section>
+        <section>
+          <p>Copyright ©2013 Increments Inc.</p>
+        </section>
+        <aside class="visible-desktop">
+          <a href="https://mixpanel.com/f/partner" target="_blank">
+            <img src="https://mixpanel.com/site_media/images/partner/badge_light.png"
+                 alt="Real Time Web Analytics" />
+          </a>
+        </aside>
+      </div>
+      <section class="span4 feedback-form">
+  <form accept-charset="UTF-8" action="/feedbacks" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="&#x2713;" /><input name="authenticity_token" type="hidden" value="7S6j0qbZOAF5OvctsmgNxicfX3av2BXVySAKsi36Cvk=" /></div>
+    <textarea class="span4" id="feedback_message" name="feedback[message]" placeholder="Qiitaについてご意見をお聞かせください" rows="5">
+</textarea>
+    <div style="position:fixed;top:-9999px;">
+      <input type="text" name="feedback[name]"/><!-- Honey Pot -->
+    </div>
+    <input class="btn btn-block" name="commit" type="submit" value="運営者に意見を送る" />
+    <div class="text-center">
+      <p>頂いたご意見への回答は行っておりません。</p>
+      <p><a href="https://increments.zendesk.com/anonymous_requests/new">返信の必要なお問い合わせはこちら</a></p>
+    </div>
+</form></section>
+
+    </div>
+  </section>
+</footer>
+
+
+    <!--[if lt IE 9]>
+      <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <script src="/assets/application-542d6aca259e23fa7174aeb9097461a9.js"></script>
+    <script>
+  (function (I18n) {
+    var match, orig;
+    I18n.defaultLocale = "ja";
+    I18n.fallbacks = true;
+    if (match = location.search.match(/(?:\?|&)locale=([^&]+)/)) {
+      I18n.locale = match[1];
+      orig = $.ajax;
+      $.ajax = function (params) {
+        params.data || (params.data = {});
+        params.data.locale = match[1];
+        return orig.call($, params);
+      };
+    } else {
+      I18n.locale = "ja";
+    }
+  })(I18n);
+</script>
+
+    <script>
+  (function () {
+    var script = document.getElementsByTagName('script')[0];
+    var load = function (src, id) {
+      var el = document.createElement('script');
+      el.async = true;
+      el.src = src;
+      el.id = id;
+      script.parentNode.insertBefore(el, script);
+    };
+
+      // Optimizely
+      load('//cdn.optimizely.com/js/52738645.js', 'optimizely-jssdk');
+
+      // Google Analytics
+      window._gaq = window._gaq || [];
+      var isCareer = location.hostname.split('.')[0] == 'career';
+      if (isCareer) {
+        window._gaq.push(['_setAccount', 'UA-24675221-11']);
+        window._gaq.push(['_setDomainName', 'qiita.com']);
+      } else {
+        window._gaq.push(['_setAccount', 'UA-24675221-1']);
+      }
+      window._gaq.push(['_setCustomVar', 1, 'logged_in', 'false', 2]);
+      window._gaq.push(['_trackPageview']);
+      var src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      load(src, 'google-analytics-jssdk');
+
+      // Google Analytics - Universal Analytics
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-24675221-12', {
+          
+        });
+        ga('set', 'dimension1', 'false');
+        ga('set', 'dimension3', 'false');
+      ga('set', 'forceSSL', true);
+      Qiita.isAnalyticsAvailable = false;
+      ga('send', 'pageview', {
+        hitCallback: function () {
+          Qiita.isAnalyticsAvailable = true;
+        }
+      });
+  })();
+
+  // Mixpanel
+  (function(c,a){window.mixpanel=a;var b,d,h,e;b=c.createElement("script");b.type="text/javascript";b.async=!0;b.src=("https:"===c.location.protocol?"https:":"http:")+'//cdn.mxpnl.com/libs/mixpanel-2.1.min.js';d=c.getElementsByTagName("script")[0];d.parentNode.insertBefore(b,d);a._i=[];a.init=function(b,c,f){function d(a,b){var c=b.split(".");2==c.length&&(a=a[c[0]],b=c[1]);a[b]=function(){a.push([b].concat(Array.prototype.slice.call(arguments,0)))}}var g=a;"undefined"!==typeof f?
+  g=a[f]=[]:f="mixpanel";g.people=g.people||[];h="disable track track_pageview track_links track_forms register register_once unregister identify name_tag set_config people.identify people.set people.increment".split(" ");for(e=0;e<h.length;e++)d(g,h[e]);a._i.push([b,c,f])};a.__SV=1.1})(document,window.mixpanel||[]);
+  (function () {
+    var token, config = { upgrade: true, track_pageview: false };
+      token = "be87616606b0e26a87689099aab2c4e5";
+    mixpanel.init(token, config);
+  })();
+</script>
+
+  <script type="text/javascript">if (!NREUMQ.f) { NREUMQ.f=function() {
+NREUMQ.push(["load",new Date().getTime()]);
+var e=document.createElement("script");
+e.type="text/javascript";
+e.src=(("http:"===document.location.protocol)?"http:":"https:") + "//" +
+  "js-agent.newrelic.com/nr-100.js";
+document.body.appendChild(e);
+if(NREUMQ.a)NREUMQ.a();
+};
+NREUMQ.a=window.onload;window.onload=NREUMQ.f;
+};
+NREUMQ.push(["nrfj","beacon-1.newrelic.com","32f5cacaf0","2630449","ewpXQ0JfCltQSk1bEV0IShhDWAlA",0,275,new Date().getTime(),"","","","",""]);</script></body>
+</html>
+
