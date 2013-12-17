@@ -8,7 +8,7 @@
 
  * @<href>{http://blog-ja.chatwork.com/2013/11/api-preview.html,http://blog-ja.chatwork.com/2013/11/api-preview.html}
 
- そこで早速、FuelPHPのバッケージとして実装してみました。
+ そこで早速、FuelPHPのパッケージとして実装してみました。
 
  * @<href>{https://github.com/mp-php/fuel-packages-chatwork,https://github.com/mp-php/fuel-packages-chatwork}  
 
