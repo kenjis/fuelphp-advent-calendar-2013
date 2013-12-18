@@ -19,7 +19,11 @@ extension本体はこんなコードです。
 #@# lang: .syntax-highlight
 //emlist{
 <?php
-// @TODO ライセンス明示
+/*
+ * Copyright (c) 2013 KOYAMA Tetsuji
+ * This software is released under the MIT License.
+ * http://opensource.org/licenses/mit-license.php
+ */
 class Hoge_Twig_Extension extends Twig_Extension
 {
     …略…
@@ -225,7 +229,7 @@ id:fakechan PHPのレガシーっぷりに驚きを隠せない。というか�
 //quote{
 @<strong>{@koyhoge}
 
-@TODO
+このエントリは思っていたよりも反響がありました。JSとPHPを組み合わせてうまく処理するニーズは、まだまだ沢山埋もれているように思います。
 
 Twitter: @<href>{https://twitter.com/koyhoge,@koyhoge}
 

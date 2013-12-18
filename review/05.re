@@ -64,7 +64,11 @@ fuel/app/classes/hoge/twig/extension.php
 #@# lang: .syntax-highlight
 //emlist{
 <?php
-// @TODO ライセンス明示
+/*
+ * Copyright (c) 2013 KOYAMA Tetsuji
+ * This software is released under the MIT License.
+ * http://opensource.org/licenses/mit-license.php
+ */
 class Hoge_Twig_Extension extends Twig_Extension
 {
     /**
@@ -162,7 +166,7 @@ Twigは非常に柔軟性の高いテンプレートエンジンで、上記で�
 //quote{
 @<strong>{@koyhoge}
 
-@TODO
+2014年からはフリーになる予定は未定のPHP大好きっこです、テへ☆
 
 Twitter: @<href>{https://twitter.com/koyhoge,@koyhoge}
 
