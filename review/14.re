@@ -6,17 +6,15 @@
 
 2回目のFuelPHP Advent Calendar 2013登場となります。
 
-== Request_Curl 使っていますか？
+== Request_Curl使っていますか？
 
 さて、@<href>{http://fuelphp.jp/docs/1.7/classes/request/curl.html,Request_Curl}使ってますか？
 
-えっ？ @<href>{https://github.com/guzzle/guzzle,Guzzle}のが便利だからそっち使ってるですって？
+えっ？@<href>{https://github.com/guzzle/guzzle,Guzzle}のが便利だからそっち使ってるですって？
 
 まあ、そう言わずにRequest_Curlは標準で含まれているので使ってみませんか？
 
-簡単な使い方：
-
-//emlist{
+//emlist[簡単な使い方]{
 $url = 'http://www.example.net/';
 $curl = \Request::forge($url, 'curl');
 $curl->execute();
@@ -145,12 +143,9 @@ $curl->set_option(CURLOPT_CAINFO, 'path/to/cacert.pem');
 //quote{
 @<strong>{@sharkpp}
 
-
 へっぽこプログラマ。手羽先が有名な所に在住なPHPとC++のプログラマです。
 
-
 Twitter: @<href>{https://twitter.com/sharkpp,@sharkpp}
-
 
 Blog: @<href>{http://www.sharkpp.net/,http://www.sharkpp.net/}
 //}
