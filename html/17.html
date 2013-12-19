@@ -1,0 +1,848 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html xmlns:og="http://ogp.me/ns#">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=euc-jp">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<meta http-equiv="Content-Script-Type" content="text/javascript">
+<title>レンタルサーバー XREA/CORESERVER で FuelPHP を使う [実践編] - 酒と蕎麦と IT と</title>
+<link rel="start" href="/" title="酒と蕎麦と IT と">
+<link rel="help" href="/help" title="ヘルプ">
+<link rel="prev" href="/suno88/20131006/1381040481" title="[IT][PHP][FuelPHP]レンタルサー...">
+
+<link rel="stylesheet" href="http://d.st-hatena.com/statics/css/base.css?5d7f38e4a6d82f044c81959ae4de5445d7f238cd" type="text/css" media="all">
+<link rel="stylesheet" href="http://d.st-hatena.com/statics/css/headerstyle_lg.css?1e7f1ae8a305b254105e3093bcf711b2af81c2a0" type="text/css" media="all">
+<link rel="stylesheet" href="http://d.st-hatena.com/statics/theme/hatena2-green/hatena2-green.css?a5c9f448060e7d962ba8cab1c0b08be09c506194" type="text/css" media="all">
+
+
+<link rel="alternate" type="application/rss+xml" title="RSS" href="http://d.hatena.ne.jp/suno88/rss">
+<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="http://d.hatena.ne.jp/suno88/rss2">
+
+<link rel="meta" type="application/rdf+xml" title="FOAF" href="http://d.hatena.ne.jp/suno88/foaf" />
+<link rel="search" type="application/opensearchdescription+xml" href="http://d.hatena.ne.jp/suno88/opensearch/diary.xml" title="酒と蕎麦と IT と内日記検索" />
+<link rel="search" type="application/opensearchdescription+xml" href="http://d.hatena.ne.jp/suno88/opensearch/archive.xml" title="酒と蕎麦と IT と内一覧検索" />
+
+
+<link rel="shortcut icon" href="http://d.hatena.ne.jp/images/diary/suno88/favicon.ico">
+
+
+
+<style type="text/css">
+<!-- 
+h1 {
+	font-family: sans-serif;
+	font-size: 200%;
+	background: #d1e8fe url('http://m5s.jp/htn/diary-title.jpg') no-repeat right center;
+}
+
+h1, h1 a, h1 a:visited {
+	color: #067f00;
+}
+
+h2, h2 a, h2 a:visited, h2 span {
+	font-family: sans-serif;
+	color: #3d5dff;
+}
+
+div.section h4 {
+	font-size: 130% !important;
+	margin-top: 2em !important;
+}
+
+div.section h5 {
+	font-size: 120% !important;
+	margin-top: 1em !important;
+}
+
+div.section h6 {
+	font-size: 100% !important;
+	margin-bottom: .5em !important;
+}
+
+a, a:visited {
+	color: #3d5dff;
+}
+
+code {
+	font-size: 100%;
+}
+
+.body .section table td, .body .section table th, .body .section pre {
+	border-color: gray;
+}
+
+blockquote {
+	border-color: #008910 !important;
+	border-width: 0 0 0 .2em !important;
+	margin: 1em 0 1em 2em !important;
+	background-color: #f7ffef !important;
+}
+
+blockquote.twitter {
+	border-color: #3cf !important;
+	border-width: 2px !important;
+	background: #dae3e8 url('http://m5s.jp/htn/tw_bg.png') no-repeat right bottom !important;
+}
+
+div.float {
+	float: right;
+	margin-bottom: .5em;
+	margin-left: .5em;
+}
+
+div.toc {
+	border: 1px dashed #cb84ff;
+	margin: 1em;
+	padding: .5em 1em;
+	background-color: #fffafa;
+}
+
+div.toc h2 {
+	font-size: 110%;
+	font-family: sans-serif;
+	border: 0;
+	background: none;
+	color: black;
+	height: auto;
+	margin: .5em 0;
+	padding: 0;
+}
+
+div.toc ul {
+	margin-top: 0;
+	margin-bottom: 0;
+}
+
+span.note {
+	margin-left: .3em;
+	margin-right: .3em;
+	font-size: 85%;
+	color: #555;
+}
+
+span.note a {
+	color: #55f;
+}
+
+div.minutes {
+	margin-top: 1em;
+	padding-top: 1em;
+	padding-left: 2em;
+	border-style: dashed;
+	border-width: 1px 0 0;
+	border-color: #19aa3f;
+}
+
+div.minutes p {
+	text-indent: -1em;
+	margin: .3em 0;
+}
+
+div.documents {
+	border: 1px solid #7759ff;
+	background-color: #fff2fe;
+}
+
+em {
+	font-style: normal;
+	font-weight: bold;
+}
+
+pre {
+	font-size: 80% !important;
+}
+-->
+</style>
+
+
+<script type="text/javascript">if(/[\x3c\x3e\x22]/.test(location.hash))location.hash=location.hash.replace(/[\x3c\x3e\x22]/g,'');if(/[\x3c\x3e]/.test(document.referrer))location.href=location.href;</script>
+
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="レンタルサーバー XREA/CORESERVER で FuelPHP を使う [実践編] - 酒と蕎麦と IT と">
+<meta property="og:image" content="http://m5s.jp/htn/dch/coreserver.png">
+<meta property="og:url" content="http://d.hatena.ne.jp/suno88/20131217/1387285818">
+<meta property="og:description" content=" この記事は FuelPHP Advent Calendar 2013 の 17 日目の記事として公開します。なお、昨日は hosopy さん..">
+<meta property="og:site_name" content="はてなダイアリー">
+
+
+<!--
+<rdf:RDF
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:foaf="http://xmlns.com/foaf/0.1/">
+<rdf:Description rdf:about="http://d.hatena.ne.jp/suno88/20131217/1387285818">
+   <foaf:maker rdf:parseType="Resource">
+     <foaf:holdsAccount>
+       <foaf:OnlineAccount foaf:accountName="suno88">
+         <foaf:accountServiceHomepage rdf:resource="http://www.hatena.ne.jp/" />
+       </foaf:OnlineAccount>
+     </foaf:holdsAccount>
+   </foaf:maker>
+</rdf:Description>
+</rdf:RDF>
+-->
+
+<link rel="alternate" media="handheld" type="text/html" href="http://d.hatena.ne.jp/suno88/mobile?date=20131217&section=1387285818" />
+<!--
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:dc="http://purl.org/dc/elements/1.1/"
+         xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+<rdf:Description
+  rdf:about="http://d.hatena.ne.jp/suno88/20131217/1387285818"
+  trackback:ping="http://d.hatena.ne.jp/suno88/20131217/1387285818"
+  dc:title="[IT][PHP][FuelPHP]レンタルサーバー XREA/CORESERVER で FuelPHP を使う [実践編]"
+  dc:identifier="http://d.hatena.ne.jp/suno88/20131217/1387285818" />
+</rdf:RDF>
+-->
+
+<script type="text/javascript" src="http://d.st-hatena.com/statics/js/MochiKit/1125/Base.js?1e7f1ae8a305b254105e3093bcf711b2af81c2a0"></script>
+<script type="text/javascript" src="http://d.st-hatena.com/statics/js/MochiKit/1125/Iter.js?1e7f1ae8a305b254105e3093bcf711b2af81c2a0"></script>
+<script type="text/javascript" src="http://d.st-hatena.com/statics/js/MochiKit/1125/DOM.js?1e7f1ae8a305b254105e3093bcf711b2af81c2a0"></script>
+<script type="text/javascript" src="http://d.st-hatena.com/statics/js/MochiKit/1125/Style.js?1e7f1ae8a305b254105e3093bcf711b2af81c2a0"></script>
+<script type="text/javascript" src="http://d.st-hatena.com/statics/js/MochiKit/1125/Signal.js?1e7f1ae8a305b254105e3093bcf711b2af81c2a0"></script>
+<script type="text/javascript" src="http://d.st-hatena.com/statics/js/MochiKit/1125/Async.js?1e7f1ae8a305b254105e3093bcf711b2af81c2a0"></script>
+<script type="text/javascript" src="http://d.st-hatena.com/statics/js/MochiKit/1125/Logging.js?1e7f1ae8a305b254105e3093bcf711b2af81c2a0"></script>
+<script type="text/javascript" src="http://d.st-hatena.com/statics/js/BookmarkCommentViewer.js?1e7f1ae8a305b254105e3093bcf711b2af81c2a0" charset="utf-8"></script>
+
+
+
+<link rel="canonical" href="http://d.hatena.ne.jp/suno88/20131217/1387285818">
+
+
+
+
+<script type="text/javascript" src="http://s.hatena.ne.jp/js/HatenaStar.js"></script>
+<script type="text/javascript">
+Hatena.Star.SiteConfig = {
+  entryNodes: {
+    'div.section': {
+      uri: 'h3 a',
+      title: 'h3',
+      container: 'h3'
+    }
+  }
+};
+Hatena.Author  = new Hatena.User('suno88');
+Hatena.DiaryName  = new Hatena.User('suno88');
+
+</script>
+
+
+
+
+
+<script type="text/javascript" src="http://d.st-hatena.com/statics/js/adcolor.js?1e7f1ae8a305b254105e3093bcf711b2af81c2a0"></script>
+
+
+<script type="text/javascript" src="http://d.st-hatena.com/statics/js/quick_pager.js?1e7f1ae8a305b254105e3093bcf711b2af81c2a0"></script>
+<script type="text/javascript" src="http://d.st-hatena.com/statics/js/diary_utils.js?1e7f1ae8a305b254105e3093bcf711b2af81c2a0"></script>
+<script type="text/javascript" src="http://d.st-hatena.com/statics/js/max_width_fotolife.js?1e7f1ae8a305b254105e3093bcf711b2af81c2a0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" src="http://d.st-hatena.com/statics/js/jquery-1.4.2.min.js?1e7f1ae8a305b254105e3093bcf711b2af81c2a0"></script>
+<script type="text/javascript">
+  jQuery.noConflict()(function($){
+    var j$ = jQuery;
+  });
+</script>
+
+
+
+
+</head>
+<body>
+<!-- Google Tag Manager -->
+<noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-58NPH6"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-58NPH6');</script>
+<!-- End Google Tag Manager -->
+
+
+<div id="simple-header">
+
+  <a href="http://www.hatena.ne.jp/"><img src="/images/hatena-simple_lg.gif" alt="Hatena::" title="Hatena::" id="logo-hatena" width="65" height="17"></a><a href="/"><img src="/images/diary-simple_lg.gif" alt="ブログ(Diary)" title="Diary" id="logo-diary" width="43" height="17"></a>
+  <form method="get" action="/search" class="search-form">
+    <input type="text" class="search-word" name="word" value=""><input name="name" value="suno88" type="hidden"><input type="submit" name="diary" value="日記" class="search-button"><input type="submit" name="submit" value="検索" class="search-button">
+  </form>
+  <ul class="menu">
+    <li><a href="/suno88/">ブログトップ</a></li>
+    <li><a href="/suno88/archive">記事一覧</a></li>
+
+
+
+    <li><a href="https://www.hatena.ne.jp/login?backurl=http%3A%2F%2Fd.hatena.ne.jp%2Fsuno88%2F20131217%2F1387285818&add_timestamp=1">ログイン</a></li>
+    <li><a href="https://www.hatena.ne.jp/register?location=http%3A%2F%2Fd.hatena.ne.jp%3Fvia%3D200186&amp;via=200186">無料ブログ開設</a></li>
+
+  </ul>
+</div>
+
+
+
+<h1><a href="http://d.hatena.ne.jp/suno88/">酒と蕎麦と IT と</a> <a href="http://a.hatena.ne.jp/append?http://d.hatena.ne.jp/suno88/"><img src="http://d.hatena.ne.jp/images/a_append_lg.gif" title="このページをアンテナに追加" alt="このページをアンテナに追加" border="0" width="16" height="12" class="icon"></a> <a href="http://d.hatena.ne.jp/suno88/rss"><img src="http://d.hatena.ne.jp/images/rss_lg.gif" alt="RSSフィード" title="RSSフィード" border="0" width="24" height="12" class="icon"></a></h1>
+<div class="hatena-body">
+<script type="text/javascript"><!--
+    hatena_counter_name = "suno88";
+    hatena_counter_id = "type";
+    hatena_counter_ref = document.referrer+"";
+    hatena_counter_screen = screen.width + "x" + screen.height+","+screen.colorDepth;
+//--></script>
+<script type="text/javascript" src="http://counter.hatena.ne.jp//js/counter.js"></script>
+<noscript><img src="http://counter.hatena.ne.jp/suno88/type" border="0" alt="counter"></noscript>
+
+
+<div class="main">
+
+
+
+
+
+
+
+
+<div class="calendar" id="pager-top">
+  <a rel="prev" href="/suno88/20131006/1381040481" class="prev">&lt;[IT][PHP][FuelPHP]レンタルサー...</a><span id="edit-in-place-add"></span>
+</div>
+<div id="days">
+
+<div class="day">
+<h2><a href="http://d.hatena.ne.jp/suno88/20131217" rel="nofollow"><span class="date">2013-12-17</span></a></h2>
+
+<div class="body">
+
+<!-- rakuten_ad_target_begin -->
+<!-- google_ad_section_start -->
+
+		<div class="section">
+			<h3 class="title"><a href="/suno88/20131217/1387285818" name="1387285818">レンタルサーバー XREA/CORESERVER で FuelPHP を使う [実践編]</a></h3>
+			<p class="sectionheader"><span class="sectioncategory"><a href="/suno88/searchdiary?word=%2A%5BIT%5D" class="sectioncategory">IT</a>, <a href="/suno88/searchdiary?word=%2A%5BPHP%5D" class="sectioncategory">PHP</a>, <a href="/suno88/searchdiary?word=%2A%5BFuelPHP%5D" class="sectioncategory">FuelPHP</a></span> |  <span class="timestamp">22:10</span> | <a href="http://b.hatena.ne.jp/entry/http://d.hatena.ne.jp/suno88/20131217/1387285818" class="bookmark-icon"><img src="http://d.hatena.ne.jp/images/b_entry_lg.gif" border="0" title="レンタルサーバー XREA/CORESERVER で FuelPHP を使う [実践編]を含むブックマーク" alt="レンタルサーバー XREA/CORESERVER で FuelPHP を使う [実践編]を含むブックマーク" width="16" height="12" class="icon"></a> <a href="http://b.hatena.ne.jp/entry/http://d.hatena.ne.jp/suno88/20131217/1387285818" class="bookmark-count"><img src="http://b.hatena.ne.jp/entry/image/http://d.hatena.ne.jp/suno88/20131217/1387285818" title="はてなブックマーク - レンタルサーバー XREA/CORESERVER で FuelPHP を使う [実践編]" alt=""></a> <img class="hatena-bcomment-view-icon" src="http://r.hatena.ne.jp/images/popup.gif" onclick="javascript:BookmarkCommentViewer.iconImageClickHandler(this, 'http://d.hatena.ne.jp/suno88/20131217/1387285818', event);" title="レンタルサーバー XREA/CORESERVER で FuelPHP を使う [実践編]のブックマークコメント" alt="レンタルサーバー XREA/CORESERVER で FuelPHP を使う [実践編]のブックマークコメント" width="13" height="13"></p>
+			<p><p>この記事は <a target="_blank" href="http://atnd.org/events/45096">FuelPHP Advent Calendar 2013</a> の 17 日目の記事として公開します。なお、昨日は hosopy さんの「<a target="_blank" href="http://qiita.com/hosopy/items/0428be74f1c3868c55ba">FuelPHPのmoduleを使いこなす</a>」でした。</p></p>
+			<p><p>先々月に「<a href="http://d.hatena.ne.jp/suno88/20131006/1381040481">レンタルサーバー XREA/CORESERVER で FuelPHP を動かす</a>」という記事を書きました。今回はその続きとして、もう少し実践的な内容をお届けします。前回の記事と併せてお読みください。</p></p>
+			<p><p>本稿の内容は s110.coreserver.jp 上の <a class="keyword" href="http://d.hatena.ne.jp/keyword/PHP">PHP</a> 5.4.21 で FuelPHP 1.7.1 を使って動作確認をしてあります。以降、ユーザー名を hogefuga、<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%B5%A1%BC%A5%D0%A1%BC">サーバー</a>を s1024.coreserver.jp と仮定して説明します。みなさんの<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%A2%A5%AB%A5%A6%A5%F3%A5%C8">アカウント</a>情報に適宜読み換えながら試してみてください。</p></p>
+			<a name="seemore"></a>
+
+			<br>
+
+			<h4> ローカルの開発環境で<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%C7%A1%BC%A5%BF%A5%D9%A1%BC%A5%B9">データベース</a>を使う</h4>
+			<p><p>XREA/CORESERVER では <a class="keyword" href="http://d.hatena.ne.jp/keyword/MySQL">MySQL</a> と <a class="keyword" href="http://d.hatena.ne.jp/keyword/PostgreSQL">PostgreSQL</a> が利用可能ですが、<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%BB%A5%AD%A5%E5%A5%EA%A5%C6%A5%A3">セキュリティ</a>ーの理由からか、同一サーバーからのアクセス以外は弾かれるようで、ローカルの開発環境からサーバー上のデータベースを読み書きすることはできません。そこで開発用のデータベースをローカルに立て、ローカル環境ではローカルデータベースを、サーバー上の運用環境ではサーバーのデータベースを参照するようにしましょう。</p></p>
+			<p><p>まず、サーバー上の環境を production (運用環境)に設定しましょう。FuelProject/public/<a class="keyword" href="http://d.hatena.ne.jp/keyword/%2Ehtaccess">.htaccess</a> の先頭、「<a class="keyword" href="http://d.hatena.ne.jp/keyword/AddHandler">AddHandler</a> application/x-httpd-php54cgi .php」の上あたりに、次の行を追加します。</p></p>
+<p><pre>
+SetEnv FUEL_ENV production
+</pre></p>
+			<p><p>.htaccess はローカルとサーバーでは記述が異なるので、不用意な上書きに注意してください。</p></p>
+			<p><p>これでローカル環境は development、サーバー環境は production と別々の FUEL_ENV が設定されました。では、それぞれの環境用に <a class="keyword" href="http://d.hatena.ne.jp/keyword/db">db</a>.php を作ります。</p></p>
+			<p><p>私は PostgreSQL が好きなので、基本的にサーバーにも PostgreSQL でデータベースを作成しています。ここでは PostgreSQL の例を挙げますが、MySQL でも同様に設定できますので、参考にしてください。</p></p>
+			<p><p>まず、fuel/app/config/db.php に共通設定を書きます。</p></p>
+<p><pre>
+&lt;?php
+
+return [
+    'default' =&gt; [
+        'type' =&gt; 'pdo',
+        'identifier' =&gt; '',
+        'table_prefix' =&gt; '',
+        'charset' =&gt; 'utf8',
+        'enable_cache' =&gt; true,
+        'profiling' =&gt; false,
+    ],
+];
+</pre></p>
+			<p><p>続いてサーバー側の設定を fuel/app/config/production/db.php に記述しましょう。ホスト名は s1024.coreserver.jp とせず、<a class="keyword" href="http://d.hatena.ne.jp/keyword/localhost">localhost</a> にします。</p></p>
+<p><pre>
+&lt;?php
+
+return [
+    'default' =&gt; [
+        'connection' =&gt; [
+            '<a class="keyword" href="http://d.hatena.ne.jp/keyword/dsn">dsn</a>'        =&gt; 'pgsql:host=localhost;dbname=hogefuga',
+            'username'   =&gt; 'hogefuga',
+            'password'   =&gt; 'your_password',
+            'persistent' =&gt; false,
+            'compress'   =&gt; false,
+        ],
+    ],
+];
+</pre></p>
+			<p><p>同様に、ローカル環境の設定を fuel/app/config/development/db.php に記述します。</p></p>
+<p><pre>
+&lt;?php
+
+return [
+    'default' =&gt; [
+        'connection' =&gt; [
+            'dsn'        =&gt; 'pgsql:host=localhost;dbname=hogefuga_local',
+            'username'   =&gt; 'hogefuga_local',
+            'password'   =&gt; 'your_local_password',
+            'persistent' =&gt; false,
+            'compress'   =&gt; false,
+        ],
+    ],
+];
+</pre></p>
+			<p><p>ローカルに立てたデータベースの DB 名とユーザー名、<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%D1%A5%B9%A5%EF%A1%BC%A5%C9">パスワード</a>をサーバーのものと同じにすれば設定を分けずに済みますが、ローカル環境で複数のデータベースを切り替えて開発できるようにしておくほうがよいでしょう。</p></p>
+			<br>
+
+			<h4> タスクと Email パッケージを利用してログファイルの肥大化を防ぐ</h4>
+			<p><p>fuel/app/logs に日々蓄積されるログファイルを、FuelPHP を使って定期的に掃除させましょう。</p></p>
+			<p><p>次のような仕様を考えます。</p></p>
+			<p><ul>
+			  <li>日付が変わったら、前日のログファイルをメールで送信する。</li>
+			  <li>1 週間前のログファイルは削除する。その際、カラになった<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%C7%A5%A3%A5%EC%A5%AF%A5%C8%A5%EA">ディレクトリ</a>も削除する。</li>
+			</ul></p>
+			<p><p>cron ジョブによる<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%D0%A5%C3%A5%C1%BD%E8%CD%FD">バッチ処理</a>を毎晩走らせましょう。FuelPHP ではタスクという機能でバッチ処理が実現できます。</p></p>
+			<p><p>適当なプロジェクトを作成し、fuel/app/tasks/logsender.php というファイルを作成します。プロジェクトの設置場所は <code>~/php/logsender</code> とします。</p></p>
+<p><pre>
+&lt;?php
+
+/**
+ * FuelPHP の前日分ログファイルをメールで送信し、1 週間前のログファイルを削除するタスク。
+ */
+
+namespace Fuel\Tasks;
+
+\Package::load('email');
+
+/**
+ * ログのメール送信と古いログの削除を行うクラス。
+ */
+<a class="keyword" href="http://d.hatena.ne.jp/keyword/class">class</a> LogSender
+{
+    /**
+     * バッチ<a class="keyword" href="http://d.hatena.ne.jp/keyword/%CB%DC%C2%CE">本体</a>
+     */
+    public static function run()
+    {
+        // メールヘッダー情報
+        $address_from = 'hogefuga@s1024.coreserve.jp';
+        $name_from = 'FuelPHP Task';
+        $address_to = 'hogefuga@s1024.coreserver.jp';
+        $name_to = '俺';
+
+        $yesterday = date('Y/m/d', time() - 86400);
+        $one_week_ago = date('Y/m/d', time() - 86400 * 7);
+
+        $log_dir = '/virtual/hogefuga/php/logsender/fuel/app/logs/';
+        $yesterday_log_name = $log_dir . $yesterday . '.php';
+
+        // メール送信
+        $subject = "FuelPHP Log - $yesterday.php";
+
+        $email = \Email::forge();
+        $email-&gt;from($address_from, $name_from);
+        $email-&gt;to($address_to, $name_to);
+        $email-&gt;subject($subject);
+        if (file_exists($yesterday_log_name)) {
+            $email-&gt;body('');
+            $email-&gt;attach($yesterday_log_name);
+        } else {
+            $email-&gt;body('昨日のログファイルはありません。');
+        }
+        try {
+            $email-&gt;send();
+        } catch (Exception $ex) {
+
+        }
+                
+        // 1 週間前のログを削除
+        $log_to_delete = $log_dir . $one_week_ago . '.php';
+        if (file_exists($log_to_delete)) {
+            if (!unlink($log_to_delete)) {
+                echo 'ファイル削除に失敗' . PHP_EOL;
+            }
+            self::remove_directory(dirname($log_to_delete));
+            self::remove_directory(dirname(dirname($log_to_delete)));
+        }
+    }
+    
+    
+    /**
+    * ディレクトリを削除する。ディレクトリ内にファイルがある時は何もしない。
+    * @param string $<a class="keyword" href="http://d.hatena.ne.jp/keyword/dir">dir</a>  ディレクトリ名
+    */
+   private static function remove_directory($dir)
+   {
+       $files = scandir($dir);
+       if (count($files) === 2) {
+           rmdir($dir);
+       }
+    }
+}
+</pre></p>
+			<p><p>このタスクを<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%B3%A5%DE%A5%F3%A5%C9%A5%E9%A5%A4%A5%F3">コマンドライン</a>から実行する際、以下のコマンドではエラーが返ってきます。</p></p>
+<p><pre>
+php ~/php/logsender/oil r logsender
+</pre></p>
+			<p><p>本稿執筆時点では XREA (一部のサーバーを除く)と CORESERVER は PHP のバージョンが 5.2 なので、FuelPHP は動かないのでした。PHP をフルパスで指定しましょう。</p></p>			<p><p>ここでサーバーに<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%ED%A5%B0%A5%A4%A5%F3">ログイン</a>し<span class="footnote"><a href="/suno88/20131217/1387285818#20131217f1" name="20131217fn1" title="「レンタルサーバー XREA/CORESERVER で FuelPHP を動かす」の「3. シンボリックリンクの作成」を参照してください。">*1</a></span>、ホームディレクトリで <code><a class="keyword" href="http://d.hatena.ne.jp/keyword/ls">ls</a> /usr/local/bin/php*</code> を実行してみてください。以下のような表示になると思います。</p></p>
+<p><pre>
+hogefuga@s1024:~&gt; ls /usr/local/bin/php*
+/usr/local/bin/php           /usr/local/bin/php-5.2.4cli   /usr/local/bin/php-5.4.19cli  /usr/local/bin/php55-config
+/usr/local/bin/php4          /usr/local/bin/php-5.2.5      /usr/local/bin/php-5.4.21     /usr/local/bin/php55ize
+/usr/local/bin/php-4.4.7     /usr/local/bin/php-5.2.5cli   /usr/local/bin/php-5.4.21cli  /usr/local/bin/php5cli
+/usr/local/bin/php-4.4.7cli  /usr/local/bin/php52cli       /usr/local/bin/php-5.4.5      /usr/local/bin/php5-config
+/usr/local/bin/php-4.4.8     /usr/local/bin/php53          /usr/local/bin/php-5.4.5cli   /usr/local/bin/php5ize
+/usr/local/bin/php-4.4.8cli  /usr/local/bin/php-5.3.15     /usr/local/bin/php-5.4.7      /usr/local/bin/php6
+/usr/local/bin/php4cli       /usr/local/bin/php-5.3.15cli  /usr/local/bin/php-5.4.7cli   /usr/local/bin/php6cli
+/usr/local/bin/php4-config   /usr/local/bin/php-5.3.17     /usr/local/bin/php54cli       /usr/local/bin/php6-config
+/usr/local/bin/php4ize       /usr/local/bin/php-5.3.17cli  /usr/local/bin/php54-config   /usr/local/bin/php6ize
+/usr/local/bin/php5          /usr/local/bin/php-5.3.27     /usr/local/bin/php54ize       /usr/local/bin/php_back
+/usr/local/bin/php52         /usr/local/bin/php-5.3.27cli  /usr/local/bin/php55          /usr/local/bin/php-<a class="keyword" href="http://d.hatena.ne.jp/keyword/cgi">cgi</a>
+/usr/local/bin/php-5.2.2     /usr/local/bin/php53cli       /usr/local/bin/php-5.5.3      /usr/local/bin/php-config
+/usr/local/bin/php-5.2.2cli  /usr/local/bin/php53-config   /usr/local/bin/php-5.5.3cli   /usr/local/bin/<a class="keyword" href="http://d.hatena.ne.jp/keyword/phpize">phpize</a>
+/usr/local/bin/php-5.2.3     /usr/local/bin/php53ize       /usr/local/bin/php-5.5.5
+/usr/local/bin/php-5.2.3cli  /usr/local/bin/php54          /usr/local/bin/php-5.5.5cli
+/usr/local/bin/php-5.2.4     /usr/local/bin/php-5.4.19     /usr/local/bin/php55cli
+hogefuga@s1024:~&gt;
+</pre></p>
+			<p><p>FuelPHP の実行には PHP 5.3 以上であればいいので、好きなバージョンの PHP を指定しましょう。</p></p>
+<p><pre>
+/usr/local/bin/php-5.5.5cli ~/php/logsender/oil r logsender
+</pre></p>
+			<p><p>これを実行する<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%B7%A5%A7%A5%EB%A5%B9%A5%AF%A5%EA%A5%D7%A5%C8">シェルスクリプト</a>を適当な場所に設置します。ここでは ~/cron_logsender.sh として置くことにします。改行コードを <a class="keyword" href="http://d.hatena.ne.jp/keyword/LF">LF</a> にするのを忘れないようにしてください。</p></p>
+<p><pre>
+#!bin/sh
+/usr/local/bin/php-5.5.5cli ~/php/logsender/oil r logsender
+<a class="keyword" href="http://d.hatena.ne.jp/keyword/exit">exit</a>
+</pre></p>
+			<p><p>これを cron ジョブで起動するように設定します。CORESERVER のコントロールパネルにログインして、左メニューの「CRON ジョブ」をクリックし、「CRON ジョブの編集」画面を開きます。</p></p>
+			<p><img width="487" alt="CORESERVER コントロールパネル メニュー" src="http://m5s.jp/htn/dch/coreserver.png" height="527"><br></p>
+			<p><img width="463" alt="CORESERVER コントロールパネル CRON ジョブ設定" src="http://m5s.jp/htn/dch/coreserver2.png" height="208"></p>
+			<p><p>空いている設定欄に、以下のように入力します。</p></p>
+			<p><ul>
+			  <li>分 → 30</li>
+			  <li>時 → 0</li>
+			  <li>日 → *</li>
+			  <li>月 → *</li>
+			  <li>曜日 → *</li>
+			</ul></p>
+			<p><p>その下にある「/virtual/hogefuga/」に続くテキストボックスには、</p></p>
+<p><pre>
+cron_logsender.sh &gt; /dev/null 2&gt;&amp;1
+</pre></p>
+			<p><p>と入力します。これで、毎日 0:30 に先ほどのタスクが実行されます。</p></p>
+			<p><p>メール送信時にエラーが発生したときの処理などは、みなさんで追加してみてください。</p></p>
+			<h5> 【12/18 追記】</h5>
+			<p><p>添付ファイルのサイズの制限について、<a target="_blank" href="https://twitter.com/ounziw/status/413225966786199552">Fumito Mizuno さんから質問をいただきました</a>。公式発表はないようなので、実際にどのくらいまで添付で送れるか、簡単なコードを書いて調べてみました。</p></p>
+			<p><p>1MB から 1MB 刻みで添付ファイルのサイズを増やして送信したところ、こんな<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%A8%A5%E9%A1%BC%A5%E1%A5%C3%A5%BB%A1%BC%A5%B8">エラーメッセージ</a>が出ました。</p></p>
+			<p><blockquote style="font-family: monospace"></p>
+			<p>Fatal <a class="keyword" href="http://d.hatena.ne.jp/keyword/error">error</a>: Allowed memory size of 94371840 bytes exhausted (tried to allocate 28329953 bytes) in /virtual/hogefuga/php/logsender/fuel/packages/email/classes/email/driver.php on <a class="keyword" href="http://d.hatena.ne.jp/keyword/line">line</a> 965<br></p>
+			<p><span style="color: red">Fatal Error - Allowed memory size of 94371840 bytes exhausted (tried to allocate 28329953 bytes) in PKGPATH/email/classes/email/driver.php on line 965</span></p>
+			<p></blockquote></p>
+			<p><p>19MB の添付ファイルがついたメールまでは届きましたが、20MB の添付ファイルつきのメールは届きませんでした。サーバーによって差はあると思いますが、ログが 20MB 以上になると厳しいかもしれません。</p></p>
+			<p><p>本当はログファイルを <a class="keyword" href="http://d.hatena.ne.jp/keyword/ZIP">ZIP</a> 圧縮してから添付したいのですが、XREA/CORESERVER では ZipArchive クラスが使えないので、非圧縮のまま添付しています。</p></p>
+			<h4> 終わりに</h4>
+			<p><p>この記事を最初に書いたとき、メール送信部分は素の PHP で、ログの内容をメール本文として mb_send_mail() で送信するコードでした。書き終えた後、「FuelPHP の<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%A2%A5%C9%A5%D9%A5%F3%A5%C8%A5%AB%A5%EC%A5%F3%A5%C0%A1%BC">アドベントカレンダー</a>なのに FuelPHP 成分が少ないぞ」と思い直し、使ったこともない Email パッケージで送信するコードを書き始めたところ、ものの 5 分程度で添付ファイルつきのメールを送信するコードが動いてしまい、ますます FuelPHP が気に入ってしまいました。</p></p>
+			<p><p>次回は <a target="_blank" href="https://twitter.com/madmamor">@mamor</a> さんの「<a target="_blank" href="http://madroom-project.blogspot.jp/2013/12/fac20131218.html">FuelPHPとMongoDBとTraceKitでJavaScriptのエラー情報を収集してみる</a>」です。</p></p>
+		</div>
+<div id="google_afc_user" class="section">
+  <script type="text/javascript"><!--
+     hatena_dfp_tag       = '/4374287/diary_user';
+     hatena_dfp_size      = [[300, 250], [336, 280]];
+     hatena_dfp_target_id = 'google_afc_user';
+  --></script>
+  <script type="text/javascript" src="http://ad.hatena.ne.jp/js/hatena_dfp-compiled.js"></script>
+</div>
+		<div class="footnote">
+			<p class="footnote"><a href="/suno88/20131217/1387285818#20131217fn1" name="20131217f1">*1</a>：「<a href="http://d.hatena.ne.jp/suno88/20131006/1381040481">レンタルサーバー XREA/CORESERVER で FuelPHP を動かす</a>」の「3. <a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%B7%A5%F3%A5%DC%A5%EA%A5%C3%A5%AF%A5%EA%A5%F3%A5%AF">シンボリックリンク</a>の作成」を参照してください。</p>
+		</div>
+
+<!-- google_ad_section_end -->
+<!-- rakuten_ad_target_end -->
+
+
+</div>
+
+
+
+  <div class="comment">
+    <div class="caption">
+      <a name="c" href="/suno88/comment?date=20131217&section=1387285818#c">コメントを書く</a>
+      
+    </div>
+
+    
+
+
+    
+  </div>
+
+
+
+
+
+
+  
+  <div class="refererlist">
+    <div class="caption">
+      <a name="tb">トラックバック</a> - http://d.hatena.ne.jp/suno88/20131217/1387285818
+    </div>
+    
+  </div>
+  
+  
+
+
+
+
+
+    <div class="refererlist">
+      <div class="caption">リンク元</div>
+      <ul>
+          <li>16 <a href="http://t.co/QnYGdrQn1V" rel="nofollow">http://t.co/QnYGdrQn1V</a></li>
+          <li>6 <a href="https://www.google.co.jp/" rel="nofollow">https://www.google.co.jp/</a></li>
+          <li>2 <a href="http://www.google.co.jp/url?sa=t&amp;rct=j&amp;q=&amp;esrc=s&amp;source=web&amp;cd=18&amp;ved=0CGwQFjAHOAo&amp;url=http%3A%2F%2Fd.hatena.ne.jp%2Fsuno88%2F20131217%2F1387285818&amp;ei=B8-wUqHpI4nrkwWSvoDQBw&amp;usg=AFQjCNFqYhFcxRhVu2cgf4nEbs3-Tqj_QA&amp;sig2=1OA2qWyFX4kqokvexa6UGA" rel="nofollow">http://www.google.co.jp/url?sa=t&amp;rct=j&amp;q=&amp;esrc=s&amp;source=web&amp;cd=18&amp;ved=0CGwQFjAHOAo&amp;url=http://d.hatena.ne.jp/suno88/20131217/1387285818&amp;ei=B8-wUqHpI4nrkwWSvoDQBw&amp;usg=AFQjCNFqYhFcxRhVu2cgf4nEbs3-Tqj_QA&amp;sig2=1OA2qWyFX4kqokvexa6UGA</a></li>
+          <li>2 <a href="http://www.google.com/url?source=web&amp;url=http%3A%2F%2Fd.hatena.ne.jp%2Fsuno88%2F20131217%2F1387285818" rel="nofollow">http://www.google.com/url?source=web&amp;url=http://d.hatena.ne.jp/suno88/20131217/1387285818</a></li>
+          <li>1 <a href="http://api.twitter.com/1/statuses/show/412934637975920640.json" rel="nofollow">http://api.twitter.com/1/statuses/show/412934637975920640.json</a></li>
+          <li>1 <a href="http://api.twitter.com/1/statuses/show/413260539532288000.json" rel="nofollow">http://api.twitter.com/1/statuses/show/413260539532288000.json</a></li>
+          <li>1 <a href="http://b.hatena.ne.jp/entry/d.hatena.ne.jp/shinichiro_h/20131218%231387328729" rel="nofollow">http://b.hatena.ne.jp/entry/d.hatena.ne.jp/shinichiro_h/20131218#1387328729</a></li>
+          <li>1 <a href="http://feedly.com/" rel="nofollow">http://feedly.com/</a></li>
+          <li>1 <a href="http://feedly.com/index.html" rel="nofollow">http://feedly.com/index.html</a></li>
+          <li>1 <a href="http://jetsli.de/crawler" rel="nofollow">http://jetsli.de/crawler</a></li>
+      </ul>
+      
+    </div>
+
+
+
+
+</div>
+
+
+
+</div>
+<div class="calendar" id="pager-bottom">
+  <a rel="prev" href="/suno88/20131006/1381040481" class="prev">&lt;[IT][PHP][FuelPHP]レンタルサー...</a>
+</div>
+</div>
+<div class="sidebar">
+	<div class="hatena-module hatena-module-section">
+<div class="hatena-moduletitle"><a href="/suno88/archive">最新タイトル</a></div>
+<div class="hatena-modulebody">
+<ul class="hatena-section">
+<li><a href="http://d.hatena.ne.jp/suno88/20131217/1387285818">[IT][PHP][FuelPHP]レンタルサーバー XREA/CORESERVER で FuelPHP を使う [実践編]</a></li>
+<li><a href="http://d.hatena.ne.jp/suno88/20131006/1381040481">[IT][PHP][FuelPHP]レンタルサーバー XREA/CORESERVER で FuelPHP を動かす</a></li>
+<li><a href="http://d.hatena.ne.jp/suno88/20120727/1343369579">[IT]Developers [Social Enterprise] Summit 2012 (夏サミ) 私的不完全議事録 【natsumi】</a></li>
+<li><a href="http://d.hatena.ne.jp/suno88/20110916/1316145195">[IT]X-over Development Conference (XDev) 2011 私的不完全議事録 【xdev】</a></li>
+<li><a href="http://d.hatena.ne.jp/suno88/20110610/1308521729">「がんばれ! 講座」第六講座「時間と習慣を味方にする」 私的不完全議事録</a></li>
+<li><a href="http://d.hatena.ne.jp/suno88/20110219/1298083910">[IT]Developers Summit 2011 (2 日目) 私的不完全議事録 【devsumi】</a></li>
+<li><a href="http://d.hatena.ne.jp/suno88/20101016/1287290906">[IT]楽天テクノロジーカンファレンス 2010 私的不完全議事録 【rakutentech】</a></li>
+<li><a href="http://d.hatena.ne.jp/suno88/20100925/1285394353">[IT]PHP カンファレンス 2010 テックデイ 私的不完全議事録 【phpcon2010】</a></li>
+<li><a href="http://d.hatena.ne.jp/suno88/20100924/1285368347">[IT]PHP カンファレンス 2010 ビジネスデイ 私的不完全議事録 【phpcon2010】</a></li>
+<li><a href="http://d.hatena.ne.jp/suno88/20100922/1285151218">[IT]Twitter の XSS 脆弱性騒動に思う</a></li>
+</ul>
+</div>
+</div>
+
+	<div class="hatena-module hatena-module-comment">
+<div class="hatena-moduletitle">最近のコメント</div>
+<div class="hatena-modulebody">
+<ul class="hatena-recentcomment">
+<li><a href="/suno88/20110219#c">2011-02-19</a>&nbsp;suno88</li>
+<li><a href="/suno88/20110219#c">2011-02-19</a>&nbsp;hyoshiok</li>
+<li><a href="/suno88/20110219#c">2011-02-19</a>&nbsp;hyoshiok</li>
+<li><a href="/suno88/20100317#c">2010-03-17</a>&nbsp;you_got</li>
+<li><a href="/suno88/20100317#c">2010-03-17</a>&nbsp;suno88</li>
+</ul>
+</div>
+</div>
+
+	<div class="hatena-module hatena-module-trackback">
+<div class="hatena-moduletitle">最近のトラックバック</div>
+<div class="hatena-modulebody">
+<ul class="hatena-recentcomment">
+<li><a href="/suno88/20120727#tb">2012-07-27</a>&nbsp;<a href="http://twitter.com/Azusayumi_/status/315101741316177920">Twitter / @Azusayumi_</a></li>
+<li><a href="/suno88/20120727#tb">2012-07-27</a>&nbsp;<a href="http://d.hatena.ne.jp/azusayumi_hal/20130303/1362317632">休まない翼 - 信濃の国でバス・酒・風呂（3）</a></li>
+<li><a href="/suno88/20110219#tb">2011-02-19</a>&nbsp;<a href="http://d.hatena.ne.jp/youichi/20110301/p1">Youichi’s Log(分家) -  静的解析</a></li>
+<li><a href="/suno88/20101016#tb">2010-10-16</a>&nbsp;<a href="http://twitter.com/suno88/status/1563647297978368">Twitter / @suno88</a></li>
+<li><a href="/suno88/20101016#tb">2010-10-16</a>&nbsp;<a href="http://d.hatena.ne.jp/GARAPON/20101018/1287412154">自分の仕事を憎むには人生は余りにも短い - 楽天テクノロジーカンフ...</a></li>
+</ul>
+</div>
+</div>
+
+	<div class="hatena-module hatena-module-keywordcloud">
+
+<div class="hatena-moduletitle"><a href="/suno88/keywordcloud">最近言及したキーワード</a></div>
+
+<div class="hatena-modulebody">
+<ul class="keywordcloud">
+
+<li><a href="/suno88/searchdiary?word=%A5%A2%A5%AB%A5%A6%A5%F3%A5%C8" class="keywordcloud0">アカウント</a></li>
+
+<li><a href="/suno88/searchdiary?word=%A5%A2%A5%D7%A5%EA%A5%B1%A1%BC%A5%B7%A5%E7%A5%F3" class="keywordcloud6">アプリケーション</a></li>
+
+<li><a href="/suno88/searchdiary?word=%A5%A4%A5%F3%A5%B9%A5%C8%A1%BC%A5%EB" class="keywordcloud0">インストール</a></li>
+
+<li><a href="/suno88/searchdiary?word=%A5%A6%A5%A7%A5%D6" class="keywordcloud3">ウェブ</a></li>
+
+<li><a href="/suno88/searchdiary?word=%A5%A8%A5%F3%A5%B8%A5%CB%A5%A2" class="keywordcloud3">エンジニア</a></li>
+
+<li><a href="/suno88/searchdiary?word=%A5%AA%A1%BC%A5%D7%A5%F3%A5%BD%A1%BC%A5%B9" class="keywordcloud0">オープンソース</a></li>
+
+<li><a href="/suno88/searchdiary?word=%A5%AF%A5%E9%A5%A6%A5%C9" class="keywordcloud0">クラウド</a></li>
+
+<li><a href="/suno88/searchdiary?word=%A5%B3%A5%DF%A5%E5%A5%CB%A5%C6%A5%A3" class="keywordcloud3">コミュニティ</a></li>
+
+<li><a href="/suno88/searchdiary?word=%A5%B5%A1%BC%A5%D0%A1%BC" class="keywordcloud10">サーバー</a></li>
+
+<li><a href="/suno88/searchdiary?word=%A5%B9%A5%C8%A5%EC%A1%BC%A5%B8" class="keywordcloud3">ストレージ</a></li>
+
+<li><a href="/suno88/searchdiary?word=%A5%BB%A5%AD%A5%E5%A5%EA%A5%C6%A5%A3" class="keywordcloud3">セキュリティ</a></li>
+
+<li><a href="/suno88/searchdiary?word=%A5%BB%A5%C3%A5%B7%A5%E7%A5%F3" class="keywordcloud3">セッション</a></li>
+
+<li><a href="/suno88/searchdiary?word=%A5%C4%A5%A4%A5%C3%A5%BF%A1%BC" class="keywordcloud3">ツイッター</a></li>
+
+<li><a href="/suno88/searchdiary?word=%A5%C6%A5%AF%A5%CE%A5%ED%A5%B8%A1%BC" class="keywordcloud3">テクノロジー</a></li>
+
+<li><a href="/suno88/searchdiary?word=%A5%D5%A5%EC%A1%BC%A5%E0%A5%EF%A1%BC%A5%AF" class="keywordcloud6">フレームワーク</a></li>
+
+<li><a href="/suno88/searchdiary?word=%A5%D6%A5%C3%A5%AF%A5%DE%A1%BC%A5%AF" class="keywordcloud3">ブックマーク</a></li>
+
+<li><a href="/suno88/searchdiary?word=%A5%D7%A5%ED%A5%B0%A5%E9%A5%E0" class="keywordcloud3">プログラム</a></li>
+
+<li><a href="/suno88/searchdiary?word=%A5%E2%A5%D0%A5%A4%A5%EB" class="keywordcloud3">モバイル</a></li>
+
+<li><a href="/suno88/searchdiary?word=%B3%F4%BC%B0%B2%F1%BC%D2" class="keywordcloud3">株式会社</a></li>
+
+<li><a href="/suno88/searchdiary?word=%C5%EC%B5%FE" class="keywordcloud3">東京</a></li>
+
+</ul>
+</div>
+</div>
+
+	<div class="hatena-module hatena-module-searchform">
+<div class="hatena-moduletitle">日記の検索</div>
+<div class="hatena-modulebody">
+<form method="GET" action="/suno88/searchdiary" class="hatena-searchform"><input type="text" name="word" class="hatena-searchform searchform-word" value=""><input type="submit" name=".submit" value="検索" class="hatena-searchform searchform-button"><br><label class="searchform-label-detail"><input type="radio" name="type" value="detail" checked="checked" class="searchform-radio">詳細</label> <label class="searchform-label-list"><input type="radio" name="type" value="list" class="searchform-radio">一覧</label></form>
+
+</div>
+</div>
+
+	<div class="hatena-module hatena-module-profile">
+  <div class="hatena-moduletitle">プロフィール</div>
+  <div class="hatena-modulebody">
+    <div class="hatena-profile">
+      <p class="hatena-profile-image"><a href="/suno88/about"><img src="http://www.st-hatena.com/users/su/suno88/profile.gif" alt="suno88" /></a></p>
+      <p class="hatena-profile-id"><a href="/suno88/about">suno88</a></p>
+      <p class="hatena-profile-body">地方で IT 系の仕事を独立してできるか、信州で試行錯誤の記録。</p>
+    </div>
+  </div>
+</div>
+
+</div>
+</div>
+
+
+
+
+
+
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  var days = document.getElementById('days');
+  if (days && days.innerHTML.indexOf("今週のお題") != -1) {
+    _gaq.push(['_setCustomVar', 2, 'campaign', 'odai', 3]);
+  }
+
+  if (days && /\u4eca\u9031\u306e\u304a\u984c/.test(days.innerHTML)) {
+    _gaq.push(['_setCustomVar', 2, 'campaign', 'odai', 3]);
+  }
+
+  if (days && /CodeIQ\u306e\u554f\u984c\u30fb\u30d1\u30ba\u30eb\u3092\u8003\u3048\u3088\u3046\uff01/.test(days.innerHTML)) {
+    _gaq.push(['_setCustomVar', 2, 'campaign', 'codeiq_matsuri2013_2_2', 3]);
+  }
+
+  if (days && /2013\u5e74\u306b\u3084\u308a\u305f\u3044\u3053\u3068/.test(days.innerHTML)) {
+    _gaq.push(['_setCustomVar', 2, 'campaign', 'newyear2013', 3]);
+  }
+
+  if (days && /2012\u5e74\u30dc\u30c4\u738b\u6c7a\u5b9a\u6226\uff01\u30d5\u30eb\u30bf\u88fd\u83d3\ud7\u306f\u3066\u306a\u30d6\u30ed\u30b0\u304a\u984c\u30ad\u30e3\u30f3\u30da\u30fc\u30f3/.test(days.innerHTML)) {
+    _gaq.push(['_setCustomVar', 2, 'campaign', 'furuta', 3]);
+  }
+
+  if (days && /\u6d77\u5916\u30c9\u30e9\u30de\u300e\u30e9\u30a4\u30fb\u30c8\u30a5\u30fb\u30df\u30fc \u5618\u306e\u77ac\u9593\u300f\u89b3\u305f\u3044\uff01|\u300e\u30e9\u30a4\u30fb\u30c8\u30a5\u30fb\u30df\u30fc \u5618\u306e\u77ac\u9593\u300f\u7b2c1\u8a71\u306e\u611f\u60f3\u3092\u6559\u3048\u3066\u304f\u3060\u3055\u3044|\u4eca\u3060\u304b\u3089\u8a00\u3048\u308b\u300c\u5618\u3092\u3064\u3044\u3066\u3057\u307e\u3063\u305f\u30a8\u30d4\u30bd\u30fc\u30c9\u300d\u3092\u6559\u3048\u3066\u304f\u3060\u3055\u3044|\u3060\u307e\u3055\u308c\u305f\u3051\u3069\u3001\u8a31\u305b\u3066\u3057\u307e\u3063\u305f\u5618\u3092\u6559\u3048\u3066\u304f\u3060\u3055\u3044/.test(days.innerHTML)) {
+    _gaq.push(['_setCustomVar', 2, 'campaign', 'lietome', 3]);
+  }
+
+  if (days && /\u30de\u30a4\u30d9\u30b9\u30c8\u30bd\u30f3\u30b02013/.test(days.innerHTML)) {
+    _gaq.push(['_setCustomVar', 2, 'campaign', 'mybestsong2013', 3]);
+  }
+
+  if (days && /Windows\/Office\u6b66\u52c7\u4f1d/.test(days.innerHTML)) {
+    _gaq.push(['_setCustomVar', 2, 'campaign', 'WindowsDevOpen', 3]);
+  }
+
+  if (days && /\u590f\u306e\u5199\u771f2013/.test(days.innerHTML)) {
+    _gaq.push(['_setCustomVar', 2, 'campaign', 'photocon2013summer', 3]);
+  }
+
+  if (days && /\u7d0d\u6dbc\uff01\u307b\u3093\u3068\u306b\u3042\u3063\u305f\u6016\u3044\u30b3\u30fc\u30c9/.test(days.innerHTML)) {
+    _gaq.push(['_setCustomVar', 2, 'campaign', 'codeiq_matsuri2013_2_1', 3]);
+  }
+
+  if (days && /Visa\u30d7\u30ea\u30da\u30a4\u30c9\u300cV\u30d7\u30ea\u30ab\u300d\u8a66\u3057\u305f\u3044\uff01|Visa\u30d7\u30ea\u30da\u30a4\u30c9\u300cV\u30d7\u30ea\u30ab\u300d\u3001\u81ea\u5206\u306a\u3089\u3053\u3046\u4f7f\u3046\uff01|V\u30d7\u30ea\u30ab\u304c1\u4e07\u5186\u5206\u3042\u3063\u305f\u3089\u3001\u30cd\u30c3\u30c8\u3067\u4f55\u3092\u8cb7\u3044\u307e\u3059\u304b\uff1f/.test(days.innerHTML)) {
+    _gaq.push(['_setCustomVar', 2, 'campaign', 'vpreca', 3]);
+  }
+
+  if (days && /\u300c\u79c1\u306f\u3007\u3007\u738b\uff01\u300d\u30d0\u30a4\u30af\u738b\ud7\u306f\u3066\u306a\u30d6\u30ed\u30b0\u304a\u984c\u30ad\u30e3\u30f3\u30da\u30fc\u30f3/.test(days.innerHTML)) {
+    _gaq.push(['_setCustomVar', 2, 'campaign', 'bike-o', 3]);
+  }
+
+  if (days && /\u30a2\u30a4\u30c7\u30e0 \u30a8\u30f3\u30b8\u30cb\u30a2\u30ad\u30e3\u30ea\u30a2Hacks\u5171\u6709\u30d7\u30ed\u30b8\u30a7\u30af\u30c8|\u30a8\u30f3\u30b8\u30cb\u30a2\u3068\u3057\u3066\u306e\u3001\u3068\u3063\u3066\u304a\u304d\u306e\u30ad\u30e3\u30ea\u30a2Hacks\u3092\u6559\u3048\u3066\u304f\u3060\u3055\u3044|\u3042\u306a\u305f\u304c\u30a8\u30f3\u30b8\u30cb\u30a2\u8ee2\u8077\u30b5\u30a4\u30c8\u3092\u4f5c\u308b\u306a\u3089\u3001\u3069\u3093\u306a\u30b5\u30a4\u30c8\u306b\u3057\u307e\u3059\u304b\uff1f|5\u5e74\u5f8c\u306e\u300c\u30a8\u30f3\u30b8\u30cb\u30a2\u306e\u50cd\u304d\u65b9\u300d\u306f\u3001\u3069\u3046\u5909\u308f\u3063\u3066\u3044\u3066\u307b\u3057\u3044\u3067\u3059\u304b\uff1f/.test(days.innerHTML)) {
+    _gaq.push(['_setCustomVar', 2, 'campaign', 'aidemcareer', 3]);
+  }
+
+  if (days && /\u306f\u3066\u306a\u30c0\u30a4\u30a2\u30ea\u30fc10\u5468\u5e74\u304a\u3081\u3067\u3068\u3046\uff01/.test(days.innerHTML)) {
+    _gaq.push(['_setCustomVar', 2, 'campaign', 'hatenadiary10th', 3]);
+  }
+
+  if (days && /\u8aad\u307f\u653e\u984c\u3067\u30b3\u30b9\u30d1\u3088\u3057\uff01\u96fb\u5b50\u66f8\u7c4d\u30a2\u30d7\u30eayomel.jp\u30ad\u30e3\u30f3\u30da\u30fc\u30f3/.test(days.innerHTML)) {
+    _gaq.push(['_setCustomVar', 2, 'campaign', 'yomel', 3]);
+  }
+
+  if (days && /\u30bb\u30c4\u30e4\u30af\u30a8\u30b9\u30c8/.test(days.innerHTML)) {
+    _gaq.push(['_setCustomVar', 2, 'campaign', 'setsuyaquest', 3]);
+  }
+
+  if (days && /\u79cb\u306e\u591c\u9577\u306f\u8aad\u66f8\u3068\u30d6\u30ed\u30b0/.test(days.innerHTML)) {
+    _gaq.push(['_setCustomVar', 2, 'campaign', 'bookreview2013fall', 3]);
+  }
+
+  if (days && /\u7279\u5225\u304a\u984c\u300c\u82b8\u8853\u306e\u79cb\u300d/.test(days.innerHTML)) {
+    _gaq.push(['_setCustomVar', 2, 'campaign', 'caillebotte', 3]);
+  }
+
+  _gaq.push(
+  ['_setAccount', 'UA-441387-31'],
+  ['_setCustomVar', 1, 'afc_type', 'point', 3],
+  ['_setCustomVar', 3, 'theme', 'hatena2-green', 3],
+  ['_setCustomVar', 4, 'usertype', 'guest', 1],
+  ['_trackPageview'],
+  ['b._setAccount', 'UA-7855606-1'],
+  ['b._setDomainName', '.hatena.ne.jp'],
+  ['b._trackPageview']
+  
+  );
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+
+<!-- CG:1,CH:0,ICG:8,ICH:0,T: -->
+</body>
+</html>
