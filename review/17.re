@@ -92,7 +92,11 @@ cronジョブによるバッチ処理を毎晩走らせましょう。FuelPHPで
 
 //emlist{
 <?php
-// @TODO ライセンス明記
+/*
+ * Copyright (c) 2013 SUNOHARA, Hiroyasu
+ * This software is released under the MIT License.
+ * http://opensource.org/licenses/mit-license.php
+ */
 
 /**
  * FuelPHP の前日分ログファイルをメールで送信し、1 週間前のログファイルを削除するタスク。
@@ -149,8 +153,8 @@ class LogSender
             if (! unlink($log_to_delete)) {
                 echo 'ファイル削除に失敗' . PHP_EOL;
             }
-            self::remove_directory(dirname($log_to_delete));
-            self::remove_directory(dirname(dirname($log_to_delete)));
+            static::remove_directory(dirname($log_to_delete));
+            static::remove_directory(dirname(dirname($log_to_delete)));
         }
     }
 
@@ -265,7 +269,7 @@ Fatal Error - Allowed memory size of 94371840 bytes exhausted (tried to allocate
 //quote{
 @<strong>{@suno88}
 
-@TODO
+DelphiとPHPをこよなく愛する長野のプログラマー。2013年にFuelPHPと出会って人生が変わりつつあります。
 
 Twitter: @<href>{https://twitter.com/suno88,@suno88}
 
