@@ -1,28 +1,28 @@
 = レンタルサーバーXREA/CORESERVERでFuelPHPを使う（実践編）
 
-この記事は @<href>{http://atnd.org/events/45096,FuelPHP Advent Calendar 2013} の 17 日目の記事として公開します。なお、昨日は hosopy さんの「@<href>{http://qiita.com/hosopy/items/0428be74f1c3868c55ba,FuelPHPのmoduleを使いこなす}」でした。
+この記事は@<href>{http://atnd.org/events/45096,FuelPHP Advent Calendar 2013}の17日目の記事として公開します。
 
-先々月に「@<href>{http://d.hatena.ne.jp/suno88/20131006/1381040481,レンタルサーバー XREA/CORESERVER で FuelPHP を動かす}」という記事を書きました。今回はその続きとして、もう少し実践的な内容をお届けします。前回の記事と併せてお読みください。
+先々月に「@<href>{http://d.hatena.ne.jp/suno88/20131006/1381040481,レンタルサーバーXREA/CORESERVERでFuelPHPを動かす}」という記事を書きました。今回はその続きとして、もう少し実践的な内容をお届けします。前回の記事と併せてお読みください。
 
-本稿の内容は s110.coreserver.jp 上の PHP 5.4.21 で FuelPHP 1.7.1 を使って動作確認をしてあります。以降、ユーザー名を hogefuga、サーバーを s1024.coreserver.jp と仮定して説明します。みなさんのアカウント情報に適宜読み換えながら試してみてください。
+本稿の内容はs110.coreserver.jp上のPHP 5.4.21でFuelPHP 1.7.1を使って動作確認をしてあります。以降、ユーザー名をhogefuga、サーバーをs1024.coreserver.jpと仮定して説明します。みなさんのアカウント情報に適宜読み換えながら試してみてください。
 
 == ローカルの開発環境でデータベースを使う
 
-XREA/CORESERVER では MySQL と PostgreSQL が利用可能ですが、セキュリティーの理由からか、同一サーバーからのアクセス以外は弾かれるようで、ローカルの開発環境からサーバー上のデータベースを読み書きすることはできません。そこで開発用のデータベースをローカルに立て、ローカル環境ではローカルデータベースを、サーバー上の運用環境ではサーバーのデータベースを参照するようにしましょう。
+XREA/CORESERVERではMySQLとPostgreSQLが利用可能ですが、セキュリティーの理由からか、同一サーバーからのアクセス以外は弾かれるようで、ローカルの開発環境からサーバー上のデータベースを読み書きすることはできません。そこで開発用のデータベースをローカルに立て、ローカル環境ではローカルデータベースを、サーバー上の運用環境ではサーバーのデータベースを参照するようにしましょう。
 
-まず、サーバー上の環境を production (運用環境)に設定しましょう。FuelProject/public/.htaccess の先頭、「AddHandler application/x-httpd-php54cgi .php」の上あたりに、次の行を追加します。
+まず、サーバー上の環境をproduction（運用環境）に設定しましょう。FuelProject/public/.htaccessの先頭、「AddHandler application/x-httpd-php54cgi .php」の上あたりに、次の行を追加します。
 
 //emlist{
 SetEnv FUEL_ENV production
 //}
 
-.htaccess はローカルとサーバーでは記述が異なるので、不用意な上書きに注意してください。
+.htaccessはローカルとサーバーでは記述が異なるので、不用意な上書きに注意してください。
 
-これでローカル環境は development、サーバー環境は production と別々の FUEL_ENV が設定されました。では、それぞれの環境用に db.php を作ります。
+これでローカル環境はdevelopment、サーバー環境はproductionと別々のFUEL_ENVが設定されました。では、それぞれの環境用にdb.phpを作ります。
 
-私は PostgreSQL が好きなので、基本的にサーバーにも PostgreSQL でデータベースを作成しています。ここでは PostgreSQL の例を挙げますが、MySQL でも同様に設定できますので、参考にしてください。
+私はPostgreSQLが好きなので、基本的にサーバーにもPostgreSQLでデータベースを作成しています。ここではPostgreSQLの例を挙げますが、MySQLでも同様に設定できますので、参考にしてください。
 
-まず、fuel/app/config/db.php に共通設定を書きます。
+まず、fuel/app/config/db.phpに共通設定を書きます。
 
 //emlist{
 <?php
@@ -39,7 +39,7 @@ return [
 ];
 //}
 
-続いてサーバー側の設定を fuel/app/config/production/db.php に記述しましょう。ホスト名は s1024.coreserver.jp とせず、localhost にします。
+続いてサーバー側の設定をfuel/app/config/production/db.phpに記述しましょう。ホスト名はs1024.coreserver.jpとせず、localhostにします。
 
 //emlist{
 <?php
@@ -57,7 +57,7 @@ return [
 ];
 //}
 
-同様に、ローカル環境の設定を fuel/app/config/development/db.php に記述します。
+同様に、ローカル環境の設定をfuel/app/config/development/db.phpに記述します。
 
 //emlist{
 <?php
@@ -75,23 +75,24 @@ return [
 ];
 //}
 
-ローカルに立てたデータベースの DB 名とユーザー名、パスワードをサーバーのものと同じにすれば設定を分けずに済みますが、ローカル環境で複数のデータベースを切り替えて開発できるようにしておくほうがよいでしょう。
+ローカルに立てたデータベースのDB名とユーザー名、パスワードをサーバーのものと同じにすれば設定を分けずに済みますが、ローカル環境で複数のデータベースを切り替えて開発できるようにしておくほうがよいでしょう。
 
-== タスクと Email パッケージを利用してログファイルの肥大化を防ぐ
+== タスクとEmailパッケージを利用してログファイルの肥大化を防ぐ
 
-fuel/app/logs に日々蓄積されるログファイルを、FuelPHP を使って定期的に掃除させましょう。
+fuel/app/logsに日々蓄積されるログファイルを、FuelPHPを使って定期的に掃除させましょう。
 
 次のような仕様を考えます。
 
  * 日付が変わったら、前日のログファイルをメールで送信する。
- * 1 週間前のログファイルは削除する。その際、カラになったディレクトリも削除する。
+ * 1週間前のログファイルは削除する。その際、カラになったディレクトリも削除する。
 
-cron ジョブによるバッチ処理を毎晩走らせましょう。FuelPHP ではタスクという機能でバッチ処理が実現できます。
+cronジョブによるバッチ処理を毎晩走らせましょう。FuelPHPではタスクという機能でバッチ処理が実現できます。
 
-適当なプロジェクトを作成し、fuel/app/tasks/logsender.php というファイルを作成します。プロジェクトの設置場所は @<tt>{~/php/logsender} とします。
+適当なプロジェクトを作成し、fuel/app/tasks/logsender.phpというファイルを作成します。プロジェクトの設置場所は@<tt>{~/php/logsender}とします。
 
 //emlist{
 <?php
+// @TODO ライセンス明記
 
 /**
  * FuelPHP の前日分ログファイルをメールで送信し、1 週間前のログファイルを削除するタスク。
@@ -170,15 +171,17 @@ class LogSender
 
 このタスクをコマンドラインから実行する際、以下のコマンドではエラーが返ってきます。
 
-//emlist{
+//cmd{
 php ~/php/logsender/oil r logsender
 //}
 
-本稿執筆時点では XREA (一部のサーバーを除く)と CORESERVER は PHP のバージョンが 5.2 なので、FuelPHP は動かないのでした。PHP をフルパスで指定しましょう。
+本稿執筆時点ではXREA（一部のサーバーを除く）とCORESERVERはPHPのバージョンが5.2なので、FuelPHPは動かないのでした。PHPをフルパスで指定しましょう。
 
-ここでサーバーにログインし@<href>{/suno88/20131217/1387285818#20131217f1,*1}、ホームディレクトリで @<tt>{ls /usr/local/bin/php*} を実行してみてください。以下のような表示になると思います。
+ここでサーバーにログインし@<fn>{login}、ホームディレクトリで@<tt>{ls /usr/local/bin/php*}を実行してみてください。以下のような表示になると思います。
 
-//emlist{
+//footnote[login][「@<href>{http://d.hatena.ne.jp/suno88/20131006/1381040481,レンタルサーバーXREA/CORESERVERでFuelPHPを動かす}」の「3. シンボリックリンクの作成」を参照してください。]
+
+//cmd{
 hogefuga@s1024:~> ls /usr/local/bin/php*
 /usr/local/bin/php           /usr/local/bin/php-5.2.4cli   /usr/local/bin/php-5.4.19cli  /usr/local/bin/php55-config
 /usr/local/bin/php4          /usr/local/bin/php-5.2.5      /usr/local/bin/php-5.4.21     /usr/local/bin/php55ize
@@ -199,13 +202,13 @@ hogefuga@s1024:~> ls /usr/local/bin/php*
 hogefuga@s1024:~>
 //}
 
-FuelPHP の実行には PHP 5.3 以上であればいいので、好きなバージョンの PHP を指定しましょう。
+FuelPHPの実行にはPHP 5.3以上であればいいので、好きなバージョンのPHPを指定しましょう。
 
-//emlist{
+//cmd{
 /usr/local/bin/php-5.5.5cli ~/php/logsender/oil r logsender
 //}
 
-これを実行するシェルスクリプトを適当な場所に設置します。ここでは ~/cron_logsender.sh として置くことにします。改行コードを LF にするのを忘れないようにしてください。
+これを実行するシェルスクリプトを適当な場所に設置します。ここでは~/cron_logsender.shとして置くことにします。改行コードをLFにするのを忘れないようにしてください。
 
 //emlist{
 #!bin/sh
@@ -213,12 +216,12 @@ FuelPHP の実行には PHP 5.3 以上であればいいので、好きなバー
 exit
 //}
 
-これを cron ジョブで起動するように設定します。CORESERVER のコントロールパネルにログインして、左メニューの「CRON ジョブ」をクリックし、「CRON ジョブの編集」画面を開きます。
+これを cron ジョブで起動するように設定します。CORESERVERのコントロールパネルにログインして、左メニューの「CRONジョブ」をクリックし、「CRONジョブの編集」画面を開きます。
 
 //image[coreserver][CORESERVER コントロールパネル メニュー]{
-//}  
+//}
 
-//image[coreserver2][CORESERVER コントロールパネル CRON ジョブ設定]{
+//image[coreserver2][CORESERVER コントロールパネル CRONジョブ設定]{
 //}
 
 空いている設定欄に、以下のように入力します。
@@ -235,15 +238,15 @@ exit
 cron_logsender.sh > /dev/null 2>&1
 //}
 
-と入力します。これで、毎日 0:30 に先ほどのタスクが実行されます。
+と入力します。これで、毎日0:30に先ほどのタスクが実行されます。
 
 メール送信時にエラーが発生したときの処理などは、みなさんで追加してみてください。
 
-=== 【12/18 追記】
+=== 【12/18追記】
 
-添付ファイルのサイズの制限について、@<href>{https://twitter.com/ounziw/status/413225966786199552,Fumito Mizuno さんから質問をいただきました}。公式発表はないようなので、実際にどのくらいまで添付で送れるか、簡単なコードを書いて調べてみました。
+添付ファイルのサイズの制限について、@<href>{https://twitter.com/ounziw/status/413225966786199552,Fumito Mizunoさんから質問をいただきました}。公式発表はないようなので、実際にどのくらいまで添付で送れるか、簡単なコードを書いて調べてみました。
 
-1MB から 1MB 刻みで添付ファイルのサイズを増やして送信したところ、こんなエラーメッセージが出ました。
+1MBから1MB刻みで添付ファイルのサイズを増やして送信したところ、こんなエラーメッセージが出ました。
 
 //quote{
 Fatal error: Allowed memory size of 94371840 bytes exhausted (tried to allocate 28329953 bytes) in /virtual/hogefuga/php/logsender/fuel/packages/email/classes/email/driver.php on line 965  
@@ -251,12 +254,20 @@ Fatal error: Allowed memory size of 94371840 bytes exhausted (tried to allocate 
 Fatal Error - Allowed memory size of 94371840 bytes exhausted (tried to allocate 28329953 bytes) in PKGPATH/email/classes/email/driver.php on line 965
 //}
 
-19MB の添付ファイルがついたメールまでは届きましたが、20MB の添付ファイルつきのメールは届きませんでした。サーバーによって差はあると思いますが、ログが 20MB 以上になると厳しいかもしれません。
+19MB の添付ファイルがついたメールまでは届きましたが、20MBの添付ファイルつきのメールは届きませんでした。サーバーによって差はあると思いますが、ログが20MB以上になると厳しいかもしれません。
 
-本当はログファイルを ZIP 圧縮してから添付したいのですが、XREA/CORESERVER では ZipArchive クラスが使えないので、非圧縮のまま添付しています。
+本当はログファイルを ZIP 圧縮してから添付したいのですが、XREA/CORESERVERではZipArchiveクラスが使えないので、非圧縮のまま添付しています。
 
 == 終わりに
 
-この記事を最初に書いたとき、メール送信部分は素の PHP で、ログの内容をメール本文として mb_send_mail() で送信するコードでした。書き終えた後、「FuelPHP のアドベントカレンダーなのに FuelPHP 成分が少ないぞ」と思い直し、使ったこともない Email パッケージで送信するコードを書き始めたところ、ものの 5 分程度で添付ファイルつきのメールを送信するコードが動いてしまい、ますます FuelPHP が気に入ってしまいました。
+この記事を最初に書いたとき、メール送信部分は素のPHPで、ログの内容をメール本文としてmb_send_mail()で送信するコードでした。書き終えた後、「FuelPHP のアドベントカレンダーなのにFuelPHP成分が少ないぞ」と思い直し、使ったこともないEmailパッケージで送信するコードを書き始めたところ、ものの5分程度で添付ファイルつきのメールを送信するコードが動いてしまい、ますますFuelPHPが気に入ってしまいました。
 
-次回は @<href>{https://twitter.com/madmamor,@mamor} さんの「@<href>{http://madroom-project.blogspot.jp/2013/12/fac20131218.html,FuelPHPとMongoDBとTraceKitでJavaScriptのエラー情報を収集してみる}」です。
+//quote{
+@<strong>{@suno88}
+
+@TODO
+
+Twitter: @<href>{https://twitter.com/suno88,@suno88}
+
+Blog: @<href>{http://d.hatena.ne.jp/suno88/,http://d.hatena.ne.jp/suno88/}
+//}
