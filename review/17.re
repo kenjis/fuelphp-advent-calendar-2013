@@ -215,7 +215,7 @@ FuelPHPの実行にはPHP 5.3以上であればいいので、好きなバージ
 これを実行するシェルスクリプトを適当な場所に設置します。ここでは~/cron_logsender.shとして置くことにします。改行コードをLFにするのを忘れないようにしてください。
 
 //emlist{
-#!bin/sh
+#!/bin/sh
 /usr/local/bin/php-5.5.5cli ~/php/logsender/oil r logsender
 exit
 //}
@@ -258,7 +258,7 @@ Fatal error: Allowed memory size of 94371840 bytes exhausted (tried to allocate 
 Fatal Error - Allowed memory size of 94371840 bytes exhausted (tried to allocate 28329953 bytes) in PKGPATH/email/classes/email/driver.php on line 965
 //}
 
-19MB の添付ファイルがついたメールまでは届きましたが、20MBの添付ファイルつきのメールは届きませんでした。サーバーによって差はあると思いますが、ログが20MB以上になると厳しいかもしれません。
+19MBの添付ファイルがついたメールまでは届きましたが、20MBの添付ファイルつきのメールは届きませんでした。サーバーによって差はあると思いますが、ログが20MB以上になると厳しいかもしれません。
 
 本当はログファイルをZIP圧縮してから添付したいのですが、XREA/CORESERVERではZipArchiveクラスが使えないので、非圧縮のまま添付しています。
 
