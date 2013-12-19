@@ -146,7 +146,7 @@ class LogSender
         // 1 週間前のログを削除
         $log_to_delete = $log_dir . $one_week_ago . '.php';
         if (file_exists($log_to_delete)) {
-            if (!unlink($log_to_delete)) {
+            if (! unlink($log_to_delete)) {
                 echo 'ファイル削除に失敗' . PHP_EOL;
             }
             self::remove_directory(dirname($log_to_delete));
@@ -256,11 +256,11 @@ Fatal Error - Allowed memory size of 94371840 bytes exhausted (tried to allocate
 
 19MB の添付ファイルがついたメールまでは届きましたが、20MBの添付ファイルつきのメールは届きませんでした。サーバーによって差はあると思いますが、ログが20MB以上になると厳しいかもしれません。
 
-本当はログファイルを ZIP 圧縮してから添付したいのですが、XREA/CORESERVERではZipArchiveクラスが使えないので、非圧縮のまま添付しています。
+本当はログファイルをZIP圧縮してから添付したいのですが、XREA/CORESERVERではZipArchiveクラスが使えないので、非圧縮のまま添付しています。
 
 == 終わりに
 
-この記事を最初に書いたとき、メール送信部分は素のPHPで、ログの内容をメール本文としてmb_send_mail()で送信するコードでした。書き終えた後、「FuelPHP のアドベントカレンダーなのにFuelPHP成分が少ないぞ」と思い直し、使ったこともないEmailパッケージで送信するコードを書き始めたところ、ものの5分程度で添付ファイルつきのメールを送信するコードが動いてしまい、ますますFuelPHPが気に入ってしまいました。
+この記事を最初に書いたとき、メール送信部分は素のPHPで、ログの内容をメール本文としてmb_send_mail()で送信するコードでした。書き終えた後、「FuelPHPのアドベントカレンダーなのにFuelPHP成分が少ないぞ」と思い直し、使ったこともないEmailパッケージで送信するコードを書き始めたところ、ものの5分程度で添付ファイルつきのメールを送信するコードが動いてしまい、ますますFuelPHPが気に入ってしまいました。
 
 //quote{
 @<strong>{@suno88}
