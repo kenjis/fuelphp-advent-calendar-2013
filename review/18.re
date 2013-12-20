@@ -2,23 +2,24 @@
 = FuelPHPとMongoDBとTraceKitでJavaScriptのエラー情報を収集してみる
 
 
-@<href>{http://atnd.org/events/45096,FuelPHP Advent Calendar 2013} 18日目です。@<href>{https://twitter.com/madmamor,@madmamor} が担当します。昨日は @<href>{https://twitter.com/suno88,@suno88} さんの「@<href>{http://d.hatena.ne.jp/suno88/20131217/1387285818,レンタルサーバー XREA/CORESERVER で FuelPHP を使う [実践編]}」でした。  
+@<href>{http://atnd.org/events/45096,FuelPHP Advent Calendar 2013} 18日目です。@<href>{https://twitter.com/madmamor,@madmamor}が担当します。
+
+今日は、FuelPHPとMongoDBとTraceKitを使って、JavaScriptのエラー情報を監視、収集する方法を紹介します。@<br>{}
+
+TraceKitはJavaScriptのエラーを簡単に監視できる、MITライセンスなJavaScriptライブラリです。
+
+ * @<href>{https://github.com/occ/TraceKit,https://github.com/occ/TraceKit}
 
 
- 今日は、FuelPHPとMongoDBとTraceKitを使って、JavaScriptのエラー情報を監視、収集する方法を紹介します。  
+また、FuelPHPではMongoDBを簡単に扱えるので、それらを組み合わせることで、JavaScriptのエラーを容易に収集できるのでは。と思いつき、試してみました。
 
 
- TraceKitはJavaScriptのエラーを簡単に監視できる、MITライセンスなJavaScriptライブラリです。@<br>{}
- @<href>{https://github.com/occ/TraceKit,https://github.com/occ/TraceKit}  
+記事内のソースは、WTFPLライセンスとします。
+
+ * @<href>{http://www.wtfpl.net/txt/copying/,http://www.wtfpl.net/txt/copying/}
 
 
- また、FuelPHPではMongoDBを簡単に扱えるので、それらを組み合わせることで、JavaScriptのエラーを容易に収集できるのでは。と思いつき、試してみました。  
-
-
- 記事内のソースは、WTFPLライセンスとします。 @<href>{http://www.wtfpl.net/txt/copying/,http://www.wtfpl.net/txt/copying/}  
-
-
- 以下、手順です。  
+以下、手順です。
 
 == 1. 下準備
 
@@ -26,27 +27,29 @@
 MongoDBとPECLモジュールのインストールを済ませておいて下さい。
 
 
- MongoDB@<br>{}
- @<href>{http://www.mongodb.org/,http://www.mongodb.org/}  
+MongoDB
+
+ * @<href>{http://www.mongodb.org/,http://www.mongodb.org/}  
 
 
- PECL :: Package :: mongo@<br>{}
- @<href>{http://pecl.php.net/package/mongo,http://pecl.php.net/package/mongo}  
+PECL :: Package :: mongo
+ 
+ * @<href>{http://pecl.php.net/package/mongo,http://pecl.php.net/package/mongo}  
 
 
- PHPからMongoDBが使用可能かは、phpinfo()で確認できます。  
+PHPからMongoDBが使用可能かは、phpinfo()で確認できます。
 
 
 //image[shot][]{
 //}
 
 
- FuelPHPのインストールも済ませておいて下さい。トップページが見れる状態です。尚、当記事ではv1.7.1で確認しています。  
+FuelPHPのインストールも済ませておいて下さい。トップページが見れる状態です。尚、当記事ではv1.7.1で確認しています。
 
 == 2. TraceKitのインストール
 
 
-@<href>{https://github.com/occ/TraceKit,https://github.com/occ/TraceKit} のtracekit.jsをダウンロードして、public/assets/jsに置きます。
+@<href>{https://github.com/occ/TraceKit,https://github.com/occ/TraceKit}のtracekit.jsをダウンロードして、public/assets/jsに置きます。
 
 == 3. FuelPHPの設定
 
@@ -69,7 +72,7 @@ config/db.php にMongoDB用の設定を追加します。以下、例です。
 == 4. コントローラの作成
 
 
-app/classes/controller/tracekit.php を作成します。
+app/classes/controller/tracekit.phpを作成します。
 
 #@# lang: .brush:php
 //emlist{
@@ -127,7 +130,7 @@ app/views/welcome/index.php を修正します。
             // トークンをセットします
             errorReport.<?php echo Config::get('security.csrf_token_key'); ?> = fuel_csrf_token();
             // エラー情報をPOSTします
-            $.post('<?php echo Uri::create('tracekit/errors') ?>', errorReport);
+            $.post('<?php echo Uri::create('tracekit/errors'); ?>', errorReport);
         });
         // 意図的にエラーを発生させてみます
         throw new Error('oops');
@@ -171,7 +174,7 @@ app/views/welcome/index.php を修正します。
       ] 
     } 
   ],
-   "useragent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.63 Safari/537.36" 
+   "useragent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/@<raw>{|latex|\n}31.0.1650.63 Safari/537.36" 
 }
 //}
 
@@ -180,7 +183,7 @@ app/views/welcome/index.php を修正します。
 
  * message ... エラーメッセージです。普段、コンソールに出るヤツです。
  * url ... エラーが発生したURLです。
- * stack.line ... エラーが発生した行。のように見えますが、ズレています。。。
+ * stack.line ... エラーが発生した行、のように見えますが、ズレています。
  * stack.func ... JavaScript側の送信関数名です。
  * stack.context ... 発生した行と、前後5行ずつのソースです。
  * useragent ... ユーザエージェントです。
@@ -192,7 +195,14 @@ app/views/welcome/index.php を修正します。
 == 7. まとめ
 
 
-FuelPHPとMongoDBとTraceKitを組み合わせると、JavaScriptのエラーを簡単に保存できました。ブラウザで発生するエラーも、こういった方法で把握して、改善していきたいものです。  
+FuelPHPとMongoDBとTraceKitを組み合わせると、JavaScriptのエラーを簡単に保存できました。ブラウザで発生するエラーも、こういった方法で把握して、改善していきたいものです。
 
+//quote{
+@<strong>{@madmamor}
 
- 19日目は @<href>{https://twitter.com/omoon,@omoon} さんの「@<href>{http://blog.omoon.org/20131219/925,FuelPHP 5 分で API を実装するチュートリアル（スクリーンキャストあり）}」です。  
+Developer & Bassist on TAMACENTER OUTSiDERS.
+
+Twitter: @<href>{https://twitter.com/madmamor,@madmamor}
+
+Blog: @<href>{http://madroom-project.blogspot.jp/,http://madroom-project.blogspot.jp/}
+//}
