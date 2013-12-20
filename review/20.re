@@ -1,4 +1,3 @@
-
 = FuelPHPとFluentdを連携させてみる
 
 
@@ -93,7 +92,7 @@ class Model_Model extends \Orm\Model {
 //quote{
 @<strong>{Altsencturely}
 
-@TODO
+東京のPHP大好きおじさん 最近はFluentdを使ってログ収集 + 分析基盤ごにょごにょ
 
 Twitter: @<href>{https://twitter.com/Altsencturely,@Altsencturely}
 
