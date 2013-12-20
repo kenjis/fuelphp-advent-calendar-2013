@@ -1,4 +1,3 @@
-
 = FuelPHPとFluentdを連携させてみる
 
 
@@ -39,7 +38,7 @@ require_once __DIR__.'/vendor/Fluent/Autoloader.php';
 
 Autoloader::add_classes(array(
     'Fluentd\\Observer_Td' => __DIR__.'/classes/observer/td.php',
-)); 
+));
 //}
 
 
@@ -55,10 +54,10 @@ class Observer_Td extends \Orm\Observer {
        $save_data = array();
        foreach (array_keys($obj->properties()) as $p) {
            $save_data[$p] = $obj->{$p};
-        }
+       }
 
-        $instance = new \Fluent\Logger\FluentLogger('localhost', '24800', array(), null);
-        $instance->post('tag_name_for_fluentd', $save_data); 
+       $instance = new \Fluent\Logger\FluentLogger('localhost', '24800', array(), null);
+       $instance->post('tag_name_for_fluentd', $save_data); 
     }
 } 
 //}
@@ -85,10 +84,11 @@ class Model_Model extends \Orm\Model {
 
 これと同様(特に1、2の部分)にしてFuelPHPのデバッグログやエラーログをFluentdに渡すことも出来ます。
 
+
 //quote{
 @<strong>{Altsencturely}
 
-@TODO
+東京のPHP大好きおじさん 最近はFluentdを使ってログ収集 + 分析基盤ごにょごにょ
 
 Twitter: @<href>{https://twitter.com/Altsencturely,@Altsencturely}
 
