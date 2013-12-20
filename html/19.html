@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>
+#FuelPHP 5 分で API を実装するチュートリアル（スクリーンキャストあり） | A Small, Good Thing &#8211; blog        </title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <link rel="stylesheet" href="http://blog.omoon.org/wp-content/themes/omoon/style.css" type="text/css" />
+
+        <style type="text/css">
+        </style>
+        <script type="text/javascript" src="http://blog.omoon.org/wp-content/themes/omoon/js/jquery.min.js" /></script>
+        <script type="text/javascript" src="http://blog.omoon.org/wp-content/themes/omoon/js/bootstrap.min.js" /></script>
+
+        <link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="http://blog.omoon.org/feed" />
+        <link rel="alternate" type="text/xml" title="RSS .92" href="http://blog.omoon.org/feed/rss" />
+        <link rel="alternate" type="application/atom+xml" title="Atom 0.3" href="http://blog.omoon.org/feed/atom" />
+
+<script type="text/javascript" src="http://s.hatena.ne.jp/js/HatenaStar.js"></script>
+<script type="text/javascript">
+Hatena.Star.SiteConfig = {
+    entryNodes: {
+        'div.wp_post': {
+            uri: 'h2 a',
+            title: 'h2',
+            container: 'h2'
+        }
+    }
+};
+</script>
+
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-32198411-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+  $('document').ready(function() {
+    $('.single_navi').tooltip('hide')
+  });
+</script>
+
+    </head>
+    <body>
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=121704541329588";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+        <div class="container">
+
+
+<div class="row" style="padding-top:100px;">
+<div class="span12">
+<div class="pull-right">
+<a href="http://omoon.org/"><img src="http://blog.omoon.org/wp-content/themes/omoon/img/logo.gif" /></a>
+<br />
+<a class="pull-right" href="http://blog.omoon.org">blog</a>
+</div>
+</div>
+</div>
+
+<div class="row">
+
+<div class="span9">
+
+    
+        <div class="wp_post">
+
+        <h2><a href="http://blog.omoon.org/20131219/925">#FuelPHP 5 分で API を実装するチュートリアル（スクリーンキャストあり）</a></h2>
+
+        <p class="wp_date"><i class="icon-calendar"></i> 2013/12/19</p>
+
+        <div>
+        <p><a href="http://atnd.org/events/45096">FuelPHP Advent Calendar 2013</a> の 19 日目です。昨日は、<a href="https://twitter.com/madmamor">@madmamor</a> さんの「<a href="http://madroom-project.blogspot.jp/2013/12/fac20131218.html">FuelPHPとMongoDBとTraceKitでJavaScriptのエラー情報を収集してみる</a>」でした。</p>
+<p>API を作る機会が増えていますよね。スマホアプリから叩いたり、Javascript のフレームワークから叩いたりと。 </p>
+<p>あなたも私も、いきなり誰かに「私、API が叩きたいの♥」と言われるかも知れません。</p>
+<p>ということで、いつそうなってもいいように、FuelPHP で API を実装する流れをおさらいしておきましょう。</p>
+<p>FuelPHP には <code>Controller_Rest</code> というものが用意されていて、API を作るのがとても簡単なんですよー、とはよく言われるところですが、実際にどれぐらい簡単なのかやってみました。</p>
+<p><iframe width="640" height="480" src="//www.youtube.com/embed/Uin3hh0ldgM" frameborder="0" allowfullscreen></iframe></p>
+<p>結果は、FuelPHP のインストールも含めて、4 分 44 秒で実装できました。</p>
+<p>以下、詳しく説明します。</p>
+<h3 id="">前提条件</h3>
+<p>今回は、下記環境での実装例となります。</p>
+<ul>
+<li>PHP 5.4（Built-in web server、Short array syntax を使っています）</li>
+<li>FuelPHP 1.7</li>
+<li>データベースに mysql を利用</li>
+<li>mysql の host は localhost、port は 3306、ユーザ、パスワードともに <code>root</code>、データベース名は <code>fuel_dev</code>（FuelPHP インストール時の<code>development</code>環境でのデフォルト設定です）</li>
+</ul>
+<p>では、はじめましょう。</p>
+<h3 id="">データベースの準備</h3>
+<p>あらかじめ、<code>fuel_dev</code> という名前のデータベースを作っておきます。</p>
+<pre>
+$ echo 'create database fuel_dev' | mysql -u root -proot
+</pre>
+<h3 id="fuelphp">FuelPHP のインストール</h3>
+<p><code>oil</code>コマンドでさくっと行きましょう。参考）<a href="http://fuelphp.com/docs/">http://fuelphp.com/docs/</a></p>
+<pre>
+$ curl get.fuelphp.com/oil | sh
+$ cd Sites/
+$ oil create api
+</pre>
+<p>できたら、そのディレクトリへ移動。</p>
+<pre>
+$ cd api
+</pre>
+<p>一応念のため、動くか確認しておきましょう。ビルトインサーバ使います。</p>
+<pre>
+$ php -S localhost:8000 -t public
+</pre>
+<p>はいこんにちは。</p>
+<p><a href="http://www.flickr.com/photos/omoon/11446914955"><img src="http://farm6.staticflickr.com/5518/11446914955_4d5c8c6d3f_z.jpg" /></a></p>
+<h3 id="">何を作るか</h3>
+<p>今回は、簡単なメモみたいなのを作りましょう。メモを記録したり、取得したりするだけのもの。</p>
+<ul>
+<li>http://localhost:8000/memo/write (POST メソッドで)</li>
+<li>http://localhost:8000/memo/read (GET メソッドで、JSONを返す)</li>
+</ul>
+<p>という２つの URL を用意して、それぞれ、メモの投稿と取得をさせたいと思います。</p>
+<p>では、進みましょう。</p>
+<h3 id="oilgeneratemodel">oil generate で model 作成</h3>
+<p><code>oil generate</code> でモデル作ります。</p>
+<pre>
+$ php oil generate model memo memo:varchar created_at:timestamp updated_at:timestamp --mysql-timestamp --crud --created-at --updated-at
+</pre>
+<p>僕の好みで、<code>--crud --mysql-timestamp --created-at --updated-at</code>オプションをつけてます。</p>
+<pre>
+    Creating model: /Users/omoon/Documents/api/fuel/app/classes/model/memo.php
+    Creating migration: /Users/omoon/Documents/api/fuel/app/migrations/001_create_memos.php
+</pre>
+<p>とメッセージが表示されて、model と同時にマイグレーションファイルも作成されていることが分かります。</p>
+<p>忘れないうちに、そのまま <code>oil r migrate</code> して、テーブルを作成してしまいましょう。</p>
+<pre>
+% php oil r migrate
+Performed migrations for app:default:
+001_create_memos
+</pre>
+<h3 id="route.php">route.php の編集</h3>
+<p>続いて、<code>fuel/app/config/route.php</code> を下記のように編集します。</p>
+<pre>
+// fuel/app/config/route.php
+return array(
+    '_root_'  => 'welcome/index',  // The default route
+    '_404_'   => 'welcome/404',    // The main 404 route
+    
+    'memo/read' => 'memo/read',
+    'memo/write' => 'memo/write',
+);
+</pre>
+<p>これで、</p>
+<ul>
+<li>http://localhost:8000/memo/write</li>
+<li>http://localhost:8000/memo/read</li>
+</ul>
+<p>この２つのURLへアクセスできるようになります。</p>
+<h3 id="oilgeneratecontroller">oil generate で controller 作成</h3>
+<p>上記で設定したルーティングに合わせてコントローラを作りましょう。</p>
+<p>FuelPHP では、あらかじめ用意されている <a href="http://fuelphp.com/docs/general/controllers/rest.html">Controller_Rest</a> を継承して作ります。ここがキモですね。</p>
+<p>ここも<code>oil generate</code>でさくっと行きたいところですが、ざっと見た感じでは、Controller_Rest 用のオプションなどがあまり用意されていないようでしたので、ある程度まで作ってちょこっと修正する方針で行きます。</p>
+<pre>
+$ php oil generate controller memo write read --extends=Controller_Rest
+</pre>
+<p>これで、<code>fuel/app/classes/controller/memo.php</code> に下記のようなファイルができあがりますので、</p>
+<pre>
+class Controller_Memo extends Controller_Rest
+{
+
+    public function action_read()
+    {
+        $data["subnav"] = array('read'=> 'active' );
+        $this->template->title = 'Memo &raquo; Read';
+        $this->template->content = View::forge('memo/read', $data);
+    }
+
+    public function action_write()
+    {
+        $data["subnav"] = array('write'=> 'active' );
+        $this->template->title = 'Memo &raquo; Write';
+        $this->template->content = View::forge('memo/write', $data);
+    }
+
+}
+</pre>
+<p>このように編集します。　</p>
+<pre>
+class Controller_Memo extends Controller_Rest
+{
+
+    protected $format = 'json';
+
+    public function get_read()
+    {
+        $memos = Model_Memo::find_all();
+        $this->response($memos);
+    }
+
+    public function post_write()
+    {
+        $memo = Input::post('memo');
+        Model_Memo::forge(['memo' => $memo])->save();
+    }
+
+}
+</pre>
+<p>ポイントは、</p>
+<ul>
+<li><code>protected $format = 'json';</code> でデフォルトフォーマットを JSON に</li>
+<li><code>public function get_read()</code> で <code>read</code>を GET メソッドで受け付けるように</li>
+<li><code>public function post_write()</code> で <code>write</code>を POST メソッドで受け付けるように</li>
+</ul>
+<p>各メソッドでは、今回は単純に<code>Model_Memo::find_all()</code>で取得、<code>Model_Memo::forge()-&gt;save()</code>で保存を行っています。</p>
+<p>さ、これでできたはずです。</p>
+<h3 id="">動作確認</h3>
+<p>curl コマンドでちゃんと動くか確認します。</p>
+<p>POSTで書き込み。</p>
+<pre>
+curl http://localhost:8000/memo/write -d "memo=test1"
+curl http://localhost:8000/memo/write -d "memo=test2"
+curl http://localhost:8000/memo/write -d "memo=test3"
+</pre>
+<p>GETで取得。</p>
+<pre>
+$ curl http://localhost:8000/memo/read
+[{"id":"1","memo":"test1","created_at":"2013-12-19 19:48:08","updated_at":"2013-12-19 19:48:08"},{"id":"2","memo":"test2","created_at":"2013-12-19 19:48:12","updated_at":"2013-12-19 19:48:12"},{"id":"3","memo":"test3","created_at":"2013-12-19 19:48:15","updated_at":"2013-12-19 19:48:15"}]
+</pre>
+<p>無事、JSONが返却されました。</p>
+<h3 id="">最後に</h3>
+<p>噂通り、FuelPHP での API 実装はとてもお手軽でした。みなさんも一度やってみておくと何かの時にアワアワしなくていいのではないでしょうか。</p>
+<p>ところで、ゴリゴリ記事を書いて、必死でスクリーンキャストまで撮って、公開ボタンを押そうとしたまさにその時、<a href="http://twitter.com/kenji_s">@kenji_s</a> さんが、過去に同様のことをなさっていることを発見してしまいました。</p>
+<ul>
+<li><a href="http://d.hatena.ne.jp/Kenji_s/20130121/fuel_web_api_5_min">FuelPHP を使って 5分で Web API を作成する</a></li>
+</ul>
+<p>決してパクったわけではありません（信じてー）が、もうちょっと過去記事などをしっかり見ておくべきでした。。大変失礼しました。</p>
+<p>ただ（言い訳みたいですが）、@kenji_s さんのバージョンは 1.4 で今回は 1.7、また、実装している API や手法も少し異なりますので、実装方法の異なるバージョンとして見ていただければ幸いです。汗。。</p>
+<p>明日は、<a href="https://twitter.com/Altsencturely">@Altsencturely</a> さんです。</p>
+<p>では、また。</p>
+        </div>
+
+        </div>
+
+
+<div style="margin:80px 0">
+
+<div class="pull-right">
+</div>
+
+<div>
+<a href="http://blog.omoon.org/20131212/913" class="single_navi" rel="tooltip" title="LUMIX DMC-GM1 にライカのリストストラップをつけたら超カッコイイんですけど、というはなし">&lt;&lt; 古い記事</a>
+</div>
+
+</div>
+
+<!-- X:S ZenBackWidget --><script type="text/javascript">document.write(unescape("%3Cscript")+" src='http://widget.zenback.jp/?base_uri=http%3A//blog.omoon.org/&nsid=109079484937831824%3A%3A109079498091177673&rand="+Math.ceil((new Date()*1)*Math.random())+"' type='text/javascript'"+unescape("%3E%3C/script%3E"));</script><!-- X:E ZenBackWidget -->
+
+
+    
+
+
+
+</div>
+
+<div class="span3 side_bar">
+
+<h4>最新タイトル</h4>
+<ul class="unstyled">
+	<li><a href="http://blog.omoon.org/20131219/925">#FuelPHP 5 分で API を実装するチュートリアル（スクリーンキャストあり）</a></li>
+	<li><a href="http://blog.omoon.org/20131212/913">LUMIX DMC-GM1 にライカのリストストラップをつけたら超カッコイイんですけど、というはなし</a></li>
+	<li><a href="http://blog.omoon.org/20131203/905">FuelPHP のデータベースマイグレーションを Pagoda Box で使うときの注意</a></li>
+	<li><a href="http://blog.omoon.org/20131028/895">OS X Mavericks にアップデートした際の Vagrant の様子（僕の場合）</a></li>
+	<li><a href="http://blog.omoon.org/20130928/869">JAWS FESTA Kansai 2013 でクラウドと PHP について話してきた</a></li>
+</ul>
+
+
+<h4>アーカイブ</h4>
+
+    <ul class="unstyled">
+        	<li><a href='http://blog.omoon.org/2013/12' title='2013年12月'>2013年12月</a></li>
+	<li><a href='http://blog.omoon.org/2013/10' title='2013年10月'>2013年10月</a></li>
+	<li><a href='http://blog.omoon.org/2013/09' title='2013年9月'>2013年9月</a></li>
+	<li><a href='http://blog.omoon.org/2013/07' title='2013年7月'>2013年7月</a></li>
+	<li><a href='http://blog.omoon.org/2013/06' title='2013年6月'>2013年6月</a></li>
+	<li><a href='http://blog.omoon.org/2013/05' title='2013年5月'>2013年5月</a></li>
+	<li><a href='http://blog.omoon.org/2013/04' title='2013年4月'>2013年4月</a></li>
+	<li><a href='http://blog.omoon.org/2013/03' title='2013年3月'>2013年3月</a></li>
+	<li><a href='http://blog.omoon.org/2013/02' title='2013年2月'>2013年2月</a></li>
+	<li><a href='http://blog.omoon.org/2013/01' title='2013年1月'>2013年1月</a></li>
+	<li><a href='http://blog.omoon.org/2012/12' title='2012年12月'>2012年12月</a></li>
+	<li><a href='http://blog.omoon.org/2012/11' title='2012年11月'>2012年11月</a></li>
+	<li><a href='http://blog.omoon.org/2012/10' title='2012年10月'>2012年10月</a></li>
+	<li><a href='http://blog.omoon.org/2012/07' title='2012年7月'>2012年7月</a></li>
+	<li><a href='http://blog.omoon.org/2012/06' title='2012年6月'>2012年6月</a></li>
+	<li><a href='http://blog.omoon.org/2012/05' title='2012年5月'>2012年5月</a></li>
+    </ul>
+
+<h4>プロフィール</h4>
+<div class="pic">
+<a href="http://d.hatena.ne.jp/omoon/about"><img class="omoon_pic" src="http://blog.omoon.org/wp-content/themes/omoon/img/omoon.jpg" /></a>
+</div>
+<a href="http://d.hatena.ne.jp/omoon/about">omoon</a>
+
+<p>40代、男、縄文系</p>
+
+<!-- Facebook Badge START --><a href="https://www.facebook.com/sotaro.omura" target="_TOP" style="font-family: &quot;lucida grande&quot;,tahoma,verdana,arial,sans-serif; font-size: 11px; font-variant: normal; font-style: normal; font-weight: normal; color: #3B5998; text-decoration: none;" title="Sotaro Omura">Sotaro Omura</a><span style="font-family: &quot;lucida grande&quot;,tahoma,verdana,arial,sans-serif; font-size: 11px; line-height: 16px; font-variant: normal; font-style: normal; font-weight: normal; color: #555555; text-decoration: none;">&nbsp;|&nbsp;</span><a href="https://www.facebook.com/badges/" target="_TOP" style="font-family: &quot;lucida grande&quot;,tahoma,verdana,arial,sans-serif; font-size: 11px; font-variant: normal; font-style: normal; font-weight: normal; color: #3B5998; text-decoration: none;" title="Make your own badge!">Create Your Badge</a><br/><a href="https://www.facebook.com/sotaro.omura" target="_TOP" title="Sotaro Omura"><img src="https://badge.facebook.com/badge/1042030116.3445.82310574.png" style="border: 0px;" /></a><!-- Facebook Badge END -->
+
+
+</div>
+
+
+
+</div>
+
+
+
+</div>
+
+    <!-- Footer
+    ================================================== -->
+    <footer class="footer">
+      <div class="container">
+        &copy; omoon
+      </div>
+    </footer>
+
+</body>
+</html>
