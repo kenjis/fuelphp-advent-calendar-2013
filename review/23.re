@@ -14,10 +14,10 @@ PaaSサービスのそれぞれの違いはスペック・料金・機能など�
 
 現在HerokuではPHPは非サポートとなっていますがPHPも動作します。
 
-buildpackは@<href>{https://github.com/winglian/heroku-buildpack-php,https://github.com/winglian/heroku-buildpack-php}を使います。
+Buildpackは@<href>{https://github.com/winglian/heroku-buildpack-php,https://github.com/winglian/heroku-buildpack-php}を使います。
 
 //note[]{
-下記サイトに記載されているbuildpackを使用してサーバはnginxを使用するつもりでしたが、nginxのconfigファイルの設定をFuelPHPのプロジェクトに合わせると、なぜかうまくページが表示されず原因不明だったので今回は見送ることにします。すみません。@<br>{}
+下記サイトに記載されているBuildpackを使用してサーバはnginxを使用するつもりでしたが、nginxのconfigファイルの設定をFuelPHPのプロジェクトに合わせると、なぜかうまくページが表示されず原因不明だったので今回は見送ることにします。すみません。@<br>{}
 @<href>{http://tkyk.name/blog/2012/11/28/php-on-heroku/,http://tkyk.name/blog/2012/11/28/php-on-heroku/}
 //}
 
