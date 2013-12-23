@@ -1,31 +1,26 @@
 
 = FuelPHPがOpAuth対応になったのでfacebookログインをしてみる
 
-
-12月 22nd, 2013 at 14:42
-
-
 @<href>{http://atnd.org/events/45096,FuelPHP Advent Calendar2013}参加記事です。@<br>{}
- 21日目は@madmamorさんの@<href>{http://madroom-project.blogspot.jp/2013/12/fac20131221.html,FuelPHPをRocketeerで自動デプロイしてみる。マイグレーションとPHPUnitも実行してみる。}でした。
 
 
-昨年のアドベントカレンダーでは主にPhil Sturgeon氏がメンテされていたNinjAuthというOAuth認証パッケージを使用して簡単にログイン認証が行えるパッケージを作成したのですが、FuelPHP1.6.1からNinjAuthに代わりOpAuthに対応したパッケージが標準で入るようになったので、今年はそちらでログイン連携を行う最小限の方法を紹介します。ざっくりとした作業量比較としては、インストール作業自体はNinjAuthより楽に行えますが、コントローラー、ビューのサンプルなどは付属してないので、そのあたりはまるっと書く必要があるので一手間ある感じです。@<br>{}
- とりあえず動かすところまでなので、バリデーションの処理やコントローラーでのハンドリングを実際のアプリケーションで作りこむと良い感じになると思われます。
+昨年のアドベントカレンダーでは主にPhil Sturgeon氏がメンテされていたNinjAuthというOAuth認証パッケージを使用して簡単にログイン認証が行えるパッケージを作成したのですが、FuelPHP 1.6.1からNinjAuthに代わりOpAuthに対応したパッケージが標準で入るようになったので、今年はそちらでログイン連携を行う最小限の方法を紹介します。ざっくりとした作業量比較としては、インストール作業自体はNinjAuthより楽に行えますが、コントローラ、ビューのサンプルなどは付属してないので、そのあたりはまるっと書く必要があるので一手間ある感じです。@<br>{}
+
+とりあえず動かすところまでなので、バリデーションの処理やコントローラでのハンドリングを実際のアプリケーションで作りこむと良い感じになると思われます。@<br>{}
 
 
-環境：FuelPHP1.7.1、caomposerはインストール済、DBはセットアップ済みの想定
+環境：FuelPHP 1.7.1、Composerはインストール済み、DBはセットアップ済みの想定@<br>{}
 
 
 それでは各ステップごとにいってみましょう。
 
-= 各configの設定
+== 各configの設定
 
 
-fuel/app/config/config.php@<br>{}
- always_loadにauthとormを追加
+fuel/app/config/config.phpにalways_loadにauthとormを追加します。
 
 #@# lang: .brush: .php; .title: .; .notranslate title=""
-//emlist{
+//emlist[fuel/app/config/config.php]{
      'always_load'  => array(
 
         /**
@@ -46,11 +41,11 @@ fuel/app/config/config.php@<br>{}
 //}
 
 
-packages/auth/configからopauth.phpをコピーしてきてapp/config以下に配置@<br>{}
- opauth.phpのStrategyを追加。今回はFacebookのみ。
+packages/auth/configからopauth.phpをコピーしてきてapp/config以下に配置し、
+opauth.phpのStrategyを追加します。今回はFacebookのみ。
 
 #@# lang: .brush: .php; .title: .; .notranslate title=""
-//emlist{
+//emlist[fuel/app/config/opauth.php]{
     'Strategy' => [
         'Facebook' => [
             'app_id' => 'xxxxx',
@@ -59,13 +54,13 @@ packages/auth/configからopauth.phpをコピーしてきてapp/config以下に�
     ]
 //}
 
-= composerで必要なパッケージをインストール
+== composerで必要なパッケージをインストール
 
 
-composer.jsonのrequireに以下を追加
+composer.jsonのrequireに以下を追加します。
 
 #@# lang: .brush: .jscript; .title: .; .notranslate title=""
-//emlist{
+//emlist[composer.json]{
     "opauth/opauth": "0.4.*",
     "opauth/facebook": "dev-master",
 //}
@@ -74,22 +69,22 @@ composer.jsonのrequireに以下を追加
 プロジェクトのルートディレクトリで
 
 #@# lang: .brush: .bash; .title: .; .notranslate title=""
-//emlist{
+//cmd{
 composer update
 //}
 
+//noindent
+を実行すると必要なopauth本体とFacebookストラテジがインストールされます。
 
-を実行すると必要なopauth本体とfacebookストラテジがインストールされる。
-
-= マイグレーションを実行して必要なテーブルを作成
+== マイグレーションを実行して必要なテーブルを作成
 
 #@# lang: .brush: .bash; .title: .; .notranslate title=""
-//emlist{
+//cmd{
 php oil r migrate --packages=auth
 //}
 
-
-を実行すると、下記のテーブルが作成される。
+//noindent
+を実行すると、下記のテーブルが作成されます。
 
 //emlist{
 +------------------------+
@@ -103,17 +98,17 @@ php oil r migrate --packages=auth
 +------------------------+
 //}
 
-= コントローラーの作成
+== コントローラの作成
 
 
-auth用のコントローラーを作成します。コントローラー名に特に縛りはありませんが、今回はController_Authという名前で作成します。@<br>{}
- Using Auth in your applicationのサンプルをコピペしつつ、動くように調整してみます。
+auth用のコントローラを作成します。コントローラ名に特に縛りはありませんが、今回はController_Authという名前で作成します。@<br>{}
+
+Using Auth in your applicationのサンプルをコピペしつつ、動くように調整してみます。
 
 
-fuel/app/classes/controller/auth.php
 
 #@# lang: .brush: .php; .title: .; .notranslate title=""
-//emlist{
+//emlist[fuel/app/classes/controller/auth.php]{
 <?php
 use Fuel\Core\Controller;
 use Fuel\Core\Log;
@@ -181,7 +176,8 @@ class Controller_Auth extends Controller {
 
                     // we don't know this provider login, ask the user to create a local account first
                 case 'register':
-                    // inform the user the login using the provider was succesful, but we need a local account to continue
+                    // inform the user the login using the provider was succesful, 
+                    // but we need a local account to continue
                     // and set the redirect url for this status
                     $url = 'auth/register';
                     break;
@@ -194,7 +190,10 @@ class Controller_Auth extends Controller {
                     break;
 
                 default:
-                    throw new \FuelException('Auth_Opauth::login_or_register() has come up with a result that we dont know how to handle.');
+                    throw new \FuelException(
+                        'Auth_Opauth::login_or_register() has come up with a result '
+                        .'that we dont know how to handle.'
+                    );
             }
 
             // redirect to the url set
@@ -212,7 +211,9 @@ class Controller_Auth extends Controller {
         catch (\OpauthCancelException $e)
         {
             // you should probably do something a bit more clean here...
-            exit('It looks like you canceled your authorisation.'.\Html::anchor('users/oath/'.$provider, 'Click here').' to try again.');
+            exit('It looks like you canceled your authorisation.'
+                .\Html::anchor('users/oath/'.$provider, 'Click here')
+                .' to try again.');
         }
 
     }
@@ -230,10 +231,20 @@ class Controller_Auth extends Controller {
         $form->add_model('Model\\Auth_User');
 
         // add the fullname field, it's a profile property, not a user property
-        $form->add_after('fullname', __('login.form.fullname'), array(), array(), 'username')->add_rule('required');
+        $form->add_after(
+            'fullname', 
+            __('login.form.fullname'),
+            array(), 
+            array(), 
+            'username'
+        )->add_rule('required');
 
         // add a password confirmation field
-        $form->add_after('confirm', __('login.form.confirm'), array('type' => 'password'), array(), 'password')->add_rule('required');
+        $form->add_after(
+            'confirm', 
+            __('login.form.confirm'), 
+            array('type' => 'password'), array(), 'password'
+        )->add_rule('required');
 
         // make sure the password is required
         $form->field('password')->add_rule('required');
@@ -376,7 +387,8 @@ class Controller_Auth extends Controller {
         $form->add('submit', '', array('type'=>'submit', 'value' => 'submit'));
 
         // pass the fieldset to the form, and display the new user registration view
-        return \View::forge('login/registration')->set('form', $form->build(), false)->set('login', isset($login) ? $login : null, false);
+        return \View::forge('login/registration')->set('form', $form->build(), false)
+                ->set('login', isset($login) ? $login : null, false);
     }
 
     protected function link_provider($userid)
@@ -405,26 +417,27 @@ class Controller_Auth extends Controller {
 //}
 
 
-action_oauthが起点となるアクションとなり、ここから各サービスへリダイレクトされます。@<br>{}
- コールバックはconfigで特に指定していない場合、同コントローラのaction_callbackアクションに帰ってきますので、action_callback内で処理を判定します。@<br>{}
- 未登録の場合はauth/registerに飛ばしてユーザー登録を行わせ、登録が完了した時点でlink_providerでユーザーの紐付けを行うようになっています。
+action_oauthが起点となるアクションとなり、ここから各サービスへリダイレクトされます。
 
-= ユーザー登録用ビューの作成
+コールバックはconfigで特に指定していない場合、同コントローラのaction_callbackアクションに帰ってきますので、action_callback内で処理を判定します。
+
+未登録の場合はauth/registerに飛ばしてユーザー登録を行わせ、登録が完了した時点でlink_providerでユーザーの紐付けを行うようになっています。
+
+== ユーザー登録用ビューの作成
 
 
 今回はfieldsetを使っているので、単純にechoしてとりあえずフォームを出してみましょう。
 
 
-fuel/app/views/login/registration.php
+
 
 #@# lang: .brush: .php; .title: .; .notranslate title=""
-//emlist{
-
+//emlist[fuel/app/views/login/registration.php]{
 <?php
 echo $form;
 //}
 
-= 確認してみる
+== 確認してみる
 
 
 コントローラ、ビューまで作成して/auth/oauth/facebookにアクセスするとfacebook認証が行われ、未登録であればregisterに飛ばされます。
