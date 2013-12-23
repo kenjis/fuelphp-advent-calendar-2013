@@ -103,13 +103,22 @@ php oil r migrate --packages=auth
 
 auth用のコントローラを作成します。コントローラ名に特に縛りはありませんが、今回はController_Authという名前で作成します。@<br>{}
 
-Using Auth in your applicationのサンプルをコピペしつつ、動くように調整してみます。
+FuelPHPの公式ドキュメントにある@<href>{http://fuelphp.jp/docs/1.7/packages/auth/examples/opauth.html,Using Auth in your application}のサンプルをコピペしつつ、動くように調整してみます。
 
 
 
 #@# lang: .brush: .php; .title: .; .notranslate title=""
 //emlist[fuel/app/classes/controller/auth.php]{
 <?php
+/**
+ * Part of the FuelPHP Documentation.
+ *
+ * @author     Fuel Development Team
+ * @license    MIT License
+ * @copyright  2010 - 2013 Fuel Development Team
+ * @link       http://fuelphp.com
+ */
+
 use Fuel\Core\Controller;
 use Fuel\Core\Log;
 
