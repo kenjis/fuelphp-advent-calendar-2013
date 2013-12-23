@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>[FuelPHP]Heroku(PaaS)でFuelPHP環境(PHP5.3 + MySQL + Apatch)を構築する | Memorandum blog</title>
+<!-- Platform WordPress Framework By PageLines - www.PageLines.com -->
+<link rel="shortcut icon" href="http://to-developer.com/blog/wp-content/themes/platform/admin/images/favicon-pagelines.ico" type="image/x-icon" />
+<link rel="profile" href="http://gmpg.org/xfn/11" />
+<link rel="alternate" type="application/rss+xml" title="Memorandum blog &raquo; フィード" href="http://to-developer.com/blog/?feed=rss2" />
+<link rel="alternate" type="application/rss+xml" title="Memorandum blog &raquo; コメントフィード" href="http://to-developer.com/blog/?feed=comments-rss2" />
+<link rel="alternate" type="application/rss+xml" title="Memorandum blog &raquo; [FuelPHP]Heroku(PaaS)でFuelPHP環境(PHP5.3 + MySQL + Apatch)を構築する のコメントのフィード" href="http://to-developer.com/blog/?feed=rss2&#038;p=960" />
+<link rel='stylesheet' id='nyams-ultimate-button-style-css'  href='http://to-developer.com/blog/wp-content/plugins/ultimate-back-to-top/nyams_ultimate_button.css?ver=1.0' type='text/css' media='all' />
+<link rel='stylesheet' id='pagelines-stylesheet-css'  href='http://to-developer.com/blog/wp-content/themes/platform/style.css?ver=143-080213131044' type='text/css' media='all' />
+<!--[if IE 7]>
+<link rel='stylesheet' id='ie7-style-css'  href='http://to-developer.com/blog/wp-content/themes/platform/css/ie7.css?ver=1.4.3' type='text/css' media='all' />
+<![endif]-->
+<script type='text/javascript' src='http://to-developer.com/blog/wp-includes/js/swfobject.js?ver=2.2-20120417'></script>
+<script type='text/javascript' src='http://to-developer.com/blog/wp-includes/js/jquery/jquery.js?ver=1.8.3'></script>
+<script type='text/javascript' src='http://to-developer.com/blog/wp-includes/js/comment-reply.min.js?ver=3.5'></script>
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://to-developer.com/blog/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://to-developer.com/blog/wp-includes/wlwmanifest.xml" /> 
+<link rel='prev' title='成功するための良い商品選定について' href='http://to-developer.com/blog/?p=946' />
+<meta name="generator" content="WordPress 3.5" />
+<link rel='canonical' href='http://to-developer.com/blog/?p=960' />
+
+<style> .top-link { right: 10px; } .top-link a { border-color: #0089d3; color: #0089d3; background-color: #ffffff; }</style>
+<link rel="stylesheet" id="dynamic-css" href="http://to-developer.com/blog/wp-content/themes/platform/css/dynamic.css?ver=143-081913173851" type="text/css" media="all" />
+<!-- Vipers Video Quicktags v6.4.4 | http://www.viper007bond.com/wordpress-plugins/vipers-video-quicktags/ -->
+<style type="text/css">
+.vvqbox { display: block; max-width: 100%; visibility: visible !important; margin: 10px auto; } .vvqbox img { max-width: 100%; height: 100%; } .vvqbox object { max-width: 100%; } 
+</style>
+<script type="text/javascript">
+// <![CDATA[
+	var vvqflashvars = {};
+	var vvqparams = { wmode: "opaque", allowfullscreen: "true", allowscriptaccess: "always" };
+	var vvqattributes = {};
+	var vvqexpressinstall = "http://to-developer.com/blog/wp-content/plugins/vipers-video-quicktags/resources/expressinstall.swf";
+// ]]>
+</script>
+<meta id="syntaxhighlighteranchor" name="syntaxhighlighter-version" content="3.1.3" />
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-37971266-3', 'to-developer.com');
+  ga('send', 'pageview');
+
+</script>
+</head>
+
+<body class="single single-post postid-960 single-format-standard full_width ttype-single tmain-single">
+
+<div id="site" class="one-sidebar-right"> <!-- #site // Wraps #header, #page-main, #footer - closed in footer -->
+	<div id="page"> <!-- #page // Wraps #header, #page-main - closed in footer -->
+		<div id="page-canvas">
+						<div id="header" class="container-group fix">
+				<div class="outline">
+					<div id="branding" class="container fix">
+	<div class="texture">
+		<div class="content">
+			<div class="content-pad">
+<div class="branding_wrap">
+	<div class="title-container"><a class="home site-title" href="http://to-developer.com/blog" title="Home">Memorandum blog</a><h6 class="site-description subhead">Record useful memorandum to coffee break</h6></div>		
+	
+	<div class="icons" style="bottom: 0px; right: px;">
+
+				<a target="_blank" href="http://to-developer.com/blog/?feed=rss2" class="rsslink"></a>
+		
+																			</div>
+</div>
+				<div class="clear"></div>
+			</div>
+		</div>
+	</div>
+</div>
+<div id="primary-nav" class="container fix">
+	<div class="texture">
+		<div class="content">
+			<div class="content-pad">
+	<div id="nav_row" class="main_nav fix">
+	
+	<ul id="menu-nav" class="main-nav">
+			</ul>	</div>
+
+				<div class="clear"></div>
+			</div>
+		</div>
+	</div>
+</div>
+				</div>
+			</div>
+						<div id="page-main" class="container-group fix"> <!-- #page-main // closed in footer -->
+				<div id="dynamic-content" class="outline fix">
+					<div id="maincontent" class="container fix">
+	<div class="texture">
+		<div class="content">
+			<div class="content-pad">
+<div id="pagelines_content" class="one-sidebar-right fix">
+	
+		<div id="column-wrap" class="fix">
+		
+				<div id="column-main" class="mcolumn fix">
+			<div class="mcolumn-pad" >
+				<div id="postnav" class="copy fix">
+	<div class="copy-pad">
+   			<div class="post-nav fix"> 
+			<span class="previous"><a href="http://to-developer.com/blog/?p=946" rel="prev">成功するための良い商品選定について</a></span> 
+			<span class="next"></span>
+		</div>
+		<div class="clear"></div>
+	</div>
+</div>
+<div id="theloop" class="copy fix">
+	<div class="copy-pad">
+<div class="post-960 post type-post status-publish format-standard hentry category-php-2 category-git-2 category-mac category-php tag-advent-calendar tag-bash tag-git tag-paas fpost" id="post-960">
+				
+				
+					
+						<div class="post-meta fix">	
+							
+							<div class="post-header fix post-nothumb" style="" >
+																<div class="post-title-section fix">
+
+									<div class="post-title fix">
+										
+										<h1 class="entry-title">[FuelPHP]Heroku(PaaS)でFuelPHP環境(PHP5.3 + MySQL + Apatch)を構築する</h1>
+<div class="metabar"><em><span class="sword">By</span> <span class="author vcard"><span class="fn"><a href="http://to-developer.com/blog/?author=1" title="admin による投稿" rel="author">admin</a></span></span> <span class="sword">On</span> <span class="date time published" title="2013-12-23T01:12:17+0900">2013年12月23日</span>  &middot; <span class="post-comments"><a href="http://to-developer.com/blog/?p=960#comments">Leave a Comment</a></span> &middot; <span class="sword">In</span> <span class="categories"><a href="http://to-developer.com/blog/?cat=10" title="FuelPHP の投稿をすべて表示" rel="category">FuelPHP</a>, <a href="http://to-developer.com/blog/?cat=74" title="Git の投稿をすべて表示" rel="category">Git</a>, <a href="http://to-developer.com/blog/?cat=14" title="Mac の投稿をすべて表示" rel="category">Mac</a>, <a href="http://to-developer.com/blog/?cat=17" title="php の投稿をすべて表示" rel="category">php</a></span>  </em></div>										
+									</div>
+
+
+								</div>
+
+															</div>				
+						</div>
+					
+
+
+					  	
+						<div class="entry_wrap fix">
+						
+							<div class="entry_content">
+								<div style=''><a href="http://twitter.com/mycb750" class="twitter-follow-button" data-show-count="true" data-button="blue" data-text-color="#800080" data-link-color="#800080" data-lang="ja">Follow @mycb750</a>
+<script src="http://platform.twitter.com/widgets.js" type="text/javascript"></script><a href="http://cmsvoteup.com/category/wordpress-plugins/" title="Get Twitter Follow Button WordPress Plugin" target="_blank"><img src="http://www.cmsvoteup.com/images/power_by_2x2.gif" border="0"/></a></div><h2 class="headline_title">HerokuへFuelPHP環境を構築する手順をメモ</h2>
+<p><a href="http://atnd.org/events/45096">FuelPHP Advent Calendar 2013</a>の23日目です。昨日は、@egmcさんの「<a href="http://dasalog.eg2mix.com/fuel-advent2013-opauth/">FuelPHPがOpAuth対応になったのでfacebookログインをしてみる</a>」でした。</p>
+<p>以前まではサービスをリリースするときにはレンタルサーバを借りてサービスをデプロイすることが一般的でしたが、最近はPaaSと呼ばれるアプリケーションの動作環境をプラットフォーム上で一式提供されている形態を使う事が増えてきています。有名どころではAmazonのAWSやMicrosoftのWindows Azureなどがあります。<br />
+PaaSサービスのそれぞれの違いはスペック・料金・機能などがあり、レンタルサーバと比較した場合のPaaSのメリットはスケールアップ、アウトが簡単に行えることです。<br />
+サービスのユーザ数が大幅にふえてサーバに負荷がかかるようになった場合や、予想してた以上にユーザ数が延びなかった場合などに役立ちます。</p>
+<p>個人的にはHerokuはRailsのアプリをテスト的に公開したくなったときなどに使ったりしています。もともとHeroku自体はrubyの環境用としてスタートしていて現在はjava,node.js,ruby,phthonなどをサポートしています。<br />
+現在Herokuではphpは非サポートとなっていますがphpも動作します。</p>
+<p>Herokuコマンド参考ページ：<a href="http://d.hatena.ne.jp/xyk/20101102">http://d.hatena.ne.jp/xyk/20101102</a></p>
+<p>buildpackは<a href="https://github.com/winglian/heroku-buildpack-php">https://github.com/winglian/heroku-buildpack-php</a>を使う<br />
+&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8211;<br />
+試みたのは、下記サイトに記載されているbuildpackを使用してサーバはnginxを使用するつもりでしたが、<br />
+nginxのconfigファイルの設定がFuelPHPのプロジェクトに合わせるとなぜかうまくページが表示されず原因不明だったので今回は見送ることにします。すみません。<br />
+<a href="http://tkyk.name/blog/2012/11/28/php-on-heroku/">http://tkyk.name/blog/2012/11/28/php-on-heroku/</a><br />
+&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8211;</p>
+<h3 class="headline_sub_title">1.Herokuアカウントを取得</h3>
+<p>公式サイトより「login」押下して「signup」よりアカウントを取得します</p>
+<p><a href="http://to-developer.com/blog/?attachment_id=990" rel="attachment wp-att-990"><img src="http://to-developer.com/blog/wp-content/uploads/2013/12/heroku.png" alt="heroku" width="750" height="320" class="aligncenter size-full wp-image-990" /></a></p>
+<p>公式サイト：<a href="https://www.heroku.com/">https://www.heroku.com/</a></p>
+<h3 class="headline_sub_title">2.heroku toolbelt（ターミナルからherokuを操作するツール）をインストール</h3>
+<p>下記サイトよりtoolbeltを環境に合わせてインストールします</p>
+<p><a href="http://to-developer.com/blog/?attachment_id=589" rel="attachment wp-att-589"><img src="http://to-developer.com/blog/wp-content/uploads/2013/05/2-300x163.png" alt="2" width="400" height="211" class="aligncenter size-medium wp-image-589" /></a></p>
+<p><a href="https://toolbelt.heroku.com/ ">https://toolbelt.heroku.com/ </a></p>
+<h3 class="headline_sub_title">3.SSH公開鍵の設定</h3>
+<p>(1)ターミナルを立ち上げてloginコマンドを実行</p>
+<pre class="brush: bash; title: ; notranslate" title="">
+$ heroku login
+Enter your Heroku credentials.
+Email: [1で作成したアカウントを入力]
+Password (typing will be hidden):  [1で作成したアカウントのパスワードを入力]
+Authentication successful.
+</pre>
+<p>「Authentication successful.」でアカウント認証成功　※「Authentication failed.」は失敗</p>
+<p>(2)公開鍵をジェネレート</p>
+<pre class="brush: bash; title: ; notranslate" title=""> 
+Could not find an existing public key.
+Would you like to generate one? [Yn] [Yを指定してエンター]
+Generating new SSH public key.
+Uploading SSH public key /Users/(PCユーザー名)/.ssh/id_rsa.pub
+Authentication successful.
+</pre>
+<p>「Authentication successful.」で成功</p>
+<p>初期ログイン時に公開鍵を生成しなかった場合は手動で「ssh-keygen」で作成しherokuに公開鍵を設定する必要があります<br />
+ssh-keygenについては前記事参照<a href="http://to-developer.com/blog/?p=563">http://to-developer.com/blog/?p=563</a></p>
+<p>Herokuに公開鍵を設定する</p>
+<pre class="brush: bash; title: ; notranslate" title="">
+$ heroku keys:add
+</pre>
+<p>※Herokuのgui画面から設定も可</p>
+<h3 class="headline_sub_title">4.fuelphpプロジェクトを生成</h3>
+<p>(1)アプリケーションを作成</p>
+<pre class="brush: bash; title: ; notranslate" title="">
+$ oil create [アプリ名を入力]
+</pre>
+<p>(2)index.php作成</p>
+<p>Herokuはrootディレクトリにindex.phpがないと動作しないため、今のところ空のindex.phpファイルを生成しときます</p>
+<pre class="brush: bash; title: ; notranslate" title="">
+$ touch index.php
+</pre>
+<p>(3).htaccessを作成（fuelphpのディレクトリ構成に合わせてリダイレクト処理を入れる）<br />
+fuelphpディレクトリ構成のpublic/以下にindex.phpのアクセスをリダイレクト<br />
+参考サイト：<a href="http://blog.livedoor.jp/erscape/archives/6937126.html">http://blog.livedoor.jp/erscape/archives/6937126.html</a></p>
+<pre class="brush: bash; title: ; notranslate" title="">
+$ vim .htaccess
+</pre>
+<p>.htpaccessの設定情報</p>
+<pre class="brush: php; title: ; notranslate" title="">
+  RewriteEngine on
+  RewriteBase /
+  RewriteRule ^(.+)-info\.php$ $1-info.php [L]
+  RewriteCond %{SCRIPT_FILENAME} !^/app/www/public/
+  RewriteRule ^(.*)$ public/$1 [L]
+</pre>
+<p>(4)不要ファイル削除（サブモジュールなどはaddできないので削除）</p>
+<pre class="brush: bash; title: ; notranslate" title="">
+$ rm -rf .git .gitmodules
+$ rm *.md
+$ rm -rf docs
+// 下記も不要なため削除
+$ rm -fr fuel/core/
+$ rm -fr fuel/packages/auth/
+$ rm -fr fuel/packages/email/
+$ rm -fr fuel/packages/oil/
+$ rm -fr fuel/packages/orm/
+$ rm -fr fuel/packages/parser/
+</pre>
+<p>※サブモジュールをaddする方法(git submodule addコマンド)<br />
+例）opauthサブモジュールの場合</p>
+<pre class="brush: bash; title: ; notranslate" title="">
+$ git submodule add git://github.com/andreoav/fuel-opauth.git fuel/packages/opauth
+</pre>
+<h3 class="headline_sub_title">5.ローカルリポジトリにコミット</h3>
+<pre class="brush: bash; title: ; notranslate" title="">
+$ cd [アプリ名を入力]
+$ git init
+$ git commit -am &quot;initial commit&quot;
+</pre>
+<h3 class="headline_sub_title">6.buildpackをherokuへインストール</h3>
+<pre class="brush: bash; title: ; notranslate" title="">
+$ heroku create --buildpack https://github.com/winglian/heroku-buildpack-php [アプリ名を入力]
+</pre>
+<p>※アプリ名はここで入れなくてもデフォルトの名前が付けられる。gui画面などから確認・変更が可能</p>
+<h3 class="headline_sub_title">7.herokuのリポジトリへ反映</h3>
+<pre class="brush: bash; title: ; notranslate" title="">
+$ git push heroku master
+</pre>
+<p>※アプリが複数存在する場合、Herokuのリモートリポジトリが違いpushできない場合があるので都度確認が必要</p>
+<p>※1 リモートリポジトリherokuの設定</p>
+<pre class="brush: bash; title: ; notranslate" title="">
+$ git remote add heroku [リモートリポジトリ]
+</pre>
+<p>※２ リモートリポジトリ確認</p>
+<pre class="brush: bash; title: ; notranslate" title="">
+$ git remote show
+</pre>
+<p>※3 リモートリポジトリ削除</p>
+<pre class="brush: bash; title: ; notranslate" title="">
+$ git remote rm [リモートリポジトリ]
+</pre>
+<h3 class="headline_sub_title">8.動作確認</h3>
+<pre class="brush: bash; title: ; notranslate" title="">
+$ heroku open
+</pre>
+<p>fuelの画面がでたら成功！<br />
+<a href="http://to-developer.com/blog/?attachment_id=598" rel="attachment wp-att-598"><img src="http://to-developer.com/blog/wp-content/uploads/2013/05/3-1024x552.png" alt="3" width="675" height="363" class="aligncenter size-large wp-image-598" /></a></p>
+<h3 class="headline_sub_title">9.mysqlアドオンを入れる</h3>
+<p>無料版のアドオンを入れる場合も公式サイトからログインを行いクレジットカードの登録が必要です。<br />
+ただ無料版の場合は料金が引かれるなど初期費用なども基本ないようです。</p>
+<p>mysqlのアドオンは<a href="https://addons.heroku.com/">https://addons.heroku.com/</a>からsearchボックスに「mysql」と検索すると2013/12時点で４つのアドオンが見つかりました。</p>
+<p>Adminium Full fledged admin interface without touching your app code heroku addons:add adminium<br />
+Amazon RDS Hook your app up to Amazon&#8217;s RDS heroku addons:add amazon_rds<br />
+ClearDB MySQL Database The high speed, 100% uptime database for your MySQL powered applications. heroku addons:add cleardb<br />
+Xeround Cloud Database αlpha Scalable, highly available, zero-management cloud database for MySQL heroku addons:add xeround</p>
+<p>今回は「ClearDB」とする<br />
+参考サイト：<a href="http://www.ownway.info/Ruby/index.php?heroku%2Fhow%2Fmanagement%2Fdatabase%2Fcleardb">http://www.ownway.info/Ruby/index.php?heroku%2Fhow%2Fmanagement%2Fdatabase%2Fcleardb</a></p>
+<p>(1)公式サイトよりクレジットカード登録を行う</p>
+<p>(2)アドオンをインストール</p>
+<pre class="brush: bash; title: ; notranslate" title="">
+$ heroku addons:add cleardb:ignite
+Adding cleardb:ignite on tranquil-cliffs-2547... done, v6 (free)
+Use `heroku addons:docs cleardb:ignite` to view documentation.
+</pre>
+<p>インストール完了</p>
+<p>(3)接続情報を確認</p>
+<pre class="brush: bash; title: ; notranslate" title="">
+$ heroku config 
+=== tranquil-cliffs-2547 Config Vars
+BUILDPACK_URL:        https://github.com/winglian/heroku-buildpack-php
+CLEARDB_DATABASE_URL: mysql://[ユーザ名]:[パスワード]@[ホスト名]/[DB名]?reconnect=true
+</pre>
+<p>※CLEARDB_DATABASE_URLに接続文字列が表示<br />
+CLEARDB_DATABASE_URL: mysql://[ユーザ名]:[パスワード]@[ホスト名]/[DB名]?reconnect=true</p>
+<p>(4)接続文字列は？<br />
+mysql &#8211;host=[ホスト名] &#8211;user=[ユーザ名] &#8211;password=[パスワード] [DB名]</p>
+<h3 class="headline_sub_title">10.fuelphpプロジェクトからmysqlへ環境変数で接続</h3>
+<pre class="brush: bash; title: ; notranslate" title="">
+$cleardb = parse_url(getenv('CLEARDB_DATABASE_URL'));
+$conn = new PDO(
+    sprintf(&quot;mysql:dbname=%s;host=%s&quot;, substr($cleardb['path'], 1), $cleardb['host']),
+    $cleardb['user'],
+    $cleardb['pass']
+);
+</pre>
+<p><strong>ここまででphp + mysql + apatchのFuelPHPが動作する環境の構築完了です</strong></p>
+<h3 class="headline_sub_title">まとめ</h3>
+<p>Herokuにやや癖があり使いにくいと思ってしまった事もありましたが、慣れるとここまで行うのに15分程でできるとおもいます。一度環境を作ってしまえばあとの更新作業はすぐにできますね。<br />
+他のPaaSはあまり使った事がありませんが、動作確認程度の使用でしたらHerokuでいいと思います。<br />
+またHerokuから公式にphpがサポートされれば、もっとアドオン等増えてくるのではないでしょうか。</p>
+<p>明日はクリスマスイブですね。いいことありますように！</p>
+<h3>その他おすすめの備忘録</h3>
+<ul class="similar-posts">
+<li><a href="http://to-developer.com/blog/?p=653" rel="bookmark" title="2013年7月28日">[Vagrant + Chef]CentOSにPHP + MYSQL + APACHE 環境を構築する</a></li>
+<li><a href="http://to-developer.com/blog/?p=395" rel="bookmark" title="2013年1月3日">[FuelPHP]GitHubエラー：fatal: Not a git repository: fuel/core/../../.git/modules/fuel/core</a></li>
+<li><a href="http://to-developer.com/blog/?p=472" rel="bookmark" title="2013年1月5日">[FuelPHP]GitHubは空ディレクトリがあるとプッシュできない。対応方法をメモ</a></li>
+<li><a href="http://to-developer.com/blog/?p=864" rel="bookmark" title="2013年8月21日">[GitHub]新規リポジトリ作成したあとのremoteとpushコマンドについて</a></li>
+<li><a href="http://to-developer.com/blog/?p=936" rel="bookmark" title="2013年11月28日">[MAC]差分チェックdiffツール(story + p4marge環境)を使用する方法※ディレクトリdiff対応</a></li>
+<li><a href="http://to-developer.com/blog/?p=607" rel="bookmark" title="2013年5月17日">[Git]gitリポジトリからサブモジュールの削除</a></li>
+<li><a href="http://to-developer.com/blog/?p=504" rel="bookmark" title="2013年1月10日">[MAMP]mysqlが起動しない場合の対処法をメモ</a></li>
+<li><a href="http://to-developer.com/blog/?p=912" rel="bookmark" title="2013年9月18日">[Android]実機デバッグでdata/dataの中身を確認する手順</a></li>
+<li><a href="http://to-developer.com/blog/?p=359" rel="bookmark" title="2013年1月2日">[FuelPHP]サンプルデモアプリ「BaseDemoプロジェクト」アップ ※オリジナル認証ドライバ込</a></li>
+<li><a href="http://to-developer.com/blog/?p=531" rel="bookmark" title="2013年3月7日">[git]gitでmarge又はpullでコンフリクトした場合の対処法 / All conflicts fixed but you are still merging</a></li>
+</ul>
+<p><!-- Similar Posts took 15.623 ms --></p>
+<div style=""><div style="display:inline;"><iframe src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fto-developer.com%2Fblog%2F%3Fp%3D960&amp;send=false&amp;layout=button_count&amp;width=120&amp;show_faces=false&amp;action=like&amp;colorscheme=light&amp;font&amp;height=21" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:120px; height:21px;" allowTransparency="true"></iframe></div><div style="display:inline;"><a href="http://twitter.com/share?url=http%3A%2F%2Fto-developer.com%2Fblog%2F%3Fp%3D960" class="twitter-share-button" data-count="horizontal">ツイート</a><script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script></div><div style="display:inline;"><g:plusone size="medium" href="http://to-developer.com/blog/?p=960"></g:plusone><script type="text/javascript">(function() { var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true; po.src = 'https://apis.google.com/js/plusone.js'; var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s); })();</script></div></div>									<div class="clear"></div> 
+																</div>	
+							<div class="tags">
+								Tagged with: <a href="http://to-developer.com/blog/?tag=advent-calendar" rel="tag">advent calendar</a> &bull; <a href="http://to-developer.com/blog/?tag=bash" rel="tag">bash</a> &bull; <a href="http://to-developer.com/blog/?tag=git" rel="tag">git</a> &bull; <a href="http://to-developer.com/blog/?tag=paas" rel="tag">paas</a><br />&nbsp;
+							</div>
+						</div>
+					
+
+			</div>
+
+	<div class="clear"></div>
+	</div>
+</div>
+<div id="sharebar" class="copy fix">
+	<div class="copy-pad">
+			<div class="post-footer">
+
+					<div class="left">
+						If you enjoyed this article, please consider sharing it!	
+					</div>
+					<div class="right">
+																					<a href="http://reddit.com/submit?phase=2&amp;url=http://to-developer.com/blog/?p=960&amp;title=%5BFuelPHP%5DHeroku%28PaaS%29%E3%81%A7FuelPHP%E7%92%B0%E5%A2%83%28PHP5.3+%2B+MySQL+%2B+Apatch%29%E3%82%92%E6%A7%8B%E7%AF%89%E3%81%99%E3%82%8B" title="Share on Reddit" rel="nofollow" target="_blank"><img src="http://to-developer.com/blog/wp-content/themes/platform/images/ico-reddit.png" alt="Reddit" /></a>
+														
+															<a href="http://www.facebook.com/sharer.php?u=http://to-developer.com/blog/?p=960&amp;t=%5BFuelPHP%5DHeroku%28PaaS%29%E3%81%A7FuelPHP%E7%92%B0%E5%A2%83%28PHP5.3+%2B+MySQL+%2B+Apatch%29%E3%82%92%E6%A7%8B%E7%AF%89%E3%81%99%E3%82%8B" title="Share on Facebook" rel="nofollow" target="_blank"><img src="http://to-developer.com/blog/wp-content/themes/platform/images/ico-facebook.png" alt="Facebook" /></a>
+							 
+
+																							<a href="http://twitter.com/?status=[FuelPHP]Heroku(PaaS)でFuelPHP環境(PHP5.3 + MySQL + Apatch)を構築する - http://to-developer.com/blog/?p=960" title="Share on Twitter" rel="nofollow" target="_blank"><img src="http://to-developer.com/blog/wp-content/themes/platform/images/ico-twitter.png" alt="Twitter" /></a>
+							 
+
+															<a href="http://del.icio.us/post?url=http://to-developer.com/blog/?p=960&amp;title=%5BFuelPHP%5DHeroku%28PaaS%29%E3%81%A7FuelPHP%E7%92%B0%E5%A2%83%28PHP5.3+%2B+MySQL+%2B+Apatch%29%E3%82%92%E6%A7%8B%E7%AF%89%E3%81%99%E3%82%8B" title="Share on Delicious" rel="nofollow" target="_blank"><img src="http://to-developer.com/blog/wp-content/themes/platform/images/ico-del.png" alt="Delicious" /></a>
+														
+															<a href="http://www.mixx.com/submit?page_url=http://to-developer.com/blog/?p=960" title="Share on Mixx" rel="nofollow" target="_blank"><img src="http://to-developer.com/blog/wp-content/themes/platform/images/ico-mixx.png" alt="Mixx" /></a>
+														
+															<a href="http://www.stumbleupon.com/submit?url=http://to-developer.com/blog/?p=960&amp;title=%5BFuelPHP%5DHeroku%28PaaS%29%E3%81%A7FuelPHP%E7%92%B0%E5%A2%83%28PHP5.3+%2B+MySQL+%2B+Apatch%29%E3%82%92%E6%A7%8B%E7%AF%89%E3%81%99%E3%82%8B" title="Share on StumbleUpon" rel="nofollow" target="_blank"><img src="http://to-developer.com/blog/wp-content/themes/platform/images/ico-stumble.png" alt="StumbleUpon" /></a>
+														
+															<a href="http://digg.com/submit?phase=2&amp;url=http://to-developer.com/blog/?p=960&amp;title=%5BFuelPHP%5DHeroku%28PaaS%29%E3%81%A7FuelPHP%E7%92%B0%E5%A2%83%28PHP5.3+%2B+MySQL+%2B+Apatch%29%E3%82%92%E6%A7%8B%E7%AF%89%E3%81%99%E3%82%8B" title="Share on Digg" rel="nofollow" target="_blank"><img src="http://to-developer.com/blog/wp-content/themes/platform/images/ico-digg.png" alt="Digg" /></a>
+												</div>
+				<div class="clear"></div>
+			</div>
+	
+	<div class="clear"></div>
+	</div>
+</div>
+<div id="pl_comments" class="copy fix">
+	<div class="copy-pad">
+
+<div id="comments">
+	
+								<div id="respond">
+				<h3 id="reply-title">コメントを残す <small><a rel="nofollow" id="cancel-comment-reply-link" href="/blog/?p=960#respond" style="display:none;">コメントをキャンセル</a></small></h3>
+									<form action="http://to-developer.com/blog/wp-comments-post.php" method="post" id="commentform">
+																			<p class="comment-notes">メールアドレスが公開されることはありません。 <span class="required">*</span> が付いている欄は必須項目です</p>							<p class="comment-form-author"><label for="author">名前 <span class="required">*</span></label> <input id="author" name="author" type="text" value="" size="30" aria-required='true' /></p>
+<p class="comment-form-email"><label for="email">メールアドレス <span class="required">*</span></label> <input id="email" name="email" type="text" value="" size="30" aria-required='true' /></p>
+<p class="comment-form-url"><label for="url">ウェブサイト</label><input id="url" name="url" type="text" value="" size="30" /></p>
+												<p class="comment-form-comment"><label for="comment">コメント</label><textarea id="comment" name="comment" cols="45" rows="8" aria-required="true"></textarea></p>						<p class="form-allowed-tags">次の<abbr title="HyperText Markup Language">HTML</abbr> タグと属性が使えます:  <code>&lt;a href=&quot;&quot; title=&quot;&quot;&gt; &lt;abbr title=&quot;&quot;&gt; &lt;acronym title=&quot;&quot;&gt; &lt;b&gt; &lt;blockquote cite=&quot;&quot;&gt; &lt;cite&gt; &lt;code&gt; &lt;del datetime=&quot;&quot;&gt; &lt;em&gt; &lt;i&gt; &lt;q cite=&quot;&quot;&gt; &lt;strike&gt; &lt;strong&gt; </code></p>						<p class="form-submit">
+							<input name="submit" type="submit" id="submit" value="コメントを送信" />
+							<input type='hidden' name='comment_post_ID' value='960' id='comment_post_ID' />
+<input type='hidden' name='comment_parent' id='comment_parent' value='0' />
+						</p>
+											</form>
+							</div><!-- #respond -->
+						</div>
+	<div class="clear"></div>
+	</div>
+</div>
+<div id="pagination" class="copy fix">
+	<div class="copy-pad">
+				
+		<div class="clear"></div>
+	</div>
+</div>
+			</div>
+		</div>
+		
+				
+	</div>	
+	
+	
+	<div id="sidebar-wrap" class="fix">
+			<div id="sidebar1" class="scolumn fix" >
+				<div class="scolumn-pad">
+					<div id="sidebar_primary" class="copy fix">
+	<div class="copy-pad">
+	<ul id="list_sidebar_primary" class="sidebar_widgets fix">
+		<li id="text-6" class="widget_text widget fix"><div class="widget-pad">			<div class="textwidget"><iframe src="//www.facebook.com/plugins/like.php?href=http%3A%2F%2Fto-developer.com%2Fblog%2F&amp;width&amp;layout=standard&amp;action=like&amp;show_faces=true&amp;share=true&amp;height=80&amp;appId=470538123066914" scrolling="no" frameborder="0" style="border:none; overflow:hidden; height:80px;" allowTransparency="true"></iframe></div>
+		</div></li><li id="search-2" class="widget_search widget fix"><div class="widget-pad"></div></li><li id="text-5" class="widget_text widget fix"><div class="widget-pad"><h3 class="widget-title">スポンサードリンク</h3>			<div class="textwidget"><script type="text/javascript"><!--
+google_ad_client = "ca-pub-5755673116271060";
+/* ad200banner */
+google_ad_slot = "9650323431";
+google_ad_width = 200;
+google_ad_height = 200;
+//-->
+</script>
+<script type="text/javascript"
+src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script></div>
+		</div></li><li id="widget_sp_image-3" class="widget_sp_image widget fix"><div class="widget-pad"><h3 class="widget-title">プロフィール</h3><a class="widget_sp_image-image-link" href="http://to-developer.com/blog/wp-content/uploads/2012/12/coffee1.jpg" target="_self"><img src="http://to-developer.com/blog/wp-content/uploads/2012/12/coffee1.jpg" style="max-width: 170px;" class="aligncenter" alt="coffee" /></a><div class="widget_sp_image-description" ><p>コーヒーブレイクに備忘録メモ<br />
+Android/Javaがメイン<br />
+狭心症で療養。気管支炎もなおらない<br />
+--------------------------------------<br />
+Mac OS X<br />
+Eclipse/Vim<br />
+Android/Java/Ruby<br />
+---------------------------------------<br />
+2009<br />
+OracleMaster10gGold取得<br />
+2012/11<br />
+Android試験ベーシック取得</p>
+<p>Twitter：<br />
+<a href="https://twitter.com/mycb750" class="twitter-follow-button" data-show-count="false" data-lang="ja">@mycb750さんをフォロー</a><br />
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script></p>
+</div></div></li><li id="categories-2" class="widget_categories widget fix"><div class="widget-pad"><h3 class="widget-title">カテゴリー</h3>		<ul>
+	<li class="cat-item cat-item-12"><a href="http://to-developer.com/blog/?cat=12" title="Android に含まれる投稿をすべて表示">Android</a> (15)
+</li>
+	<li class="cat-item cat-item-101"><a href="http://to-developer.com/blog/?cat=101" title="AWS に含まれる投稿をすべて表示">AWS</a> (1)
+</li>
+	<li class="cat-item cat-item-4"><a href="http://to-developer.com/blog/?cat=4" title="Blog に含まれる投稿をすべて表示">Blog</a> (4)
+</li>
+	<li class="cat-item cat-item-90"><a href="http://to-developer.com/blog/?cat=90" title="Chef に含まれる投稿をすべて表示">Chef</a> (1)
+</li>
+	<li class="cat-item cat-item-99"><a href="http://to-developer.com/blog/?cat=99" title="css に含まれる投稿をすべて表示">css</a> (1)
+</li>
+	<li class="cat-item cat-item-80"><a href="http://to-developer.com/blog/?cat=80" title="Eclipse に含まれる投稿をすべて表示">Eclipse</a> (1)
+</li>
+	<li class="cat-item cat-item-10"><a href="http://to-developer.com/blog/?cat=10" title="FuelPHP に含まれる投稿をすべて表示">FuelPHP</a> (16)
+</li>
+	<li class="cat-item cat-item-74"><a href="http://to-developer.com/blog/?cat=74" title="Git に含まれる投稿をすべて表示">Git</a> (4)
+</li>
+	<li class="cat-item cat-item-102"><a href="http://to-developer.com/blog/?cat=102" title="illustrator に含まれる投稿をすべて表示">illustrator</a> (1)
+</li>
+	<li class="cat-item cat-item-79"><a href="http://to-developer.com/blog/?cat=79" title="Java に含まれる投稿をすべて表示">Java</a> (2)
+</li>
+	<li class="cat-item cat-item-105"><a href="http://to-developer.com/blog/?cat=105" title="jQuery に含まれる投稿をすべて表示">jQuery</a> (1)
+</li>
+	<li class="cat-item cat-item-14"><a href="http://to-developer.com/blog/?cat=14" title="Mac に含まれる投稿をすべて表示">Mac</a> (8)
+</li>
+	<li class="cat-item cat-item-61"><a href="http://to-developer.com/blog/?cat=61" title="Node.js に含まれる投稿をすべて表示">Node.js</a> (1)
+</li>
+	<li class="cat-item cat-item-17"><a href="http://to-developer.com/blog/?cat=17" title="php に含まれる投稿をすべて表示">php</a> (4)
+</li>
+	<li class="cat-item cat-item-91"><a href="http://to-developer.com/blog/?cat=91" title="Ruby に含まれる投稿をすべて表示">Ruby</a> (1)
+</li>
+	<li class="cat-item cat-item-89"><a href="http://to-developer.com/blog/?cat=89" title="Vagrant に含まれる投稿をすべて表示">Vagrant</a> (1)
+</li>
+	<li class="cat-item cat-item-16"><a href="http://to-developer.com/blog/?cat=16" title="WordPress に含まれる投稿をすべて表示">WordPress</a> (2)
+</li>
+	<li class="cat-item cat-item-13"><a href="http://to-developer.com/blog/?cat=13" title="フリーランス に含まれる投稿をすべて表示">フリーランス</a> (1)
+</li>
+	<li class="cat-item cat-item-82"><a href="http://to-developer.com/blog/?cat=82" title="勉強会 に含まれる投稿をすべて表示">勉強会</a> (2)
+</li>
+	<li class="cat-item cat-item-1"><a href="http://to-developer.com/blog/?cat=1" title="未分類 に含まれる投稿をすべて表示">未分類</a> (1)
+</li>
+		</ul>
+</div></li>		<li id="recent-posts-2" class="widget_recent_entries widget fix"><div class="widget-pad">		<h3 class="widget-title">最近の投稿</h3>		<ul>
+					<li>
+				<a href="http://to-developer.com/blog/?p=960" title="[FuelPHP]Heroku(PaaS)でFuelPHP環境(PHP5.3 + MySQL + Apatch)を構築する">[FuelPHP]Heroku(PaaS)でFuelPHP環境(PHP5.3 + MySQL + Apatch)を構築する</a>
+						</li>
+					<li>
+				<a href="http://to-developer.com/blog/?p=946" title="成功するための良い商品選定について">成功するための良い商品選定について</a>
+						</li>
+					<li>
+				<a href="http://to-developer.com/blog/?p=942" title="[Android]MACでフィンガープリント(SHA1)を取得する">[Android]MACでフィンガープリント(SHA1)を取得する</a>
+						</li>
+					<li>
+				<a href="http://to-developer.com/blog/?p=936" title="[MAC]差分チェックdiffツール(story + p4marge環境)を使用する方法※ディレクトリdiff対応">[MAC]差分チェックdiffツール(story + p4marge環境)を使用する方法※ディレクトリdiff対応</a>
+						</li>
+					<li>
+				<a href="http://to-developer.com/blog/?p=934" title="[Android]java.lang.IllegalStateException: The meta-data tag in your app&#8217;s AndroidManifest.xml does not have the right value.  Expected 4030500 but found 0.  You must have the following declaration within the &lt;application&gt; element:     &lt;meta-data android:name=&quot;com.google.android.gms.version&quot; android:value=&quot;@integer/google_play_services_version&quot; /&gt;エラー">[Android]java.lang.IllegalStateException: The meta-data tag in your app&#8217;s AndroidManifest.xml does not have the right value.  Expected 4030500 but found 0.  You must have the following declaration within the <application> element:     <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />エラー</a>
+						</li>
+					<li>
+				<a href="http://to-developer.com/blog/?p=925" title="[Android]サービスからダイアログを表示する方法">[Android]サービスからダイアログを表示する方法</a>
+						</li>
+					<li>
+				<a href="http://to-developer.com/blog/?p=917" title="[jQuery]関数型・メソッド型でプラグインを実装する方法">[jQuery]関数型・メソッド型でプラグインを実装する方法</a>
+						</li>
+					<li>
+				<a href="http://to-developer.com/blog/?p=912" title="[Android]実機デバッグでdata/dataの中身を確認する手順">[Android]実機デバッグでdata/dataの中身を確認する手順</a>
+						</li>
+					<li>
+				<a href="http://to-developer.com/blog/?p=890" title="[AI]イラストレータCS6で入稿データを作成する方法">[AI]イラストレータCS6で入稿データを作成する方法</a>
+						</li>
+					<li>
+				<a href="http://to-developer.com/blog/?p=868" title="[AWS]MacでEC2インスタンスへssh接続">[AWS]MacでEC2インスタンスへssh接続</a>
+						</li>
+				</ul>
+		</div></li><li id="calendar-2" class="widget_calendar widget fix"><div class="widget-pad"><div id="calendar_wrap"><table id="wp-calendar">
+	<caption>2013年12月</caption>
+	<thead>
+	<tr>
+		<th scope="col" title="月曜日">月</th>
+		<th scope="col" title="火曜日">火</th>
+		<th scope="col" title="水曜日">水</th>
+		<th scope="col" title="木曜日">木</th>
+		<th scope="col" title="金曜日">金</th>
+		<th scope="col" title="土曜日">土</th>
+		<th scope="col" title="日曜日">日</th>
+	</tr>
+	</thead>
+
+	<tfoot>
+	<tr>
+		<td colspan="3" id="prev"><a href="http://to-developer.com/blog/?m=201311" title="2013年11月の投稿を表示">&laquo; 11月</a></td>
+		<td class="pad">&nbsp;</td>
+		<td colspan="3" id="next" class="pad">&nbsp;</td>
+	</tr>
+	</tfoot>
+
+	<tbody>
+	<tr>
+		<td colspan="6" class="pad">&nbsp;</td><td>1</td>
+	</tr>
+	<tr>
+		<td><a href="http://to-developer.com/blog/?m=20131202" title="[Android]MACでフィンガープリント(SHA1)を取得する">2</a></td><td>3</td><td>4</td><td><a href="http://to-developer.com/blog/?m=20131205" title="成功するための良い商品選定について">5</a></td><td>6</td><td>7</td><td>8</td>
+	</tr>
+	<tr>
+		<td>9</td><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td><td>15</td>
+	</tr>
+	<tr>
+		<td>16</td><td>17</td><td>18</td><td>19</td><td>20</td><td>21</td><td>22</td>
+	</tr>
+	<tr>
+		<td id="today"><a href="http://to-developer.com/blog/?m=20131223" title="[FuelPHP]Heroku(PaaS)でFuelPHP環境(PHP5.3 + MySQL + Apatch)を構築する">23</a></td><td>24</td><td>25</td><td>26</td><td>27</td><td>28</td><td>29</td>
+	</tr>
+	<tr>
+		<td>30</td><td>31</td>
+		<td class="pad" colspan="5">&nbsp;</td>
+	</tr>
+	</tbody>
+	</table></div></div></li><li id="archives-2" class="widget_archive widget fix"><div class="widget-pad"><h3 class="widget-title">アーカイブ</h3>		<ul>
+			<li><a href='http://to-developer.com/blog/?m=201312' title='2013年12月'>2013年12月</a></li>
+	<li><a href='http://to-developer.com/blog/?m=201311' title='2013年11月'>2013年11月</a></li>
+	<li><a href='http://to-developer.com/blog/?m=201309' title='2013年9月'>2013年9月</a></li>
+	<li><a href='http://to-developer.com/blog/?m=201308' title='2013年8月'>2013年8月</a></li>
+	<li><a href='http://to-developer.com/blog/?m=201307' title='2013年7月'>2013年7月</a></li>
+	<li><a href='http://to-developer.com/blog/?m=201306' title='2013年6月'>2013年6月</a></li>
+	<li><a href='http://to-developer.com/blog/?m=201305' title='2013年5月'>2013年5月</a></li>
+	<li><a href='http://to-developer.com/blog/?m=201304' title='2013年4月'>2013年4月</a></li>
+	<li><a href='http://to-developer.com/blog/?m=201303' title='2013年3月'>2013年3月</a></li>
+	<li><a href='http://to-developer.com/blog/?m=201302' title='2013年2月'>2013年2月</a></li>
+	<li><a href='http://to-developer.com/blog/?m=201301' title='2013年1月'>2013年1月</a></li>
+	<li><a href='http://to-developer.com/blog/?m=201212' title='2012年12月'>2012年12月</a></li>
+	<li><a href='http://to-developer.com/blog/?m=201210' title='2012年10月'>2012年10月</a></li>
+	<li><a href='http://to-developer.com/blog/?m=201205' title='2012年5月'>2012年5月</a></li>
+	<li><a href='http://to-developer.com/blog/?m=201006' title='2010年6月'>2010年6月</a></li>
+		</ul>
+</div></li><li id="similar-posts" class="widget_rrm_similar_posts widget fix"><div class="widget-pad"><h3 class="widget-title">おすすめ備忘録</h3><ul><li><a href="http://to-developer.com/blog/?p=653" rel="bookmark" title="2013年7月28日">[Vagrant + Chef]CentOSにPHP + MYSQL + APACHE 環境を構築する</a></li>
+
+<li><a href="http://to-developer.com/blog/?p=395" rel="bookmark" title="2013年1月3日">[FuelPHP]GitHubエラー：fatal: Not a git repository: fuel/core/../../.git/modules/fuel/core</a></li>
+
+<li><a href="http://to-developer.com/blog/?p=472" rel="bookmark" title="2013年1月5日">[FuelPHP]GitHubは空ディレクトリがあるとプッシュできない。対応方法をメモ</a></li>
+
+<li><a href="http://to-developer.com/blog/?p=864" rel="bookmark" title="2013年8月21日">[GitHub]新規リポジトリ作成したあとのremoteとpushコマンドについて</a></li>
+
+<li><a href="http://to-developer.com/blog/?p=936" rel="bookmark" title="2013年11月28日">[MAC]差分チェックdiffツール(story + p4marge環境)を使用する方法※ディレクトリdiff対応</a></li>
+</ul><!-- Similar Posts took 15.623 ms --></div></li><li id="recent_searches-2" class="widget_search_meter widget fix"><div class="widget-pad"><h3 class="widget-title">Searches</h3>
+<ul>
+<li><a href="http://to-developer.com/blog/?s=%5BFuelPHP%5D%E7%8B%AC%E8%87%AA%E3%82%AA%E3%83%AA%E3%82%B8%E3%83%8A%E3%83%AB%E8%AA%8D%E8%A8%BC%E3%83%89%E3%83%A9%E3%82%A4%E3%83%90%E3%82%92simpleauth%E3%82%92%E5%8F%82%E8%80%83%E3%81%AB%E5%AE%9F%E8%A3%85%E3%81%99%E3%82%8B">[FuelPHP]独自オリジナル認証ドライバをsimpleauthを参考に実装する</a></li>
+<li><a href="http://to-developer.com/blog/?s=fuelphp">fuelphp</a></li>
+<li><a href="http://to-developer.com/blog/?s=%E8%AA%8D%E8%A8%BC">認証</a></li>
+<li><a href="http://to-developer.com/blog/?s=C%23">C#</a></li>
+<li><a href="http://to-developer.com/blog/?s=twitter">twitter</a></li>
+</ul>
+
+</div></li><li id="tag_cloud-2" class="widget_tag_cloud widget fix"><div class="widget-pad"><h3 class="widget-title">タグ</h3><div class="tagcloud"><a href='http://to-developer.com/blog/?tag=adb' class='tag-link-88' title='2件のトピック' style='font-size: 10.377358490566pt;'>adb</a>
+<a href='http://to-developer.com/blog/?tag=analysis' class='tag-link-25' title='1件のトピック' style='font-size: 8pt;'>analysis</a>
+<a href='http://to-developer.com/blog/?tag=api' class='tag-link-43' title='4件のトピック' style='font-size: 13.283018867925pt;'>api</a>
+<a href='http://to-developer.com/blog/?tag=application' class='tag-link-27' title='10件のトピック' style='font-size: 17.77358490566pt;'>application</a>
+<a href='http://to-developer.com/blog/?tag=auth' class='tag-link-22' title='11件のトピック' style='font-size: 18.301886792453pt;'>auth</a>
+<a href='http://to-developer.com/blog/?tag=bash' class='tag-link-52' title='8件のトピック' style='font-size: 16.584905660377pt;'>bash</a>
+<a href='http://to-developer.com/blog/?tag=battery' class='tag-link-37' title='1件のトピック' style='font-size: 8pt;'>battery</a>
+<a href='http://to-developer.com/blog/?tag=bbs' class='tag-link-34' title='1件のトピック' style='font-size: 8pt;'>bbs</a>
+<a href='http://to-developer.com/blog/?tag=chart' class='tag-link-44' title='3件のトピック' style='font-size: 11.962264150943pt;'>chart</a>
+<a href='http://to-developer.com/blog/?tag=code' class='tag-link-19' title='22件のトピック' style='font-size: 22pt;'>code</a>
+<a href='http://to-developer.com/blog/?tag=command' class='tag-link-60' title='9件のトピック' style='font-size: 17.245283018868pt;'>command</a>
+<a href='http://to-developer.com/blog/?tag=curl' class='tag-link-65' title='2件のトピック' style='font-size: 10.377358490566pt;'>curl</a>
+<a href='http://to-developer.com/blog/?tag=db' class='tag-link-29' title='1件のトピック' style='font-size: 8pt;'>db</a>
+<a href='http://to-developer.com/blog/?tag=driver' class='tag-link-18' title='2件のトピック' style='font-size: 10.377358490566pt;'>driver</a>
+<a href='http://to-developer.com/blog/?tag=entertainer' class='tag-link-50' title='1件のトピック' style='font-size: 8pt;'>entertainer</a>
+<a href='http://to-developer.com/blog/?tag=error' class='tag-link-48' title='6件のトピック' style='font-size: 15.264150943396pt;'>error</a>
+<a href='http://to-developer.com/blog/?tag=facebook' class='tag-link-41' title='4件のトピック' style='font-size: 13.283018867925pt;'>facebook</a>
+<a href='http://to-developer.com/blog/?tag=git' class='tag-link-54' title='8件のトピック' style='font-size: 16.584905660377pt;'>git</a>
+<a href='http://to-developer.com/blog/?tag=github' class='tag-link-53' title='6件のトピック' style='font-size: 15.264150943396pt;'>github</a>
+<a href='http://to-developer.com/blog/?tag=google' class='tag-link-42' title='2件のトピック' style='font-size: 10.377358490566pt;'>google</a>
+<a href='http://to-developer.com/blog/?tag=homebrew' class='tag-link-63' title='2件のトピック' style='font-size: 10.377358490566pt;'>homebrew</a>
+<a href='http://to-developer.com/blog/?tag=install' class='tag-link-62' title='2件のトピック' style='font-size: 10.377358490566pt;'>install</a>
+<a href='http://to-developer.com/blog/?tag=java' class='tag-link-33' title='11件のトピック' style='font-size: 18.301886792453pt;'>java</a>
+<a href='http://to-developer.com/blog/?tag=library' class='tag-link-45' title='5件のトピック' style='font-size: 14.339622641509pt;'>library</a>
+<a href='http://to-developer.com/blog/?tag=mac-2' class='tag-link-51' title='3件のトピック' style='font-size: 11.962264150943pt;'>mac</a>
+<a href='http://to-developer.com/blog/?tag=mba' class='tag-link-36' title='1件のトピック' style='font-size: 8pt;'>mba</a>
+<a href='http://to-developer.com/blog/?tag=memo' class='tag-link-32' title='1件のトピック' style='font-size: 8pt;'>memo</a>
+<a href='http://to-developer.com/blog/?tag=migrate' class='tag-link-47' title='1件のトピック' style='font-size: 8pt;'>migrate</a>
+<a href='http://to-developer.com/blog/?tag=model' class='tag-link-31' title='1件のトピック' style='font-size: 8pt;'>model</a>
+<a href='http://to-developer.com/blog/?tag=opauth' class='tag-link-58' title='3件のトピック' style='font-size: 11.962264150943pt;'>opauth</a>
+<a href='http://to-developer.com/blog/?tag=php' class='tag-link-17' title='18件のトピック' style='font-size: 20.943396226415pt;'>php</a>
+<a href='http://to-developer.com/blog/?tag=plug-in' class='tag-link-20' title='3件のトピック' style='font-size: 11.962264150943pt;'>plug-in</a>
+<a href='http://to-developer.com/blog/?tag=project' class='tag-link-23' title='12件のトピック' style='font-size: 18.698113207547pt;'>project</a>
+<a href='http://to-developer.com/blog/?tag=public' class='tag-link-26' title='6件のトピック' style='font-size: 15.264150943396pt;'>public</a>
+<a href='http://to-developer.com/blog/?tag=release' class='tag-link-28' title='1件のトピック' style='font-size: 8pt;'>release</a>
+<a href='http://to-developer.com/blog/?tag=salt' class='tag-link-46' title='1件のトピック' style='font-size: 8pt;'>salt</a>
+<a href='http://to-developer.com/blog/?tag=site' class='tag-link-35' title='2件のトピック' style='font-size: 10.377358490566pt;'>site</a>
+<a href='http://to-developer.com/blog/?tag=sns' class='tag-link-39' title='4件のトピック' style='font-size: 13.283018867925pt;'>sns</a>
+<a href='http://to-developer.com/blog/?tag=sql' class='tag-link-30' title='1件のトピック' style='font-size: 8pt;'>sql</a>
+<a href='http://to-developer.com/blog/?tag=ssh' class='tag-link-95' title='3件のトピック' style='font-size: 11.962264150943pt;'>ssh</a>
+<a href='http://to-developer.com/blog/?tag=tax' class='tag-link-21' title='1件のトピック' style='font-size: 8pt;'>tax</a>
+<a href='http://to-developer.com/blog/?tag=time' class='tag-link-49' title='1件のトピック' style='font-size: 8pt;'>time</a>
+<a href='http://to-developer.com/blog/?tag=twitter' class='tag-link-40' title='4件のトピック' style='font-size: 13.283018867925pt;'>twitter</a>
+<a href='http://to-developer.com/blog/?tag=wireless' class='tag-link-38' title='1件のトピック' style='font-size: 8pt;'>wireless</a>
+<a href='http://to-developer.com/blog/?tag=word' class='tag-link-24' title='1件のトピック' style='font-size: 8pt;'>word</a></div>
+</div></li><li id="text-4" class="widget_text widget fix"><div class="widget-pad"><h3 class="widget-title">エントリ</h3>			<div class="textwidget"><SCRIPT LANGUAGE="JavaScript" SRC="http://parts.blog.with2.net/bp.php?id=1450805:KU2nxovhDlY"></SCRIPT></div>
+		</div></li>	</ul>
+	<div class="clear"></div>
+	</div>
+</div>
+	
+				</div>
+			</div>
+			</div>		
+
+</div>				<div class="clear"></div>
+			</div>
+		</div>
+	</div>
+</div>
+</div> <!-- END #dynamic-content -->
+
+<div id="morefoot_area"></div>
+<div class="clear"></div>
+				
+</div> <!-- END #page-main from header -->
+</div> <!-- END #page-canvas from header -->
+</div> <!-- END #page from header -->
+
+<div  id="footer">
+	<div class="outline fix"><div id="cred" class="pagelines"><a class="plimage" target="_blank" href="http://www.pagelines.com/" title="PageLines"><img src="http://to-developer.com/blog/wp-content/themes/platform/images/pagelines.png" alt="Platform by PageLines" /></a></div><div class="clear"></div></div>
+</div>
+</div>
+<div id="top-link" class="top-link top-link-hide"><a href="#top" title="Back to top">↑</a></div>
+<script type='text/javascript' src='http://to-developer.com/blog/wp-content/themes/platform/sections/nav/superfish.js?ver=1.0'></script>
+<script type='text/javascript' src='http://to-developer.com/blog/wp-content/themes/platform/sections/nav/jquery.bgiframe.min.js?ver=1.0'></script>
+<script type='text/javascript' src='http://to-developer.com/blog/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/scripts/shCore.js?ver=3.0.83c'></script>
+<script type='text/javascript' src='http://to-developer.com/blog/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/scripts/shBrushBash.js?ver=3.0.83c'></script>
+<script type='text/javascript' src='http://to-developer.com/blog/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/scripts/shBrushPhp.js?ver=3.0.83c'></script>
+<script type='text/javascript'>
+	(function(){
+		var corecss = document.createElement('link');
+		var themecss = document.createElement('link');
+		var corecssurl = "http://to-developer.com/blog/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/styles/shCore.css?ver=3.0.83c";
+		if ( corecss.setAttribute ) {
+				corecss.setAttribute( "rel", "stylesheet" );
+				corecss.setAttribute( "type", "text/css" );
+				corecss.setAttribute( "href", corecssurl );
+		} else {
+				corecss.rel = "stylesheet";
+				corecss.href = corecssurl;
+		}
+		document.getElementsByTagName("head")[0].insertBefore( corecss, document.getElementById("syntaxhighlighteranchor") );
+		var themecssurl = "http://to-developer.com/blog/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/styles/shThemeEclipse.css?ver=3.0.83c";
+		if ( themecss.setAttribute ) {
+				themecss.setAttribute( "rel", "stylesheet" );
+				themecss.setAttribute( "type", "text/css" );
+				themecss.setAttribute( "href", themecssurl );
+		} else {
+				themecss.rel = "stylesheet";
+				themecss.href = themecssurl;
+		}
+		//document.getElementById("syntaxhighlighteranchor").appendChild(themecss);
+		document.getElementsByTagName("head")[0].insertBefore( themecss, document.getElementById("syntaxhighlighteranchor") );
+	})();
+	SyntaxHighlighter.config.strings.expandSource = 'ソースを表示';
+	SyntaxHighlighter.config.strings.help = 'SyntaxHighlighterについて';
+	SyntaxHighlighter.config.strings.alert = 'SyntaxHighlighter\n\n';
+	SyntaxHighlighter.config.strings.noBrush = '指定のブラシが見つかりませんでした: ';
+	SyntaxHighlighter.config.strings.brushNotHtmlScript = 'HTMLスクリプトのオプションのためにブラシが構成されませんでした: ';
+	SyntaxHighlighter.defaults['pad-line-numbers'] = false;
+	SyntaxHighlighter.defaults['toolbar'] = false;
+	SyntaxHighlighter.defaults['wrap-lines'] = false;
+	SyntaxHighlighter.all();
+</script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var nyams_ultimate_button = {"text":"\u2191","title":"Back to top"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='http://to-developer.com/blog/wp-content/plugins/ultimate-back-to-top/nyams_ultimate_button.js?ver=1.0'></script>
+<div id="top-link" class="top-link top-link-hide"><a href="#top" title="Back to top">↑</a></div>
+<script type='text/javascript'>
+	(function(){
+		var corecss = document.createElement('link');
+		var themecss = document.createElement('link');
+		var corecssurl = "http://to-developer.com/blog/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/styles/shCore.css?ver=3.0.83c";
+		if ( corecss.setAttribute ) {
+				corecss.setAttribute( "rel", "stylesheet" );
+				corecss.setAttribute( "type", "text/css" );
+				corecss.setAttribute( "href", corecssurl );
+		} else {
+				corecss.rel = "stylesheet";
+				corecss.href = corecssurl;
+		}
+		document.getElementsByTagName("head")[0].insertBefore( corecss, document.getElementById("syntaxhighlighteranchor") );
+		var themecssurl = "http://to-developer.com/blog/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/styles/shThemeEclipse.css?ver=3.0.83c";
+		if ( themecss.setAttribute ) {
+				themecss.setAttribute( "rel", "stylesheet" );
+				themecss.setAttribute( "type", "text/css" );
+				themecss.setAttribute( "href", themecssurl );
+		} else {
+				themecss.rel = "stylesheet";
+				themecss.href = themecssurl;
+		}
+		//document.getElementById("syntaxhighlighteranchor").appendChild(themecss);
+		document.getElementsByTagName("head")[0].insertBefore( themecss, document.getElementById("syntaxhighlighteranchor") );
+	})();
+	SyntaxHighlighter.config.strings.expandSource = 'ソースを表示';
+	SyntaxHighlighter.config.strings.help = 'SyntaxHighlighterについて';
+	SyntaxHighlighter.config.strings.alert = 'SyntaxHighlighter\n\n';
+	SyntaxHighlighter.config.strings.noBrush = '指定のブラシが見つかりませんでした: ';
+	SyntaxHighlighter.config.strings.brushNotHtmlScript = 'HTMLスクリプトのオプションのためにブラシが構成されませんでした: ';
+	SyntaxHighlighter.defaults['pad-line-numbers'] = false;
+	SyntaxHighlighter.defaults['toolbar'] = false;
+	SyntaxHighlighter.defaults['wrap-lines'] = false;
+	SyntaxHighlighter.all();
+</script>
+</body>
+</html>
