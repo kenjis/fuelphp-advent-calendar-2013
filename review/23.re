@@ -1,11 +1,8 @@
-
 = Heroku（PaaS）でFuelPHP環境（PHP 5.3＋MySQL＋Apatch）を構築する
 
 == HerokuへFuelPHP環境を構築する手順をメモ
 
-
 @<href>{http://atnd.org/events/45096,FuelPHP Advent Calendar 2013}の23日目です。
-
 
 以前まではサービスをリリースするときにはレンタルサーバを借りてサービスをデプロイすることが一般的でしたが、最近はPaaSと呼ばれるアプリケーションの動作環境をプラットフォーム上で一式提供されている形態を使う事が増えてきています。有名どころではAmazonのAWSやMicrosoftのWindows Azureなどがあります。
 
@@ -13,11 +10,9 @@ PaaSサービスのそれぞれの違いはスペック・料金・機能など�
 
 サービスのユーザ数が大幅にふえてサーバに負荷がかかるようになった場合や、予想してた以上にユーザ数が延びなかった場合などに役立ちます。@<br>{}
 
-
 個人的にはHerokuはRailsのアプリをテスト的に公開したくなったときなどに使ったりしています。もともとHeroku自体はRubyの環境用としてスタートしていて現在はJava,node.js,Ruby,Pythonなどをサポートしています。@<br>{}
 
 現在HerokuではPHPは非サポートとなっていますがPHPも動作します。@<br>{}
-
 
 Herokuコマンド参考ページ：@<href>{http://d.hatena.ne.jp/xyk/20101102,http://d.hatena.ne.jp/xyk/20101102}@<br>{}
 
@@ -32,36 +27,23 @@ nginxのconfigファイルの設定がFuelPHPのプロジェクトに合わせ�
 
 === 1. Herokuアカウントを取得
 
-
 公式サイトより「login」押下して「signup」よりアカウントを取得します
-
-
-
-
 
 //image[heroku][Heroku]{
 //}
-
 
 公式サイト：@<href>{https://www.heroku.com/,https://www.heroku.com/}
 
 === 2. heroku toolbelt（ターミナルからHerokuを操作するツール）をインストール
 
-
 下記サイトよりtoolbeltを環境に合わせてインストールします
-
-
-
-
 
 //image[2-300x163][2]{
 //}]
 
-
 @<href>{https://toolbelt.heroku.com/,https://toolbelt.heroku.com/}
 
 === 3. SSH公開鍵の設定
-
 
 (1)ターミナルを立ち上げてloginコマンドを実行
 
@@ -74,9 +56,7 @@ Password (typing will be hidden):  [1で作成したアカウントのパスワ�
 Authentication successful.
 //}
 
-
 「Authentication successful.」でアカウント認証成功。「Authentication failed.」は失敗。
-
 
 (2)公開鍵をジェネレート
 
@@ -90,14 +70,11 @@ Uploading SSH public key /Users/(PCユーザー名)/.ssh/id_rsa.pub
 Authentication successful.
 //}
 
-
 「Authentication successful.」で成功。
-
 
 初期ログイン時に公開鍵を生成しなかった場合は手動で「ssh-keygen」で作成しHerokuに公開鍵を設定する必要があります。
 
 ssh-keygenについては前記事参照@<href>{http://to-developer.com/blog/?p=563,http://to-developer.com/blog/?p=563}。
-
 
 (3)Herokuに公開鍵を設定
 
@@ -106,11 +83,9 @@ ssh-keygenについては前記事参照@<href>{http://to-developer.com/blog/?p=
 $ heroku keys:add
 //}
 
-
 HerokuのGUI画面から設定も可能。
 
 === 4. FuelPHPプロジェクトを生成
-
 
 (1)アプリケーションを作成
 
@@ -119,9 +94,7 @@ HerokuのGUI画面から設定も可能。
 $ oil create [アプリ名を入力]
 //}
 
-
 (2)index.php作成
-
 
 Herokuはrootディレクトリにindex.phpがないと動作しないため、今のところ空のindex.phpファイルを生成しときます。
 
@@ -129,7 +102,6 @@ Herokuはrootディレクトリにindex.phpがないと動作しないため、�
 //cmd{
 $ touch index.php
 //}
-
 
 (3).htaccessを作成（FuelPHPのディレクトリ構成に合わせてリダイレクト処理を入れる）
 
@@ -142,8 +114,6 @@ FuelPHPディレクトリ構成のpublic/以下にindex.phpのアクセスをリ
 $ vim .htaccess
 //}
 
-
-
 #@# lang: .brush: .php; .title: .; .notranslate title=""
 //emlist[.htaccessの設定情報]{
   RewriteEngine on
@@ -152,7 +122,6 @@ $ vim .htaccess
   RewriteCond %{SCRIPT_FILENAME} !^/app/www/public/
   RewriteRule ^(.*)$ public/$1 [L]
 //}
-
 
 (4)不要ファイル削除（サブモジュールなどはaddできないので削除）
 
@@ -170,9 +139,7 @@ $ rm -fr fuel/packages/orm/
 $ rm -fr fuel/packages/parser/
 //}
 
-
 ※サブモジュールをaddする方法（git submodule addコマンド）@<br>{}
-
 
 #@# lang: .brush: .bash; .title: .; .notranslate title=""
 //cmd[例）opauthサブモジュールの場合]{
@@ -195,7 +162,6 @@ $ git commit -am "initial commit"
 $ heroku create --buildpack https://github.com/winglian/heroku-buildpack-php [アプリ名を入力]
 //}
 
-
 ※アプリ名はここで入れなくてもデフォルトの名前が付けられる。GUI画面などから確認・変更が可能。
 
 === 7. Herokuのリポジトリへ反映
@@ -205,9 +171,7 @@ $ heroku create --buildpack https://github.com/winglian/heroku-buildpack-php [�
 $ git push heroku master
 //}
 
-
 ※アプリが複数存在する場合、Herokuのリモートリポジトリが違いpushできない場合があるので都度確認が必要。
-
 
 ※1 リモートリポジトリherokuの設定
 
@@ -216,14 +180,12 @@ $ git push heroku master
 $ git remote add heroku [リモートリポジトリ]
 //}
 
-
 ※２ リモートリポジトリ確認
 
 #@# lang: .brush: .bash; .title: .; .notranslate title=""
 //cmd{
 $ git remote show
 //}
-
 
 ※3 リモートリポジトリ削除
 
@@ -239,36 +201,28 @@ $ git remote rm [リモートリポジトリ]
 $ heroku open
 //}
 
-
 fuelの画面がでたら成功！@<br>{}
  [
-
 
 //image[3-1024x552][3]{
 //}](http://to-developer.com/blog/?attachment_id=598)
 
 === 9. MySQLアドオンを入れる
 
-
 無料版のアドオンを入れる場合も公式サイトからログインを行いクレジットカードの登録が必要です。
 ただ無料版の場合は料金が引かれるなど初期費用なども基本ないようです。
 
-
 MySQLのアドオンは@<href>{https://addons.heroku.com/,https://addons.heroku.com/}からsearchボックスに「mysql」と検索すると2013/12時点で４つのアドオンが見つかりました。
-
 
 Adminium Full fledged admin interface without touching your app code heroku addons:add adminium@<br>{}
  Amazon RDS Hook your app up to Amazon’s RDS heroku addons:add amazon_rds@<br>{}
  ClearDB MySQL Database The high speed, 100% uptime database for your MySQL powered applications. heroku addons:add cleardb@<br>{}
  Xeround Cloud Database αlpha Scalable, highly available, zero-management cloud database for MySQL heroku addons:add xeround
 
-
 今回は「ClearDB」とする@<br>{}
 参考サイト：@<href>{http://www.ownway.info/Ruby/index.php?heroku%2Fhow%2Fmanagement%2Fdatabase%2Fcleardb,http://www.ownway.info/Ruby/index.php?heroku%2Fhow%2Fmanagement%2Fdatabase%2Fcleardb}
 
-
 (1)公式サイトよりクレジットカード登録を行う
-
 
 (2)アドオンをインストール
 
@@ -279,9 +233,7 @@ Adding cleardb:ignite on tranquil-cliffs-2547... done, v6 (free)
 Use `heroku addons:docs cleardb:ignite` to view documentation.
 //}
 
-
 インストール完了
-
 
 (3)接続情報を確認
 
@@ -293,10 +245,8 @@ BUILDPACK_URL:        https://github.com/winglian/heroku-buildpack-php
 CLEARDB_DATABASE_URL: mysql://[ユーザ名]:[パスワード]@[ホスト名]/[DB名]?reconnect=true
 //}
 
-
 ※CLEARDB_DATABASE_URLに接続文字列が表示@<br>{}
 CLEARDB_DATABASE_URL: mysql://[ユーザ名]:[パスワード]@[ホスト名]/[DB名]?reconnect=true
-
 
 (4)接続文字列は？@<br>{}
 mysql –host=[ホスト名] –user=[ユーザ名] –password=[パスワード] [DB名]
@@ -313,15 +263,12 @@ $conn = new PDO(
 );
 //}
 
-
 @<strong>{ここまででPHP＋MySQL＋ApacheでFuelPHPが動作する環境の構築完了です}
 
 === まとめ
 
-
 Herokuにやや癖があり使いにくいと思ってしまった事もありましたが、慣れるとここまで行うのに15分程でできるとおもいます。一度環境を作ってしまえばあとの更新作業はすぐにできますね。
 他のPaaSはあまり使った事がありませんが、動作確認程度の使用でしたらHerokuでいいと思います。
 またHerokuから公式にphpがサポートされれば、もっとアドオン等増えてくるのではないでしょうか。
-
 
 明日はクリスマスイブですね。いいことありますように！
