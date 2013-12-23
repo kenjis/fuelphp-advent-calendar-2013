@@ -25,16 +25,16 @@ buildpackは@<href>{https://github.com/winglian/heroku-buildpack-php,https://git
 
 === 1. Herokuアカウントを取得
 
-公式サイトより「login」押下して「signup」よりアカウントを取得します
+公式サイトより「login」押下して「signup」よりアカウントを取得します。
 
  * Heroku公式サイト：@<href>{https://www.heroku.com/,https://www.heroku.com/}
 
 //image[heroku][Heroku]{
 //}
 
-=== 2. heroku toolbelt（ターミナルからHerokuを操作するツール）をインストール
+=== 2. Heroku Toolbelt（ターミナルからHerokuを操作するツール）をインストール
 
-下記サイトよりtoolbeltを環境に合わせてインストールします
+下記サイトよりHeroku Toolbeltを環境に合わせてインストールします。
 
  * @<href>{https://toolbelt.heroku.com/,https://toolbelt.heroku.com/}
 
