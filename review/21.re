@@ -2,30 +2,29 @@
 = FuelPHPをRocketeerで自動デプロイしてみる。マイグレーションとPHPUnitも実行してみる。
 
 
-@<href>{http://atnd.org/events/45096,FuelPHP Advent Calendar 2013} 21日目です。@<href>{https://twitter.com/madmamor,@madmamor} が担当します。昨日は @<href>{https://twitter.com/Altsencturely,@Altsencturely} さんの「@<href>{http://takashi-kun.hatenablog.com/entry/2013/12/20/015706,FuelPHPとFluentdの連携}」でした。  
+@<href>{http://atnd.org/events/45096,FuelPHP Advent Calendar 2013} 21日目です。@<href>{https://twitter.com/madmamor,@madmamor}が担当します。@<br>{}
 
 
- 今日は、PHP製デプロイツール「Rocketeer」を使って、FuelPHPをコマンド一つでデプロイしてみます。デプロイする最中に、PHPUnitやマイグレーションも実行してみます。  
+今日は、PHP製デプロイツール「Rocketeer」を使って、FuelPHPをコマンド一つでデプロイしてみます。デプロイする最中に、PHPUnitやマイグレーションも実行してみます。
 
 
- Rocketeer公式ドキュメント:@<br>{}
- @<href>{http://rocketeer.autopergamene.eu/,http://rocketeer.autopergamene.eu/}@<br>{}
- ライセンスファイルへのリンクが切れてしまっていますが、MITライセンスと書かれています。  
+ * Rocketeer公式ドキュメント：@<href>{http://rocketeer.autopergamene.eu/,http://rocketeer.autopergamene.eu/}
+
+ライセンスファイルへのリンクが切れてしまっていますが、MITライセンスと書かれています。
+
+ * RocketeerのGitHub：@<href>{https://github.com/Anahkiasen/rocketeer,https://github.com/Anahkiasen/rocketeer}
+
+ 今回の内容は、MacOS X Mavericks（以下、ローカル）とVagrantで起動しているUbuntu 13.10（以下、リモート）な環境で確認しています。ローカルは普段通りな開発を行う場所で、そこからコマンドを実行して、リモートにデプロイするイメージです。FuelPHPは1.7.1を使いましたが、Composer対応以降のバージョンであれば、あまり関係は無いはずです。
 
 
- RocketeerのGitHub:@<br>{}
- @<href>{https://github.com/Anahkiasen/rocketeer,https://github.com/Anahkiasen/rocketeer}  
+記事内のソースのライセンスについては、Rocketeerが生成するファイルはRocketeerのライセンスに準じます。私が作成したファイルは、ソースにも書きますが、WTFPLライセンスにします。
 
-
- 今回の内容は、Mac OSX Mavericks(以下、ローカル)とVagrantで起動しているUbuntu 13.10(以下、リモート)な環境で確認しています。ローカルは普段通りな開発を行う場所で、そこからコマンドを実行して、リモートにデプロイするイメージです。FuelPHPは1.7.1を使いましたが、Composer対応以降のバージョンであれば、あまり関係は無いはずです。  
-
-
- 記事内のソースのライセンスについては、Rocketeerが生成するファイルはRocketeerのライセンスに準じます。私が作成したファイルは、ソースにも書きますが、WTFPLライセンスにします。 @<href>{http://www.wtfpl.net/txt/copying/,http://www.wtfpl.net/txt/copying/}  
+ * @<href>{http://www.wtfpl.net/txt/copying/,http://www.wtfpl.net/txt/copying/}
 
 == 1. 下準備(ローカル)
 
 
-php.iniで以下の設定をします。  
+php.iniで以下の設定をします。
 
 #@# lang: .brush:text
 //emlist{
@@ -33,7 +32,7 @@ phar.readonly = Off
 //}
 
 
-これをしないと、後述のrocketeer.pharが自身の内部を更新する関係か、以下の警告が大量に出ました。  
+これをしないと、後述のrocketeer.pharが自身の内部を更新する関係か、以下の警告が大量に出ました。
 
 #@# lang: .brush:text
 //emlist{
@@ -41,10 +40,9 @@ failed to open stream: phar error: write operations disabled by the php.ini sett
 //}
 
 
-併せて、FuelPHPプロジェクトを作成して、Gitレポジトリへコミットしておいて下さい。このGitレポジトリはリモート側からアクセスできる必要があります。アクセスには、ユーザ名とパスワード、あるいはユーザ名と鍵ファイル(と鍵のパスワード)による認証が使えます。  
+併せて、FuelPHPプロジェクトを作成して、Gitリポジトリへコミットしておいて下さい。このGitリポジトリはリモート側からアクセスできる必要があります。アクセスには、ユーザ名とパスワード、あるいはユーザ名と鍵ファイル(と鍵のパスワード)による認証が使えます。@<br>{}
 
-
-注意: リモートで鍵の設定時 ~/.ssh/config に以下が無いとエラーになる可能性が有ります。あるいは、一度手動でcloneして、ホストの登録を済ませておきましょう。  
+注意：リモートで鍵の設定時~/.ssh/configに以下が無いとエラーになる可能性が有ります。あるいは、一度手動でcloneして、ホストの登録を済ませておきましょう。
 
 #@# lang: .brush:text
 //emlist{
@@ -52,16 +50,18 @@ StrictHostKeyChecking no
 //}
 
 
-尚、この記事を作成するにあたって作成したFuelPHPプロジェクトのサンプルを公開してあります。@<br>{}
- @<href>{https://github.com/mp-php/fuelphp-advent-calendar-2013-rocketeer-sample,https://github.com/mp-php/fuelphp-advent-calendar-2013-rocketeer-sample}  
+尚、この記事を作成するにあたって作成したFuelPHPプロジェクトのサンプルを公開してあります。
+
+ * @<br>{}
+ @<href>{https://github.com/mp-php/fuelphp-advent-calendar-2013-rocketeer-sample,https://github.com/mp-php/fuelphp-advent-calendar-2013-rocketeer-sample}
 
 == 2. 下準備(リモート)
 
 
-git、PHPとmcrypt extension、Composerをインストールしておきます。更に、以下のsymlinkを貼っておきます。このリンク先は、今現在は存在しませんが、それで構いません。  
+Git、PHPとmcrypt extension、Composerをインストールしておきます。更に、以下のsymlinkを貼っておきます。このリンク先は、今現在は存在しませんが、それで構いません。
 
 #@# lang: .brush:text
-//emlist{
+//cmd{
 $ sudo ln -s /home/vagrant/www/fuel-rocketeer-sample/current/public /var/www/fuel-rocketeer-sample
 //}
 
@@ -71,14 +71,14 @@ $ sudo ln -s /home/vagrant/www/fuel-rocketeer-sample/current/public /var/www/fue
 ローカルで、以下をダウンロードして、プロジェクトルートに配置します。ダウンロード方法は何でも構いません。
 
 
-http://rocketeer.autopergamene.eu/versions/rocketeer.phar
+ * http://rocketeer.autopergamene.eu/versions/rocketeer.phar
 
 
 以下のコマンドでコマンド一覧やヘルプが表示できればRocketeerのインストールは完了です。
 
 #@# lang: .brush:text
-//emlist{
-$ php rocketeer.phar # コマンド一覧
+//cmd{
+$ php rocketeer.phar    # コマンド一覧
 $ php rocketeer.phar -h # ヘルプ
 //}
 
@@ -86,36 +86,36 @@ $ php rocketeer.phar -h # ヘルプ
 次に、設定ファイルを準備します。以下のコマンドを実行して下さい。設問は、とりあえず全て未入力でEnterで良いです。
 
 #@# lang: .brush:text
-//emlist{
+//cmd{
 $ php rocketeer.phar ignite
 //}
 
 
-以下のファイルが生成されたはずです。  
+以下のファイルが生成されたはずです。
 
  * rocketeer/config.php ... 主にリモートの接続情報を設定する
- * rocketeer/hooks.php ... 主にデプロイ時等のbefore/afterのタスクを設定する(今回は使いません。)
+ * rocketeer/hooks.php ... 主にデプロイ時等のbefore/afterのタスクを設定する（今回は使いません）
  * rocketeer/paths.php ... phpやcomposer等のコマンドのパスを設定する
  * rocketeer/remote.php ... リモートのデプロイ先に関する色々な設定をする
- * rocketeer/scm.php ... Gitレポジトリの設定をする(SVNも使えるみたいです)
- * rocketeer/stages.php ... 同一サーバに複数ステージ(stagingやproduction)がある場合に使う?(今回は使いません。)
+ * rocketeer/scm.php ... Gitリポジトリの設定をする（SVNも使えるみたいです）
+ * rocketeer/stages.php ... 同一サーバに複数ステージ（stagingやproduction）がある場合に使う？（今回は使いません）
 
 
 
 注意: rocketeer.pharは自身の内部にキャッシュ的に接続設定を保存するようです。以降の設定が正しく反映されない場合、以下のコマンドを実行してみてください。
 
 #@# lang: .brush:text
-//emlist{
+//cmd{
 $ php rocketeer.phar flush
 //}
 
 
-また、その性質上、rocketeer.pharをパブリックなレポジトリにコミットするのはリスクが有るかもしれません。.gitignoreで除外してしまうのも有りかと思います。   
+また、その性質上、rocketeer.pharをパブリックなリポジトリにコミットするのはリスクが有るかもしれません。.gitignoreで除外してしまうのも有りかと思います。
 
 == 4. リモートの接続情報を設定して確認してみる
 
 
-rocketeer/config.php を修正します。以下は例なので、適切に書き換えて下さい。(以降、同様です。)  
+rocketeer/config.phpを修正します。以下は例なので、適切に書き換えて下さい（以降、同様です）。
 
 #@# lang: .brush:text
 //emlist{
@@ -131,13 +131,13 @@ rocketeer/config.php を修正します。以下は例なので、適切に書�
 //}
 
 
-SSHのポートを22以外にしている場合は"xxx.yyy.com:2222"のように指定してあげればOKです。  
+SSHのポートを22以外にしている場合は"xxx.yyy.com:2222"のように指定してあげればOKです。
 
 
- 早速、正しく設定できたか確認してみましょう。  
+早速、正しく設定できたか確認してみましょう。
 
 #@# lang: .brush:text
-//emlist{
+//cmd{
 $ php rocketeer.phar check
 
 No repository is set for the repository, please provide one :
@@ -152,15 +152,15 @@ Execution time: 0.8238s
 //}
 
 
-正しく接続できて、gitコマンド、PHPバージョン、composerコマンド、mcrypt extensionのチェックが行われました。必要なPHPバージョンは、すみません、確認していません。が、Rocketeerのcomposer.jsonには "php": ">=5.3.0" と書かれています。ちなみに手元は5.5です。  
+正しく接続できて、gitコマンド、PHPバージョン、composerコマンド、mcrypt extensionのチェックが行われました。必要なPHPバージョンは、すみません、確認していません。が、Rocketeerのcomposer.jsonには"php": ">=5.3.0"と書かれています。ちなみに手元は5.5です。
 
 == 5. デプロイの設定をしてデプロイしてみる
 
 
-rocketeer/remote.php を修正します。
+rocketeer/remote.phpを修正します。
 
 #@# lang: .brush:text
-//emlist{
+//cmd{
 $ git diff rocketeer/remote.php
 diff --git a/rocketeer/remote.php b/rocketeer/remote.php
 index a21279b..51424c4 100644
@@ -215,13 +215,13 @@ index a21279b..51424c4 100644
 //}
 
 
-"root_directory"の下に"application_name"な名前のディレクトリが作成され、その中にデプロイされます。この例だと "/home/vagrant/www/fuel-rocketeer-sample" になりますね。
+"root_directory"の下に"application_name"な名前のディレクトリが作成され、その中にデプロイされます。この例だと"/home/vagrant/www/fuel-rocketeer-sample"になりますね。
 
 
-"shared"では、デプロイをまたいで共有したいディレクトリやファイルを設定します。大抵の場合、ログディレクトリやキャッシュディレクトリ等、.gitignoreに書かれているものになると思います。裏を返せば、例えばデプロイ毎にキャッシュをクリアしたければ、あえて共有しなければOKです。尚、共有はsymlinkによって実現されます。
+"shared"では、デプロイをまたいで共有したいディレクトリやファイルを設定します。大抵の場合、ログディレクトリやキャッシュディレクトリ等、.gitignoreに書かれているものになると思います。裏を返せば、例えばデプロイ毎にキャッシュをクリアしたければ、あえて共有しなければOKです。尚、共有はsymlinkによって実現されます。@<br>{}
 
 
-注意: ディレクトリを共有する場合、ディレクトリそのものがレポジトリに含まれている必要があります。.gitkeepや、以下のような.gitignoreファイルをそのディレクトリに入れるなどしておいて下さい。
+注意：ディレクトリを共有する場合、ディレクトリそのものがリポジトリに含まれている必要があります。.gitkeepや、以下のような.gitignoreファイルをそのディレクトリに入れるなどしておいて下さい。
 
 #@# lang: .brush:text
 //emlist{
@@ -230,10 +230,10 @@ index a21279b..51424c4 100644
 //}
 
 
-"permissions"は、指定したディレクトリやファイルを、指定したパーミッションに変更します。今回の例では777を指定していますが、適切な値を設定するようにお願いします。   
+"permissions"は、指定したディレクトリやファイルを、指定したパーミッションに変更します。今回の例では777を指定していますが、適切な値を設定するようにお願いします。
 
 
-次に rocketeer/scm.php を修正します。  
+次にrocketeer/scm.phpを修正します。
 
 #@# lang: .brush:text
 //emlist{
@@ -241,13 +241,13 @@ index a21279b..51424c4 100644
 //}
 
 
-"repository"に、GitのレポジトリURLを設定します。今回の例はGitHub上のレポジトリなので、usernameとpasswordは空のままで構いません。また、ファイル内のコメントにも書かれているように、既に鍵認証の設定がされている場合も、空で構いません。  
+"repository"に、GitのリポジトリURLを設定します。今回の例はGitHub上のリポジトリなので、usernameとpasswordは空のままで構いません。また、ファイル内のコメントにも書かれているように、既に鍵認証の設定がされている場合も、空で構いません。
 
 
- 以上で基本的な設定が済んだので、お待ちかねのデプロイを実行してみましょう。  
+以上で基本的な設定が済んだので、お待ちかねのデプロイを実行してみましょう。
 
 #@# lang: .brush:text
-//emlist{
+//cmd{
 $ php rocketeer.phar deploy
 
 No username is set for the repository, please provide one :
@@ -267,16 +267,16 @@ Execution time: 61.1617s
 //}
 
 
-Gitレポジトリのclone(submodulesがあればそれも)が行われ、composer installが行われ、パーミッション変更が行われ、共有が行われました。  
+Gitリポジトリのclone（submodulesがあればそれも）が行われ、composer installが行われ、パーミッション変更が行われ、共有が行われました。
 
 
- ブラウザから http://[ドメイン]/fuel-rocketeer-sample/ にアクセスして、おなじみのトップ画面が表示されればデプロイ成功です。  
+ブラウザからhttp://[ドメイン]/fuel-rocketeer-sample/にアクセスして、おなじみのトップ画面が表示されればデプロイ成功です。
 
 
- ざっとディレクトリ構造を見てみましょう。  
+ざっとディレクトリ構造を見てみましょう。
 
 #@# lang: .brush:text
-//emlist{
+//cmd{
 $ ll /home/vagrant/www/fuel-rocketeer-sample/
 total 20
 drwxrwxr-x 4 vagrant vagrant 4096 Dec 20 11:49 ./
@@ -290,7 +290,7 @@ drwxrwxr-x 3 vagrant vagrant 4096 Dec 20 11:49 shared/
 "current"ディレクトリが、先ほどデプロイしたディレクトリへsymlinkされています。
 
 #@# lang: .brush:text
-//emlist{
+//cmd{
 $ ll /home/vagrant/www/fuel-rocketeer-sample/current/fuel/app/
 total 56
 drwxrwxr-x 11 vagrant vagrant 4096 Dec 20 11:49 ./
@@ -322,18 +322,18 @@ drwxrwxr-x  3 vagrant vagrant 4096 Dec 20 11:48 views/
 だいぶ長くなってきましたが、続いてマイグレーションの実行です。簡単なマイグレーションファイルを作成してコミットしておきます。
 
 #@# lang: .brush:text
-//emlist{
+//cmd{
 $ php oil generate migration create_users name:text email:string password:string
 //}
 
 
-リモート側でDBやDBユーザの作成、それに対するFuelPHPのconfigのdb.phpの設定も済ませておいて下さい。   
+リモート側でDBやDBユーザの作成、それに対するFuelPHPのconfigのdb.phpの設定も済ませておいて下さい。
 
 
-次に、2ファイルを新規作成します。  
+次に、2ファイルを新規作成します。
 
 
- まず、rocketeer/tasks/Migrate.php を新規作成します。今回はサンプルなので、名前空間はつけていません。尚、"Rocketeer\Traits\Task" を継承しますが、このクラスはabstract classであってトレイトではないようです。  
+まず、rocketeer/tasks/Migrate.phpを新規作成します。今回はサンプルなので、名前空間はつけていません。尚、"Rocketeer\Traits\Task"を継承しますが、このクラスはabstract classであってトレイトではないようです。
 
 #@# lang: .brush:php
 //emlist{
@@ -373,7 +373,7 @@ class Migrate extends Rocketeer\Traits\Task
 //}
 
 
-rocketeer/tasks.php を新規作成します。  
+rocketeer/tasks.php を新規作成します。
 
 #@# lang: .brush:php
 //emlist{
@@ -397,12 +397,12 @@ Rocketeer\Facades\Rocketeer::after('deploy', 'Migrate');
 //}
 
 
-Gitレポジトリにコミット(Push)したら、デプロイを実行してみます。  
+Gitリポジトリにコミット（Push）したら、デプロイを実行してみます。
 
 #@# lang: .brush:text
-//emlist{
+//cmd{
 $ php rocketeer.phar deploy
-... 略 ...
+…略…
 Migrates the database
 Migrate successfully
 Removing 1 release from the server
@@ -418,18 +418,18 @@ $ php rocketeer.phar migrate
 //}
 
 
-注意: deployのafterタスクは、既にsymlinkが貼替えられていることに注意して下さい。尚、マイグレーションを行う場合は、別途、何らかの方法でメンテナンスモードに切り替えるタスクを作成する必要があるかと思います。(もちろん、手作業でも良いですが。)また、後述のPHPUnit失敗時の挙動も気になるところで、マイグレーションを自動化するのはそれなりのリスクが伴いそうです。が、今回はとりあえず自動化して進めます。  
+注意：deployのafterタスクは、既にsymlinkが貼替えられていることに注意して下さい。尚、マイグレーションを行う場合は、別途、何らかの方法でメンテナンスモードに切り替えるタスクを作成する必要があるかと思います（もちろん、手作業でも良いですが）。また、後述のPHPUnit失敗時の挙動も気になるところで、マイグレーションを自動化するのはそれなりのリスクが伴いそうです。が、今回はとりあえず自動化して進めます。@<br>{}
 
 
- after(やbefore)タスクにはクラスの他に、インラインによるコマンド設定や、クロージャの設定もできるみたいです。(まだやったことはありません。)クラスにすると "$this->runForCurrentRelease('コマンド')" のように、便利なメソッドでパス周りの調整が簡単になるので、迷ったらクラスで良いのかなと思います。クラスだと、前述のように個別で実行もできますね。  
+after（やbefore）タスクにはクラスの他に、インラインによるコマンド設定や、クロージャの設定もできるみたいです（まだやったことはありません）。クラスにすると"$this->runForCurrentRelease('コマンド')"のように、便利なメソッドでパス周りの調整が簡単になるので、迷ったらクラスで良いのかなと思います。クラスだと、前述のように個別で実行もできますね。
 
 == 7. PHPUnitも実行してみる
 
 
-そろそろ最後です。ソースをcloneして、PHPunitを実行して、全てのテストが成功したらデプロイ続行、一つでも失敗したらデプロイ中止(symlinkの貼替えを行わない)できたら良いですね。  
+そろそろ最後です。ソースをcloneして、PHPUnitを実行して、全てのテストが成功したらデプロイ続行、1つでも失敗したらデプロイ中止（symlinkの貼替えを行わない）できたら良いですね。
 
 
- composer.jsonに以下を追記します。  
+composer.jsonに以下を追記します。
 
 #@# lang: .brush:text
 //emlist{
@@ -451,7 +451,7 @@ index e1b21ea..5ef630e 100644
 //}
 
 
-プロジェクト直下にphpunit.xmlを用意します。fuel/core/phpunit.xmlをコピーして、パス周りを整えただけです。  
+プロジェクト直下にphpunit.xmlを用意します。fuel/core/phpunit.xmlをコピーして、パス周りを整えただけです。
 
 #@# lang: .brush:xml
 //emlist{
@@ -481,10 +481,10 @@ index e1b21ea..5ef630e 100644
 //}
 
 
-rocketeer/paths.php を修正します。  
+rocketeer/paths.php を修正します。
 
 #@# lang: .brush:text
-//emlist{
+//cmd{
 $ git diff rocketeer/paths.php
 diff --git a/rocketeer/paths.php b/rocketeer/paths.php
 index f366b41..2b4d6d4 100644
@@ -500,18 +500,18 @@ index f366b41..2b4d6d4 100644
 //}
 
 
-Rocketeerは /usr/local/bin 等のグローバルな場所のphpunit、あるいはプロジェクト直下の vendor/bin/phpunit は勝手に見つけてくれます。FuelPHPの場合は fuel/vendor/bin/phpunit になるので、この設定が必要です。(この設定がない場合は、対話式でパスの入力が可能ですが。)  
+Rocketeerは/usr/local/bin等のグローバルな場所のphpunit、あるいはプロジェクト直下のvendor/bin/phpunitは勝手に見つけてくれます。FuelPHPの場合はfuel/vendor/bin/phpunitになるので、この設定が必要です（この設定がない場合は、対話式でパスの入力が可能ですが）。
 
 
--t オプションをつけてデプロイを実行してみます。
+-tオプションをつけてデプロイを実行してみます。
 
 #@# lang: .brush:text
-//emlist{
+//cmd{
 $ php rocketeer.phar deploy -t
-... 略 ...
+…略…
 Running tests...
 Tests passed successfully
-... 略 ...
+…略…
 Execution time: 194.1824s
 //}
 
@@ -519,12 +519,12 @@ Execution time: 194.1824s
 テストが行われました。単体でも実行できます。
 
 #@# lang: .brush:text
-//emlist{
+//cmd{
 $ php rocketeer.phar test
-... 略 ...
+…略…
 Testing the application
 Running tests...
-... 略 ...
+…略…
 [vagrant@192.168.33.11] (production) Time: 9.23 seconds, Memory: 23.25Mb
 [vagrant@192.168.33.11] (production) OK (361 tests, 413 assertions)
 Tests passed successfully
@@ -532,10 +532,10 @@ Execution time: 9.6588s
 //}
 
 
-注意: テストの実行をafterタスクで行うこともできますが、その時には既にsymlinkが貼替わってしまっています。-tオプションを使うようにしましょう。
+注意：テストの実行をafterタスクで行うこともできますが、その時には既にsymlinkが貼替わってしまっています。-tオプションを使うようにしましょう。@<br>{}
 
 
- 最後に、必ず失敗するテストを作成して、どうなるかも確認してみます。(ソースは割愛します。)  
+最後に、必ず失敗するテストを作成して、どうなるかも確認してみます（ソースは割愛します）。
 
 #@# lang: .brush:text
 //emlist{
@@ -579,18 +579,18 @@ Execution time: 196.3031s
 //}
 
 
-デプロイが中断されました。symlinkは以前のままです。中断されたデプロイのディレクトリはゴミとして残りますが、rocketeer/remote.phpの"keep_releases"により、そのうち掃除されると思いますので、あまり気にしなくても良いかなと思います。マイグレーションが実行されてしまうのは想定外だったので、この点は今後の課題にします。。。
+デプロイが中断されました。symlinkは以前のままです。中断されたデプロイのディレクトリはゴミとして残りますが、rocketeer/remote.phpの"keep_releases"により、そのうち掃除されると思いますので、あまり気にしなくても良いかなと思います。マイグレーションが実行されてしまうのは想定外だったので、この点は今後の課題にします…
 
 == 8. まとめ
 
 
-(全ての機能を把握できているわけではありませんし、公式ドキュメントに記載されているプラグイン機能も気になるところですが)Rocketeerを使って、FuelPHPをコマンド一つで、PHPUnitやマイグレーションの実行を含めてデプロイできました。  
+（全ての機能を把握できているわけではありませんし、公式ドキュメントに記載されているプラグイン機能も気になるところですが）Rocketeerを使って、FuelPHPをコマンド1つで、PHPUnitやマイグレーションの実行を含めてデプロイできました。
 
 
- デプロイツールはRuby製のCapistranoが有名ですが、RocketeerはPHP製ということもあり、ComposerやPHPUnitの扱いを標準でサポートしてくれていて助かります。今日現在、Rocketeerの使い方に関する日本語の情報はかなり少ない(というか無いかもしれません。あったらすみません。)ので、今後、盛り上がってくれると良いなーと思います。  
+デプロイツールはRuby製のCapistranoが有名ですが、RocketeerはPHP製ということもあり、ComposerやPHPUnitの扱いを標準でサポートしてくれていて助かります。今日現在、Rocketeerの使い方に関する日本語の情報はかなり少ない（というか無いかもしれません。あったらすみません）ので、今後、盛り上がってくれると良いなーと思います。
 
 
- chefとvagrantのおかげで、こういったサーバが絡む実験もやりやすくなったので、ぜひ試してみてください。
+chefとvagrantのおかげで、こういったサーバが絡む実験もやりやすくなったので、ぜひ試してみてください。@<br>{}
 
 
 以上です。お疲れ様でした。
