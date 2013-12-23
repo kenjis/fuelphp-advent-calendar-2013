@@ -464,3 +464,13 @@ echo $form;
 
 
 なお、各OAuthプロバイダから取得したトークンなどの情報はusers_providersテーブルに格納されていますので、こちらを利用してfacebookへの登録や、twitterへの投稿などを行う処理を個別に実装出来ます。
+
+//quote{
+@<strong>{@egmc}
+
+@TODO
+
+Twitter: @<href>{https://twitter.com/egmc,@egmc}
+
+Blog: @<href>{http://dasalog.eg2mix.com/,http://dasalog.eg2mix.com/}
+//}

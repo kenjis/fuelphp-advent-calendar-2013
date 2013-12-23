@@ -593,3 +593,13 @@ chefとvagrantのおかげで、こういったサーバが絡む実験もやり
 
 
 以上です。お疲れ様でした。
+
+//quote{
+@<strong>{@madmamor}
+
+Developer & Bassist on TAMACENTER OUTSiDERS.
+
+Twitter: @<href>{https://twitter.com/madmamor,@madmamor}
+
+Blog: @<href>{http://madroom-project.blogspot.jp/,http://madroom-project.blogspot.jp/}
+//}
