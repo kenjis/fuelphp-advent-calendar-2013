@@ -171,21 +171,21 @@ $ git push heroku master
 
 アプリが複数存在する場合、Herokuのリモートリポジトリが違いpushできない場合があるので都度確認が必要です。
 
-==== 1 リモートリポジトリherokuの設定
+==== 1. リモートリポジトリherokuの設定
 
 #@# lang: .brush: .bash; .title: .; .notranslate title=""
 //cmd{
 $ git remote add heroku [リモートリポジトリ]
 //}
 
-==== 2 リモートリポジトリ確認
+==== 2. リモートリポジトリ確認
 
 #@# lang: .brush: .bash; .title: .; .notranslate title=""
 //cmd{
 $ git remote show
 //}
 
-==== 3 リモートリポジトリ削除
+==== 3. リモートリポジトリ削除
 
 #@# lang: .brush: .bash; .title: .; .notranslate title=""
 //cmd{
