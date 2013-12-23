@@ -1,4 +1,4 @@
-= FuelPHP（TwitterBootstrap3）でJQueryのプラグインのDataTablesを使う
+= FuelPHP（Twitter Bootstrap 3）でjQueryのプラグインのDataTablesを使う
 
 @<href>{http://atnd.org/events/45096,FuelPHP Advent Calendar 2013}の13日目です。@<br>{}
 
@@ -9,7 +9,7 @@ Webアプリを作るとき、業務系の管理画面を作るとき、FuelPHP�
 その中で特に管理画面を作るときはTwitter Bootstrapは非常に便利です。
 皆様も日頃お世話になっていますよね？
 
-また今日ご紹介するDataTablesも強力なJQueryのプラグインです。
+また今日ご紹介するDataTablesも強力なjQueryのプラグインです。
 DataTablesはHTMLのテーブルタグを読み込み、ソートや検索を始め、多くの機能を提供します。
 この2つを組み合わせることで表出力が簡単で便利になるのでご紹介します。
 
