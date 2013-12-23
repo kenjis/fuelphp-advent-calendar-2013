@@ -52,8 +52,7 @@ StrictHostKeyChecking no
 
 尚、この記事を作成するにあたって作成したFuelPHPプロジェクトのサンプルを公開してあります。
 
- * @<br>{}
- @<href>{https://github.com/mp-php/fuelphp-advent-calendar-2013-rocketeer-sample,https://github.com/mp-php/fuelphp-advent-calendar-2013-rocketeer-sample}
+ * @<href>{https://github.com/mp-php/fuelphp-advent-calendar-2013-rocketeer-sample,https://github.com/mp-php/fuelphp-advent-calendar-2013-rocketeer-sample}
 
 == 2. 下準備(リモート)
 
