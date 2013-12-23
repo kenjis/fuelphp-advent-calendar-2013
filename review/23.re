@@ -11,6 +11,7 @@ PaaSサービスのそれぞれの違いはスペック・料金・機能など�
 サービスのユーザ数が大幅にふえてサーバに負荷がかかるようになった場合や、予想してた以上にユーザ数が延びなかった場合などに役立ちます。@<br>{}
 
 個人的にはHerokuはRailsのアプリをテスト的に公開したくなったときなどに使ったりしています。もともとHeroku自体はRubyの環境用としてスタートしていて現在はJava、node.js、Ruby、Pythonなどをサポートしています。@<br>{}
+
 現在HerokuではPHPは非サポートとなっていますがPHPも動作します。
 
 buildpackは@<href>{https://github.com/winglian/heroku-buildpack-php,https://github.com/winglian/heroku-buildpack-php}を使います。
@@ -246,7 +247,7 @@ CLEARDB_DATABASE_URLに接続文字列が表示されます。
 
 //emlist{
 CLEARDB_DATABASE_URL: mysql://[ユーザ名]:[パスワード]@[ホスト名]/[DB名]?reconnect=true
-//*
+//}
 
 ==== (4) 接続文字列は？
 
