@@ -127,8 +127,8 @@ FuelPHP的なコントローラは基本的に生成コスト低め、のはず�
 //quote{
 @<strong>{@mkkn_info}
 
-
-@TODO
+mikakane です。
+記事内のコードは全てCCライセンスです。
 
 
 Twitter: @<href>{https://twitter.com/mkkn_info,@mkkn_info}
