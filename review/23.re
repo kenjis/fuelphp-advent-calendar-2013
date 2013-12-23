@@ -11,18 +11,16 @@ PaaSサービスのそれぞれの違いはスペック・料金・機能など�
 サービスのユーザ数が大幅にふえてサーバに負荷がかかるようになった場合や、予想してた以上にユーザ数が延びなかった場合などに役立ちます。@<br>{}
 
 個人的にはHerokuはRailsのアプリをテスト的に公開したくなったときなどに使ったりしています。もともとHeroku自体はRubyの環境用としてスタートしていて現在はJava、node.js、Ruby、Pythonなどをサポートしています。@<br>{}
+現在HerokuではPHPは非サポートとなっていますがPHPも動作します。
 
-現在HerokuではPHPは非サポートとなっていますがPHPも動作します。@<br>{}
-
- * Herokuコマンド参考ページ：@<href>{http://d.hatena.ne.jp/xyk/20101102,http://d.hatena.ne.jp/xyk/20101102}@<br>{}
-
-（@TODO 次の文章は、文体も違い位置付けや意味がよくわからない）
-buildpackは@<href>{https://github.com/winglian/heroku-buildpack-php,https://github.com/winglian/heroku-buildpack-php}を使う@<br>{}
+buildpackは@<href>{https://github.com/winglian/heroku-buildpack-php,https://github.com/winglian/heroku-buildpack-php}を使います。
 
 //note[]{
 下記サイトに記載されているbuildpackを使用してサーバはnginxを使用するつもりでしたが、nginxのconfigファイルの設定をFuelPHPのプロジェクトに合わせると、なぜかうまくページが表示されず原因不明だったので今回は見送ることにします。すみません。@<br>{}
 @<href>{http://tkyk.name/blog/2012/11/28/php-on-heroku/,http://tkyk.name/blog/2012/11/28/php-on-heroku/}
 //}
+
+ * Herokuコマンド参考ページ：@<href>{http://d.hatena.ne.jp/xyk/20101102,http://d.hatena.ne.jp/xyk/20101102}@<br>{}
 
 === 1. Herokuアカウントを取得
 
@@ -200,9 +198,9 @@ $ git remote rm [リモートリポジトリ]
 $ heroku open
 //}
 
-Fuelの画面がでたら成功！
+FuelのWelcome画面がでたら成功！
 
-//image[3-1024x552][3]{
+//image[3-1024x552][Welcome画面]{
 //}
 
 === 9. MySQLアドオンを入れる
@@ -217,7 +215,7 @@ MySQLのアドオンは@<href>{https://addons.heroku.com/,https://addons.heroku.
  * ClearDB MySQL Database The high speed, 100% uptime database for your MySQL powered applications. heroku addons:add cleardb
  * Xeround Cloud Database αlpha Scalable, highly available, zero-management cloud database for MySQL heroku addons:add xeround
 
-今回は「ClearDB」を使用します。@<br>{}
+今回は「ClearDB」を使用します。
 
  * 参考サイト：@<href>{http://www.ownway.info/Ruby/index.php?heroku%2Fhow%2Fmanagement%2Fdatabase%2Fcleardb,http://www.ownway.info/Ruby/index.php?heroku%2Fhow%2Fmanagement%2Fdatabase%2Fcleardb}
 
