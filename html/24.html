@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>本当は怖いFuelPHP 1.6までのRestコントローラ &mdash; A Day in Serenity (Reloaded) &mdash; PHP, FuelPHP, Linux or something</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="alternate" type="application/atom+xml" href="/atom.xml" />
+        <link href="/components/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+        <link href="/components/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css" />
+        <link href="/css/style.css" rel="stylesheet" type="text/css" />
+        <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+        <!--[if lt IE 9]>
+            <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+        <link rel="stylesheet" href="/components/highlightjs/styles/github.css" />
+        <style>
+        /** quick fix because bootstrap <pre> has a background-color. */
+        pre code { background-color: inherit; }
+        </style>
+    </head>
+    <body>
+        <header>
+            <div class="navbar navbar-inverse navbar-fixed-top">
+                <div class="navbar-inner">
+                    <div class="container-fluid">
+                        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </a>
+                        <a class="brand" href="/">A Day in Serenity (Reloaded)</a>
+                        <div class="nav-collapse collapse">
+                            <ul class="nav">
+                                <li><a href="/blog">Posts Archive</a></li>
+                                <li><a href="/blog/categories">Categories</a></li>
+                                <li><a href="/blog/tags">Tags</a></li>
+                                <li><a href="/about">About</a></li>
+                            </ul>
+                        </div><!--/.nav-collapse -->
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="mainContent container">
+            <div class="row-fluid">
+                <div class="span8">
+                        <article>
+        <header>
+            <h2>本当は怖いFuelPHP 1.6までのRestコントローラ <small>post</small></h2>
+        </header>
+        <div>
+            <p><a href="http://atnd.org/events/45096">FuelPHP Advent Calendar 2013</a>の24日目です。昨日は、@mycb750さんの「<a href="http://to-developer.com/blog/?p=960">Heroku（PaaS）でFuelPHP環境（PHP5.3 + MySQL + Apatch）を構築する</a>」でした。</p>
+
+<p>FuelPHP 1.6までには、Restコントローラを使うとXSS脆弱性を作り込みやすい隠れ機能（アンドキュメントな機能）がありました。</p>
+
+<p>具体的には、公式ドキュメントのサンプルコードをそのまま実行すれば、XSSが可能でした。</p>
+
+<p>ただし、FuelPHP 1.7ではバグのためエラーが発生しXSSは成立せず、1.7.1で修正されました。</p>
+
+<p>なお、この問題を重視しているのは世界中で私1人かも知れませんので、実際に影響があるユーザは少ないのかも知れません。本家は<a href="http://fuelphp.com/security-advisories">セキュリティ勧告</a>は出しませんでした（<a href="https://github.com/fuel/fuel/blob/1.7/master/CHANGELOG.md">Changelog</a>に仕様変更の記述はあります）し、<a href="https://groups.google.com/forum/#!forum/fuelphp_jp">fuelphp.jp Googleグループ</a>で告知しましたが、特に反応はありませんでした。</p>
+
+<p>ただし、まだ知らないユーザの方もいるかも知れませんし、今後の参考のためにも、どのような問題があったのかまとめておきます。</p>
+
+<h3>Restコントローラとは？</h3>
+
+<p>Restコントローラとは、RESTfuelなAPIを簡単に作成するためのコントローラです。以下は<a href="http://fuelphp.jp/docs/1.7/general/controllers/rest.html">公式ドキュメント</a>からのサンプルコードです。</p>
+
+<pre><code class="php">class Controller_Test extends Controller_Rest
+{
+    public function get_list()
+    {
+        return $this-&gt;response(array(
+            'foo' =&gt; Input::get('foo'),
+            'baz' =&gt; array(
+                1, 50, 219
+            ),
+            'empty' =&gt; null
+        ));
+    }
+}
+</code></pre>
+
+<p>http://localhost/fuel/以下がFuelPHPだとして、</p>
+
+<p>ブラウザから、</p>
+
+<p>http://localhost/fuel/test/list.json</p>
+
+<p>にアクセスすれば、以下のようにJSONでの結果が返ります。</p>
+
+<pre><code>{"foo":null,"baz":[1,50,219],"empty":null}
+</code></pre>
+
+<p>http://localhost/fuel/test/list.xml</p>
+
+<p>にアクセスすれば、以下のようにXMLでの結果が返ります。</p>
+
+<pre><code>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;xml&gt;&lt;foo/&gt;&lt;baz&gt;&lt;item&gt;1&lt;/item&gt;&lt;item&gt;50&lt;/item&gt;&lt;item&gt;219&lt;/item&gt;&lt;/baz&gt;&lt;empty/&gt;&lt;/xml&gt;
+</code></pre>
+
+<p>このようにアクセスされるURLなどにより動的に出力を変更する機能を持っています。</p>
+
+<h3>XSS脆弱性の解説</h3>
+
+<p>それでは、</p>
+
+<p>http://localhost/fuel/test/list.html</p>
+
+<p>にアクセスしたらどうでしょうか？結果は以下のようになりました。</p>
+
+<pre><code>array(3) {
+  ["foo"]=&gt;
+  string(0) ""
+  ["baz"]=&gt;
+  array(3) {
+    [0]=&gt;
+    int(1)
+    [1]=&gt;
+    int(50)
+    [2]=&gt;
+    int(219)
+  }
+  ["empty"]=&gt;
+  string(0) ""
+}
+</code></pre>
+
+<p>何故か、var_dump()した結果が表示されました。</p>
+
+<p>ということで、Firefoxから以下のURLにアクセスすれば、めでたく警告ダイアログが表示されます。</p>
+
+<p>http://localhost/fuel/test/list.html?foo=%3Cscript%3Ealert%28document.cookie%29%3C/script%3E</p>
+
+<p>それなら、エスケープすればいいのでは？と普通は考えます。</p>
+
+<pre><code class="php">            'foo' =&gt; Input::get('foo'),
+</code></pre>
+
+<p>上記のInput::get('foo')は$_GET['foo']を返すFuelPHPのメソッドです。これを以下のようにエスケープして渡せばいいと考えるでしょう。e()は、FuelPHPでのhtmlentities()関数みたいなものです。</p>
+
+<pre><code class="php">            'foo' =&gt; e(Input::get('foo')),
+</code></pre>
+
+<p>でもダメです。実際に試してみると、結果は変わりません。</p>
+
+<h3>どこに問題があったのか？</h3>
+
+<p>Fuel\Core\Responseクラスの__toString()メソッドに問題がありました。</p>
+
+<pre><code class="php">    /**
+     * Returns the body as a string.
+     *
+     * @return  string
+     */
+    public function __toString()
+    {
+        // special treatment for array's
+        if (is_array($this-&gt;body))
+        {
+            // this var_dump() is here intentionally !
+            ob_start();
+            var_dump($this-&gt;body);
+            $this-&gt;body = html_entity_decode(ob_get_clean());
+        }
+
+        return (string) $this-&gt;body;
+    }
+</code></pre>
+
+<p>配列の場合は、var_dump()して、しかもhtml_entity_decode()して返されています。ここが問題の所在です。Restコントローラから配列を返す場合は、ここでvar_dump()されるというわけです。</p>
+
+<p>さきほどのサンプルコードでは、Restコントローラで配列を作成しているため、配列であることがすぐにわかりますが、ORMなどからも結果が配列で返ることもありますので注意してください。</p>
+
+<p>今となっては何故こんなコードがあったのか正確にはわかりませんが、デバッグ用のためのもののように思われます。デバッグ用コードがデフォルトで有効になっており、それが脆弱性につながるという典型的なパターンのように思われます。</p>
+
+<h3>対策</h3>
+
+<p>FuelPHP 1.7.1（＝現在の1.7/masterブランチ）にアップデートすれば問題は修正されています。</p>
+
+<p>http://localhost/fuel/test/list.html?foo=%3Cscript%3Ealert%28document.cookie%29%3C/script%3E にアクセスしても本番環境以外では、以下のようにメッセージとJSONでの結果が表示され、</p>
+
+<pre><code>The requested REST method returned an array:
+
+{ "foo": "\u003Cscript\u003Ealert(document.cookie)\u003C\/script\u003E", "baz": [ 1, 50, 219 ], "empty": null }
+</code></pre>
+
+<p>本番環境では406 Not Acceptableが返ります。</p>
+
+<p>アップデートが無理な場合は、Restコントローラで出力フォーマットをjsonやxml（html以外）に固定すればいいでしょう。</p>
+
+<pre><code class="php">    protected $format = 'json';
+</code></pre>
+
+<p>こう指定することで、URLの拡張子から出力フォーマットを動的に決定することはなくなり、出力フォーマットが固定されます。</p>
+
+<p>というか、FuelPHPのドキュメントには</p>
+
+<blockquote>
+  <p>結果のフォーマットをRESTコントローラ内でハードコードすることはバッドプラクティスであることに注意してください。</p>
+</blockquote>
+
+<p>と書いてあるんですが、私自身はなんでバッドプラクティスなのかよくわかりません。なので、必ず、フォーマットは固定してます。バッドプラクティスである理由がわかる方がいましたら、是非、お教え願いたいです。</p>
+
+<p>ああ、それから、JSONを返すWeb APIなどは、そもそもブラウザからの直接のアクセスは禁止した方がいいでしょうね。JSONを返すWeb APIの作り方は、『<a href="http://2nd.php-recipe.com/">PHP逆引きレシピ 第2版</a>』で解説されていますので、興味のある方はご覧ください（宣伝）。あの徳丸先生も</p>
+
+<blockquote>
+  <p>この第2版は本当に素晴らしい。PHPセキュリティの最新動向をよく把握して、具体的なレシピに落とし込んでいます。すべてのPHP開発者にお勧めします。（…略…）冒頭に書いたように、この第2版は素晴らしいです。「もうペチパーは緩いなんて言わせない」と叫びたくなるほどのインパクトがあります。<br />
+  <a href="http://blog.tokumaru.org/2013/12/php12sql.html">http://blog.tokumaru.org/2013/12/php12sql.html</a></p>
+</blockquote>
+
+<p>と絶賛されてますので、一家に一冊あって損はないと思います（宣伝）。</p>
+
+<p>あと、FuelPHP 1.7.1からRestコントローラからのJSON出力もそうですが、FormatクラスのJSON出力でのエスケープ（json_encode()関数の第2引数のオプション指定）がより安全なものに変更されています。1.7以前はオプション指定はありませんでした。</p>
+
+<h3>最後に</h3>
+
+<p>どんなフレームワークも完璧ではないと考えた方が現実的です。今まで、脆弱性が修正されたことがないメジャーなフレームワークというのはないと思います。そのため、フレームワークのソースを読み、実装が本当に安全か確認することが有効です。</p>
+
+<p>FuelPHPは規模的にもまだソースが読めるっぽい分量だと思いますし、読みやすいと思いますので、みなさん、がんがんソースを読んで、バグなどがあれば修正するPull Requestを本家に送るなり、とりあえず、Googleグループで相談してみるとよいと思います。</p>
+
+<p>ただし、セキュリティ上の問題を発見した場合は、いきなりPull Requestを送ったり、Googleグループに投稿するなど、いきなり内容を公開してはいけません。これは、脆弱性情報がいきなり公開されても、即座には対応できないため、ユーザがより危険な状態に置かれてしまうからです。脆弱性情報はその対策ととも公開されるべきものです。</p>
+
+<p>本家へセキュリティ上の問題を報告する場合は、<a href="http://fuelphp.com/contact">http://fuelphp.com/contact</a>のコンタクトフォームからしてください。</p>
+
+<p>明日は、@samui_さんの「Authのユーザーモデルとほかモデルへのリレーションを作る」です。お楽しみに！</p>
+
+        </div>
+        <p>
+        Date: 2013/12/24
+        </p>
+                    <p class="categories">
+            Categories:
+                        <a href="/blog/categories/fuelphp">fuelphp</a>                        </p>
+                            <p class="tags">
+            Tags:
+                        <a href="/blog/tags/fuelphp">fuelphp</a>                        </p>
+        
+                    <nav class="article">
+                <ul>
+                                                                <li>Previous: <a class="previous" href="/blog/2013/12/19/sql-injection-prevention" title="俺の脳内選択肢が、SQLインジェクション対策を全力で邪魔している"><span class="title">俺の脳内選択肢が、SQLインジェクション対策を全力で邪魔している</span></a></li>
+                                    </ul>
+            </nav>
+            </article>
+                </div>
+                <div class="span4 sidebar">
+                    <div class="well">
+                        <h4>A Day in Serenity (Reloaded) <small>PHP, FuelPHP, Linux or something</small></h4>
+                    </div>
+                    
+                                        
+                    <div class="well sidebar-nav">
+                        <h4>Links</h4>
+                        <ul class="nav">
+                            <li><a href="http://wiki.fuelphp1st.com/wiki/">FuelPHPまとめWiki</a></li>
+                            <li><a href="/blog/2013/10/24/git-for-hg-users/">Mercurialユーザのためのgitメモ</a></li>
+                            <li><a href="http://twitter.com/kenji_s">@kenji_s</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer class="container">
+            &copy; A Day in Serenity (Reloaded)
+        </footer>
+
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="/components/jquery/jquery.min.js"><\/script>')</script>
+        <script src="/components/bootstrap/js/bootstrap.min.js"></script>
+                
+                <script type="text/javascript">
+            var _gaq = _gaq || [];
+            _gaq.push(['_setAccount', 'UA-44700885-1']);
+            _gaq.push(['_trackPageview']);
+
+            (function() {
+                var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+                ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+                var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+            })();
+        </script>
+                <script src="/components/highlightjs/highlight.pack.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script>
+    </body>
+</html>
