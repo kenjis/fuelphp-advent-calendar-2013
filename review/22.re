@@ -112,11 +112,13 @@ FuelPHPの公式ドキュメントにある@<href>{http://fuelphp.jp/docs/1.7/pa
 /**
  * 認証コントローラーサンプル
  *
- * @author egmc
- * @license  MIT License
+ * @author     egmc
+ * @copyright  2013 egmc
+ * @license    MIT License
  *
  * The Original Code (Part of the FuelPHP Documentation) distributed under the MIT License
- * @link http://fuelphp.jp/docs/1.7/packages/auth/examples/opauth.html
+ * @copyright  2010 - 2013 Fuel Development Team
+ * @link       http://fuelphp.jp/docs/1.7/packages/auth/examples/opauth.html
  * @link       http://fuelphp.com
  */
 use Fuel\Core\Controller;
