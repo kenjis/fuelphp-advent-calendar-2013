@@ -1,4 +1,3 @@
-
 = FuelPHPがOpAuth対応になったのでfacebookログインをしてみる
 
 @<href>{http://atnd.org/events/45096,FuelPHP Advent Calendar2013}参加記事です。@<br>{}
@@ -468,7 +467,7 @@ echo $form;
 //quote{
 @<strong>{@egmc}
 
-@TODO
+主にPHPエンジニア。CAMPFIRE、他個人的にももクロアプリなど。
 
 Twitter: @<href>{https://twitter.com/egmc,@egmc}
 
