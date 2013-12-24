@@ -1,4 +1,4 @@
-= Heroku（PaaS）でFuelPHP環境（PHP 5.3＋MySQL＋Apatch）を構築する
+= Heroku（PaaS）でFuelPHP環境（PHP 5.3＋MySQL＋Apache）を構築する
 
 == HerokuへFuelPHP環境を構築する手順をメモ
 
