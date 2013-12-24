@@ -1,13 +1,11 @@
 
-= 本当は怖いFuelPHP 1.6までのRestコントローラ post
+= 本当は怖いFuelPHP 1.6までのRestコントローラ
 
 
-@<href>{http://atnd.org/events/45096,FuelPHP Advent Calendar 2013}の24日目です。
+@<href>{http://atnd.org/events/45096,FuelPHP Advent Calendar 2013}の24日目です。@<br>{}
 
 
 FuelPHP 1.6までには、Restコントローラを使うとXSS脆弱性を作り込みやすい隠れ機能（アンドキュメントな機能）がありました。
-
-
 具体的には、公式ドキュメントのサンプルコードをそのまま実行すれば、XSSが可能でした。
 
 
@@ -42,24 +40,16 @@ class Controller_Test extends Controller_Rest
 
 
 http://localhost/fuel/以下がFuelPHPだとして、
-
-
 ブラウザから、
-
-
 http://localhost/fuel/test/list.json
-
-
 にアクセスすれば、以下のようにJSONでの結果が返ります。
 
 //emlist{
 {"foo":null,"baz":[1,50,219],"empty":null}
 //}
 
-
+//noindent
 http://localhost/fuel/test/list.xml
-
-
 にアクセスすれば、以下のようにXMLでの結果が返ります。
 
 //emlist{
@@ -74,11 +64,7 @@ http://localhost/fuel/test/list.xml
 
 
 それでは、
-
-
 http://localhost/fuel/test/list.html
-
-
 にアクセスしたらどうでしょうか？結果は以下のようになりました。
 
 //emlist{
@@ -106,7 +92,7 @@ array(3) {
 ということで、Firefoxから以下のURLにアクセスすれば、めでたく警告ダイアログが表示されます。
 
 
-http://localhost/fuel/test/list.html?foo=%3Cscript%3Ealert%28document.cookie%29%3C/script%3E
+ * http://localhost/fuel/test/list.html?foo=%3Cscript%3Ealert%28document.cookie%29%3C/script%3E
 
 
 それなら、エスケープすればいいのでは？と普通は考えます。
@@ -174,7 +160,7 @@ The requested REST method returned an array:
 { "foo": "\u003Cscript\u003Ealert(document.cookie)\u003C\/script\u003E", "baz": [ 1, 50, 219 ], "empty": null }
 //}
 
-
+//noindent
 本番環境では406 Not Acceptableが返ります。
 
 
@@ -184,8 +170,8 @@ The requested REST method returned an array:
     protected $format = 'json';
 //}
 
-
-こう指定することで、URLの拡張子から出力フォーマットを動的に決定することはなくなり、出力フォーマットが固定されます。
+//noindent
+こう指定することで、URLの拡張子から出力フォーマットを動的に決定することはなくなり、出力フォーマットが固定されます。@<br>{}
 
 
 というか、FuelPHPのドキュメントには
@@ -194,8 +180,8 @@ The requested REST method returned an array:
 結果のフォーマットをRESTコントローラ内でハードコードすることはバッドプラクティスであることに注意してください。
 //}
 
-
-と書いてあるんですが、私自身はなんでバッドプラクティスなのかよくわかりません。なので、必ず、フォーマットは固定してます。バッドプラクティスである理由がわかる方がいましたら、是非、お教え願いたいです。
+//noindent
+と書いてあるんですが、私自身はなんでバッドプラクティスなのかよくわかりません。なので、必ず、フォーマットは固定してます。バッドプラクティスである理由がわかる方がいましたら、是非、お教え願いたいです。@<br>{}
 
 
 ああ、それから、JSONを返すWeb APIなどは、そもそもブラウザからの直接のアクセスは禁止した方がいいでしょうね。JSONを返すWeb APIの作り方は、『@<href>{http://2nd.php-recipe.com/,PHP逆引きレシピ 第2版}』で解説されていますので、興味のある方はご覧ください（宣伝）。あの徳丸先生も
@@ -205,8 +191,8 @@ The requested REST method returned an array:
  @<href>{http://blog.tokumaru.org/2013/12/php12sql.html,http://blog.tokumaru.org/2013/12/php12sql.html}
 //}
 
-
-と絶賛されてますので、一家に一冊あって損はないと思います（宣伝）。
+//noindent
+と絶賛されてますので、一家に一冊あって損はないと思います（宣伝）。@<br>{}
 
 
 あと、FuelPHP 1.7.1からRestコントローラからのJSON出力もそうですが、FormatクラスのJSON出力でのエスケープ（json_encode()関数の第2引数のオプション指定）がより安全なものに変更されています。1.7以前はオプション指定はありませんでした。
@@ -225,5 +211,12 @@ FuelPHPは規模的にもまだソースが読めるっぽい分量だと思い�
 
 本家へセキュリティ上の問題を報告する場合は、@<href>{http://fuelphp.com/contact,http://fuelphp.com/contact}のコンタクトフォームからしてください。
 
+//quote{
+@<strong>{kenjis}
 
-明日は、@samui_さんの「Authのユーザーモデルとほかモデルへのリレーションを作る」です。お楽しみに！
+FuelPHPまとめWiki管理人。「PHP5 技術者認定上級試験」認定者。
+
+Twitter: @<href>{https://twitter.com/kenji_s,@kenji_s}
+
+Blog: @<href>{http://blog.a-way-out.net/,http://blog.a-way-out.net/}
+//}
