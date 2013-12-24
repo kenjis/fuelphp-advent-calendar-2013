@@ -6,7 +6,7 @@
 
 == 1. Cloudn PaaSとは
 
-NTTコミュニケーションズが提供する@<href>{http://www.ntt.com/cloudn/,Cloudn}のサービス・メニューの1つとして提供する@<href>{http://www.ntt.com/cloudn/data/paas.html,Platform as a Service}です。最小構成であれば1インスタンスあたり月額上限525円で利用可能です。
+NTTコミュニケーションズが@<href>{http://www.ntt.com/cloudn/,Cloudn}のサービス・メニューの1つとして提供する@<href>{http://www.ntt.com/cloudn/data/paas.html,Platform as a Service}です。最小構成であれば1インスタンスあたり月額上限525円で利用可能です。
 
 == 2. デプロイ環境の準備
 
@@ -43,7 +43,7 @@ Successfully logged into [http://api.cloudnpaas.com]
 
 今回の開発環境準備には、@<href>{https://twitter.com/chatii0079,@chatii0079}さんが作成されたfuelphp_setupを利用します。fuelphp_setupについては、FuelPHP Advent Calendar 2013 11日目「@<href>{http://chatii.net/articles/php/2013/12/fuelphp-composer.html,FuelPHP をもっと Composer で使う}」をご覧ください。
 
-Cloudn PaaSは2013/12/15現在、PHP v5.3に対応していますが、PHPフレームワークのフレームワークには全く対応していません。（個人的にはかなり残念ですが…）
+Cloudn PaaSは2013/12/15現在PHP v5.3に対応していますが、PHPのフレームワークには全く対応していません。（個人的にはかなり残念ですが…）
 
 FuelPHPを利用する場合はDocument Rootの変更が必要になります。ユーザ設置の.htaccessが動作するため、FuelPHPプロジェクトのディレクトリトップに以下の通りファイルを作成します。
 
@@ -101,7 +101,7 @@ oilで生成されたテンプレートファイルにはbootstrap.cssをイン�
 
 では、早速デプロイしていきます。以下の例では@<strong>{testapp1}という名前でアプリケーションを作成しています。
 
-ポイントは@<strong>{Detected a Standalone Application, is this correct?}という質問に@<strong>{No}で答えて、次の言語／FW選択で@<strong>{9: PHP}を選ぶことです。Deployed URLやインスタンスに割り当てる性能要件などは自由に変更して頂いて構いません。
+ポイントは@<strong>{Detected a Standalone Application, is this correct?}という質問に@<strong>{No}で答えて、次の言語／FW選択で@<strong>{9: PHP}を選ぶことです。Deployed URLやインスタンスに割り当てる性能要件などはアプリの要件に合わせて適宜変更してください。
 
 #@# lang: .brush: .powershell; .title: .; .notranslate title=""
 //cmd{
@@ -148,12 +148,12 @@ Starting Application 'testapp1': OK
 //image[9fa207a0e60ca2e0f8c2b565923fa67d][動作確認]{
 //}
 
-余談ですが、Cloudn PaaS含め、Cloudnの様々な機能をWebからコントールできる管理UIは、Firefoxが推奨ブラウザとなっています。Chromeなど他のブラウザで正常に動かない機能があるので注意してください。
+余談ですが、Cloudn PaaS含め、Cloudnの様々な機能をコントールできるWebの管理UIは、Firefoxが推奨ブラウザとなっています。Chromeなど他のブラウザで正常に動かない機能があるので注意してください。
 
 == 7. アプリケーションのアクセス制限
 
-開発中のアプリや一般公開する必要が無いアプリはIPアドレスでアクセス制限をかけることができます。
-#@# 尚、当ブログのコードハイライトの関係で以下のサンプルは、実際の見た目とは異なる場合があります。
+開発中のアプリや一般公開する必要が無いアプリは、IPアドレスでアクセス制限をかけることができます。
+#@# 尚、当ブログのコードハイライトの関係で以下のサンプルは、実際の見た目とは異なります。
 
 #@# lang: .brush: .powershell; .title: .; .notranslate title=""
 //cmd[アクセス制限設定（IPアドレスはCIDR記法で記載し、カンマで区切ることで複数指定可能）]{
@@ -190,7 +190,7 @@ Starting Application 'testapp1': OK
 
 == 8. アプリケーションの更新
 
-アプリの更新は更新したファイルが格納されているディレクトリにて、以下の通りコマンドを実行します。ファイルの更新とアプリの再起動を行ってくれます。
+アプリの更新は、更新するファイルが格納されているディレクトリにて、以下の通りコマンドを実行します。ファイルの更新とアプリの再起動を行ってくれます。
 
 #@# lang: .brush: .powershell; .title: .; .notranslate title=""
 //cmd{
@@ -211,14 +211,14 @@ Starting Application 'testapp1': OK
 
 今回はCloudn PaaSにてFuelPHPを動かす方法を、前回記事にした部分からのアップデートを交えて解説しました。
 
-FuelPHPの開発環境自体も、@<href>{https://twitter.com/chatii0079,@chatii0079}さんの@<href>{https://github.com/chatii/fuelphp_setup,fuelphp_setup}を利用することでかなり簡単に整えることができます。大規模場システムを作る場合は役不足な感じがあるPaaSですが、ちょこっとツールを作りたいとか、ちょこっと検証してみたいとか、利用シーンによってはかなり便利に使えるのではないでしょうか。
+FuelPHPの開発環境自体も、@<href>{https://twitter.com/chatii0079,@chatii0079}さんの@<href>{https://github.com/chatii/fuelphp_setup,fuelphp_setup}を利用することでかなり簡単に整えることができます。大規模場システムを作る場合は役不足な感じがあるPaaSですが、簡単なWebツールを動かしたい、手早く動作検証してみたいなど、利用シーンによってはかなり便利に使えるのではないでしょうか。
 
 FuelPHP Cloudnに関しては今後も記事を書いていきたいと思いますので、ご期待ください。
 
 //quote{
-@<strong>{@Tukimikage}
+@<strong>{Yusuke NAKA}
 
-@TODO
+Webデベロッパー、サーバーエンジニア、技術コミュニティ運営・支援などをやっています。
 
 Twitter: @<href>{https://twitter.com/Tukimikage,@Tukimikage}
 
