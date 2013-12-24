@@ -110,14 +110,15 @@ FuelPHPの公式ドキュメントにある@<href>{http://fuelphp.jp/docs/1.7/pa
 //emlist[fuel/app/classes/controller/auth.php]{
 <?php
 /**
- * Part of the FuelPHP Documentation.
+ * 認証コントローラーサンプル
  *
- * @author     Fuel Development Team
- * @license    MIT License
- * @copyright  2010 - 2013 Fuel Development Team
+ * @author egmc
+ * @license  MIT License
+ *
+ * The Original Code (Part of the FuelPHP Documentation) distributed under the MIT License
+ * @link http://fuelphp.jp/docs/1.7/packages/auth/examples/opauth.html
  * @link       http://fuelphp.com
  */
-
 use Fuel\Core\Controller;
 use Fuel\Core\Log;
 
