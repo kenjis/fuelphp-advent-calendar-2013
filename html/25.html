@@ -1,0 +1,785 @@
+ <!DOCTYPE html>
+<html
+  lang="ja"
+  data-avail-langs="ja en"
+
+  data-page="entry"
+  data-admin-domain="http://blog.hatena.ne.jp"
+  data-static-domain="http://hatenablog.com"
+  data-blog="samui13.hatenablog.com"
+  data-blogs-uri-base="http://samui13.hatenablog.com"
+  data-globalheader-color="b"
+  data-globalheader-type="pc"
+  data-author="samu_i"
+  data-version="64c8d7f721b17808b1ff128172e838e0"
+  data-blog-comments-top-is-new=""
+
+  
+
+  data-brand="hatenablog"
+
+
+  data-has-touch-view="1"
+  
+
+  itemscope
+   itemtype="http://schema.org/Article"
+
+  >
+  <head prefix="og: http://ogp.me/ns# fb: http://ogp.me/fb# article: http://ogp.me/fb/article#">
+    
+
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=7; IE=9; IE=10" />
+    <title>Authと他モデルにリレーションをつける(FuelPHP)。 - samu_i&#39;s blog</title>
+
+    
+
+    
+      <link rel="canonical" href="http://samui13.hatenablog.com/entry/2013/12/25/000020"/>
+    
+
+    <meta itemprop="name" content="Authと他モデルにリレーションをつける(FuelPHP)。 - samu_i&#39;s blog"/>
+    
+      <meta itemprop="image" content="http://hatenablog.com/images/theme/og-image-1500.gif"/>
+    
+
+    <meta property="og:title" content="Authと他モデルにリレーションをつける(FuelPHP)。 - samu_i&#39;s blog"/>
+    <meta property="og:type" content="article"/>
+    <meta property="og:url" content="http://samui13.hatenablog.com/entry/2013/12/25/000020"/>
+    
+      <meta property="og:image" content="http://hatenablog.com/images/theme/og-image-1500.gif"/>
+    
+      <meta property="og:description" content="要旨 Userテーブルに対してリレーションを付けたい。自分で作ったUserModelであれば /project_name/fuel/app/class/model/に有るファイルを編集すればいい。Authパッケージを使いテーブルを作った場合packagesに有るファイルを編集して リレーションをつけて使っていた。packages内を直接編集するのは気持ち悪いしauth packagesをsubmoduleにしてアップデートすることが出来無くなる。 解決するにはpakageを新しく作る。そこに作ったファイルにリレーションを記述すればよい。 packagesを拡張して使う記事は複数あるがリレーショ…" />
+    <meta property="og:site_name" content="http://samui13.hatenablog.com/"/>
+      <meta property="article:published_time" content="1387897220" />
+    <meta name="twitter:card" content="summary" />      <meta name="twitter:app:name:iphone" content="はてなブログアプリ" />
+      <meta name="twitter:app:id:iphone" content="583299321" />
+      <meta name="twitter:app:url:iphone" content="hatenablog:///open?uri=http%3A%2F%2Fsamui13.hatenablog.com%2Fentry%2F2013%2F12%2F25%2F000020" />      <meta name="description" content="要旨 Userテーブルに対してリレーションを付けたい。自分で作ったUserModelであれば /project_name/fuel/app/class/model/に有るファイルを編集すればいい。Authパッケージを使いテーブルを作った場合packagesに有るファイルを編集して リレーションをつけて使っていた。pac…">
+    
+<script type="text/javascript">
+// <!--
+
+if (~navigator.userAgent.indexOf('Mac OS X')) {
+  document.write('<style type="text/css">html, body { font-family: \x27Helvetica\x27, \x27Arial\x27, \x27ヒラギノ角ゴ Pro W3\x27, \x27Hiragino Kaku Gothic Pro\x27, sans-serif; } </style>');
+} else {
+  document.write('<style type="text/css">html, body { font-family: \x27Helvetica\x27, \x27Arial\x27, \x27メイリオ\x27, \x27Meiryo\x27, \x27MS PGothic\x27, sans-serif; } </style>');
+}
+
+// -->
+</script>
+
+<!--[if lt IE 9]>
+<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+
+<!--[if IE]>
+<script type="text/javascript" src="/js/excanvas.min.js"></script>
+<![endif]-->
+
+    <link rel="shortcut icon" href="http://hatenablog.com/images/favicon.ico">
+    <link rel="alternate" type="application/atom+xml" title="Atom" href="http://samui13.hatenablog.com/feed"/>
+    <link rel="alternate" type="application/rss+xml" title="RSS2.0" href="http://samui13.hatenablog.com/rss"/>
+    <link rel="author" href="http://www.hatena.ne.jp/samu_i/">
+      <link rel="stylesheet" type="text/css" href="http://hatenablog.com/.shared.css:64c8d7f721b17808b1ff128172e838e0:/css/theme/base.css,/css/prettify.css,/css/globalheader.css"/>
+    
+      <link rel="stylesheet" type="text/css" href="http://hatenablog.com/-/blog_style/12921228815713078364/d19fedb984554d69619e552b6eeeedc234a5985c"/>
+    
+    <script>    </script>
+
+    
+    <style>
+      div#google_afc_user,
+      div#google_afc_user_container,
+      div.google_afc_image,
+      div.google_afc_blocklink {
+          display: block !important;
+      }
+    </style>
+  </head>
+
+  <body class="page-entry   ">
+    <div id="header-container">
+     <div id="sp-suggest" style="display: none;"><a id="sp-suggest-link" href="#">スマートフォン用の表示で見る</a></div>
+    </div>
+
+    <div class="select_star_button_container" style="display: none;">
+      <img src="http://hatenablog.com/images/theme/hatena-star-quote-box.png" title="引用スターをつける" class="select_star_button" />
+      <img src="http://hatenablog.com/images/theme/hatena-star-quote-star.png" title="引用スターをつける" class="select_star_button select_star_star">
+    </div>
+
+    <div class="message-box" id="select-star-message-box" style="display: none;">
+      スターをつけました
+    </div>
+
+    <div id="globalheader-container">
+  <iframe id="globalheader" height="37" frameborder="0" allowTransparency="true"></iframe>
+</div>
+
+    <div id="container">
+      <div id="container-inner">
+        <header id="blog-title" data-brand="hatenablog">
+  <div id="blog-title-inner" >
+    <h1 id="title"><a href="http://samui13.hatenablog.com/">samu_i&#39;s blog</a></h1>
+    
+  </div>
+</header>
+
+        
+        
+
+
+
+
+<div id="content" class="hfeed"
+  
+  >
+  <div id="content-inner">
+    <div id="wrapper">
+      <div id="main">
+        <div id="main-inner">
+          
+            
+            <!-- google_ad_section_start -->
+            <!-- rakuten_ad_target_begin -->
+            
+              
+                <article class="hentry entry js-entry-article date-first autopagerize_page_element chars-5600 words-400 html entry-odd" id="entry-12921228815715058222" data-keyword-campaign="" data-uuid="12921228815715058222">
+  <div class="entry-inner">
+    <header class="entry-header">
+      <div class="date first">
+        <a href="http://samui13.hatenablog.com/entries/2013/12/25" rel="nofollow">
+          <time pubdate datetime="2013-12-24T15:00:20Z" title="2013-12-24T15:00:20Z">
+            <span class="date-year">2013</span><span class="hyphen">-</span><span class="date-month">12</span><span class="hyphen">-</span><span class="date-day">25</span>
+          </time>
+        </a>
+      </div>
+      <h1 class="entry-title">
+        <a href="http://samui13.hatenablog.com/entry/2013/12/25/000020" class="entry-title-link bookmark">Authと他モデルにリレーションをつける(FuelPHP)。</a>
+      </h1>
+      
+      <div class="categories no-categories">
+        
+      </div>
+    </header>
+    <div class="entry-content">
+      
+        <h3>要旨</h3>
+<p>Userテーブルに対してリレーションを付けたい。自分で作ったUserModelであれば /project_name/fuel/app/class/model/に有るファイルを編集すればいい。Authパッケージを使いテーブルを作った場合packagesに有るファイルを編集して リレーションをつけて使っていた。packages内を直接編集するのは気持ち悪いしauth packagesをsubmoduleにしてアップデートすることが出来無くなる。 解決するにはpakageを新しく作る。そこに作ったファイルにリレーションを記述すればよい。</p>
+<p>packagesを拡張して使う記事は複数あるがリレーションを書いて拡張する方針の物は検索しても見つからなかった。そこでここではAuthを拡張してリレーションを付け加える方法を書く。私は<a class="keyword" href="http://d.hatena.ne.jp/keyword/PHP">PHP</a>を使い始めて間もないので、この方針が正しいのか判別がつかない。AdventCalenderに投稿することでよりよい方法についてご助言をいただけたらと考えています。</p>
+
+<h3>下準備</h3>
+<p><a class="keyword" href="http://d.hatena.ne.jp/keyword/FuelPHP">FuelPHP</a>はoilで作ります。project_nameフォルダが作られます。WindowsのひとはDownloadして使って下さい。</p>
+<pre># project_nameフォルダを作って、中に<a class="keyword" href="http://d.hatena.ne.jp/keyword/FuelPHP">FuelPHP</a>をダウンロードする。
+oil create project_name
+      </pre>
+<h4><a class="keyword" href="http://d.hatena.ne.jp/keyword/MySQL">MySQL</a>の準備</h4>
+<p>データベース(auth_test)と、管理ユーザーを作ります。</p>
+<pre># <a class="keyword" href="http://d.hatena.ne.jp/keyword/MySQL">MySQL</a>にログインします。 
+    <a class="keyword" href="http://d.hatena.ne.jp/keyword/mysql">mysql</a> -u root -p 
+	# データベースを作る。 
+	create database auth_test; 
+	# 管理ユーザーに権限を与える。 
+	# ユーザー名はdbuser,パスワードはlab1lab1 
+	grant all on auth_test.* to dbuser@<a class="keyword" href="http://d.hatena.ne.jp/keyword/localhost">localhost</a> identified by 'lab1lab1'; 
+	# 一旦ログアウトする。 
+	exit; 
+	# dbuserでログインする。 
+	<a class="keyword" href="http://d.hatena.ne.jp/keyword/mysql">mysql</a> -u dbuser -p auth_test 
+	# テーブルがないことを確認する 
+	show tables;</pre>
+<h4><a href="https://github.com/samui13/AuthExtend/commit/86557cc1160641afa30d4361f7bec89ad946bff2">設定ファイルの編集</a></h4>
+<p>/project_name/fuel/app/config/development/db.<a class="keyword" href="http://d.hatena.ne.jp/keyword/php">php</a>を編集します。 データベースの名前と、使うユーザーとパスワードを入力します。</p>
+<pre>	return array(
+	'default' =&gt; array(
+	'connection'  =&gt; array(
+	'dsn'        =&gt; '<a class="keyword" href="http://d.hatena.ne.jp/keyword/mysql">mysql</a>:host=<a class="keyword" href="http://d.hatena.ne.jp/keyword/localhost">localhost</a>;dbname=auth_test',
+	'username'   =&gt; 'dbuser',
+	'password'   =&gt; 'lab1lab1',
+	),
+	),
+	);
+      </pre>
+<p>/project_name/fuel/app/config/config.<a class="keyword" href="http://d.hatena.ne.jp/keyword/php">php</a>を編集します。 always loadにORMとAuthを読み込むよう設定します。あとからMyAuthも読み込むよう設定をしなおします。</p>
+<pre>    'always_load'  =&gt; array(
+        'packages'  =&gt; array(
+	'orm',
+	'auth',
+	'myauth',				     
+	),
+    	),
+        );
+      </pre>
+<h4><a href="https://github.com/samui13/AuthExtend/commit/6a7bf8256dc41c344e9307ea90447ec7819e6733">authの設定ファイルをコピーする</a></h4>
+<p>/projct_name/fuel/packages/auth/config/からauth.<a class="keyword" href="http://d.hatena.ne.jp/keyword/php">php</a>とormauth.<a class="keyword" href="http://d.hatena.ne.jp/keyword/php">php</a>を/project_name/fuel/app/config/にコピーします。</p>
+<p>$ cp ./fuel/packages/auth/config/auth.<a class="keyword" href="http://d.hatena.ne.jp/keyword/php">php</a> ./fuel/app/config/ $ cp ./fuel/packages/auth/config/ormauth.<a class="keyword" href="http://d.hatena.ne.jp/keyword/php">php</a> ./fuel/app/config/</p>
+<p>auth.<a class="keyword" href="http://d.hatena.ne.jp/keyword/php">php</a>にはdriverとsaltを設定する。</p>
+<pre>	return array(
+	     'driver' =&gt; 'Ormauth',
+	     'verify_multiple_logins' =&gt; false,
+	     'salt' =&gt; 'ZomBie$22@<a class="keyword" href="http://d.hatena.ne.jp/keyword/OPS">OPS</a>',
+	     'iterations' =&gt; 10000,
+);
+      </pre>
+<p>ormauth.<a class="keyword" href="http://d.hatena.ne.jp/keyword/php">php</a>にも同じようにlogin_hash_saltを設定する。</p>
+<pre>	'login_hash_salt' =&gt; 'ZomBie$22@<a class="keyword" href="http://d.hatena.ne.jp/keyword/OPS">OPS</a>',
+      </pre>
+<h3>ORMを編集する</h3>
+<h4><a href="https://github.com/samui13/AuthExtend/commit/6c1749f79f5c24312af6f4303fe7a2b7e4873ba6">記事テーブルを作る</a></h4>
+<p>Blogのような物を想定しているので、記事を保存するテーブルを作ります。 テーブル名はarticles。id,title(タイトル),comment(コメント),user_id(どのユーザーの記事か)の4つのデータをもたせます。</p>
+<pre># migrate用のファイルをつくる。（このコマンドだけではデータベースにテーブルは作られていない。）
+oil generate model article title:varchar[255] comment:text user_<a href="http://blog.hatena.ne.jp/int/">id:int</a>
+# これを実行するとテーブルができる
+oil refine migrate:up
+      </pre>
+<h4><a href="https://github.com/samui13/AuthExtend/commit/d022a15be6de908e3f96650cf24df7a5025689e5">リレーションを付ける。</a></h4>
+<p>articlesテーブルはUserに属している。Usersテーブルは複数のarticlesを持つ。</p>
+<pre>	protected static $_belong_to = 
+	  array('user'=&gt;array(
+			      'model_to'=&gt;'\MyAuth\Model\Auth_User',
+			      'key_from'=&gt;'user_id',
+			      'key_to'=&gt;'id',
+			      '<a class="keyword" href="http://d.hatena.ne.jp/keyword/cascade">cascade</a>_save' =&gt; false,
+			      '<a class="keyword" href="http://d.hatena.ne.jp/keyword/cascade">cascade</a>_delete' =&gt; true,
+
+));
+      </pre>
+<h4><a href="https://github.com/samui13/AuthExtend/commit/12ea5ef0167774dbfadd77f6aa41f9d6fbe165aa">ユーザーテーブルを作る</a></h4>
+<p>Authパッケージにあるmigrateファイルからテーブルを作ります。</p>
+<pre># テーブルを作ってもらいます。
+oil refine migrate:current --packages=auth
+      </pre>
+<h4>リレーションを付ける。</h4>
+<p>Userテーブルは複数(has_many)のarticleを持つ。これは後で書きます。</p>
+<h3>packagesを書き換える</h3>
+<h4><a href="https://github.com/samui13/AuthExtend/commit/c31789892c2d5afc95518bc80a0e58397dbe7e3b">ディレクトリ構成</a></h4>
+<p>/project_name/fuel/packages/以下に次のようにファイルを作る。</p>
+<pre>./myauth/
+	|-- bootstrap.<a class="keyword" href="http://d.hatena.ne.jp/keyword/php">php</a>
+	`-- classes
+	`-- model
+        `-- auth
+        `-- user.<a class="keyword" href="http://d.hatena.ne.jp/keyword/php">php</a>
+      </pre>
+<h4>ファイル</h4>
+<p>/auth/mode/auth/user.<a class="keyword" href="http://d.hatena.ne.jp/keyword/php">php</a>のファイルを/myauth/mode/auth/user.<a class="keyword" href="http://d.hatena.ne.jp/keyword/php">php</a>へコピーする。 auth/user.<a class="keyword" href="http://d.hatena.ne.jp/keyword/php">php</a>には、functionや$_table_nameの変数を消しておく。 そして、継承元を\Orm\Modelから\Auth\Model\Auth_Userにかえる。</p>
+<pre>   namespace MyAuth\Model;
+	class Auth_User extends \Auth\Model\Auth_User
+	{
+
+	protected static $_has_many = array(
+	'articles'=&gt;array(
+	'key_to'=&gt;'user_id',
+	'model_to'=&gt;'Model_Article',
+	'key_from'=&gt;'id',
+	'<a class="keyword" href="http://d.hatena.ne.jp/keyword/cascade">cascade</a>_save' =&gt; false,
+	'<a class="keyword" href="http://d.hatena.ne.jp/keyword/cascade">cascade</a>_delete' =&gt; true,
+	),
+	);
+        
+      </pre>
+<h3>Controllerを書き換える</h3>
+<p>Controllerを作り込むのは面倒なので/project_name/fuel/app/classes/controller/welcome.<a class="keyword" href="http://d.hatena.ne.jp/keyword/php">php</a>を編集する。 action_test,action_create,action_loginの3つの関数を作る。</p>
+<h4>Login Userを作る。</h4>
+<p>/project_name/上で、oil consoleを実行。 ユーザー名をsamui,パスワードをpassword,メールアドレスをss.to13@<a class="keyword" href="http://d.hatena.ne.jp/keyword/gmail">gmail</a>.comで登録する。</p>
+<pre>	Auth::create_user('samui','password','ss.to13@<a class="keyword" href="http://d.hatena.ne.jp/keyword/gmail">gmail</a>.com');
+	</pre>
+<p>ユーザーIDは2または3をもつユーザーを作ることができる。</p>
+<h4><a href="https://github.com/samui13/AuthExtend/commit/2776f8cd421450501cc0ff07e3453e419be9c3b7">ログインページを作る。</a></h4>
+<p>先程つくったユーザーで勝手にログインする関数を作ります。 本来はFormを作ってユーザーい入力させるべき部分です。 今会は面倒なので作りません。</p>
+<pre>    public function action_login()
+	{
+	// Authの<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%A4%A5%F3%A5%B9%A5%BF%A5%F3%A5%B9">インスタンス</a>を作る。
+	$auth = Auth::instance();
+	// Authでログインできたら、
+	if ($auth-&gt;login('samui',password'))
+        {
+	// welcome/viewに移動する
+	Response::redirect('welcome/view');
+        }
+	}
+      </pre>
+<h4><a href="https://github.com/samui13/AuthExtend/commit/9cffd4a26593175048bcab904bb81aa76e891f34">記事を作る。</a></h4>
+<p>articleに与えるデータを作る関数を書き加えます。</p>
+<p> </p>
+<pre>public function action_create()
+	{
+	// Authでログイン出来てなかったら、
+	if(!Auth::check())
+	{
+	// ログインさせる。
+	Response::redirect('welcome/login');
+	}
+	// ユーザーIDで、モデルからデータを取得
+	$user = \Model\Auth_User::find(Auth::get_user_id()[1]);
+	// $user = \MyAuth\Model\Auth_User::find(Auth::get_user_id()[1]);
+	$regist = \Model_Article::forge(
+	array(
+	'title'=&gt;'FirstBlog',
+	'comment'=&gt;'Comment!Comment!Comment!',
+	'user_id'=&gt;Auth::get_user_id()[1],
+	'created_at'=&gt;time(),
+	));
+	$user-&gt;articles[] = $regist;
+	$regist-&gt;save();
+	$regist-&gt;user = $user;
+	$user-&gt;save();
+	Response::redirect('welcome/view');
+	}
+      </pre>
+<h4><a href="https://github.com/samui13/AuthExtend/commit/9e016739302d2d758e70059b2d8351c38051568e">記事を表示する。</a></h4>
+<p>正しくパッケージが読み込まれているか確認。</p>
+<pre>	public function action_view(){
+	// ユーザーデータ取得、
+	$user = \Model\Auth_User::find(Auth::get_user_id()[1]); 
+	// ユーザーデータの<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%A4%A5%F3%A5%B9%A5%BF%A5%F3%A5%B9">インスタンス</a>の名前を表示 //MyAuth\Model\Auth_User
+	echo get_class($user); 
+	// ユーザーからブログ記事を取得。
+	echo get_class<a href="#f1" name="fn1" title="$user-&gt;articles[0]">*1</a>;
+	}
+      </pre>
+<h3>動作確認</h3>
+<p><a class="keyword" href="http://d.hatena.ne.jp/keyword/localhost">localhost</a>/project_name/public/index.<a class="keyword" href="http://d.hatena.ne.jp/keyword/php">php</a>/welcome/loginにアクセスします。すぐに<a class="keyword" href="http://d.hatena.ne.jp/keyword/localhost">localhost</a>/project_name/public/index.<a class="keyword" href="http://d.hatena.ne.jp/keyword/php">php</a>/welcome/viewに飛されます。<a class="keyword" href="http://d.hatena.ne.jp/keyword/localhost">localhost</a>/project_name/public/index.<a class="keyword" href="http://d.hatena.ne.jp/keyword/php">php</a>/welcome/createに移動します。articlesが一つ追加されます。</p>
+<p><a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%A4%A5%F3%A5%B9%A5%BF%A5%F3%A5%B9">インスタンス</a>の名前が作ったものと一致すれば成功です。</p>
+<h3>マトメ</h3>
+<p>authパッケージに僕が最初に不満に思ったことを改善する方法をまとめました。</p>
+<p>User tableとのリレーションをそのままauth packagesを書き換えることで作ることはauthパッケージの不工合が更新されると対処することが出来ません。Packagesの拡張を行うことで解決できることは<a class="keyword" href="http://d.hatena.ne.jp/keyword/FuelPHP">FuelPHP</a>界では自明なことのように扱われています。しかし、「auth リレーション」の検索ワードではこの解決を見付けることが出来ません。実際にサービスを作ってみるとUserテーブルと他のテーブルとの関係は直に付けたくなるものです。そこでauthパッケージを使う所から一歩すんで初学者(<a class="keyword" href="http://d.hatena.ne.jp/keyword/%A5%D5%A5%EC%A1%BC%A5%E0%A5%EF%A1%BC%A5%AF">フレームワーク</a>を使ったことがない人)が躓きそうであることについてまとめておきました。</p>
+<h3>参考文献</h3>
+<h4>packagesの拡張については</h4>
+<ul>
+<li><a href="http://fuelphp.jp/docs/1.7/general/packages.html">パッケージ - 概要 - FuelPHP ドキュメント</a></li>
+<li><a href="http://blog.livedoor.jp/erscape/archives/6841486.html">FuelPHPでパッケージを拡張する方法について</a></li>
+<li><a href="http://ryu-htn.hatenablog.com/entry/2013/06/26/133047">[FuelPHP]ネームスペースを上書きしてパッケージのクラスを書き換える</a></li>
+</ul>
+<h4>authについては</h4>
+<ul>
+<li><a href="http://moric.github.io/blog/2013/06/Fuelphp_auth/">[すごい広島]FuelPHPで認証機能を実装してみる!</a></li>
+</ul>
+<h4>独自に作ったユーザーテーブルと他のテーブルにリレーションを付ける</h4>
+<ul>
+<li><a href="http://teru2-bo2.blogspot.jp/2012/07/fuelphp_25.html">モデル間のリレショーンをためしてみた（FuelPHP）</a></li>
+</ul>
+<h4>今回つくったSource</h4>
+<ul>
+<li><a href="https://github.com/samui13/AuthExtend">AuthExtend</a></li>
+<li><a href="http://samui13.github.io/AuthExtend/">GitHubでの本文</a></li>
+</ul><div class="footnote">
+<p class="footnote"><a href="#fn1" name="f1" class="footnote-number">*1</a><span class="footnote-delimiter">:</span><span class="footnote-text">$user-&gt;articles[0]</span></p>
+</div>
+      
+    </div>
+    <footer class="entry-footer">
+      <p class="entry-footer-section">
+        <span class="author vcard"><span class="fn">samu_i</span></span>
+        <span class="entry-footer-time"><a href="http://samui13.hatenablog.com/entry/2013/12/25/000020"><time data-relative datetime="2013-12-24T15:00:20Z" title="2013-12-24T15:00:20Z" pubdate class="updated">2013-12-25 00:00</time></a></span>
+      </p>
+      <div class="hatena-star-container">
+      </div>
+      
+        <!-- Google AFC -->
+        <div id="google_afc_user" class="section ">
+          
+            <a href="http://blog.hatena.ne.jp/guide/pro" class="open-pro-modal" data-guide-pro-modal-ad-url="http://hatenablog.com/guide/pro/modal/ad"><img src="http://hatenablog.com/images/admin/delete.gif" class="ad-close"></a>
+          
+          <div id="google_afc_user_container" class="google_afc_blocklink2_5 google_afc_boder"></div>
+        </div>
+      
+      
+
+      <div class="customized-footer">
+        
+          <div class="social-buttons">
+  
+  
+    <a href="http://b.hatena.ne.jp/entry/http://samui13.hatenablog.com/entry/2013/12/25/000020" class="hatena-bookmark-button" data-hatena-bookmark-layout="standard-balloon" data-hatena-bookmark-lang="ja" title="この記事をはてなブックマークに追加"><img src="http://b.st-hatena.com/images/entry-button/button-only.gif" alt="この記事をはてなブックマークに追加" width="20" height="20" style="border: none;" /></a>
+  
+  
+    <iframe src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fsamui13.hatenablog.com%2Fentry%2F2013%2F12%2F25%2F000020&amp;layout=button_count&amp;show_faces=false&amp;width=100&amp;action=like&amp;height=21" class="facebook-like-button" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:100px; height:21px;" allowTransparency="true"></iframe>
+  
+  
+    <iframe allowtransparency="true" frameborder="0" scrolling="no" src="https://platform.twitter.com/widgets/tweet_button.html?url=http%3A%2F%2Fsamui13.hatenablog.com%2Fentry%2F2013%2F12%2F25%2F000020&text=Auth%E3%81%A8%E4%BB%96%E3%83%A2%E3%83%87%E3%83%AB%E3%81%AB%E3%83%AA%E3%83%AC%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%82%92%E3%81%A4%E3%81%91%E3%82%8B%28FuelPHP%29%E3%80%82%20-%20samu_i%27s%20blog&lang=ja" class="twitter-share-button" style="width:130px; height:20px;"></iframe>
+  
+  
+    <g:plusone size="medium" href="http://samui13.hatenablog.com/entry/2013/12/25/000020"></g:plusone>
+  
+  
+  
+</div>
+
+
+          
+
+
+          <div class="entry-footer-html"></div>
+        
+      </div>
+
+      <div class="comment-box">
+        
+        <ul class="comment">
+          
+        </ul>
+        
+          <a class="leave-comment-title">コメントを書く</a>
+        
+      </div>
+    </footer>
+  </div>
+</article>
+
+                
+
+                
+                  <div class="permalink pager">
+                    
+                    
+                      <span class="pager-prev">
+                        <a href="http://samui13.hatenablog.com/entry/2013/12/24/161735" rel="prev">前の記事</a>
+                      </span>
+                    
+                  </div>
+                
+
+              
+            
+            <!-- rakuten_ad_target_end -->
+            <!-- google_ad_section_end -->
+
+            
+          
+        </div>
+      </div>
+
+      
+      <aside id="box1">
+        <div id="box1-inner">
+        </div>
+      </aside>
+
+    </div><!-- #wrapper -->
+
+    <aside id="box2">
+  <div id="box2-inner">
+    
+    
+      
+
+<div class="hatena-module hatena-module-profile">
+  <div class="hatena-module-title">
+    プロフィール
+  </div>
+  <div class="hatena-module-body">
+    
+    <a href="http://samui13.hatenablog.com/about">
+      <img src="http://cdn1.www.st-hatena.com/users/sa/samu_i/profile.gif"
+      alt="id:samu_i" class="profile-icon" />
+    </a>
+    
+
+    
+    <span class="id">
+      <a href="http://samui13.hatenablog.com/about"><span data-load-nickname="1" data-user-name="samu_i">id:samu_i</span></a>
+      
+  
+    
+  
+
+
+    </span>
+    
+
+    
+
+    
+    <div class="hatena-follow-button-box btn-subscribe">
+      <a href="#" class="hatena-follow-button">
+        <span class="subscribing">
+          <span class="foreground">購読中です</span>
+          <span class="background">読者をやめる</span>
+        </span>
+        <span class="unsubscribing">
+          <span class="foreground">読者になる</span>
+          <span class="background">読者になる</span>
+        </span>
+      </a>
+      <div class="subscription-count-box">
+        <span class="subscription-balloon">
+        </span>
+        <span class="subscription-count">
+        </span>
+      </div>
+    </div>
+    
+
+    
+
+    
+
+    
+  </div>
+</div>
+
+    
+      <div class="hatena-module hatena-module-search-box">
+  <div class="hatena-module-title">
+    検索
+  </div>
+  <div class="hatena-module-body">
+    <form class="search-form" role="search" action="http://samui13.hatenablog.com/search" method="get">
+      <input type="text" name="q" class="search-module-input" value="" placeholder="ブログ内検索">
+      <input type="submit" value="検索" class="search-module-button" />
+    </form>
+  </div>
+</div>
+
+    
+      <div class="hatena-module hatena-module-links">
+  <div class="hatena-module-title">
+    リンク
+  </div>
+  <div class="hatena-module-body">
+    <ul class="hatena-urllist">
+      
+        <li>
+          <a href="http://hatenablog.com/">はてなブログ</a>
+        </li>
+      
+        <li>
+          <a href="http://hatenablog.com/guide?via=200109">ブログをはじめる（無料）</a>
+        </li>
+      
+        <li>
+          <a href="http://staff.hatenablog.com">お知らせ</a>
+        </li>
+      
+        <li>
+          <a href="http://hatenablog.com/g/">はてなブログ グループ</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+    
+      
+
+<div class="hatena-module hatena-module-recent-entries">
+  <div class="hatena-module-title">
+    <a href="http://samui13.hatenablog.com/archive">
+      最新記事
+    </a>
+  </div>
+  <div class="hatena-module-body">
+    <ul class="hatena-urllist">
+      
+        <li>
+          <a href="http://samui13.hatenablog.com/entry/2013/12/25/000020">              <span class="recent-entries-entry-title">Authと他モデルにリレーションをつける(FuelPHP)。</span>          </a>
+        </li>
+      
+        <li>
+          <a href="http://samui13.hatenablog.com/entry/2013/12/24/161735">              <span class="recent-entries-entry-title">闇の日記</span>          </a>
+        </li>
+      
+        <li>
+          <a href="http://samui13.hatenablog.com/entry/2013/12/24/071401">              <span class="recent-entries-entry-title">GoogleMapのアイコンから座標を取得する</span>          </a>
+        </li>
+      
+        <li>
+          <a href="http://samui13.hatenablog.com/entry/2013/12/19/211258">              <span class="recent-entries-entry-title">すごい広島12月19日</span>          </a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+    
+      
+
+<div class="hatena-module hatena-module-archive">
+  <div class="hatena-module-title">
+    <a href="http://samui13.hatenablog.com/archive">月別アーカイブ</a>
+  </div>
+  <div class="hatena-module-body">
+  </div>
+</div>
+
+    
+      
+
+<div class="hatena-module hatena-module-circles">
+  <div class="hatena-module-title">
+    参加グループ
+  </div>
+  <div class="hatena-module-body">
+    <ul class="circle-list">
+      
+        <li title="プログラミング" data-circle-id="11696248318754550880" data-circle-mtime="1387953684">
+  <a href="http://hatenablog.com/g/11696248318754550880"><img class="circle-image" src="/images/circle/official-circle-icon/computers.gif" alt="プログラミング" title="プログラミング"></a></li>
+      
+    </ul>
+  </div>
+</div>
+
+    
+    
+  </div>
+</aside>
+
+  </div>
+</div>
+
+
+
+
+  
+ <script type="text/javascript">
+   <!--
+   hatena_dfp_tag = '/4374287/blog_user';
+   hatena_dfp_size = [[300, 250], [336, 280]];
+   hatena_dfp_target_id = 'google_afc_user_container';
+   -->
+ </script>
+ <script type="text/javascript" src="http://ad.hatena.ne.jp/js/hatena_dfp-compiled.js"></script>
+
+
+
+
+        
+      </div>
+    </div>
+
+    
+      <footer id="footer" data-brand="hatenablog">
+  <div id="footer-inner">
+    <address>
+      
+      <a href="http://samui13.hatenablog.com/about"><img src="http://cdn1.www.st-hatena.com/users/sa/samu_i/profile.gif" width="16" height="16" alt=""/> samu_i</a>
+    </address>
+    <p class="services"><a href="http://hatenablog.com/">Hatena Blog</a> / <a href="http://d.hatena.ne.jp/">Hatena::Diary</a></p>
+  </div>
+</footer>
+
+    
+
+    
+      <script src="http://s.hatena.ne.jp/js/HatenaStar.js"></script>
+    
+
+    <script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
+<script type="text/javascript" src="https://apis.google.com/js/plusone.js">
+  {"parsetags": "explicit"}
+</script>
+<script type="text/javascript" src="http://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
+
+
+<script type="text/javascript" src="http://hatenablog.com/js?64c8d7f721b17808b1ff128172e838e0"></script>
+
+<script type="text/javascript" src="http://hatenablog.com/js/texts-ja.js?64c8d7f721b17808b1ff128172e838e0"></script>
+
+
+  <script type="text/javascript">Hatena.Diary.loadGlobalHeader()</script>
+
+
+
+
+
+    
+        <script id="google-analytics-script" type="text/javascript">
+var _gaq = _gaq || [];
+
+(function($){
+
+  // 現在のドメイン
+  
+    var current_domain = "hatenablog.com".split(":")[0];
+  
+
+  
+
+  
+
+  
+    _gaq.push(['a._setAccount', 'UA-29716941-5']);
+    _gaq.push(['a._setDomainName', current_domain]);
+    _gaq.push(['a._setCustomVar', 1, 'PageId', document.documentElement.getAttribute('data-page'), 3 /* page-level */]);
+      var keywordCampaigns = [];
+      $('.js-entry-article').each(function (index, element) {
+        var keywords = $(element).data('keywordCampaign').split(' ');
+        keywords = _.filter(keywords, function (keyword) { return keyword.length > 0 });
+        keywordCampaigns = keywordCampaigns.concat(keywords);
+      });
+      if (keywordCampaigns.length > 0) {
+        _gaq.push(['a._setCustomVar', 3, 'KeywordCampaign', keywordCampaigns[0], 3 /* page-level */]);
+      }
+      _gaq.push(['a._trackPageview']);
+  
+    _gaq.push(['b._setAccount', 'UA-29716941-2']);
+    _gaq.push(['b._setDomainName', current_domain]);
+    _gaq.push(['b._setCustomVar', 1, 'PageId', document.documentElement.getAttribute('data-page'), 3 /* page-level */]);
+      var keywordCampaigns = [];
+      $('.js-entry-article').each(function (index, element) {
+        var keywords = $(element).data('keywordCampaign').split(' ');
+        keywords = _.filter(keywords, function (keyword) { return keyword.length > 0 });
+        keywordCampaigns = keywordCampaigns.concat(keywords);
+      });
+      if (keywordCampaigns.length > 0) {
+        _gaq.push(['b._setCustomVar', 3, 'KeywordCampaign', keywordCampaigns[0], 3 /* page-level */]);
+      }
+      _gaq.push(['b._trackPageview']);
+  
+
+  $(function () {
+      $(document).delegate('[data-track-event="click"]', 'click', function () {
+          
+          _gaq.push([ 'a._trackEvent', 'Blogs', 'Click', this.getAttribute('data-track-key') ]);
+          
+          _gaq.push([ 'b._trackEvent', 'Blogs', 'Click', this.getAttribute('data-track-key') ]);
+          
+      });
+  });
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+  var available_domains = ["blog.hatena.ne.jp"];
+  
+    available_domains.push("hatenablog.com".split(":")[0]);
+  
+    available_domains.push("hatenablog.jp".split(":")[0]);
+  
+    available_domains.push("hateblo.jp".split(":")[0]);
+  
+    available_domains.push("hatenadiary.com".split(":")[0]);
+  
+    available_domains.push("hatenadiary.jp".split(":")[0]);
+  
+  $('a').on('click', function() {
+    // 同じドメインならスキップ
+    if ( !this.hostname || this.hostname.indexOf(current_domain) != -1 ) return;
+
+    var cross_domain = false;
+    for (var i = 0, len = available_domains.length; i < len; i++) {
+      if (this.hostname.indexOf(available_domains[i]) != -1) cross_domain = true;
+    }
+    if ( cross_domain ) {
+      
+      _gaq.push(['a._link', this.href]);
+      
+      _gaq.push(['b._link', this.href]);
+      
+    }
+  });
+
+})(jQuery);
+</script>
+
+    
+
+    
+
+  </body>
+</html>
+
