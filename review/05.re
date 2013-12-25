@@ -69,6 +69,7 @@ fuel/app/classes/hoge/twig/extension.php
  * This software is released under the MIT License.
  * http://opensource.org/licenses/mit-license.php
  */
+
 class Hoge_Twig_Extension extends Twig_Extension
 {
     /**

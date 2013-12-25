@@ -282,6 +282,7 @@ $ wget -q https://gist.github.com/sharkpp/7716098/raw -O - | patch -u -p0
  * This software is released under the MIT License.
  * http://opensource.org/licenses/mit-license.php
  */
+
 // 確実に削除 
 @unlink('index.phar');
 // phar書庫作成のためクラスを生成

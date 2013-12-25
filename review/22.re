@@ -121,6 +121,7 @@ FuelPHPの公式ドキュメントにある@<href>{http://fuelphp.jp/docs/1.7/pa
  * @link       http://fuelphp.jp/docs/1.7/packages/auth/examples/opauth.html
  * @link       http://fuelphp.com
  */
+
 use Fuel\Core\Controller;
 use Fuel\Core\Log;
 

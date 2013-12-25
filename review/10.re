@@ -52,6 +52,7 @@ Event::register('user_login', 'Class::method');
  * License: MIT 
  * http://opensource.org/licenses/mit-license.php
  */
+
 Event::register('admin.loginFail', 'warning_on_loginfail');
 
 function warning_on_loginfail()

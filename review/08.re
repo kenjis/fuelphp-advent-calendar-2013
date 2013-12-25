@@ -97,6 +97,7 @@ $val->add('username', 'Your username', array(), array('trim', 'strip_tags', 'req
  * This software is released under the MIT License.
  * http://opensource.org/licenses/mit-license.php
  */
+
 public static function login_validate()
 {
     $val = Validation::forge();
@@ -202,6 +203,7 @@ DRY（Don't repeat yourself）しましょ。
  * This software is released under the MIT License.
  * http://opensource.org/licenses/mit-license.php
  */
+
 class Validation extends \Fuel\Core\Validation
 {
     protected function __construct($fieldset)

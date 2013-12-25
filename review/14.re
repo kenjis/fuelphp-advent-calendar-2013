@@ -44,6 +44,7 @@ $curl->set_params($param);
 // Copyright (c) 2013 sharkpp
 // This function is released under the MIT License.
 // http://opensource.org/licenses/mit-license.php
+
 function build_query($data) {
     array_walk($data, function (&$value, $key) {
         is_array($value) ?: $value = array($value);
@@ -74,6 +75,7 @@ Cookieの与え方も簡単です。
 // Copyright (c) 2013 sharkpp
 // This function is released under the MIT License.
 // http://opensource.org/licenses/mit-license.php
+
 protected static function build_cookie($data) {
     if (is_array($data)) {
         $cookie = '';

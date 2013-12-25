@@ -83,6 +83,12 @@ var Table = $('#table_id').dataTable();
 
 #@# lang: .brush:javascript name="code"
 //emlist{
+/**
+ * Copyright (c) 2013 @soudai1025
+ * License: MIT 
+ * http://opensource.org/licenses/mit-license.php
+ */
+
 var Table = $('#table_id').dataTable({
     // 日本語対応したい場合はGitHubのpluginから該当のファイルをダウンロードしてください
     oLanguage: {
@@ -127,6 +133,12 @@ var Table = $('#table_id').dataTable({
 
 #@# lang: .brush:javascript name="code"
 //emlist{
+/**
+ * Copyright (c) 2013 @soudai1025
+ * License: MIT 
+ * http://opensource.org/licenses/mit-license.php
+ */
+
 var Table = $('#table_id').dataTable({
     // 読み込み中の表示
     bProcessing: true,
