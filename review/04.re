@@ -41,9 +41,9 @@ PC版のリクエストならPC版の404を出したいし、SP版のリクエ�
 CodeIgniter使ってた時にはエラーのView内で条件分岐して、リクエストの種別（PC/SP）毎にそれぞれ表示するView書き換えたりしてたので、それを応用しながら上手いこと出来ないかなぁとか考えてたら以下のような形になりました。
 
 //emlist{
-/**
- * Copyright (c) 2013 @mkkn_info
- * License: MIT 
+/* 
+ * Copyright (c) 2013 mkkn.info
+ * This software is released under the MIT License.
  * http://opensource.org/licenses/mit-license.php
  */
 
@@ -133,7 +133,7 @@ FuelPHP的なコントローラは基本的に生成コスト低め、のはず�
 @<strong>{@mkkn_info}
 
 
-@TODO
+mikakane です。
 
 
 Twitter: @<href>{https://twitter.com/mkkn_info,@mkkn_info}
