@@ -15,7 +15,7 @@ packagesを拡張して使う記事は複数あるがリレーションを書い
 FuelPHPはoilで作ります。project_nameフォルダが作られます。WindowsのひとはDownloadして使って下さい。
 
 //cmd{
-# project_nameフォルダを作って、中にFuelPHPをダウンロードする。
+# project_nameフォルダを作って、中にFuelPHPをダウンロードする
 oil create project_name
 //}
 
@@ -25,18 +25,18 @@ oil create project_name
 データベース（auth_test）と、管理ユーザーを作ります。
 
 //cmd{
-# MySQLにログインします。 
-mysql -u root -p 
-# データベースを作る。 
-create database auth_test; 
-# 管理ユーザーに権限を与える。 
-# ユーザー名はdbuser,パスワードはlab1lab1 
-grant all on auth_test.* to dbuser@localhost identified by 'lab1lab1'; 
-# 一旦ログアウトする。 
+# MySQLにログインします
+mysql -u root -p
+# データベースを作る
+create database auth_test;
+# 管理ユーザーに権限を与える
+# ユーザー名はdbuser,パスワードはlab1lab1
+grant all on auth_test.* to dbuser@localhost identified by 'lab1lab1';
+# 一旦ログアウトする
 exit; 
-# dbuserでログインする。 
-mysql -u dbuser -p auth_test 
-# テーブルがないことを確認する 
+# dbuserでログインする
+mysql -u dbuser -p auth_test
+# テーブルがないことを確認する
 show tables;
 //}
 
@@ -107,7 +107,7 @@ ormauth.phpにも同じようにlogin_hash_saltを設定します。
 
  * @<href>{https://github.com/samui13/AuthExtend/commit/6c1749f79f5c24312af6f4303fe7a2b7e4873ba6,Changeset}
 
-Blogのような物を想定しているので、記事を保存するテーブルを作ります。 テーブル名はarticles。id,title(タイトル),comment(コメント),user_id(どのユーザーの記事か)の4つのデータをもたせます。
+Blogのような物を想定しているので、記事を保存するテーブルを作ります。テーブル名はarticles。id、title（タイトル）、comment（コメント）、user_id（どのユーザーの記事か）の4つのデータをもたせます。
 
 //cmd{
 # migrate用のファイルをつくる（このコマンドだけではデータベースにテーブルは作られていない）
