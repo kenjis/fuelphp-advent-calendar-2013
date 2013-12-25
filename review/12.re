@@ -1,6 +1,6 @@
 = FuelPHPでChatWorkパッケージを使ってみる
 
-@<href>{http://atnd.org/events/45096,FuelPHP Advent Calendar 2013} 12日目です。@<href>{https://twitter.com/madmamor,@madmamor} が担当します。
+@<href>{http://atnd.org/events/45096,FuelPHP Advent Calendar 2013} 12日目です。@<href>{https://twitter.com/madmamor,@madmamor}が担当します。
 
  今日は、FuelPHPのChatWorkパッケージを紹介します。@<br>{}
 

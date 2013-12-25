@@ -259,7 +259,7 @@ $ curl http://localhost:8000/memo/read
 噂通り、FuelPHPでのAPI実装はとてもお手軽でした。みなさんも一度やってみておくと何かの時にアワアワしなくていいのではないでしょうか。
 
 
-ところで、ゴリゴリ記事を書いて、必死でスクリーンキャストまで撮って、公開ボタンを押そうとしたまさにその時、@<href>{http://twitter.com/kenji_s,@kenji_s}さんが、過去に同様のことをなさっていることを発見してしまいました。
+ところで、ゴリゴリ記事を書いて、必死でスクリーンキャストまで撮って、公開ボタンを押そうとしたまさにその時、@<href>{https://twitter.com/kenji_s,@kenji_s}さんが、過去に同様のことをなさっていることを発見してしまいました。
 
  * @<href>{http://d.hatena.ne.jp/Kenji_s/20130121/fuel_web_api_5_min,FuelPHPを使って5分でWeb APIを作成する}
 

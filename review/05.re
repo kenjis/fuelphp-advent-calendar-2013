@@ -1,6 +1,6 @@
 = FuelPHPでTwig Extension
 
-4日目の@@<href>{http://twitter.com/mkkn_info,mkkn_info}さんの「Fuelphpのエラーハンドリングがなんか今ひとつ物足りなかったのでなんとかしてみた話 - どうにもならない日々@mkkn」に引き続き、@<href>{http://atnd.org/events/45096,FuelPHP Advent Calendar 2013}の5日目です。
+4日目の@<href>{https://twitter.com/mkkn_info,@mkkn_info}さんの「Fuelphpのエラーハンドリングがなんか今ひとつ物足りなかったのでなんとかしてみた話 - どうにもならない日々@mkkn」に引き続き、@<href>{http://atnd.org/events/45096,FuelPHP Advent Calendar 2013}の5日目です。
 
 ここ数年はアドベントカレンダーの時にしか技術的な内容を書いていない気がするのが恐ろしいところですが、気にせずいきましょう。
 

@@ -125,7 +125,7 @@ HTML上で展開される名前です。'data-名前'がその要素のidにな�
 {{ data_bind('user', user, ['password', 'rank']) }}
 //}
 
-ということでお手軽 tips でした。明日のアドベントカレンダーは@@<href>{http://twitter.com/LandscapeSketch,LandscapeSketch}さんです。
+ということでお手軽 tips でした。明日のアドベントカレンダーは@<href>{https://twitter.com/LandscapeSketch,@LandscapeSketch}さんです。
 
 == 【補足】FuelPHPのViewの自動エスケープについて
 
@@ -157,7 +157,7 @@ PHP: json_encode - Manual（@<href>{http://php.net/json_encode,http://php.net/js
 
 === 自動エスケープは\Fuel\Core\Viewの機能だった
 
-その後@<href>{https://groups.google.com/forum/#!forum/fuelphp_jp,fuelphp.jpグループ}で@@<href>{http://twitter.com/kenji_s,kenji_s}さんに指摘されて、Parserパッケージの標準設定で'auto_encode'がtrueになっているおかげでテンプレートに渡される変数が自動でエスケープされていた事がわかりました。
+その後@<href>{https://groups.google.com/forum/#!forum/fuelphp_jp,fuelphp.jpグループ}で@<href>{https://twitter.com/kenji_s,@kenji_s}さんに指摘されて、Parserパッケージの標準設定で'auto_encode'がtrueになっているおかげでテンプレートに渡される変数が自動でエスケープされていた事がわかりました。
 
 //quote{
 fuel/packages/parser/config/parser.php
@@ -181,7 +181,7 @@ PHP変数をJSONにしてJavaScriptに渡す仕組みは、別にFuelPHPでな�
 
 === JSONの埋め込み方の問題
 
-他にもfuelphp.jpグループでは@@<href>{http://twitter.com/takayuki_h,takayuki_h}さんより、HTML要素にテキストとしてJSONを書き出すよりは、要素のdata-option属性として埋め込んだ方が良いのではないかとの指摘を受けました。
+他にもfuelphp.jpグループでは@<href>{https://twitter.com/takayuki_h,@takayuki_h}さんより、HTML要素にテキストとしてJSONを書き出すよりは、要素のdata-option属性として埋め込んだ方が良いのではないかとの指摘を受けました。
 
 #@# lang: .syntax-highlight
 //emlist{
