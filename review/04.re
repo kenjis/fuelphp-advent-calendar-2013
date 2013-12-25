@@ -41,7 +41,12 @@ PC版のリクエストならPC版の404を出したいし、SP版のリクエ�
 CodeIgniter使ってた時にはエラーのView内で条件分岐して、リクエストの種別（PC/SP）毎にそれぞれ表示するView書き換えたりしてたので、それを応用しながら上手いこと出来ないかなぁとか考えてたら以下のような形になりました。
 
 //emlist{
-// @TODO ライセンス明示
+/**
+ * Copyright (c) 2013 @mkkn_info
+ * License: MIT 
+ * http://opensource.org/licenses/mit-license.php
+ */
+
 class HttpNotFoundException extends \Fuel\Core\HttpNotFoundException
 {
     public function response()
