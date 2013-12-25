@@ -132,9 +132,12 @@ FuelPHP的なコントローラは基本的に生成コスト低め、のはず�
 //quote{
 @<strong>{@mkkn_info}
 
-
-@TODO
-
+mikakane です。
+/* 
+ * Copyright (c) 2013 mkkn.info 
+ * This software is released under the MIT License. 
+ * http://opensource.org/licenses/mit-license.php 
+ */ 
 
 Twitter: @<href>{https://twitter.com/mkkn_info,@mkkn_info}
 
