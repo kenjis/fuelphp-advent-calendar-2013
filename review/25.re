@@ -216,7 +216,7 @@ Auth::create_user('samui','password','ss.to13@gmail.com');
         // Authのインスタンスを作る
         $auth = Auth::instance();
         // Authでログインできたら、
-        if ($auth->login('samui',password'))
+        if ($auth->login('samui', 'password'))
         {
             // welcome/viewに移動する
             Response::redirect('welcome/view');
