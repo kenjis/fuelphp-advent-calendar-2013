@@ -124,10 +124,10 @@ articlesテーブルはUserに属しています。Usersテーブルは複数の
 
 //emlist{
     protected static $_belong_to = 
-        array('user'=>array(
-            'model_to'=>'\MyAuth\Model\Auth_User',
-            'key_from'=>'user_id',
-            'key_to'=>'id',
+        array('user' => array(
+            'model_to' = >'\MyAuth\Model\Auth_User',
+            'key_from' => 'user_id',
+            'key_to' => 'id',
             'cascade_save' => false,
             'cascade_delete' => true,
         ));
@@ -169,7 +169,7 @@ Userテーブルは複数（has_many）のarticleを持ちます。これは後�
 ==== ファイル
 
 
-/auth/mode/auth/user.phpのファイルを/myauth/mode/auth/user.phpへコピーします。auth/user.phpには、functionや$_table_nameの変数を消しておきます。そして、継承元を\Orm\Modelから\Auth\Model\Auth_Userにかえます。
+/auth/model/auth/user.phpのファイルを/myauth/model/auth/user.phpへコピーします。auth/user.phpでは、functionや$_table_nameの変数を消しておきます。そして、継承元を\Orm\Modelから\Auth\Model\Auth_Userにかえます。
 
 //emlist{
 namespace MyAuth\Model;
@@ -177,10 +177,10 @@ namespace MyAuth\Model;
 class Auth_User extends \Auth\Model\Auth_User
 {
     protected static $_has_many = array(
-        'articles'=>array(
-            'key_to'=>'user_id',
-            'model_to'=>'Model_Article',
-            'key_from'=>'id',
+        'articles' => array(
+            'key_to' => 'user_id',
+            'model_to' => 'Model_Article',
+            'key_from' => 'id',
             'cascade_save' => false,
             'cascade_delete' => true,
         ),
@@ -244,10 +244,10 @@ articleに与えるデータを作るメソッドを書き加えます。
         // $user = \MyAuth\Model\Auth_User::find(Auth::get_user_id()[1]);
         $regist = \Model_Article::forge(
             array(
-                'title'=>'FirstBlog',
-                'comment'=>'Comment!Comment!Comment!',
-                'user_id'=>Auth::get_user_id()[1],
-                'created_at'=>time(),
+                'title' => 'FirstBlog',
+                'comment' => 'Comment!Comment!Comment!',
+                'user_id' => Auth::get_user_id()[1],
+                'created_at' => time(),
             )
         );
         $user->articles[] = $regist;
@@ -296,27 +296,23 @@ Authパッケージを書き換えることでUserテーブルとのリレーシ
 
 === 参考文献
 
-==== packagesの拡張については
+packagesの拡張については
 
  * @<href>{http://fuelphp.jp/docs/1.7/general/packages.html,パッケージ - 概要 - FuelPHP ドキュメント}
  * @<href>{http://blog.livedoor.jp/erscape/archives/6841486.html,FuelPHPでパッケージを拡張する方法について}
  * @<href>{http://ryu-htn.hatenablog.com/entry/2013/06/26/133047,[FuelPHP]ネームスペースを上書きしてパッケージのクラスを書き換える}
 
-
-==== Authについては
+Authについては
 
  * @<href>{http://moric.github.io/blog/2013/06/Fuelphp_auth/,[すごい広島]FuelPHPで認証機能を実装してみる!}
 
-
-==== 独自に作ったユーザーテーブルと他のテーブルにリレーションを付ける
+独自に作ったユーザーテーブルと他のテーブルにリレーションを付ける
 
  * @<href>{http://teru2-bo2.blogspot.jp/2012/07/fuelphp_25.html,モデル間のリレショーンをためしてみた（FuelPHP）}
 
-
-==== 今回つくったSource
+今回つくったSource
 
  * @<href>{https://github.com/samui13/AuthExtend,AuthExtend}
- * @<href>{http://samui13.github.io/AuthExtend/,GitHubでの本文}
 
 //quote{
 @<strong>{samui_}

@@ -22,6 +22,7 @@ $response = $curl->response();
 echo $response->body;
 //}
 
+//noindent
 ね！簡単でしょ？
 
 == GET／POST時のパラメータ指定
@@ -34,6 +35,7 @@ $param['data'] = 'test';
 $curl->set_params($param);
 //}
 
+//noindent
 で問題ありません。
 
 が、@<tt>{http://www.example.net/?user=john&user=smith}のように同じキーが複数存在する場合は先の方法ではうまくいきません。そもそも、そんな指定はありえない？いえいえ、実際にこのような指定をするアプリケーションがありました。
@@ -56,6 +58,7 @@ function build_query($data) {
 }
 //}
 
+//noindent
 のようなクエリ文字列の構築関数を使って
 
 //emlist{
@@ -63,6 +66,7 @@ $param['user'] = array('john', 'smith');
 $curl->set_params(build_query($param));
 //}
 
+//noindent
 とすればOKです。
 
 実はドキュメントに書かれていないですが、@<tt>{Request_Curl::set_params()}の引数に文字列を渡すとクエリ文字列としてそのまま使ってくれます。
@@ -90,6 +94,7 @@ protected static function build_cookie($data) {
 }
 //}
 
+//noindent
 こんな関数を用意して
 
 //emlist{
@@ -98,6 +103,7 @@ $cookie['fuga'] = '1234';
 $curl->set_option(CURLOPT_COOKIE, build_cookie($cookie));
 //}
 
+//noindent
 とすればOKです。
 
 == PHPさんですか？いえいえIE11です
@@ -130,6 +136,7 @@ $curl->set_option(CURLOPT_SSL_VERIFYPEER, false);
 $curl->set_option(CURLOPT_CAINFO, 'path/to/cacert.pem');
 //}
 
+//noindent
 のような感じで検証用のファイルを指定するようですがうまくいきませんでした。
 
 == あれ？
