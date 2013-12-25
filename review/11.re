@@ -238,7 +238,7 @@ ComposerはPHPの依存性管理ツールです、と言っております。そ
 
 このVagrantfileのあるディレクトリに、chatii/fuelphp_setupクローンしてあげてください。クローン時に名付けたディレクトリ名を、Vagrantfileのsrc_dirに指定してあげます。また、ステージング環境を指定する場合はfuel_envに指定してください。デフォルトではdevelopmentを指定しています。
 
-あまりVagrant、chefについても詳しくありませんが、個人的にはFuelPHPの開発開始までの手間がかなり削減されました。
+あまりVagrant、Chefについても詳しくありませんが、個人的にはFuelPHPの開発開始までの手間がかなり削減されました。
 
 無駄なWelcomeも無いため、そのままoil generateを使ってモデルなりコントローラーなり作ってもいいですし、自分で手打ちしてもいいですし。
 
