@@ -280,7 +280,7 @@ Herokuにやや癖があり使いにくいと思ってしまった事もあり�
 //quote{
 @<strong>{@mycb750}
 
-
+プライド高きプログラマ
 
 Twitter: @<href>{https://twitter.com/mycb750,@mycb750}
 
