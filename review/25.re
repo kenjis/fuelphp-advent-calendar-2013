@@ -317,9 +317,9 @@ Authについては
 //quote{
 @<strong>{samui_}
 
-@TODO
+学生です！WebServiceをFuelPHPで作りました。AdventCalenderに記事を書いて宣伝しようと考えてました。が、知命的なバグが出たので間に合わず。。。
 
-Twitter: @<href>{https://twitter.com/samui__s,@samui__s}
+Twitter: @<href>{https://twitter.com/samui_,@samui_}
 
 Blog: @<href>{http://samui13.hatenablog.com/,http://samui13.hatenablog.com/}
 //}
