@@ -82,10 +82,10 @@ $ oil g controller main index
 
 テスト用クラスを読み込むためにルーティング設定を変更します。@<href>{https://github.com/chatii/fuelphp_setup,fuelphp_setup}を利用して環境構築した場合でも、Welcomeコントローラーが存在する前提のルーティングになっているため、必要ないところは削除しrootのルーティング先を書き換えます。
 
-ファイル名： /project_name/fuel/app/config/routes.php
+
 
 #@# lang: .prettyprint .linenums:1
-//emlist{
+//emlist[ファイル名：/project_name/fuel/app/config/routes.php]{
 <?php
 return array(
     '_root_'  => 'main/index',  // The default route

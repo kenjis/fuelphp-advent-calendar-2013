@@ -2,21 +2,21 @@
 
 @<href>{http://atnd.org/events/45096,FuelPHP Advent Calendar 2013} 12日目です。@<href>{https://twitter.com/madmamor,@madmamor}が担当します。
 
- 今日は、FuelPHPのChatWorkパッケージを紹介します。@<br>{}
+今日は、FuelPHPのChatWorkパッケージを紹介します。@<br>{}
 
- ChatWorkのAPIは、昨月(2013年11月)末にプレビュー版として公開されました。
+ChatWorkのAPIは、昨月(2013年11月)末にプレビュー版として公開されました。
 
  * @<href>{http://blog-ja.chatwork.com/2013/11/api-preview.html,http://blog-ja.chatwork.com/2013/11/api-preview.html}
 
- そこで早速、FuelPHPのパッケージとして実装してみました。
+そこで早速、FuelPHPのパッケージとして実装してみました。
 
  * @<href>{https://github.com/mp-php/fuel-packages-chatwork,https://github.com/mp-php/fuel-packages-chatwork}  
 
- ChatWorkパッケージのライセンスはMITライセンスです。
+ChatWorkパッケージのライセンスはMITライセンスです。
 
  * @<href>{http://opensource.org/licenses/MIT,http://opensource.org/licenses/MIT}  
 
- では、準備と使い方の説明です。  
+では、準備と使い方の説明です。
 
 == 1. ChatWorkのAPIトークンを発行する
 
@@ -24,13 +24,15 @@
 
  * @<href>{http://blog-ja.chatwork.com/2013/11/api-preview.html,http://blog-ja.chatwork.com/2013/11/api-preview.html}
 
+//noindent
 の"お申し込み方法"の通りに、APIの利用申請をします。後日、利用開始のメールが届きます。
 
 利用開始のメールが届いたら、APIトークンを発行します。
 
  * @<href>{http://developer.chatwork.com/ja/authenticate.html,http://developer.chatwork.com/ja/authenticate.html}
 
-の、"APIトークンの取得"の通りです。発行されたAPIトークンは後で使いますので、控えておいて下さい。  
+//noindent
+の、"APIトークンの取得"の通りです。発行されたAPIトークンは後で使いますので、控えておいて下さい。
 
 == 2. FuelPHPとChatWorkパッケージのインストール
 
@@ -50,11 +52,11 @@ FuelPHPのインストールを済ませて、トップページが閲覧可能�
 $ php composer.phar update
 //}
 
- FuelPHPとChatWorkパッケージのインストールは以上です。尚、ChatWorkのAPIを使用する関係で、curlとOpenSSLを有効にしておいて下さい。  
+FuelPHPとChatWorkパッケージのインストールは以上です。尚、ChatWorkのAPIを使用する関係で、curlとOpenSSLを有効にしておいて下さい。
 
 == 3. ChatWorkパッケージの設定
 
-fuel/packages/chatwork/config/chatwork.php を fuel/app/config/ にコピーして、ChatWorkのAPIトークンを設定します。
+fuel/packages/chatwork/config/chatwork.phpをfuel/app/config/にコピーして、ChatWorkのAPIトークンを設定します。
 
 #@# lang: .brush:php
 //emlist{
@@ -65,10 +67,10 @@ return array(
 );
 //}
 
- 次に、ChatWorkパッケージを有効にします。方法は2つあります。  
+次に、ChatWorkパッケージを有効にします。方法は2つあります。
 
- 各所でChatWorkパッケージを使う場合は@<br>{}
- fuel/app/config/config.php の"always_load.packages"に"chatwork"を追記します。  
+各所でChatWorkパッケージを使う場合は
+fuel/app/config/config.php の"always_load.packages"に"chatwork"を追記します。
 
 #@# lang: .brush:php
 //emlist{
@@ -80,15 +82,15 @@ return array(
         …略…
 //}
 
- 局所的にChatWorkパッケージを使う場合は@<br>{}
- その場所(や、そのクラスのコンストラクタ等)でロードします。  
+局所的にChatWorkパッケージを使う場合は
+その場所（や、そのクラスのコンストラクタ等）でロードします。
 
 #@# lang: .brush:php
 //emlist{
 Package::load('chatwork');
 //}
 
- これで、全ての準備が完了です。  
+これで、全ての準備が完了です。
 
 == 4. ChatWorkパッケージを使ってみる
 

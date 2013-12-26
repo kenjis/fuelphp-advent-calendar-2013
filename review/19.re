@@ -90,7 +90,7 @@ $ php -S localhost:8000 -t public
  * http://localhost:8000/memo/read （GETメソッドで、JSONを返す）
 
 
-
+//noindent
 という２つのURLを用意して、それぞれ、メモの投稿と取得をさせたいと思います。
 
 
@@ -105,7 +105,7 @@ $ php -S localhost:8000 -t public
 $ php oil generate model memo memo:varchar created_at:timestamp updated_at:timestamp --mysql-timestamp --crud@<raw>{|latex|\n} --created-at --updated-at
 //}
 
-
+//noindent
 僕の好みで、@<tt>{--crud --mysql-timestamp --created-at --updated-at}オプションをつけてます。
 
 //cmd{
@@ -113,7 +113,7 @@ $ php oil generate model memo memo:varchar created_at:timestamp updated_at:times
     Creating migration: /Users/omoon/Documents/api/fuel/app/migrations/001_create_memos.php
 //}
 
-
+//noindent
 とメッセージが表示されて、modelと同時にマイグレーションファイルも作成されていることが分かります。
 
 
@@ -148,7 +148,7 @@ return array(
  * http://localhost:8000/memo/read
 
 
-
+//noindent
 この２つのURLへアクセスできるようになります。
 
 == oil generateでcontroller作成

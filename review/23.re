@@ -252,7 +252,7 @@ CLEARDB_DATABASE_URL: mysql://[ユーザ名]:[パスワード]@[ホスト名]/[D
 ==== (4) 接続文字列は？
 
 //emlist{
-mysql –host=[ホスト名] –user=[ユーザ名] –password=[パスワード] [DB名]
+mysql --host=[ホスト名] --user=[ユーザ名] --password=[パスワード] [DB名]
 //}
 
 === 10. FuelPHPプロジェクトからMySQLへ環境変数で接続

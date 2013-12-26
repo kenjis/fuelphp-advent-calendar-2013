@@ -149,7 +149,6 @@ index 3b5b851..2605850 100644
  require_once APPPATH.'bootstrap.php';
 //}
 
-
 AspectMockが動作するように、fuel/core/phpunit.xmlをfuel/app/phpunit.xmlにコピーし、backupGlobalsをfalseに変更します。
 
 //emlist{
@@ -288,6 +287,7 @@ Time: 8.08 seconds, Memory: 48.50Mb
 OK (1 test, 0 assertions)
 //}
 
+//noindent
 通りました。「0 assertinos」というのがちょっと変ですが、PHPUnitの検証メソッドを使っていないため、いたしかたありません。
 
 試しに、verifyInvoked()での第3引数の指定を404から405に変更してみます。
@@ -330,6 +330,7 @@ FAILURES!
 Tests: 1, Assertions: 0, Failures: 1.
 //}
 
+//noindent
 正しく失敗しました。@<br>{}
 
 このように、AspectMockを使うと静的メソッドをテストダブルに置き換えたり、メソッドを動的に再定義して、簡単にテストすることができます。AspectMockの主張どおり、テスト可能にするためだけにDIを使う必要はなくなります。
