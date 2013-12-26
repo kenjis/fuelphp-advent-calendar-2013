@@ -317,7 +317,7 @@ Authについては
 //quote{
 @<strong>{samui_}
 
-@TODO
+
 
 Twitter: @<href>{https://twitter.com/samui__s,@samui__s}
 

@@ -219,7 +219,7 @@ HTMLは次の通り。
 //quote{
 @<strong>{@soudai1025}
 
-@TODO
+
 
 Twitter: @<href>{https://twitter.com/soudai1025,@soudai1025}
 

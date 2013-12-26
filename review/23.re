@@ -280,7 +280,7 @@ Herokuにやや癖があり使いにくいと思ってしまった事もあり�
 //quote{
 @<strong>{@mycb750}
 
-@TODO
+
 
 Twitter: @<href>{https://twitter.com/mycb750,@mycb750}
 

@@ -255,7 +255,7 @@ FuelPHP 2.0ではComposerへの対応ってどの程度なんでしょうか？@
 //quote{
 @<strong>{chatii}
 
-@TODO
+
 
 Twitter: @<href>{https://twitter.com/chatii,@chatii}
 

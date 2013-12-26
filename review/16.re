@@ -149,7 +149,7 @@ adminモジュールからは、userモジュールを前提としたコーデ�
 //quote{
 @<strong>{@hosopy}
 
-@TODO
+
 
 Twitter: @<href>{https://twitter.com/hosopy,@hosopy}
 
