@@ -51,10 +51,10 @@ phar拡張モジュールは、PHP アプリケーション全体をひとつの
 
 実際に使われている例としては、
 
- * @<href>{http://getcomposer.org/,composer.phar}　パッケージ管理ツール
- * @<href>{https://github.com/fabpot/goutte,goutte.phar}　スクレイピングライブラリ
- * @<href>{https://github.com/guzzle/guzzle,guzzle.phar}　HTTPクライアントライブラリ
- * @<href>{http://pear2.php.net/PEAR2_Pyrus,pyrus.phar}　PEAR2
+ * @<href>{http://getcomposer.org/,composer.phar} ... パッケージ管理ツール
+ * @<href>{https://github.com/fabpot/goutte,goutte.phar} ... スクレイピングライブラリ
+ * @<href>{https://github.com/guzzle/guzzle,guzzle.phar} ... HTTPクライアントライブラリ
+ * @<href>{http://pear2.php.net/PEAR2_Pyrus,pyrus.phar} ... PEAR2
 
 //noindent
 などがあります。
