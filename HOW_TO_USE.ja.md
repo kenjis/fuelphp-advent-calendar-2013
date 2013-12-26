@@ -28,12 +28,16 @@
 	例:
 	$ php get-blog.php http://d.hatena.ne.jp/Kenji_s/20121201/fuelphp_this_year html 01
 
+（ここでHTMLをgit add）
+
 ### Markdown化
 
 	$ php get-blog.php <URL> md <章>
 
 	例:
 	$ php get-blog.php http://d.hatena.ne.jp/Kenji_s/20121201/fuelphp_this_year md 01
+
+（ここでMarkdownをgit addしcommit）
 
 不要な部分は削除します。
 
