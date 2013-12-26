@@ -5,7 +5,7 @@
 @<href>{http://atnd.org/events/45096,FuelPHP Advent Calendar 2013}の3日目です。
 
 
-今日は、FuelPHPのデータベースマイグレーションを@<href>{http::/pagodabox.com,Pagoda Box}で使う時にハマるポイントについて書きたいと思います。テーマがニッチ過ぎて、同じようなことで困っている人が他にもいるのか少し心配ではありますが、気にせず行きたいと思います。
+今日は、FuelPHPのデータベースマイグレーションを@<href>{http://pagodabox.com,Pagoda Box}で使う時にハマるポイントについて書きたいと思います。テーマがニッチ過ぎて、同じようなことで困っている人が他にもいるのか少し心配ではありますが、気にせず行きたいと思います。
 
 == Pagoda Boxとは
 
@@ -13,11 +13,11 @@
 まず、Pagoda Boxってなんや？というはなしを。
 
 
-//image[11189458785_5f7e7c6b16_o][Pagoda Box (http::/pagodabox.com)]{
+//image[11189458785_5f7e7c6b16_o][Pagoda Box (http://pagodabox.com)]{
 //}
 
 
-@<href>{http::/pagodabox.com,Pagoda Box}は、LAMP環境を構築できるPHP専門のPaaSです。
+@<href>{http://pagodabox.com,Pagoda Box}は、LAMP環境を構築できるPHP専門のPaaSです。
 
 
 PHPが使えるPaaSはいくつかありますが、Pagoda BoxはPHPに特化したPaaSなので、PHPエンジニアにはとてもなじみやすく、僕は結構気に入ってよく使っています。ちなみに、FuelPHPの公式サイトもPagoda Box上で動いているようです。
