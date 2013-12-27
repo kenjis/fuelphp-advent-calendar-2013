@@ -258,7 +258,7 @@ FuelPHP 2.0ではComposerへの対応ってどの程度なんでしょうか？@
 
 
 
-Twitter: @<href>{https://twitter.com/chatii,@chatii}
+Twitter: @<href>{https://twitter.com/chatii0079,@chatii0079}
 
 Blog: @<href>{http://chatii.net/,http://chatii.net/}
 //}
