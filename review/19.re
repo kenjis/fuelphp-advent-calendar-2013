@@ -125,13 +125,15 @@ Performed migrations for app:default:
 001_create_memos
 //}
 
-== route.php の編集
+== routes.phpの編集
 
 
-続いて、@<tt>{fuel/app/config/route.php}を下記のように編集します。
+続いて、@<tt>{fuel/app/config/routes.php}を下記のように編集します@<fn>{route}。
+
+//footnote[route][［編注］routes.phpにルーティング情報を追加してますが、これらのルートはFuelPHPでの規約に従ったルートのため、routes.phpに追加しなくてもアクセスできます。]
 
 //emlist{
-// fuel/app/config/route.php
+// fuel/app/config/routes.php
 return array(
     '_root_'  => 'welcome/index',  // The default route
     '_404_'   => 'welcome/404',    // The main 404 route
