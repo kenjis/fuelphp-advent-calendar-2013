@@ -143,7 +143,7 @@ $ php composer.phar update
  * ログやキャッシュの保存先が.phar外を示すようにする
 
 //noindent
-と、主に、ファイルパスに関する物が主となります。
+と、ファイルパスに関する物が主となります。
 
 
 まず、@<tt>{public/index.php}の変更部分です。
