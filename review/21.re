@@ -159,8 +159,7 @@ Execution time: 0.8238s
 rocketeer/remote.phpを修正します。
 
 #@# lang: .brush:text
-//cmd{
-$ git diff rocketeer/remote.php
+//emlist{
 diff --git a/rocketeer/remote.php b/rocketeer/remote.php
 index a21279b..51424c4 100644
 --- a/rocketeer/remote.php
@@ -412,7 +411,7 @@ Execution time: 34.8705s
 マイグレーションも実行できました。以下のコマンドでマイグレーションのみを個別に実行することもできます。
 
 #@# lang: .brush:text
-//emlist{
+//cmd{
 $ php rocketeer.phar migrate
 //}
 
@@ -432,7 +431,6 @@ composer.jsonに以下を追記します。
 
 #@# lang: .brush:text
 //emlist{
-$ git diff composer.json
 diff --git a/composer.json b/composer.json
 index e1b21ea..5ef630e 100644
 --- a/composer.json
@@ -483,8 +481,7 @@ index e1b21ea..5ef630e 100644
 rocketeer/paths.php を修正します。
 
 #@# lang: .brush:text
-//cmd{
-$ git diff rocketeer/paths.php
+//emlist{
 diff --git a/rocketeer/paths.php b/rocketeer/paths.php
 index f366b41..2b4d6d4 100644
 --- a/rocketeer/paths.php
@@ -537,7 +534,7 @@ Execution time: 9.6588s
 最後に、必ず失敗するテストを作成して、どうなるかも確認してみます（ソースは割愛します）。
 
 #@# lang: .brush:text
-//emlist{
+//cmd{
 $ php rocketeer.phar deploy -t
 
 No username is set for the repository, please provide one :
