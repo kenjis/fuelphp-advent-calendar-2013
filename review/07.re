@@ -85,8 +85,6 @@ iniset('display_errors', 0);
 
 ただこれは私の考えた方法で、もっと簡潔で安全な方法もあるかと思います。もし「こんなふうに書くともっと簡単だよ！」という方法がありましたら、@<strong>{ぜひコメントしてください！}
 
-あすは@sa2yasuさんの「FuelPHPを更に使ってみて使えるなと思ったCustomValidationRuleの書き方とCore拡張の小技」です。お楽しみに～
-
 （文中のソースコードは非常に短いですが、念のためすべて@<href>{http://opensource.org/licenses/mit-license.php,MITライセンス}といたします。）
 
 //quote{
