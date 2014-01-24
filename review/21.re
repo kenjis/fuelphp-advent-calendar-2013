@@ -1,6 +1,7 @@
 
 = FuelPHPをRocketeerで自動デプロイしてみる。マイグレーションとPHPUnitも実行してみる。
 
+2014/1/25 追記: 先日、Rocketeerのバージョンが1.0.0になりました。当記事の内容は、それよりも古いバージョンで確認しています。当記事記載のサンプルレポジトリは1.0.0に対応済みです。詳しはそちらのコミットログを御覧ください。
 
 @<href>{http://atnd.org/events/45096,FuelPHP Advent Calendar 2013} 21日目です。@<href>{https://twitter.com/madmamor,@madmamor}が担当します。@<br>{}
 
