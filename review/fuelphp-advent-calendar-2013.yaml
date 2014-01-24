@@ -21,7 +21,7 @@ prt: 達人出版会
 # pht: 撮影者
 # trl: 翻訳者
 # date: 刊行日
-date: 2013-12-27
+date: 2014-01-27
 # rights: 権利表記
 # description: ブックの説明
 #
@@ -67,3 +67,4 @@ params: --stylesheet=stylesheet.css --subdirmode --chapterlink
 debug: null
 pubhistory: |
   2013年12月27日 v0.9.0版発行
+  2014年1月27日 v1.0.0版発行
