@@ -303,17 +303,6 @@ PHPUnit 3.7.28 by Sebastian Bergmann.
 
 Configuration read from /mnt/fuelphp/fuel/app/phpunit.xml
 
-.
-
-Time: 8.08 seconds, Memory: 48.50Mb
-
-OK (1 test, 0 assertions)
-[vagrant@localhost fuelphp]$ oil test --group=App
-Tests Running...This may take a few moments.
-PHPUnit 3.7.28 by Sebastian Bergmann.
-
-Configuration read from /mnt/fuelphp/fuel/app/phpunit.xml
-
 F
 
 Time: 7.72 seconds, Memory: 48.50Mb
